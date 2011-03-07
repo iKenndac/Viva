@@ -23,3 +23,7 @@ util/_win32/MSG00001.bin
 /config.user.h
 Thumbs.db
 /build/
+xcuserdata
+*.xcworkspace
+*.mode1v3
+*.pbxuser

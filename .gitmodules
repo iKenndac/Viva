@@ -1,0 +1,3 @@
+[submodule "cocoalibspotify"]
+	path = cocoalibspotify
+	url = git@git.spotify.net:cocoalibspotify.git
