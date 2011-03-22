@@ -81,4 +81,9 @@
 -(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession; {}
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession; {}
 
+-(void)dealloc {
+	self.session = nil;
+	[super dealloc];
+}
+
 @end
