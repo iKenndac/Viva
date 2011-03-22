@@ -12,14 +12,18 @@
 @interface MainWindowController ()
 
 @property (nonatomic, retain, readwrite) NSViewController *currentViewController;
+@property (nonatomic, retain, readwrite) FooterViewController *footerViewController;
 
 @end
 
 @implementation MainWindowController
 
+@synthesize splitView;
 @synthesize currentViewController;
+@synthesize footerViewContainer;
 @synthesize contentBox;
 @synthesize playlistTreeController;
+@synthesize footerViewController;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -34,6 +38,7 @@
 - (void)dealloc
 {
 	self.currentViewController = nil;
+	self.footerViewController = nil;
     [super dealloc];
 }
 
@@ -55,7 +60,14 @@
 									 options:NSKeyValueObservingOptionInitial
 									 context:nil];
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+	footerViewController = [[FooterViewController alloc] init];
+	footerViewController.view.frame = self.footerViewContainer.bounds;
+	[self.footerViewContainer addSubview:footerViewController.view];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:footerViewController
+											 selector:@selector(splitViewDidResizeSubviews:)
+												 name:NSSplitViewDidResizeSubviewsNotification
+											   object:self.splitView];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -91,14 +103,59 @@
 #pragma mark -
 #pragma mark Split view
 
--(CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex {
+-(CGFloat)splitView:(NSSplitView *)aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex {
 	// Max size 
-	return splitView.frame.size.width * 0.75;
+	return aSplitView.frame.size.width * 0.75;
 }
 
-- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex {
+- (CGFloat)splitView:(NSSplitView *)aSplitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex {
 	// Min size
-	return splitView.frame.size.width * 0.25;
+	return aSplitView.frame.size.width * 0.25;
+}
+
+- (void)splitView:(NSSplitView *)aSplitView resizeSubviewsWithOldSize:(NSSize)oldSize {
+    
+    NSInteger leftColumnWidth = 0.0;
+    NSInteger effectiveDividerWidth = 0.0;
+    
+    NSView *leftColumnView = [[aSplitView subviews] objectAtIndex:0];
+	
+	NSUInteger kMaximumUserListWidth = aSplitView.frame.size.width * 0.75;
+    NSUInteger kMinimumUserListWidth = aSplitView.frame.size.width * 0.25;
+	
+    if (![leftColumnView isHidden]) {
+        if ([leftColumnView frame].size.width > kMaximumUserListWidth) {
+            NSRect frame = [leftColumnView frame];
+            frame.size.width = kMaximumUserListWidth;
+            [leftColumnView setFrame:frame];
+        }
+        
+        if ([leftColumnView frame].size.width < kMinimumUserListWidth) {
+            NSRect frame = [leftColumnView frame];
+            frame.size.width = kMinimumUserListWidth;
+            [leftColumnView setFrame:frame];
+        }
+        
+        leftColumnWidth = [leftColumnView frame].size.width;
+        effectiveDividerWidth = [aSplitView dividerThickness];
+    }
+	
+	NSView *contentView = [[aSplitView subviews] objectAtIndex:1];
+	
+    NSRect frame = [contentView frame];
+    frame.origin.x = effectiveDividerWidth + leftColumnWidth;
+    frame.size.width = [aSplitView frame].size.width - effectiveDividerWidth - leftColumnWidth;
+    frame.size.height = [aSplitView frame].size.height; 
+    
+    [contentView setFrame:frame];
+    
+    if (![leftColumnView isHidden]) {
+        [[[aSplitView subviews] objectAtIndex:0] setFrameSize:NSMakeSize(leftColumnWidth, frame.size.height)];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSSplitViewDidResizeSubviewsNotification
+                                                        object:aSplitView
+                                                      userInfo:nil];
 }
 
 

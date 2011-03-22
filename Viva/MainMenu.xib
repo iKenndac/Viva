@@ -17,6 +17,7 @@
 			<string>NSCustomObject</string>
 			<string>NSSplitView</string>
 			<string>NSImageCell</string>
+			<string>NSCustomView</string>
 			<string>NSTextField</string>
 			<string>NSWindowTemplate</string>
 			<string>NSTextFieldCell</string>
@@ -1363,7 +1364,7 @@
 												<object class="NSOutlineView" id="17329585">
 													<reference key="NSNextResponder" ref="277046624"/>
 													<int key="NSvFlags">4352</int>
-													<string key="NSFrameSize">{234, 421}</string>
+													<string key="NSFrameSize">{323, 375}</string>
 													<reference key="NSSuperview" ref="277046624"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="437601171"/>
@@ -1371,7 +1372,7 @@
 													<object class="NSTableHeaderView" key="NSHeaderView" id="85226141">
 														<reference key="NSNextResponder" ref="186108199"/>
 														<int key="NSvFlags">256</int>
-														<string key="NSFrameSize">{234, 17}</string>
+														<string key="NSFrameSize">{323, 17}</string>
 														<reference key="NSSuperview" ref="186108199"/>
 														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="448822603"/>
@@ -1434,7 +1435,7 @@
 															<reference key="NSTableView" ref="17329585"/>
 														</object>
 														<object class="NSTableColumn" id="468097884">
-															<double key="NSWidth">188</double>
+															<double key="NSWidth">277</double>
 															<double key="NSMinWidth">16</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -1513,7 +1514,7 @@
 													<float key="NSOutlineViewIndentationPerLevelKey">14</float>
 												</object>
 											</object>
-											<string key="NSFrame">{{0, 17}, {234, 421}}</string>
+											<string key="NSFrame">{{0, 17}, {323, 375}}</string>
 											<reference key="NSSuperview" ref="888895763"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="17329585"/>
@@ -1530,7 +1531,7 @@
 											<reference key="NSNextKeyView" ref="86483398"/>
 											<reference key="NSTarget" ref="888895763"/>
 											<string key="NSAction">_doScroller:</string>
-											<double key="NSPercent">0.95639534883720934</double>
+											<double key="NSPercent">0.99761904761904763</double>
 										</object>
 										<object class="NSScroller" id="86483398">
 											<reference key="NSNextResponder" ref="888895763"/>
@@ -1551,7 +1552,7 @@
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<reference ref="85226141"/>
 											</object>
-											<string key="NSFrameSize">{234, 17}</string>
+											<string key="NSFrameSize">{323, 17}</string>
 											<reference key="NSSuperview" ref="888895763"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="85226141"/>
@@ -1561,7 +1562,7 @@
 										</object>
 										<reference ref="448822603"/>
 									</object>
-									<string key="NSFrameSize">{234, 438}</string>
+									<string key="NSFrameSize">{323, 392}</string>
 									<reference key="NSSuperview" ref="864227752"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="186108199"/>
@@ -1581,13 +1582,13 @@
 										<object class="NSView" id="452657194">
 											<reference key="NSNextResponder" ref="265945235"/>
 											<int key="NSvFlags">256</int>
-											<string key="NSFrameSize">{403, 438}</string>
+											<string key="NSFrameSize">{323, 392}</string>
 											<reference key="NSSuperview" ref="265945235"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView"/>
+											<reference key="NSNextKeyView" ref="1071477376"/>
 										</object>
 									</object>
-									<string key="NSFrame">{{244, 0}, {403, 438}}</string>
+									<string key="NSFrame">{{324, 0}, {323, 392}}</string>
 									<reference key="NSSuperview" ref="864227752"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="452657194"/>
@@ -1616,12 +1617,21 @@
 									<real value="0.0" key="NSBorderWidth2"/>
 								</object>
 							</object>
-							<string key="NSFrameSize">{647, 438}</string>
+							<string key="NSFrame">{{0, 46}, {647, 392}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="888895763"/>
 							<bool key="NSIsVertical">YES</bool>
-							<int key="NSDividerStyle">3</int>
+							<int key="NSDividerStyle">2</int>
+						</object>
+						<object class="NSCustomView" id="1071477376">
+							<reference key="NSNextResponder" ref="439893737"/>
+							<int key="NSvFlags">290</int>
+							<string key="NSFrameSize">{647, 46}</string>
+							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<string key="NSClassName">NSView</string>
 						</object>
 					</object>
 					<string key="NSFrame">{{7, 11}, {647, 437}}</string>
@@ -2682,6 +2692,22 @@
 					</object>
 					<int key="connectionID">691</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">footerViewContainer</string>
+						<reference key="source" ref="500968142"/>
+						<reference key="destination" ref="1071477376"/>
+					</object>
+					<int key="connectionID">702</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">splitView</string>
+						<reference key="source" ref="500968142"/>
+						<reference key="destination" ref="864227752"/>
+					</object>
+					<int key="connectionID">703</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3240,6 +3266,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="864227752"/>
+							<reference ref="1071477376"/>
 						</object>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -3869,6 +3896,11 @@
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">687</int>
+						<reference key="object" ref="265945235"/>
+						<reference key="parent" ref="864227752"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">569</int>
 						<reference key="object" ref="888895763"/>
 						<object class="NSMutableArray" key="children">
@@ -3881,18 +3913,8 @@
 						<reference key="parent" ref="864227752"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">573</int>
-						<reference key="object" ref="17329585"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="399065587"/>
-							<reference ref="468097884"/>
-						</object>
-						<reference key="parent" ref="888895763"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">572</int>
-						<reference key="object" ref="86483398"/>
+						<int key="objectID">570</int>
+						<reference key="object" ref="437601171"/>
 						<reference key="parent" ref="888895763"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -3901,18 +3923,19 @@
 						<reference key="parent" ref="888895763"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">570</int>
-						<reference key="object" ref="437601171"/>
+						<int key="objectID">572</int>
+						<reference key="object" ref="86483398"/>
 						<reference key="parent" ref="888895763"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">672</int>
-						<reference key="object" ref="399065587"/>
+						<int key="objectID">573</int>
+						<reference key="object" ref="17329585"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="275110707"/>
+							<reference ref="399065587"/>
+							<reference ref="468097884"/>
 						</object>
-						<reference key="parent" ref="17329585"/>
+						<reference key="parent" ref="888895763"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">574</int>
@@ -3929,14 +3952,24 @@
 						<reference key="parent" ref="468097884"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">672</int>
+						<reference key="object" ref="399065587"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="275110707"/>
+						</object>
+						<reference key="parent" ref="17329585"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">674</int>
 						<reference key="object" ref="275110707"/>
 						<reference key="parent" ref="399065587"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">687</int>
-						<reference key="object" ref="265945235"/>
-						<reference key="parent" ref="864227752"/>
+						<int key="objectID">700</int>
+						<reference key="object" ref="1071477376"/>
+						<reference key="parent" ref="439893737"/>
+						<string key="objectName">Footer Container</string>
 					</object>
 				</object>
 			</object>
@@ -4192,6 +4225,8 @@
 					<string>674.IBPluginDependency</string>
 					<string>683.IBPluginDependency</string>
 					<string>687.IBPluginDependency</string>
+					<string>690.CustomClassName</string>
+					<string>700.IBPluginDependency</string>
 					<string>72.IBPluginDependency</string>
 					<string>72.ImportedFromIB2</string>
 					<string>73.IBPluginDependency</string>
@@ -4469,6 +4504,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>SPSplitView</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4509,7 +4546,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">691</int>
+			<int key="maxID">703</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4522,12 +4559,16 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>contentBox</string>
+							<string>footerViewContainer</string>
 							<string>playlistTreeController</string>
+							<string>splitView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSBox</string>
+							<string>NSView</string>
 							<string>NSTreeController</string>
+							<string>NSSplitView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -4535,7 +4576,9 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>contentBox</string>
+							<string>footerViewContainer</string>
 							<string>playlistTreeController</string>
+							<string>splitView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4544,8 +4587,16 @@
 								<string key="candidateClassName">NSBox</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">footerViewContainer</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">playlistTreeController</string>
 								<string key="candidateClassName">NSTreeController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">splitView</string>
+								<string key="candidateClassName">NSSplitView</string>
 							</object>
 						</object>
 					</object>
@@ -4619,6 +4670,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/NSDocument.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SPSplitView</string>
+					<string key="superclassName">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SPSplitView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
