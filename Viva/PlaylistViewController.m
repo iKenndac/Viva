@@ -7,6 +7,8 @@
 //
 
 #import "PlaylistViewController.h"
+#import "SPTableHeaderCell.h"
+#import "SPTableCorner.h"
 
 @implementation SPSpotifyPlaylist (SPViewControllerCreationExtensions)
 
@@ -31,6 +33,21 @@
 	return self;
 }
 
+-(void)awakeFromNib {
+
+	// No IB support for custom headers. Yay!
+	
+	for (NSTableColumn *column in [self.trackTable tableColumns]) {
+		SPTableHeaderCell *newCell = [[[SPTableHeaderCell alloc] init] autorelease];
+		[newCell setObjectValue:[[column headerCell] objectValue]];
+		[column setHeaderCell:newCell];
+	}
+	
+	[self.trackTable setCornerView:[[[SPTableCorner alloc] init] autorelease]];
+	
+}
+
+@synthesize trackTable;
 @synthesize playlist;
 
 - (void)dealloc

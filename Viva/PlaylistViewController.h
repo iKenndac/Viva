@@ -20,10 +20,12 @@
 
 	__weak SPSpotifyPlaylist *playlist;
     
+	NSTableView *trackTable;
 }
 
 -(id)initWithPlaylist:(SPSpotifyPlaylist *)aPlaylist;
 
+@property (assign) IBOutlet NSTableView *trackTable;
 @property (nonatomic, readonly, retain) __weak SPSpotifyPlaylist *playlist;
 
 @end

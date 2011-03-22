@@ -51,6 +51,9 @@
 		509AAEE6133913370009B6EE /* SPSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE5133913370009B6EE /* SPSplitView.m */; };
 		509AAEEB133916190009B6EE /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE9133916190009B6EE /* FooterViewController.m */; };
 		509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509AAEEA133916190009B6EE /* FooterViewController.xib */; };
+		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
+		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
+		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
 		50C7B3BA132E329A0055EDE0 /* PlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */; };
 		50C7B3BB132E329A0055EDE0 /* PlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */; };
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
@@ -136,6 +139,12 @@
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
+		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
+		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
+		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
+		50C56A3513393D890072A754 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageAndTextCell.m; path = "Custom Controls/ImageAndTextCell.m"; sourceTree = "<group>"; };
+		50C56A3E1339446E0072A754 /* VivaPlaylistExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaylistExtensions.h; sourceTree = "<group>"; };
+		50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaylistExtensions.m; sourceTree = "<group>"; };
 		50C7B3B7132E329A0055EDE0 /* PlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistViewController.h; sourceTree = "<group>"; };
 		50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistViewController.m; sourceTree = "<group>"; };
 		50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistViewController.xib; sourceTree = "<group>"; };
@@ -208,6 +217,7 @@
 				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
 				509AAEDE13390BDE0009B6EE /* Custom Controls */,
 				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
+				50C56A3D133944480072A754 /* Categories */,
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
 				503D62DF13257D92007772CA /* Supporting Files */,
 			);
@@ -296,6 +306,8 @@
 		509AAEE21339131B0009B6EE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				50C56A3413393D890072A754 /* ImageAndTextCell.h */,
+				50C56A3513393D890072A754 /* ImageAndTextCell.m */,
 				509AAEDF13390C390009B6EE /* SPTableHeaderCell.h */,
 				509AAEE013390C390009B6EE /* SPTableHeaderCell.m */,
 			);
@@ -309,6 +321,8 @@
 				509AAEE5133913370009B6EE /* SPSplitView.m */,
 				50E819CD133926A3000CE44D /* SPBackgroundColorView.h */,
 				50E819CE133926A3000CE44D /* SPBackgroundColorView.m */,
+				50C56A3113393AA50072A754 /* SPTableCorner.h */,
+				50C56A3213393AA50072A754 /* SPTableCorner.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -321,6 +335,15 @@
 				509AAEEA133916190009B6EE /* FooterViewController.xib */,
 			);
 			name = "Footer View";
+			sourceTree = "<group>";
+		};
+		50C56A3D133944480072A754 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				50C56A3E1339446E0072A754 /* VivaPlaylistExtensions.h */,
+				50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		50C7B3B6132E2F5D0055EDE0 /* View Controllers */ = {
@@ -471,6 +494,9 @@
 				509AAEE6133913370009B6EE /* SPSplitView.m in Sources */,
 				509AAEEB133916190009B6EE /* FooterViewController.m in Sources */,
 				50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */,
+				50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */,
+				50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */,
+				50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

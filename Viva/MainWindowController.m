@@ -8,6 +8,7 @@
 
 #import "MainWindowController.h"
 #import <objc/objc-runtime.h>
+#import "ImageAndTextCell.h"
 
 @interface MainWindowController ()
 
@@ -158,5 +159,13 @@
                                                       userInfo:nil];
 }
 
+#pragma mark -
+#pragma mark Outline
+
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+	
+	[(ImageAndTextCell *)cell setImage:[[item representedObject] icon]];
+	
+} 
 
 @end
