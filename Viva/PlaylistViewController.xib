@@ -345,10 +345,10 @@
 											</object>
 										</object>
 										<double key="NSRowHeight">14</double>
-										<int key="NSTvFlags">-759169024</int>
+										<int key="NSTvFlags">-759136256</int>
 										<reference key="NSDelegate"/>
 										<reference key="NSDataSource"/>
-										<int key="NSColumnAutoresizingStyle">2</int>
+										<int key="NSColumnAutoresizingStyle">1</int>
 										<int key="NSDraggingSourceMaskForLocal">15</int>
 										<int key="NSDraggingSourceMaskForNonLocal">0</int>
 										<bool key="NSAllowsTypeSelect">YES</bool>
