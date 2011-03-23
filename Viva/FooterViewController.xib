@@ -37,7 +37,7 @@
 				<int key="NSvFlags">290</int>
 				<string key="NSFrameSize">{480, 46}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSWindow"/>
 				<string key="NSClassName">SPBackgroundColorView</string>
 			</object>
 			<object class="NSCustomView" id="3924048">
@@ -92,7 +92,6 @@
 						<string key="NSFrame">{{161, 0}, {2, 46}}</string>
 						<reference key="NSSuperview" ref="3924048"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="641012858">
 							<int key="NSCellFlags">130560</int>
@@ -155,7 +154,6 @@
 						<string key="NSFrame">{{367, 14}, {19, 17}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="617810175">
 							<int key="NSCellFlags">67239424</int>
@@ -302,6 +300,54 @@
 						<reference key="destination" ref="553429723"/>
 					</object>
 					<int key="connectionID">12</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackIsStarredButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="332165747"/>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">starredButtonWasClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="332165747"/>
+					</object>
+					<int key="connectionID">26</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playbackIsRepeatingButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="930722672"/>
+					</object>
+					<int key="connectionID">27</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">repeatButtonWasClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="930722672"/>
+					</object>
+					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playbackIsShuffledButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="986908900"/>
+					</object>
+					<int key="connectionID">29</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">shuffleButtonWasClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="986908900"/>
+					</object>
+					<int key="connectionID">30</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -482,16 +528,38 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">24</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">FooterViewController</string>
 					<string key="superclassName">NSViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="repeatButtonWasClicked:">id</string>
+						<string key="shuffleButtonWasClicked:">id</string>
+						<string key="starredButtonWasClicked:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="repeatButtonWasClicked:">
+							<string key="name">repeatButtonWasClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="shuffleButtonWasClicked:">
+							<string key="name">shuffleButtonWasClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="starredButtonWasClicked:">
+							<string key="name">starredButtonWasClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="leftView">NSView</string>
 						<string key="playbackControlsView">NSView</string>
+						<string key="playbackIsRepeatingButton">NSButton</string>
+						<string key="playbackIsShuffledButton">NSButton</string>
+						<string key="trackIsStarredButton">NSButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="leftView">
@@ -501,6 +569,18 @@
 						<object class="IBToOneOutletInfo" key="playbackControlsView">
 							<string key="name">playbackControlsView</string>
 							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="playbackIsRepeatingButton">
+							<string key="name">playbackIsRepeatingButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="playbackIsShuffledButton">
+							<string key="name">playbackIsShuffledButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="trackIsStarredButton">
+							<string key="name">trackIsStarredButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

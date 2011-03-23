@@ -211,13 +211,11 @@
 		503D62DE13257D92007772CA /* Viva */ = {
 			isa = PBXGroup;
 			children = (
-				50C7B3BC132E36D90055EDE0 /* MainWindowController.h */,
-				50C7B3BD132E36D90055EDE0 /* MainWindowController.m */,
-				503D630413257F28007772CA /* MainMenu.xib */,
+				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
 				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
 				509AAEDE13390BDE0009B6EE /* Custom Controls */,
-				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
 				50C56A3D133944480072A754 /* Categories */,
+				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
 				503D62DF13257D92007772CA /* Supporting Files */,
 			);
@@ -363,6 +361,16 @@
 				50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */,
 			);
 			name = "Playlist View";
+			sourceTree = "<group>";
+		};
+		50DD06AF133A25B200CDE1C1 /* Window Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				50C7B3BC132E36D90055EDE0 /* MainWindowController.h */,
+				50C7B3BD132E36D90055EDE0 /* MainWindowController.m */,
+				503D630413257F28007772CA /* MainMenu.xib */,
+			);
+			name = "Window Controllers";
 			sourceTree = "<group>";
 		};
 		50E65E9D132585AF00E66AFA /* Products */ = {
