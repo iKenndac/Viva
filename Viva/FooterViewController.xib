@@ -165,9 +165,9 @@
 							<int key="NSCellFlags2">0</int>
 							<string key="NSContents"/>
 							<reference key="NSControlView" ref="46038901"/>
-							<double key="NSMaxValue">100</double>
+							<double key="NSMaxValue">1</double>
 							<double key="NSMinValue">0.0</double>
-							<double key="NSValue">0.0</double>
+							<double key="NSValue">1</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">0</int>
 							<int key="NSTickMarkPosition">1</int>

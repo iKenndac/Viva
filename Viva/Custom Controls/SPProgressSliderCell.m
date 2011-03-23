@@ -20,40 +20,27 @@ static NSImage *filledTrackImageRight;
 static NSImage *knobImage;
 static NSImage *pressedKnobImage;
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-		
++(void)initialize {
+	trackImageLeft = [[NSImage imageNamed:@"meeter-left"] retain];
+	trackImageMiddle = [[NSImage imageNamed:@"meeter-middle"] retain];
+	trackImageRight = [[NSImage imageNamed:@"meeter-right"] retain];
 
-	}
-    
-    return self;
+	filledTrackImageLeft = [[NSImage imageNamed:@"meeter-filled-left"] retain];
+	filledTrackImageMiddle = [[NSImage imageNamed:@"meeter-filled-middle"] retain];
+	filledTrackImageRight = [[NSImage imageNamed:@"meeter-filled-right"] retain];
+
+	knobImage = [[NSImage imageNamed:@"trackball"] retain];
+	pressedKnobImage = [[NSImage imageNamed:@"trackball-pushed"] retain];
 }
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	
 	lastFrame = cellFrame;
 	
-	if (trackImageLeft == nil) {
-		trackImageLeft = [[NSImage imageNamed:@"meeter-left"] retain];
-		trackImageMiddle = [[NSImage imageNamed:@"meeter-middle"] retain];
-		trackImageRight = [[NSImage imageNamed:@"meeter-right"] retain];
-	}
-	
-	if (filledTrackImageLeft == nil) {
-		filledTrackImageLeft = [[NSImage imageNamed:@"meeter-filled-left"] retain];
-		filledTrackImageMiddle = [[NSImage imageNamed:@"meeter-filled-middle"] retain];
-		filledTrackImageRight = [[NSImage imageNamed:@"meeter-filled-right"] retain];
-	}
-	
 	NSRect barFrame = (NSRect) {
 		.size = NSMakeSize(cellFrame.size.width, trackImageLeft.size.height),
-		.origin = NSMakePoint(cellFrame.origin.x, (cellFrame.size.height / 2) - (trackImageLeft.size.height / 2))
+		.origin = NSMakePoint(cellFrame.origin.x, floor(cellFrame.size.height / 2) - (trackImageLeft.size.height / 2))
 	};
-	
-	barFrame = NSOffsetRect(NSIntegralRect(barFrame), .0, .0);
 	
 	NSDrawThreePartImage(barFrame,
 						 trackImageLeft,
@@ -92,11 +79,10 @@ static NSImage *pressedKnobImage;
 	NSRect rect = (NSRect) {
 		.size = knobImage.size,
 		.origin = NSMakePoint(floor((NSWidth(lastFrame) - [self knobThickness]) * progress),
-							  NSMidY(lastFrame) - (knobImage.size.height / 2))
+							  floor(NSMidY(lastFrame) - (knobImage.size.height / 2)))
 	};
 	
 	return rect;
-							  
 }
 
 - (CGFloat)knobThickness {
@@ -104,12 +90,6 @@ static NSImage *pressedKnobImage;
 }
 
 - (void)drawKnob:(NSRect)knobRect {
-	
-	if (knobImage == nil) 
-		knobImage = [[NSImage imageNamed:@"trackball"] retain];
-	
-	if (pressedKnobImage == nil) 
-		pressedKnobImage = [[NSImage imageNamed:@"trackball-pushed"] retain];
 	
 	NSImage *imageToDraw = [self isHighlighted] ? pressedKnobImage : knobImage;
 	
