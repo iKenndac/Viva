@@ -15,6 +15,10 @@
 		503D630513257F28007772CA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503D630413257F28007772CA /* MainMenu.xib */; };
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
+		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
+		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
+		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
+		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		509AAEBE1339097C0009B6EE /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 509AAE9D1339097C0009B6EE /* bg.png */; };
 		509AAEBF1339097C0009B6EE /* meeter-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 509AAE9E1339097C0009B6EE /* meeter-filled.png */; };
 		509AAEC01339097C0009B6EE /* meeter.png in Resources */ = {isa = PBXBuildFile; fileRef = 509AAE9F1339097C0009B6EE /* meeter.png */; };
@@ -57,6 +61,10 @@
 		50C7B3BA132E329A0055EDE0 /* PlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */; };
 		50C7B3BB132E329A0055EDE0 /* PlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */; };
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
+		50DD06B2133A339800CDE1C1 /* SPProgressSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DD06B1133A339800CDE1C1 /* SPProgressSliderCell.m */; };
+		50DD06B6133A396300CDE1C1 /* meeter-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B3133A396300CDE1C1 /* meeter-left.png */; };
+		50DD06B7133A396300CDE1C1 /* meeter-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B4133A396300CDE1C1 /* meeter-middle.png */; };
+		50DD06B8133A396300CDE1C1 /* meeter-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B5133A396300CDE1C1 /* meeter-right.png */; };
 		50E65EBC13258D3E00E66AFA /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */; };
 		50E65EBD13258D9300E66AFA /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */; };
 		50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E819CE133926A3000CE44D /* SPBackgroundColorView.m */; };
@@ -100,6 +108,11 @@
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
+		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
+		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
+		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
+		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
+		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		509AAE9D1339097C0009B6EE /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		509AAE9E1339097C0009B6EE /* meeter-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled.png"; sourceTree = "<group>"; };
 		509AAE9F1339097C0009B6EE /* meeter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = meeter.png; sourceTree = "<group>"; };
@@ -151,6 +164,11 @@
 		50C7B3BC132E36D90055EDE0 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		50C7B3BD132E36D90055EDE0 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAppDelegate.h; sourceTree = "<group>"; };
+		50DD06B0133A339800CDE1C1 /* SPProgressSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPProgressSliderCell.h; path = "Custom Controls/SPProgressSliderCell.h"; sourceTree = "<group>"; };
+		50DD06B1133A339800CDE1C1 /* SPProgressSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPProgressSliderCell.m; path = "Custom Controls/SPProgressSliderCell.m"; sourceTree = "<group>"; };
+		50DD06B3133A396300CDE1C1 /* meeter-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-left.png"; sourceTree = "<group>"; };
+		50DD06B4133A396300CDE1C1 /* meeter-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-middle.png"; sourceTree = "<group>"; };
+		50DD06B5133A396300CDE1C1 /* meeter-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-right.png"; sourceTree = "<group>"; };
 		50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaLibSpotify.xcodeproj; path = cocoalibspotify/CocoaLibSpotify.xcodeproj; sourceTree = "<group>"; };
 		50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLibSpotify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50E819CD133926A3000CE44D /* SPBackgroundColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPBackgroundColorView.h; path = "Custom Controls/SPBackgroundColorView.h"; sourceTree = "<group>"; };
@@ -251,7 +269,13 @@
 			children = (
 				509AAE9D1339097C0009B6EE /* bg.png */,
 				509AAE9E1339097C0009B6EE /* meeter-filled.png */,
+				50842E4A133A3B1E00528555 /* meeter-filled-left.png */,
+				50842E4B133A3B1E00528555 /* meeter-filled-middle.png */,
+				50842E4C133A3B1E00528555 /* meeter-filled-right.png */,
 				509AAE9F1339097C0009B6EE /* meeter.png */,
+				50DD06B3133A396300CDE1C1 /* meeter-left.png */,
+				50DD06B4133A396300CDE1C1 /* meeter-middle.png */,
+				50DD06B5133A396300CDE1C1 /* meeter-right.png */,
 				509AAEA01339097C0009B6EE /* next-pushed.png */,
 				509AAEA11339097C0009B6EE /* next.png */,
 				509AAEA21339097C0009B6EE /* pause-pushed.png */,
@@ -308,6 +332,10 @@
 				50C56A3513393D890072A754 /* ImageAndTextCell.m */,
 				509AAEDF13390C390009B6EE /* SPTableHeaderCell.h */,
 				509AAEE013390C390009B6EE /* SPTableHeaderCell.m */,
+				50DD06B0133A339800CDE1C1 /* SPProgressSliderCell.h */,
+				50DD06B1133A339800CDE1C1 /* SPProgressSliderCell.m */,
+				50842E50133A43B100528555 /* SPVolumeSliderCell.h */,
+				50842E51133A43B100528555 /* SPVolumeSliderCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -484,6 +512,12 @@
 				509AAEDC1339097C0009B6EE /* sortbar-split.png in Resources */,
 				509AAEDD1339097C0009B6EE /* sortbar.png in Resources */,
 				509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */,
+				50DD06B6133A396300CDE1C1 /* meeter-left.png in Resources */,
+				50DD06B7133A396300CDE1C1 /* meeter-middle.png in Resources */,
+				50DD06B8133A396300CDE1C1 /* meeter-right.png in Resources */,
+				50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */,
+				50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */,
+				50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +539,8 @@
 				50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */,
 				50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */,
 				50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */,
+				50DD06B2133A339800CDE1C1 /* SPProgressSliderCell.m in Sources */,
+				50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
