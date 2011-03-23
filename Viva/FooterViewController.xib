@@ -40,7 +40,6 @@
 				<string key="NSFrameSize">{480, 46}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSClassName">SPBackgroundColorView</string>
 			</object>
 			<object class="NSCustomView" id="3924048">
@@ -95,7 +94,6 @@
 						<string key="NSFrame">{{161, 0}, {2, 46}}</string>
 						<reference key="NSSuperview" ref="3924048"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="641012858">
 							<int key="NSCellFlags">130560</int>
@@ -234,7 +232,6 @@
 						<string key="NSFrame">{{492, 14}, {19, 17}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="617810175">
 							<int key="NSCellFlags">67239424</int>

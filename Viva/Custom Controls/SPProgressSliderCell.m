@@ -35,6 +35,8 @@ static NSImage *pressedKnobImage;
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	
+	[super drawWithFrame:cellFrame inView:controlView];
+	
 	lastFrame = cellFrame;
 	
 	NSRect barFrame = (NSRect) {
