@@ -6,12 +6,13 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface SPSpotifyPlaylist (VivaPlaylistExtensions)
 
 -(NSImage *)icon;
+-(NSImage *)generateMosaicImageWithImages:(NSArray *)images;
 
 @end
 
