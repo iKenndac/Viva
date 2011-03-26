@@ -15,6 +15,7 @@
 		503D630513257F28007772CA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503D630413257F28007772CA /* MainMenu.xib */; };
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
+		503EAC01133D81DB00C4607E /* VivaPlaylistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 503EAC00133D81DB00C4607E /* VivaPlaylistController.m */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
@@ -108,6 +109,8 @@
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
+		503EABFF133D81DB00C4607E /* VivaPlaylistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaylistController.h; sourceTree = "<group>"; };
+		503EAC00133D81DB00C4607E /* VivaPlaylistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaylistController.m; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -229,10 +232,8 @@
 		503D62DE13257D92007772CA /* Viva */ = {
 			isa = PBXGroup;
 			children = (
-				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
-				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
-				509AAEDE13390BDE0009B6EE /* Custom Controls */,
-				50C56A3D133944480072A754 /* Categories */,
+				503EABFC133D81AF00C4607E /* UI */,
+				503EABFD133D81BD00C4607E /* Model */,
 				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
 				503D62DF13257D92007772CA /* Supporting Files */,
@@ -253,6 +254,34 @@
 				509AAE9B1339097C0009B6EE /* graphics */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		503EABFC133D81AF00C4607E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
+				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
+				509AAEDE13390BDE0009B6EE /* Custom Controls */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		503EABFD133D81BD00C4607E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				503EABFE133D81C400C4607E /* Controllers */,
+				50C56A3D133944480072A754 /* Categories */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		503EABFE133D81C400C4607E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				503EABFF133D81DB00C4607E /* VivaPlaylistController.h */,
+				503EAC00133D81DB00C4607E /* VivaPlaylistController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		509AAE9B1339097C0009B6EE /* graphics */ = {
@@ -541,6 +570,7 @@
 				50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */,
 				50DD06B2133A339800CDE1C1 /* SPProgressSliderCell.m in Sources */,
 				50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */,
+				503EAC01133D81DB00C4607E /* VivaPlaylistController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

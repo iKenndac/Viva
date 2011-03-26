@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1305</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1305</string>
+			<string key="NS.object.0">1306</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSScroller</string>
@@ -86,6 +86,7 @@
 						<string key="NSFrame">{{206, 90}, {182, 14}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="220991447">
 							<int key="NSCellFlags">67239488</int>
@@ -215,7 +216,7 @@
 										<string key="NSFrameSize">{403, 271}</string>
 										<reference key="NSSuperview" ref="300786197"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="833267190"/>
+										<reference key="NSNextKeyView" ref="311329691"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="352945302">
 											<reference key="NSNextResponder" ref="833267190"/>
@@ -404,7 +405,7 @@
 						<string key="NSFrame">{{0, 150}, {403, 288}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="300786197"/>
+						<reference key="NSNextKeyView" ref="833267190"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="311329691"/>
 						<reference key="NSHScroller" ref="434571912"/>
@@ -539,22 +540,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.album.cover.image</string>
-						<reference key="source" ref="640619627"/>
-						<reference key="destination" ref="680101217"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="640619627"/>
-							<reference key="NSDestination" ref="680101217"/>
-							<string key="NSLabel">value: selection.album.cover.image</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.album.cover.image</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">34</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">displayPatternValue1: selection.album.name</string>
 						<reference key="source" ref="398242091"/>
 						<reference key="destination" ref="680101217"/>
@@ -621,6 +606,22 @@
 						<reference key="destination" ref="342886202"/>
 					</object>
 					<int key="connectionID">45</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.album.cover.image</string>
+						<reference key="source" ref="640619627"/>
+						<reference key="destination" ref="680101217"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="640619627"/>
+							<reference key="NSDestination" ref="680101217"/>
+							<string key="NSLabel">value: selection.album.cover.image</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.album.cover.image</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">53</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -856,7 +857,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">53</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

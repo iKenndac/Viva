@@ -36,46 +36,38 @@
 			}
 		}
 		
-		NSUInteger mosaicEdgeCount = floor(sqrt((double)[imagesWeCanUse count]));
-		NSUInteger mosaicImageCount = mosaicEdgeCount * mosaicEdgeCount;
+		NSImage *generatedImage = [self generateMosaicImageWithImages:imagesWeCanUse];
 		
-		if (mosaicImageCount > 0 && mosaicImageCount <= [imagesWeCanUse count]) {
-			return [self generateMosaicImageWithImages:[imagesWeCanUse objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, mosaicImageCount)]]];
+		if (generatedImage == nil) {
+			// TODO: Return "no image" image
+			return nil;
+		} else {
+			return generatedImage;
 		}
-		
-		return nil;
 	}
 }
 
 static const double kMosaicImageSize = 300.0;
-
--(NSImage *)generateOnePartImageWithImage:(SPSpotifyImage *)anImage {
-	
-	NSImage *mosaicImage = [[NSImage alloc] initWithSize:NSMakeSize(kMosaicImageSize, kMosaicImageSize)];
-	[mosaicImage lockFocus];
-	
-	[[anImage image] drawInRect:(NSRect) {
-		.origin = NSMakePoint(0.0, 0.0),
-		.size = [mosaicImage size]
-	}
-					   fromRect:NSZeroRect
-					  operation:NSCompositeCopy
-					   fraction:1.0];
-	
-	[mosaicImage unlockFocus];
-	return [mosaicImage autorelease];
-}
 
 -(NSImage *)generateMosaicImageWithImages:(NSArray *)images {
 	
 	NSImage *mosaicImage = [[NSImage alloc] initWithSize:NSMakeSize(kMosaicImageSize, kMosaicImageSize)];
 	[mosaicImage lockFocus];
 	
-	NSUInteger tileEdgeCount = sqrtl([images count]);
+	NSUInteger mosaicEdgeCount = floor(sqrt((double)[images count]));
+	NSUInteger mosaicImageCount = mosaicEdgeCount * mosaicEdgeCount;
+	
+	if (mosaicImageCount == 0 || mosaicImageCount > [images count]) {
+		return nil;
+	}
+
+	NSArray *imagesWeCanUse = [images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, mosaicImageCount)]];
+	
+	NSUInteger tileEdgeCount = sqrtl([imagesWeCanUse count]);
 	NSSize tileSize = NSMakeSize([mosaicImage size].width / tileEdgeCount, [mosaicImage size].width / tileEdgeCount);
 	
 	NSUInteger imagesDrawn = 0;
-	for (SPSpotifyImage *spImage in images) {
+	for (SPSpotifyImage *spImage in imagesWeCanUse) {
 		
 		[[spImage image] drawInRect:(NSRect) {
 			.origin = NSMakePoint((imagesDrawn % tileEdgeCount) * tileSize.width,
@@ -87,6 +79,7 @@ static const double kMosaicImageSize = 300.0;
 						   fraction:1.0];
 		
 		imagesDrawn++;
+		
 	}
 	
 	[mosaicImage unlockFocus];
