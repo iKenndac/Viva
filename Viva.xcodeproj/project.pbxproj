@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -15,7 +16,6 @@
 		503D630513257F28007772CA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503D630413257F28007772CA /* MainMenu.xib */; };
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
-		503EAC01133D81DB00C4607E /* VivaPlaylistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 503EAC00133D81DB00C4607E /* VivaPlaylistController.m */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
@@ -95,6 +95,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaInternalURLManager.h; sourceTree = "<group>"; };
+		5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaInternalURLManager.m; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -109,8 +111,6 @@
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
-		503EABFF133D81DB00C4607E /* VivaPlaylistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaylistController.h; sourceTree = "<group>"; };
-		503EAC00133D81DB00C4607E /* VivaPlaylistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaylistController.m; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -269,19 +269,11 @@
 		503EABFD133D81BD00C4607E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				503EABFE133D81C400C4607E /* Controllers */,
 				50C56A3D133944480072A754 /* Categories */,
+				5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */,
+				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		503EABFE133D81C400C4607E /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				503EABFF133D81DB00C4607E /* VivaPlaylistController.h */,
-				503EAC00133D81DB00C4607E /* VivaPlaylistController.m */,
-			);
-			name = Controllers;
 			sourceTree = "<group>";
 		};
 		509AAE9B1339097C0009B6EE /* graphics */ = {
@@ -570,7 +562,7 @@
 				50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */,
 				50DD06B2133A339800CDE1C1 /* SPProgressSliderCell.m in Sources */,
 				50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */,
-				503EAC01133D81DB00C4607E /* VivaPlaylistController.m in Sources */,
+				5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

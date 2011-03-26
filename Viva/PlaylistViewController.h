@@ -8,17 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "VivaInternalURLManager.h"
 
-@interface SPSpotifyPlaylist (SPViewControllerCreationExtensions)
-
--(NSViewController *)createViewController;
-
-@end
-
-@interface PlaylistViewController : NSViewController {
+@interface PlaylistViewController : NSViewController <VivaViewController> {
 @private
 
-	__weak SPSpotifyPlaylist *playlist;
+	SPSpotifyPlaylist *playlist;
     
 	NSTableView *trackTable;
 }
@@ -26,6 +21,6 @@
 -(id)initWithPlaylist:(SPSpotifyPlaylist *)aPlaylist;
 
 @property (assign) IBOutlet NSTableView *trackTable;
-@property (nonatomic, readonly, retain) __weak SPSpotifyPlaylist *playlist;
+@property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
 
 @end

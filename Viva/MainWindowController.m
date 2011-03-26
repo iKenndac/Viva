@@ -7,8 +7,8 @@
 //
 
 #import "MainWindowController.h"
-#import <objc/objc-runtime.h>
 #import "ImageAndTextCell.h"
+#import "VivaInternalURLManager.h"
 
 @interface MainWindowController ()
 
@@ -75,12 +75,10 @@
     if ([keyPath isEqualToString:@"selection"]) {
         
 		id selectedObject = self.playlistTreeController.selectedObjects.lastObject;
+		NSViewController *newViewController = nil;
 		
-		NSViewController *newViewController = objc_getAssociatedObject(selectedObject, "VivaViewController");
-		
-		if (newViewController == nil && [selectedObject respondsToSelector:@selector(createViewController)]) {
-			newViewController = [selectedObject performSelector:@selector(createViewController)];
-			objc_setAssociatedObject(selectedObject, "VivaViewController", newViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		if ([selectedObject respondsToSelector:@selector(spotifyURL)]) {
+			newViewController = [[VivaInternalURLManager sharedInstance] viewControllerForURL:[selectedObject performSelector:@selector(spotifyURL) withObject:nil]];
 		}
 		
 		[self setCurrentViewController:newViewController];

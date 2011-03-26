@@ -10,17 +10,9 @@
 #import "SPTableHeaderCell.h"
 #import "SPTableCorner.h"
 
-@implementation SPSpotifyPlaylist (SPViewControllerCreationExtensions)
-
--(NSViewController *)createViewController {
-	return [[[PlaylistViewController alloc] initWithPlaylist:self] autorelease];
-}
-
-@end
-
 @interface PlaylistViewController ()
 
-@property (nonatomic, readwrite, retain) __weak SPSpotifyPlaylist *playlist;
+@property (nonatomic, readwrite, retain) SPSpotifyPlaylist *playlist;
 
 @end
 
@@ -31,6 +23,10 @@
 		self.playlist = aPlaylist;
 	}
 	return self;
+}
+
+-(id)initWithObjectFromURL:(NSURL *)aURL {
+	return [self initWithPlaylist:[[[NSApp delegate] session] playlistForURL:aURL]];
 }
 
 -(void)awakeFromNib {

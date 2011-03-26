@@ -7,11 +7,18 @@
 //
 
 #import "VivaAppDelegate.h"
-#import "VivaPlaylistController.h"
-#import <objc/objc-runtime.h>
+#import "PlaylistViewController.h"
+#import "VivaInternalURLManager.h"
+
+@interface VivaAppDelegate ()
+
+@property (nonatomic, retain, readwrite) NSDictionary *playlistControllers;
+
+@end
 
 @implementation VivaAppDelegate
 
+@synthesize playlistControllers;
 @synthesize loginSheet;
 @synthesize window;
 @synthesize session;
@@ -19,16 +26,13 @@
 @synthesize passwordField;
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
-    
+	
+	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[PlaylistViewController class] forURLScheme:@"spotify:user"];
+	
     [self setSession:[SPSpotifySession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
                                                                                                                                 ofType:@"key"]]
                                                        userAgent:@"CocoaLibSpotify"
                                                            error:nil]];
-	[self.session addObserver:self
-				   forKeyPath:@"userPlaylists.playlists"
-					  options:0
-					  context:nil];
-	
     [[self session] setDelegate:self];
     
     [NSApp beginSheet:[self loginSheet]
@@ -54,27 +58,6 @@
     [[self loginSheet] orderOut:self];
     
     [NSApp terminate:sender];
-}
-
-#pragma mark -
-#pragma mark Session Controller
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"userPlaylists.playlists"]) {
-        
-		for (SPSpotifyPlaylist *aPlaylist in self.session.userPlaylists.playlists) {
-			
-			if (objc_getAssociatedObject(aPlaylist, "VivaPlaylistController") == nil) {
-				objc_setAssociatedObject(aPlaylist,
-										 "VivaPlaylistController", 
-										 [[[VivaPlaylistController alloc] initWithPlaylist:aPlaylist] autorelease],
-										 OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-			}
-		}
-		
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark -
@@ -110,8 +93,7 @@
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession; {}
 
 -(void)dealloc {
-	
-	[self.session removeObserver:self forKeyPath:@"userPlaylists.playlists"];
+	self.playlistControllers = nil;
 	self.session = nil;
 	[super dealloc];
 }
