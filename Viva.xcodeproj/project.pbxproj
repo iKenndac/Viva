@@ -87,6 +87,8 @@
 		50E3F76F133FC47C00FF4618 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F76D133FC47C00FF4618 /* background.png */; };
 		50E3F770133FC47C00FF4618 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F76E133FC47C00FF4618 /* logo.png */; };
 		50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F771133FD32A00FF4618 /* MainWindow.xib */; };
+		50E3F777133FD92800FF4618 /* EMKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E3F776133FD92800FF4618 /* EMKeychainItem.m */; };
+		50E3F779133FD95200FF4618 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E3F778133FD95200FF4618 /* Security.framework */; };
 		50E65EBC13258D3E00E66AFA /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */; };
 		50E65EBD13258D9300E66AFA /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */; };
 		50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E819CE133926A3000CE44D /* SPBackgroundColorView.m */; };
@@ -216,6 +218,10 @@
 		50E3F76D133FC47C00FF4618 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		50E3F76E133FC47C00FF4618 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		50E3F771133FD32A00FF4618 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		50E3F773133FD74500FF4618 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		50E3F775133FD92800FF4618 /* EMKeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMKeychainItem.h; sourceTree = "<group>"; };
+		50E3F776133FD92800FF4618 /* EMKeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMKeychainItem.m; sourceTree = "<group>"; };
+		50E3F778133FD95200FF4618 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaLibSpotify.xcodeproj; path = cocoalibspotify/CocoaLibSpotify.xcodeproj; sourceTree = "<group>"; };
 		50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLibSpotify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50E819CD133926A3000CE44D /* SPBackgroundColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPBackgroundColorView.h; path = "Custom Controls/SPBackgroundColorView.h"; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50E3F779133FD95200FF4618 /* Security.framework in Frameworks */,
 				50E65EBD13258D9300E66AFA /* CocoaLibSpotify.framework in Frameworks */,
 				503D62D913257D92007772CA /* Cocoa.framework in Frameworks */,
 			);
@@ -256,6 +263,7 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50E3F778133FD95200FF4618 /* Security.framework */,
 				50E65EBB13258D3E00E66AFA /* CocoaLibSpotify.framework */,
 				503D62D813257D92007772CA /* Cocoa.framework */,
 				503D62DA13257D92007772CA /* Other Frameworks */,
@@ -276,12 +284,14 @@
 		503D62DE13257D92007772CA /* Viva */ = {
 			isa = PBXGroup;
 			children = (
+				50E3F773133FD74500FF4618 /* Constants.h */,
 				503EABFC133D81AF00C4607E /* UI */,
 				503EABFD133D81BD00C4607E /* Model */,
 				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
 				503D630413257F28007772CA /* MainMenu.xib */,
 				503D62DF13257D92007772CA /* Supporting Files */,
+				50E3F774133FD92800FF4618 /* Open Source */,
 			);
 			path = Viva;
 			sourceTree = "<group>";
@@ -521,6 +531,15 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		50E3F774133FD92800FF4618 /* Open Source */ = {
+			isa = PBXGroup;
+			children = (
+				50E3F775133FD92800FF4618 /* EMKeychainItem.h */,
+				50E3F776133FD92800FF4618 /* EMKeychainItem.m */,
+			);
+			path = "Open Source";
+			sourceTree = "<group>";
+		};
 		50E65E9D132585AF00E66AFA /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -686,6 +705,7 @@
 				5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */,
 				50E3F764133FBFCD00FF4618 /* SPAccountButtonCell.m in Sources */,
 				50E3F769133FC3A300FF4618 /* LoginWindowController.m in Sources */,
+				50E3F777133FD92800FF4618 /* EMKeychainItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

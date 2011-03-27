@@ -36,6 +36,9 @@
 
 - (void)dealloc
 {
+	[self removeObserver:self forKeyPath:@"currentViewController"];
+	[self.playlistTreeController removeObserver:self forKeyPath:@"selection"];
+	
 	self.currentViewController = nil;
 	self.footerViewController = nil;
     [super dealloc];

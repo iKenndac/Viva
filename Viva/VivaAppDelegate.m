@@ -38,6 +38,7 @@
 
 	[mainWindowController showWindow:nil];
 	[[loginWindowController window] orderOut:nil]; 
+	loginWindowController.isLoggingIn = NO;
 }
 
 -(void)session:(SPSpotifySession *)aSession didFailToLoginWithError:(NSError *)error; {
@@ -47,6 +48,8 @@
                delegate:nil
      didPresentSelector:nil
             contextInfo:nil];
+	
+	loginWindowController.isLoggingIn = NO;
 }
     
 -(void)sessionDidLogOut:(SPSpotifySession *)aSession; {}

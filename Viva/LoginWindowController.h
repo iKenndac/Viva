@@ -18,10 +18,21 @@
 	NSTextField *userNameField;
 	NSSecureTextField *passwordField;
 	NSButton *rememberMeCheckbox;
+	NSBox *contentBox;
+	NSView *credentialsView;
+	NSView *loggingInView;
+	
+	BOOL isLoggingIn;
 }
+
+@property (readwrite) BOOL isLoggingIn;
+
 @property (assign) IBOutlet NSTextField *userNameField;
 @property (assign) IBOutlet NSSecureTextField *passwordField;
 @property (assign) IBOutlet NSButton *rememberMeCheckbox;
+@property (assign) IBOutlet NSBox *contentBox;
+@property (assign) IBOutlet NSView *credentialsView;
+@property (assign) IBOutlet NSView *loggingInView;
 
 - (IBAction)attemptLogin:(id)sender;
 

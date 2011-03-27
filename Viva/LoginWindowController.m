@@ -9,6 +9,8 @@
 #import "LoginWindowController.h"
 #import <objc/runtime.h>
 #import "VivaAppDelegate.h"
+#import "Constants.h"
+#import "EMKeychainItem.h"
 
 @interface LoginWindowController(ImTotallyAnNSViewIPromise)
 -(float)roundedCornerRadius;
@@ -20,19 +22,26 @@
 @end
 
 @implementation LoginWindowController
+
+@synthesize isLoggingIn;
 @synthesize userNameField;
 @synthesize passwordField;
 @synthesize rememberMeCheckbox;
+@synthesize contentBox;
+@synthesize credentialsView;
+@synthesize loggingInView;
 
 -(id)init {
 	return [super initWithWindowNibName:@"LoginWindow"];
 }
 
+-(void)dealloc {
+	[self removeObserver:self forKeyPath:@"isLoggingIn"];
+	[super dealloc];
+}
+
 - (void)windowDidLoad {
-    [super windowDidLoad];
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-	
 	// Get window's frame view class
 	id class = [[[self.window contentView] superview] class];
 	
@@ -48,13 +57,70 @@
 	[[[self.window contentView] superview] setNeedsDisplay:YES];
 	
 	[self.window center];
+	
+	NSString *userName = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastUserNameUserDefaultsKey];
+	EMKeychainItem *keychainItem = [EMGenericKeychainItem genericKeychainItemForService:kVivaKeychainServiceName
+																		   withUsername:userName];
+	NSString *password = keychainItem.password;
+	
+	if ([userName length] > 0)
+		[userNameField setStringValue:userName];
+	
+	if ([password length] > 0)
+		[passwordField setStringValue:password];
+	
+	if ([userName length] > 0 && [password length] > 0) {
+		[self performSelector:@selector(attemptLogin:)
+				   withObject:nil
+				   afterDelay:0.0];
+	}
+	
+	[self addObserver:self
+		   forKeyPath:@"isLoggingIn"
+			  options:NSKeyValueObservingOptionInitial
+			  context:nil];
+	
+    [super windowDidLoad];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"isLoggingIn"]) {
+        
+		if ([self isLoggingIn]) {
+			[self.contentBox setContentView:self.loggingInView];
+		} else {
+			[self.contentBox setContentView:self.credentialsView];
+		}
+		
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 -(void)windowWillClose:(NSNotification *)notification {
-	[NSApp terminate:self];
+	if (!self.isLoggingIn) {
+		[NSApp terminate:self];
+	}
 }
 
 - (IBAction)attemptLogin:(id)sender {
+	
+	self.isLoggingIn = YES;
+	
+	if ([[userNameField stringValue] length] == 0 ||
+		[[passwordField stringValue] length] == 0) {
+		NSBeep();
+		return;
+	}
+	
+	if ([rememberMeCheckbox state] == NSOnState) {
+		[EMGenericKeychainItem addGenericKeychainItemForService:kVivaKeychainServiceName
+												   withUsername:[userNameField stringValue]
+													   password:[passwordField stringValue]];
+		
+		[[NSUserDefaults standardUserDefaults] setValue:[userNameField stringValue]
+												 forKey:kVivaLastUserNameUserDefaultsKey];
+	}
 	
 	[[(VivaAppDelegate *)[NSApp delegate] session] attemptLoginWithUserName:[userNameField stringValue]
 																   password:[passwordField stringValue]];
