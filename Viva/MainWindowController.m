@@ -30,14 +30,8 @@
 @synthesize playlistTreeController;
 @synthesize footerViewController;
 
-- (id)initWithWindow:(NSWindow *)window
-{
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
+-(id)init {
+	return [super initWithWindowNibName:@"MainWindow"];
 }
 
 - (void)dealloc
@@ -45,10 +39,6 @@
 	self.currentViewController = nil;
 	self.footerViewController = nil;
     [super dealloc];
-}
-
--(void)awakeFromNib {
-	[self windowDidLoad];
 }
 
 - (void)windowDidLoad

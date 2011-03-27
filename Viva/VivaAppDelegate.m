@@ -12,11 +12,8 @@
 
 @implementation VivaAppDelegate
 
-@synthesize loginSheet;
 @synthesize window;
 @synthesize session;
-@synthesize usernameField;
-@synthesize passwordField;
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
 	
@@ -28,52 +25,30 @@
                                                            error:nil]];
     [[self session] setDelegate:self];
     
-    [NSApp beginSheet:[self loginSheet]
-       modalForWindow:[self window]
-        modalDelegate:nil
-       didEndSelector:nil
-          contextInfo:nil];
+	mainWindowController = [[MainWindowController alloc] init];
+	loginWindowController = [[LoginWindowController alloc] init];
+	[loginWindowController showWindow:nil];
+	
 }
 
-
-- (IBAction)login:(id)sender {
-
-    [NSApp endSheet:[self loginSheet]];
-    [[self loginSheet] orderOut:self];
-
-    [[self session] attemptLoginWithUserName:[[self usernameField] stringValue]
-                                    password:[[self passwordField] stringValue]];
-}
-
-- (IBAction)cancelLogin:(id)sender {
-    
-    [NSApp endSheet:[self loginSheet]];
-    [[self loginSheet] orderOut:self];
-    
-    [NSApp terminate:sender];
-}
 
 #pragma mark -
 
--(void)sessionDidLoginSuccessfully:(SPSpotifySession *)aSession; {}
+-(void)sessionDidLoginSuccessfully:(SPSpotifySession *)aSession; {
+
+	[mainWindowController showWindow:nil];
+	[[loginWindowController window] orderOut:nil]; 
+}
 
 -(void)session:(SPSpotifySession *)aSession didFailToLoginWithError:(NSError *)error; {
     
     [NSApp presentError:error
-         modalForWindow:[self window]
-               delegate:self
-     didPresentSelector:@selector(didPresentErrorWithRecovery:contextInfo:)
+         modalForWindow:[loginWindowController window]
+               delegate:nil
+     didPresentSelector:nil
             contextInfo:nil];
 }
-
--(void)didPresentErrorWithRecovery:(BOOL)didRecover contextInfo:(void *)contextInfo {
-    [NSApp beginSheet:[self loginSheet]
-       modalForWindow:[self window]
-        modalDelegate:nil
-       didEndSelector:nil
-          contextInfo:nil];
-}
-     
+    
 -(void)sessionDidLogOut:(SPSpotifySession *)aSession; {}
 
 
@@ -86,6 +61,8 @@
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession; {}
 
 -(void)dealloc {
+	[mainWindowController release];
+	[loginWindowController release];
 	self.session = nil;
 	[super dealloc];
 }
