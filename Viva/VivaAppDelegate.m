@@ -10,15 +10,8 @@
 #import "PlaylistViewController.h"
 #import "VivaInternalURLManager.h"
 
-@interface VivaAppDelegate ()
-
-@property (nonatomic, retain, readwrite) NSDictionary *playlistControllers;
-
-@end
-
 @implementation VivaAppDelegate
 
-@synthesize playlistControllers;
 @synthesize loginSheet;
 @synthesize window;
 @synthesize session;
@@ -93,7 +86,6 @@
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession; {}
 
 -(void)dealloc {
-	self.playlistControllers = nil;
 	self.session = nil;
 	[super dealloc];
 }

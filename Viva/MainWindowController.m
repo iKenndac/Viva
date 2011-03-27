@@ -9,6 +9,7 @@
 #import "MainWindowController.h"
 #import "ImageAndTextCell.h"
 #import "VivaInternalURLManager.h"
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface MainWindowController ()
 
@@ -19,6 +20,9 @@
 
 @implementation MainWindowController
 
+@synthesize urlSheet;
+@synthesize urlField;
+@synthesize invalidURLWarningLabel;
 @synthesize splitView;
 @synthesize currentViewController;
 @synthesize footerViewContainer;
@@ -97,6 +101,36 @@
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+- (IBAction)showOpenURLSheet:(id)sender {
+	[self.urlField setStringValue:@""];
+	[self.invalidURLWarningLabel setHidden:YES];
+	
+	[NSApp beginSheet:self.urlSheet
+	   modalForWindow:self.window
+		modalDelegate:nil
+	   didEndSelector:nil 
+		  contextInfo:nil];
+}
+
+- (IBAction)openURL:(id)sender {
+	
+	NSURL *aURL = [NSURL URLWithString:[self.urlField stringValue]];
+	
+	if (aURL == nil || [aURL spotifyLinkType] == SP_LINKTYPE_INVALID) {
+		[self.invalidURLWarningLabel setHidden:NO];
+		return;
+	}
+	
+	self.currentViewController = [[VivaInternalURLManager sharedInstance] viewControllerForURL:aURL];
+	
+	[self cancelOpenURL:nil];
+}
+
+- (IBAction)cancelOpenURL:(id)sender {
+	[NSApp endSheet:self.urlSheet];
+	[self.urlSheet orderOut:sender];
 }
 
 #pragma mark -

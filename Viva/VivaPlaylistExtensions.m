@@ -74,7 +74,7 @@ static const double kMosaicImageSize = 300.0;
 								  floor(imagesDrawn / tileEdgeCount) * tileSize.height),
 			.size = tileSize
 		}
-						   fromRect:CGRectZero
+						   fromRect:NSZeroRect
 						  operation:NSCompositeCopy
 						   fraction:1.0];
 		

@@ -53,7 +53,7 @@
 						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="901765145">
-							<int key="NSCellFlags">67239488</int>
+							<int key="NSCellFlags">69336641</int>
 							<int key="NSCellFlags2">272762880</int>
 							<string key="NSContents">Label</string>
 							<object class="NSFont" key="NSSupport" id="26">

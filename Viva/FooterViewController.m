@@ -123,7 +123,7 @@
 	
 	playbackControlsView.frame = (NSRect) {
 		.origin = NSMakePoint(NSMaxX(leftView.frame), playbackControlsView.frame.origin.y),
-		.size = CGSizeMake(NSWidth(self.view.bounds) - dividerPosition, playbackControlsView.frame.size.height)
+		.size = NSMakeSize(NSWidth(self.view.bounds) - dividerPosition, playbackControlsView.frame.size.height)
 	};
 	
 }

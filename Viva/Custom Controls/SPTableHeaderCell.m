@@ -43,8 +43,8 @@
 	
 	NSSize textSize = [title sizeWithAttributes:textAttribs];
 	NSRect textRect = (NSRect) {
-		.origin = CGPointMake(cellFrame.origin.x + 4.0, (cellFrame.size.height / 2) - (textSize.height / 2)),
-		.size = CGSizeMake(cellFrame.size.width, textSize.height)
+		.origin = NSMakePoint(cellFrame.origin.x + 4.0, (cellFrame.size.height / 2) - (textSize.height / 2)),
+		.size = NSMakeSize(cellFrame.size.width, textSize.height)
 	};
 	
 	[title drawInRect:NSIntegralRect(textRect) withAttributes:textAttribs];
