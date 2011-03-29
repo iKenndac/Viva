@@ -29,7 +29,7 @@
     AudioDeviceID *ids = malloc(dataSize);
     
     [CoCAAudioHardwareSystem property:kAudioHardwarePropertyDevices
-                                 size:dataSize
+                                 size:(UInt32)dataSize
                                  data:ids];
     for(i = 0; i < deviceCount; i++)
         [ar addObject: [CoCAAudioDevice deviceForID:ids[i]]];

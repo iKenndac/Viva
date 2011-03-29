@@ -200,9 +200,9 @@
 		50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAppDelegate.h; sourceTree = "<group>"; };
 		50D192BB134280E400D02FDF /* CoCA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCA.h; sourceTree = "<group>"; };
 		50D192BC134280E400D02FDF /* CoCAAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioDevice.h; sourceTree = "<group>"; };
-		50D192BD134280E400D02FDF /* CoCAAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioDevice.m; sourceTree = "<group>"; };
+		50D192BD134280E400D02FDF /* CoCAAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoCAAudioDevice.m; sourceTree = "<group>"; };
 		50D192BE134280E400D02FDF /* CoCAAudioHardwareSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioHardwareSystem.h; sourceTree = "<group>"; };
-		50D192BF134280E400D02FDF /* CoCAAudioHardwareSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioHardwareSystem.m; sourceTree = "<group>"; };
+		50D192BF134280E400D02FDF /* CoCAAudioHardwareSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoCAAudioHardwareSystem.m; sourceTree = "<group>"; };
 		50D192C0134280E400D02FDF /* CoCAAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioUnit.h; sourceTree = "<group>"; };
 		50D192C1134280E400D02FDF /* CoCAAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioUnit.m; sourceTree = "<group>"; };
 		50D192C2134280E400D02FDF /* NCCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCommon.h; sourceTree = "<group>"; };

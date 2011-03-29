@@ -16,7 +16,7 @@
                     if(__Err != 0)															\
                     {																		\
                         char __4CC[5] = FourCC2Str(__Err);								\
-                            NSLog([NSString stringWithCString: "" inMessage ", Error: %ld (%s)"], __Err, __4CC);             \
+                            NSLog([NSString stringWithUTF8String: "" inMessage ", Error: %ld (%s)"], __Err, __4CC);             \
                     }																		\
 }
 

@@ -18,12 +18,13 @@
     SPSpotifySession *session;
 	LoginWindowController *loginWindowController;
 	MainWindowController *mainWindowController;
-	NSData *audioData;
-	CoCAAudioUnit *unit;
+	NSMutableData *audioData;
+	CoCAAudioUnit *audioUnit;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (retain, readwrite) SPSpotifySession *session; 
-@property (retain, readwrite) NSData *audioData;
+@property (retain, readwrite) NSMutableData *audioData;
+@property (retain, readwrite) CoCAAudioUnit *audioUnit;
 
 @end

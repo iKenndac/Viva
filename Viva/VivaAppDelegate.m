@@ -16,6 +16,7 @@
 @synthesize window;
 @synthesize session;
 @synthesize audioData;
+@synthesize audioUnit;
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
 	
@@ -36,42 +37,56 @@
 											 selector:@selector(playTrack:)
 												 name:kTrackShouldBePlayedNotification
 											   object:nil];
-	self.audioData = [NSData data];
 }
 
 #pragma mark -
 
 -(void)playTrack:(NSNotification *)aNotification {
 	
-	[self.session setIsPlaying:NO];
-	[self.session unloadPlayback];
-	
-	self.audioData = [NSData data];
-	
-	SPSpotifyTrack *track = [aNotification object];
-	[self.session playTrack:track];
-	
-	
+	@synchronized(self) {
+		[self.session setIsPlaying:NO];
+		[self.session unloadPlayback];
+		[self.audioUnit stop];
+		self.audioUnit = nil;
+		
+		self.audioData = [NSMutableData data];
+		
+		SPSpotifyTrack *track = [aNotification object];
+		[self.session playTrack:track];
+	}
 }
+
+#define kMaximumBytesInBuffer 1024 * 256
 
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
 	if (frameCount == 0)
         return 0; // Audio discontinuity, do nothing
-
 	
-	NSMutableData *data = [self.audioData mutableCopy];
-	[data appendBytes:audioFrames length:frameCount * sizeof(sint16) * audioFormat->channels];
-	self.audioData = data;
-	
-	if (unit == nil) {
-		unit = [[CoCAAudioUnit defaultOutputUnit] retain];
-		[unit setRenderDelegate:self];
-		[unit setup];
-		[unit start];
+	@synchronized(self) {
+		
+		if ([self.audioData length] >= kMaximumBytesInBuffer) {
+			return 0;
+		}
+		
+		[self.audioData appendBytes:audioFrames length:frameCount * sizeof(sint16) * audioFormat->channels];
+		
+		if (self.audioUnit == nil) {
+			self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
+			[self.audioUnit setRenderDelegate:self];
+			[self.audioUnit setup];
+			[self.audioUnit start];
+		}
+		
+		return frameCount;
 	}
-	
-	return frameCount;
+}
+
+-(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
+	@synchronized(self) {
+		[self.audioUnit stop];
+		self.audioUnit = nil;
+	}
 }
 
 -(OSStatus)audioUnit:(CoCAAudioUnit*)audioUnit
@@ -82,59 +97,50 @@
            audioData:(AudioBufferList *)ioData;
 {
 	
-	// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
-	
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@synchronized(self) {
+		// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
 		
-	UInt32 sourceByteCount = inNumberFrames * 2 * ioData->mNumberBuffers;
-	const void *sourceBytes = [self.audioData bytes];
-	sint16 *sourceFrames = (sint16 *)sourceBytes;
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		NSUInteger sourceByteCount = inNumberFrames * sizeof(SInt16) * ioData->mNumberBuffers;
+		const void *sourceBytes = [self.audioData bytes];
+		sint16 *sourceFrames = (sint16 *)sourceBytes;
+		NSUInteger actualNumberOfFrames = inNumberFrames;
+		
+		AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
+		AudioBuffer *rightBuffer = &(ioData->mBuffers[1]); 
+		
+		if ([self.audioData length] < sourceByteCount) {
+			NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Underrun!");
+			sourceByteCount = [self.audioData length];
+			actualNumberOfFrames = [self.audioData length] / 4;
+		}
+		
+		float *leftChannelBuffer = (float*)(leftBuffer->mData);
+		float *rightChannelBuffer = (float*)(rightBuffer->mData);
 	
-	if ([self.audioData length] < sourceByteCount) {
-		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Underrun!");
+		for(int sample = 0; sample < actualNumberOfFrames; sample++) {
+			
+			float leftSample = (float)(sourceFrames[sample * 2]);
+			float destinationLeftSample = leftSample/(float)INT16_MAX;
+			
+			float rightSample = (float)(sourceFrames[(sample * 2) + 1]);
+			float destinationRightSample = rightSample/(float)INT16_MAX;
+			
+			leftChannelBuffer[sample] = destinationLeftSample;
+			rightChannelBuffer[sample] = destinationRightSample;
+		}	
+		
+		leftBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
+		rightBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
+		
+		[self.audioData replaceBytesInRange:NSMakeRange(0, sourceByteCount)
+								  withBytes:NULL
+									 length:0];
+		[pool drain];
+		return noErr;
+		
 	}
-	
-	AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
-	AudioBuffer *rightBuffer = &(ioData->mBuffers[1]); 
-	
-	float *leftChannelBuffer = (float*)(leftBuffer->mData);
-	float *rightChannelBuffer = (float*)(rightBuffer->mData);
-	
-	for(int sample = 0; sample < inNumberFrames; sample++) {
-		
-		float leftSample = (float)(sourceFrames[sample * 2]);
-		float destinationLeftSample = leftSample/(float)INT16_MAX;
-		
-		float rightSample = (float)(sourceFrames[(sample * 2) + 1]);
-		float destinationRightSample = rightSample/(float)INT16_MAX;
-		
-		leftChannelBuffer[sample] = destinationLeftSample;
-		rightChannelBuffer[sample] = destinationRightSample;
-	}	
-	
-	self.audioData = [self.audioData subdataWithRange:NSMakeRange(sourceByteCount, [self.audioData length] - sourceByteCount)];
-
-	[pool drain];
-	return noErr;
-
-
-	/*
-		
-    for(int bufferIndex = 0; bufferIndex < ioData->mNumberBuffers; bufferIndex++) {
-
-        AudioBuffer *buffer = &(ioData->mBuffers[bufferIndex]);
-        
-        float *channelBuffer = (float*)(buffer->mData);
-        for(int sample = 0; sample < inNumberFrames; sample++) {
-            channelBuffer[sample] = *(float *)[[audioData subdataWithRange:NSMakeRange(0, sizeof(float))] bytes];
-			NSData *data = [self.audioData subdataWithRange:NSMakeRange(sizeof(float), [self.audioData length] - sizeof(float))];
-			self.audioData = data;
-        }
-    }
-	
-	
-	 */
-
 }
 
 #pragma mark -
@@ -159,19 +165,20 @@
     
 -(void)sessionDidLogOut:(SPSpotifySession *)aSession; {}
 
-
 -(void)session:(SPSpotifySession *)aSession didEncounterNetworkError:(NSError *)error; {}
 -(void)session:(SPSpotifySession *)aSession didLogMessage:(NSString *)aMessage; {}
 -(void)sessionDidChangeMetadata:(SPSpotifySession *)aSession; {}
 
 -(void)session:(SPSpotifySession *)aSession recievedMessageForUser:(NSString *)aMessage; {}
 -(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession; {}
--(void)sessionDidEndPlayback:(SPSpotifySession *)aSession; {}
 
 -(void)dealloc {
 	[mainWindowController release];
 	[loginWindowController release];
 	self.session = nil;
+	[self.audioUnit stop];
+	self.audioUnit = nil;
+	self.audioData = nil;
 	[super dealloc];
 }
 
