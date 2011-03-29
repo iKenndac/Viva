@@ -56,6 +56,7 @@
 		509AAEE6133913370009B6EE /* SPSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE5133913370009B6EE /* SPSplitView.m */; };
 		509AAEEB133916190009B6EE /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE9133916190009B6EE /* FooterViewController.m */; };
 		509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509AAEEA133916190009B6EE /* FooterViewController.xib */; };
+		50B4E10E13423E87007640A9 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 50B4E10D13423E87007640A9 /* TODO.txt */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
 		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
 		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
@@ -178,6 +179,7 @@
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
+		50B4E10D13423E87007640A9 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
 		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
 		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */,
+				50B4E10D13423E87007640A9 /* TODO.txt */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
@@ -679,6 +682,7 @@
 				50E3F76F133FC47C00FF4618 /* background.png in Resources */,
 				50E3F770133FC47C00FF4618 /* logo.png in Resources */,
 				50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */,
+				50B4E10E13423E87007640A9 /* TODO.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

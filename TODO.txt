@@ -1,0 +1,16 @@
+Near-term TODOs:
+
+Tobi
+====
+
+- Sidebar graphics 
+- Disabled/background graphics 
+- HTML pages/templates for "What's New" and profile pages
+
+Daniel
+======
+
+- Playback
+- Playback UI (album art & track information in bottom-left)
+- Notification bubbles
+- Improve playlist view (higher line-height, custom row colours, etc)
