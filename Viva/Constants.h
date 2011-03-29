@@ -15,3 +15,7 @@ static NSString * const kVivaKeychainServiceName = @"Viva";
 // ------ User Defaults ------
 
 static NSString * const kVivaLastUserNameUserDefaultsKey = @"LastUser";
+
+// ------ Notifications ------
+
+static NSString *const kTrackShouldBePlayedNotification = @"kTrackShouldBePlayedNotification";

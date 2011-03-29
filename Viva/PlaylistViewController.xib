@@ -50,7 +50,6 @@
 						<string key="NSFrame">{{206, 68}, {182, 14}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="901765145">
 							<int key="NSCellFlags">69336641</int>
@@ -252,7 +251,7 @@
 										<string key="NSFrameSize">{403, 271}</string>
 										<reference key="NSSuperview" ref="300786197"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="311329691"/>
+										<reference key="NSNextKeyView" ref="833267190"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="352945302">
 											<reference key="NSNextResponder" ref="833267190"/>
@@ -441,7 +440,7 @@
 						<string key="NSFrame">{{0, 150}, {403, 288}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="833267190"/>
+						<reference key="NSNextKeyView" ref="300786197"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="311329691"/>
 						<reference key="NSHScroller" ref="434571912"/>
@@ -636,14 +635,6 @@
 					<int key="connectionID">44</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">trackTable</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="342886202"/>
-					</object>
-					<int key="connectionID">45</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.album.cover.image</string>
 						<reference key="source" ref="640619627"/>
@@ -674,6 +665,30 @@
 						</object>
 					</object>
 					<int key="connectionID">60</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tracksArrayController</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="680101217"/>
+					</object>
+					<int key="connectionID">62</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="342886202"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">63</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackTable</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="342886202"/>
+					</object>
+					<int key="connectionID">65</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -941,24 +956,38 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">60</int>
+			<int key="maxID">65</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">PlaylistViewController</string>
 					<string key="superclassName">NSViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">trackTable</string>
-						<string key="NS.object.0">NSTableView</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">playTrack:</string>
+						<string key="NS.object.0">id</string>
 					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">trackTable</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">playTrack:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">playTrack:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="trackTable">NSTableView</string>
+						<string key="tracksArrayController">NSArrayController</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="trackTable">
 							<string key="name">trackTable</string>
 							<string key="candidateClassName">NSTableView</string>
 						</object>
-					</object>
+						<object class="IBToOneOutletInfo" key="tracksArrayController">
+							<string key="name">tracksArrayController</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/PlaylistViewController.h</string>

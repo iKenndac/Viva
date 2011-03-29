@@ -9,6 +9,7 @@
 #import "PlaylistViewController.h"
 #import "SPTableHeaderCell.h"
 #import "SPTableCorner.h"
+#import "Constants.h"
 
 @interface PlaylistViewController ()
 
@@ -41,8 +42,19 @@
 	
 	[self.trackTable setCornerView:[[[SPTableCorner alloc] init] autorelease]];
 	
+	[self.trackTable setTarget:self];
+	[self.trackTable setDoubleAction:@selector(playTrack:)];
 }
 
+-(IBAction)playTrack:(id)sender {
+	if ([self.trackTable clickedRow] > -1) {
+		SPSpotifyTrack *track = [[self.tracksArrayController arrangedObjects] objectAtIndex:[self.trackTable clickedRow]];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
+															object:track];
+	}
+}
+
+@synthesize tracksArrayController;
 @synthesize trackTable;
 @synthesize playlist;
 

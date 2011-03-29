@@ -16,11 +16,15 @@
 	SPSpotifyPlaylist *playlist;
     
 	NSTableView *trackTable;
+	NSArrayController *tracksArrayController;
 }
 
 -(id)initWithPlaylist:(SPSpotifyPlaylist *)aPlaylist;
 
+@property (assign) IBOutlet NSArrayController *tracksArrayController;
 @property (assign) IBOutlet NSTableView *trackTable;
 @property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
+
+-(IBAction)playTrack:(id)sender;
 
 @end
