@@ -17,6 +17,7 @@
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
 		506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F347713438755002BA308 /* VivaPlaybackManager.m */; };
+		506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 506F34891343DCFB002BA308 /* VivaIcon.icns */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
@@ -145,6 +146,7 @@
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
 		506F347613438755002BA308 /* VivaPlaybackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackManager.h; sourceTree = "<group>"; };
 		506F347713438755002BA308 /* VivaPlaybackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackManager.m; sourceTree = "<group>"; };
+		506F34891343DCFB002BA308 /* VivaIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VivaIcon.icns; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 		509AAE9B1339097C0009B6EE /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				506F34891343DCFB002BA308 /* VivaIcon.icns */,
 				50E3F76C133FC47C00FF4618 /* Login */,
 				50E3F743133FB9A900FF4618 /* Toolbar */,
 				509AAE9C1339097C0009B6EE /* Footer */,
@@ -738,6 +741,7 @@
 				50E3F770133FC47C00FF4618 /* logo.png in Resources */,
 				50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */,
 				50B4E10E13423E87007640A9 /* TODO.txt in Resources */,
+				506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
