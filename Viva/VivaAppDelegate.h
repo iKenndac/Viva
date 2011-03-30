@@ -10,21 +10,20 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "LoginWindowController.h"
 #import "MainWindowController.h"
-#import "CoCA.h"
+#import "VivaPlaybackManager.h"
 
-@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSpotifySessionDelegate, CoCAAudioUnitRenderDelegate> {
+@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSpotifySessionDelegate> {
 @private
     NSWindow *window;
     SPSpotifySession *session;
 	LoginWindowController *loginWindowController;
 	MainWindowController *mainWindowController;
-	NSMutableData *audioData;
-	CoCAAudioUnit *audioUnit;
+	VivaPlaybackManager *playbackManager;
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (retain, readwrite) SPSpotifySession *session; 
-@property (retain, readwrite) NSMutableData *audioData;
-@property (retain, readwrite) CoCAAudioUnit *audioUnit;
+@property (retain, readonly) SPSpotifySession *session; 
+@property (retain, readonly) VivaPlaybackManager *playbackManager; 
+
 
 @end
