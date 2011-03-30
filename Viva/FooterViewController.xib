@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1305</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1305</string>
+			<string key="NS.object.0">1306</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSSlider</string>
@@ -40,6 +40,7 @@
 				<string key="NSFrameSize">{480, 46}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSClassName">SPBackgroundColorView</string>
 			</object>
 			<object class="NSCustomView" id="3924048">
@@ -51,7 +52,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{138, 13}, {17, 18}}</string>
 						<reference key="NSSuperview" ref="3924048"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="515208987"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="270241034">
@@ -93,7 +93,7 @@
 						</set>
 						<string key="NSFrame">{{161, 0}, {2, 46}}</string>
 						<reference key="NSSuperview" ref="3924048"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="641012858">
 							<int key="NSCellFlags">130560</int>
@@ -112,7 +112,6 @@
 				</array>
 				<string key="NSFrameSize">{163, 46}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="332165747"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -182,13 +181,13 @@
 						<reference key="NSNextKeyView" ref="986908900"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSSliderCell" key="NSCell" id="638919524">
-							<int key="NSCellFlags">-2080244224</int>
+							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">0</int>
 							<string key="NSContents"/>
 							<reference key="NSControlView" ref="168471358"/>
 							<double key="NSMaxValue">100</double>
 							<double key="NSMinValue">0.0</double>
-							<double key="NSValue">0.0</double>
+							<double key="NSValue">53.823529411764703</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">0</int>
 							<int key="NSTickMarkPosition">1</int>
@@ -232,6 +231,7 @@
 						<string key="NSFrame">{{492, 14}, {19, 17}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="617810175">
 							<int key="NSCellFlags">67239424</int>
@@ -426,6 +426,38 @@
 						<reference key="destination" ref="986908900"/>
 					</object>
 					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">maxValue: representedObject.currentTrack.duration</string>
+						<reference key="source" ref="168471358"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="168471358"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">maxValue: representedObject.currentTrack.duration</string>
+							<string key="NSBinding">maxValue</string>
+							<string key="NSKeyPath">representedObject.currentTrack.duration</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">56</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">positionSliderWasDragged:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="168471358"/>
+					</object>
+					<int key="connectionID">61</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playbackProgressSlider</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="168471358"/>
+					</object>
+					<int key="connectionID">62</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -656,7 +688,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">62</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -664,11 +696,16 @@
 					<string key="className">FooterViewController</string>
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="positionSliderWasDragged:">id</string>
 						<string key="repeatButtonWasClicked:">id</string>
 						<string key="shuffleButtonWasClicked:">id</string>
 						<string key="starredButtonWasClicked:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="positionSliderWasDragged:">
+							<string key="name">positionSliderWasDragged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="repeatButtonWasClicked:">
 							<string key="name">repeatButtonWasClicked:</string>
 							<string key="candidateClassName">id</string>
@@ -687,6 +724,7 @@
 						<string key="playbackControlsView">NSView</string>
 						<string key="playbackIsRepeatingButton">NSButton</string>
 						<string key="playbackIsShuffledButton">NSButton</string>
+						<string key="playbackProgressSlider">NSSlider</string>
 						<string key="trackIsStarredButton">NSButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -705,6 +743,10 @@
 						<object class="IBToOneOutletInfo" key="playbackIsShuffledButton">
 							<string key="name">playbackIsShuffledButton</string>
 							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="playbackProgressSlider">
+							<string key="name">playbackProgressSlider</string>
+							<string key="candidateClassName">NSSlider</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="trackIsStarredButton">
 							<string key="name">trackIsStarredButton</string>

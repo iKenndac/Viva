@@ -10,6 +10,7 @@
 #import "ImageAndTextCell.h"
 #import "VivaInternalURLManager.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "VivaAppDelegate.h"
 
 @interface MainWindowController ()
 
@@ -60,6 +61,7 @@
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
+	[footerViewController setRepresentedObject:[(VivaAppDelegate *)[NSApp delegate] playbackManager]];
 	[self.footerViewContainer addSubview:footerViewController.view];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:footerViewController

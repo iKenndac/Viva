@@ -11,17 +11,23 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "CoCA.h"
 
-@interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate> {
+@interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSpotifySessionPlaybackDelegate> {
 @private
     id <VivaPlaybackContext> playbackContext;
+	SPSpotifyTrack *currentTrack;
 	NSMutableData *audioBuffer;
 	CoCAAudioUnit *audioUnit;
+	NSTimeInterval currentTrackPosition;
+	SPSpotifySession *playbackSession;
 }
 
-@property (readonly, retain) id <VivaPlaybackContext> playbackContext;
+-(id)initWithPlaybackSession:(SPSpotifySession *)aSession;
 
--(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession;
--(void)sessionDidEndPlayback:(SPSpotifySession *)aSession;
--(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat;
+@property (readonly, retain) id <VivaPlaybackContext> playbackContext;
+@property (readwrite) NSTimeInterval currentTrackPosition;
+@property (readonly, retain) SPSpotifyTrack *currentTrack;
+@property (readonly, retain) SPSpotifySession *playbackSession;
+
+-(void)seekToTrackPosition:(NSTimeInterval)newPosition;
 
 @end

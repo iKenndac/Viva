@@ -14,17 +14,19 @@
 @property (retain, readwrite) NSMutableData *audioBuffer;
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
+@property (readwrite, retain) SPSpotifyTrack *currentTrack;
+@property (readwrite, retain) SPSpotifySession *playbackSession;
 
 @end
 
 @implementation VivaPlaybackManager
 
-- (id)init
-{
+- (id)initWithPlaybackSession:(SPSpotifySession *)aSession {
     self = [super init];
     if (self) {
         // Initialization code here.
 		
+		self.playbackSession = aSession;
 		self.audioBuffer = [NSMutableData data];
 		
 		// Playback
@@ -40,13 +42,14 @@
 @synthesize audioBuffer;
 @synthesize audioUnit;
 @synthesize playbackContext;
+@synthesize currentTrack;
+@synthesize playbackSession;
+@synthesize currentTrackPosition;
 
 -(void)playTrack:(NSNotification *)aNotification {
 	
-	SPSpotifySession *session = [[NSApp delegate] session];
-	
-	[session setIsPlaying:NO];
-	[session unloadPlayback];
+	[self.playbackSession setIsPlaying:NO];
+	[self.playbackSession unloadPlayback];
 	[self.audioUnit stop];
 	self.audioUnit = nil;
 	
@@ -54,19 +57,30 @@
 		[self.audioBuffer setLength:0];
 	}
 	
-	SPSpotifyTrack *track = [aNotification object];
-	[session playTrack:track];
+	self.currentTrackPosition = 0.0;
 	
+	SPSpotifyTrack *track = [aNotification object];
+	self.currentTrack = track;
+	[self.playbackSession playTrack:track];	
+}
+
+-(void)seekToTrackPosition:(NSTimeInterval)newPosition {
+	if (newPosition <= self.currentTrack.duration) {
+		[self.playbackSession seekPlaybackToOffset:newPosition];
+		self.currentTrackPosition = newPosition;
+	}	
 }
 
 #pragma mark -
 #pragma mark Playback Callbacks
 
--(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession; {}
+-(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession {}
 
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
 	[self.audioUnit stop];
 	self.audioUnit = nil;
+	self.currentTrackPosition = 0;
+	self.currentTrack = nil;
 }
 
 #pragma mark Audio Processing
@@ -75,10 +89,13 @@
 
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
-	if (frameCount == 0)
-        return 0; // Audio discontinuity, do nothing
-	
 	@synchronized(audioBuffer) {
+		
+		if (frameCount == 0) {
+			[self.audioBuffer setData:[NSData data]];
+			return 0; // Audio discontinuity!
+		}
+		
 		if ([self.audioBuffer length] >= kMaximumBytesInBuffer) {
 			return 0;
 		}
@@ -141,6 +158,8 @@
 		leftBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
 		rightBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
 		
+		self.currentTrackPosition += (double)actualNumberOfFrames / 44100;
+		
 		[self.audioBuffer replaceBytesInRange:NSMakeRange(0, sourceByteCount)
 								  withBytes:NULL
 									 length:0];
@@ -151,11 +170,13 @@
 }
 
 - (void)dealloc {
-	
+
+	self.currentTrack = nil;
 	self.playbackContext = nil;
 	[self.audioUnit stop];
 	self.audioUnit = nil;
 	self.audioBuffer = nil;
+	self.playbackSession = nil;
 	
     [super dealloc];
 }

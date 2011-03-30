@@ -28,34 +28,19 @@
 	
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[PlaylistViewController class] forURLScheme:@"spotify:user"];
 	
-    [self setSession:[SPSpotifySession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
-                                                                                                                                ofType:@"key"]]
-                                                       userAgent:@"CocoaLibSpotify"
-                                                           error:nil]];
-    [[self session] setDelegate:self];
+    self.session = [SPSpotifySession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
+																															  ofType:@"key"]]
+													 userAgent:@"CocoaLibSpotify"
+														 error:nil];
+    self.session.delegate = self;
     
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
-	playbackManager = [[VivaPlaybackManager alloc] init];
+	playbackManager = [[VivaPlaybackManager alloc] initWithPlaybackSession:self.session];
+	self.session.playbackDelegate = playbackManager;
+	
 	[loginWindowController showWindow:nil];
 
-}
-
-#pragma mark -
-
--(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
-	return [self.playbackManager session:aSession
-				shouldDeliverAudioFrames:audioFrames
-								 ofCount:frameCount
-								  format:audioFormat];
-}
-
--(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
-	[self.playbackManager sessionDidEndPlayback:aSession];
-}
-
--(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession {
-	[self.playbackManager sessionDidLosePlayToken:aSession];
 }
 
 #pragma mark -

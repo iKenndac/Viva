@@ -7,6 +7,7 @@
 //
 
 #import "FooterViewController.h"
+#import "VivaPlaybackManager.h"
 
 @implementation FooterViewController
 
@@ -30,6 +31,11 @@
 		[self addObserver:self 
 			   forKeyPath:@"currentTrackIsStarred"
 				  options:NSKeyValueObservingOptionInitial
+				  context:nil];
+		
+		[self addObserver:self 
+			   forKeyPath:@"representedObject.currentTrackPosition"
+				  options:0
 				  context:nil];
     }
     
@@ -70,6 +76,10 @@
 			[trackIsStarredButton setAlternateImage:[NSImage imageNamed:@"star-pushed"]];
 		}
 		
+	} else if ([keyPath isEqualToString:@"representedObject.currentTrackPosition"]) {
+		if (![[self.playbackProgressSlider cell] isHighlighted]) {
+			[self.playbackProgressSlider setDoubleValue:[[self representedObject] currentTrackPosition]];
+		}
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -78,6 +88,7 @@
 @synthesize trackIsStarredButton;
 @synthesize playbackIsRepeatingButton;
 @synthesize playbackIsShuffledButton;
+@synthesize playbackProgressSlider;
 @synthesize leftView;
 @synthesize playbackControlsView;
 
@@ -106,6 +117,10 @@
 	self.playbackIsShuffled = !self.playbackIsShuffled;
 }
 
+- (IBAction)positionSliderWasDragged:(id)sender {
+	[[self representedObject] seekToTrackPosition:[sender doubleValue]];
+}
+
 #pragma mark -
 #pragma mark SplitView
 
@@ -132,6 +147,7 @@
 
 - (void)dealloc {
 	
+	[self removeObserver:self forKeyPath:@"representedObject.currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackIsShuffled"];
 	[self removeObserver:self forKeyPath:@"playbackRepeats"];
 	[self removeObserver:self forKeyPath:@"currentTrackIsStarred"];

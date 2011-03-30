@@ -10,7 +10,6 @@ Tobi
 Daniel
 ======
 
-- Playback
 - Playback UI (album art & track information in bottom-left)
 - Notification bubbles
 - Improve playlist view (higher line-height, custom row colours, etc)

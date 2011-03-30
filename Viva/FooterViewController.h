@@ -16,6 +16,7 @@
 	NSButton *trackIsStarredButton;
 	NSButton *playbackIsRepeatingButton;
 	NSButton *playbackIsShuffledButton;
+	NSSlider *playbackProgressSlider;
 	
 	BOOL playbackRepeats;
 	BOOL playbackIsShuffled;
@@ -25,15 +26,15 @@
 @property (assign) IBOutlet NSButton *trackIsStarredButton;
 @property (assign) IBOutlet NSButton *playbackIsRepeatingButton;
 @property (assign) IBOutlet NSButton *playbackIsShuffledButton;
+@property (assign) IBOutlet NSSlider *playbackProgressSlider;
 
 @property (assign) IBOutlet NSView *leftView;
 @property (assign) IBOutlet NSView *playbackControlsView;
 
-
 - (IBAction)starredButtonWasClicked:(id)sender;
 - (IBAction)repeatButtonWasClicked:(id)sender;
 - (IBAction)shuffleButtonWasClicked:(id)sender;
-
+- (IBAction)positionSliderWasDragged:(id)sender;
 
 @property (readwrite, nonatomic) BOOL playbackRepeats;
 @property (readwrite, nonatomic) BOOL playbackIsShuffled;
