@@ -37,23 +37,26 @@
 											 selector:@selector(playTrack:)
 												 name:kTrackShouldBePlayedNotification
 											   object:nil];
+	
+	self.audioData = [NSMutableData data];
 }
 
 #pragma mark -
 
 -(void)playTrack:(NSNotification *)aNotification {
 	
-	@synchronized(self) {
-		[self.session setIsPlaying:NO];
-		[self.session unloadPlayback];
-		[self.audioUnit stop];
-		self.audioUnit = nil;
-		
-		self.audioData = [NSMutableData data];
-		
-		SPSpotifyTrack *track = [aNotification object];
-		[self.session playTrack:track];
+	[self.session setIsPlaying:NO];
+	[self.session unloadPlayback];
+	[self.audioUnit stop];
+	self.audioUnit = nil;
+	
+	@synchronized(audioData) {
+		[self.audioData setLength:0];
 	}
+	
+	SPSpotifyTrack *track = [aNotification object];
+	[self.session playTrack:track];
+	
 }
 
 #define kMaximumBytesInBuffer 1024 * 256
@@ -63,30 +66,27 @@
 	if (frameCount == 0)
         return 0; // Audio discontinuity, do nothing
 	
-	@synchronized(self) {
-		
+	@synchronized(audioData) {
 		if ([self.audioData length] >= kMaximumBytesInBuffer) {
 			return 0;
 		}
 		
 		[self.audioData appendBytes:audioFrames length:frameCount * sizeof(sint16) * audioFormat->channels];
-		
-		if (self.audioUnit == nil) {
-			self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
-			[self.audioUnit setRenderDelegate:self];
-			[self.audioUnit setup];
-			[self.audioUnit start];
-		}
-		
-		return frameCount;
 	}
+	
+	if (self.audioUnit == nil) {
+		self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
+		[self.audioUnit setRenderDelegate:self];
+		[self.audioUnit setup];
+		[self.audioUnit start];
+	}
+	
+	return frameCount;
 }
 
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
-	@synchronized(self) {
-		[self.audioUnit stop];
-		self.audioUnit = nil;
-	}
+	[self.audioUnit stop];
+	self.audioUnit = nil;
 }
 
 -(OSStatus)audioUnit:(CoCAAudioUnit*)audioUnit
@@ -97,7 +97,7 @@
            audioData:(AudioBufferList *)ioData;
 {
 	
-	@synchronized(self) {
+	@synchronized(audioData) {
 		// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
 		
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
