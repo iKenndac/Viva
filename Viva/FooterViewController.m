@@ -138,7 +138,7 @@
 	[[self playbackManager] seekToTrackPosition:[sender doubleValue]];
 }
 
-- (IBAction)playPausedWasClicked:(id)sender {
+- (IBAction)playPauseButtonWasClicked:(id)sender {
     self.playbackManager.playbackSession.isPlaying = !self.playbackManager.playbackSession.isPlaying;
 }
 

@@ -39,7 +39,7 @@
 - (IBAction)repeatButtonWasClicked:(id)sender;
 - (IBAction)shuffleButtonWasClicked:(id)sender;
 - (IBAction)positionSliderWasDragged:(id)sender;
-- (IBAction)playPausedWasClicked:(id)sender;
+- (IBAction)playPauseButtonWasClicked:(id)sender;
 
 @property (retain, readwrite) VivaPlaybackManager *playbackManager;
 
