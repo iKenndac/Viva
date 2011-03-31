@@ -10,6 +10,7 @@
 #import "SPTableHeaderCell.h"
 #import "SPTableCorner.h"
 #import "Constants.h"
+#import "VivaAppDelegate.h"
 
 @interface PlaylistViewController ()
 
@@ -27,7 +28,7 @@
 }
 
 -(id)initWithObjectFromURL:(NSURL *)aURL {
-	return [self initWithPlaylist:[[[NSApp delegate] session] playlistForURL:aURL]];
+	return [self initWithPlaylist:[[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL]];
 }
 
 -(void)awakeFromNib {

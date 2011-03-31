@@ -108,7 +108,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 503D630E13258041007772CA /* CocoaLibSpotify */;
+			remoteGlobalIDString = 503D630E13258041007772CA;
 			remoteInfo = CocoaLibSpotify;
 		};
 		50E65EA3132585AF00E66AFA /* PBXContainerItemProxy */ = {
