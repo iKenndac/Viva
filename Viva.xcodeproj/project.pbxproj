@@ -196,7 +196,7 @@
 		509AAEE4133913370009B6EE /* SPSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPSplitView.h; path = "Custom Controls/SPSplitView.h"; sourceTree = "<group>"; };
 		509AAEE5133913370009B6EE /* SPSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPSplitView.m; path = "Custom Controls/SPSplitView.m"; sourceTree = "<group>"; };
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
-		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; };
+		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
 		50B4E10D13423E87007640A9 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };

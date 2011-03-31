@@ -28,6 +28,11 @@
 		
 		self.playbackSession = aSession;
 		self.audioBuffer = [NSMutableData data];
+        
+        [self addObserver:self
+               forKeyPath:@"playbackSession.isPlaying"
+                  options:0
+                  context:nil];
 		
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -83,6 +88,20 @@
 	self.currentTrack = nil;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"playbackSession.isPlaying"]) {
+        
+        if (self.playbackSession.isPlaying) {
+            [self.audioUnit start];
+        } else {
+            [self.audioUnit stop];
+        }
+        
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 #pragma mark Audio Processing
 
 #define kMaximumBytesInBuffer 1024 * 256
@@ -107,8 +126,9 @@
 		self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
 		[self.audioUnit setRenderDelegate:self];
 		[self.audioUnit setup];
-		[self.audioUnit start];
-	}
+    }
+	
+    [self.audioUnit start];
 	
 	return frameCount;
 }
@@ -171,7 +191,9 @@
 
 - (void)dealloc {
 
-	self.currentTrack = nil;
+    [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
+	
+    self.currentTrack = nil;
 	self.playbackContext = nil;
 	[self.audioUnit stop];
 	self.audioUnit = nil;

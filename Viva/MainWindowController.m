@@ -61,7 +61,7 @@
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
-	[footerViewController setRepresentedObject:[(VivaAppDelegate *)[NSApp delegate] playbackManager]];
+	footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
 	[self.footerViewContainer addSubview:footerViewController.view];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:footerViewController
@@ -91,7 +91,6 @@
 		} else {
 			self.contentBox.contentView = nil;
 		}
-		
 		
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
