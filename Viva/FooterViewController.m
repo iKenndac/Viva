@@ -118,8 +118,7 @@
 	((SPBackgroundColorView *)self.view).backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"bg"]];
 	
 	[self.view addSubview:self.leftView];
-	[self.view addSubview:self.playbackControlsView];
-	
+	[self.view addSubview:self.playbackControlsView];	
 }
 
 - (IBAction)starredButtonWasClicked:(id)sender {

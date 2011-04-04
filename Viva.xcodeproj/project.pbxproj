@@ -60,7 +60,8 @@
 		509AAEE6133913370009B6EE /* SPSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE5133913370009B6EE /* SPSplitView.m */; };
 		509AAEEB133916190009B6EE /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE9133916190009B6EE /* FooterViewController.m */; };
 		509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509AAEEA133916190009B6EE /* FooterViewController.xib */; };
-		50B4E10E13423E87007640A9 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 50B4E10D13423E87007640A9 /* TODO.txt */; };
+		50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */ = {isa = PBXBuildFile; fileRef = 50B19FDB134A443900D428FF /* Viva TODO.taskpaper */; };
+		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
 		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
 		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
@@ -198,7 +199,9 @@
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
-		50B4E10D13423E87007640A9 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		50B19FDB134A443900D428FF /* Viva TODO.taskpaper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva TODO.taskpaper"; sourceTree = SOURCE_ROOT; };
+		50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPFooterTextFieldCell.h; path = "Custom Controls/SPFooterTextFieldCell.h"; sourceTree = "<group>"; };
+		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
 		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
 		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
@@ -280,7 +283,6 @@
 			isa = PBXGroup;
 			children = (
 				50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */,
-				50B4E10D13423E87007640A9 /* TODO.txt */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
@@ -320,6 +322,7 @@
 		503D62DE13257D92007772CA /* Viva */ = {
 			isa = PBXGroup;
 			children = (
+				50B19FDB134A443900D428FF /* Viva TODO.taskpaper */,
 				50E3F773133FD74500FF4618 /* Constants.h */,
 				503EABFC133D81AF00C4607E /* UI */,
 				503EABFD133D81BD00C4607E /* Model */,
@@ -464,6 +467,8 @@
 				50842E51133A43B100528555 /* SPVolumeSliderCell.m */,
 				50E3F762133FBFCD00FF4618 /* SPAccountButtonCell.h */,
 				50E3F763133FBFCD00FF4618 /* SPAccountButtonCell.m */,
+				50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */,
+				50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -746,8 +751,8 @@
 				50E3F76F133FC47C00FF4618 /* background.png in Resources */,
 				50E3F770133FC47C00FF4618 /* logo.png in Resources */,
 				50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */,
-				50B4E10E13423E87007640A9 /* TODO.txt in Resources */,
 				506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */,
+				50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,6 +785,7 @@
 				50D192C7134280E400D02FDF /* CoCAAudioUnit.m in Sources */,
 				50D192C8134280E400D02FDF /* NCCommon.m in Sources */,
 				506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */,
+				50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
