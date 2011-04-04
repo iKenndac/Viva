@@ -15,10 +15,10 @@
 @private
     id <VivaPlaybackContext> playbackContext;
 	SPSpotifyTrack *currentTrack;
-	NSMutableData *audioBuffer;
 	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
 	SPSpotifySession *playbackSession;
+    NSMutableArray *audioChunks;
 }
 
 -(id)initWithPlaybackSession:(SPSpotifySession *)aSession;

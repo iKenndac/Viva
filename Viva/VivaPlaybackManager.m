@@ -11,13 +11,15 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (retain, readwrite) NSMutableData *audioBuffer;
+@property (retain, readwrite) NSMutableArray *audioChunks;
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, retain) SPSpotifyTrack *currentTrack;
 @property (readwrite, retain) SPSpotifySession *playbackSession;
 
 @end
+
+#define kMaximumChunksInBuffer 400
 
 @implementation VivaPlaybackManager
 
@@ -27,7 +29,7 @@
         // Initialization code here.
 		
 		self.playbackSession = aSession;
-		self.audioBuffer = [NSMutableData data];
+        self.audioChunks = [NSMutableArray arrayWithCapacity:kMaximumChunksInBuffer];
         
         [self addObserver:self
                forKeyPath:@"playbackSession.isPlaying"
@@ -44,7 +46,7 @@
     return self;
 }
 
-@synthesize audioBuffer;
+@synthesize audioChunks;
 @synthesize audioUnit;
 @synthesize playbackContext;
 @synthesize currentTrack;
@@ -58,8 +60,8 @@
 	[self.audioUnit stop];
 	self.audioUnit = nil;
 	
-	@synchronized(audioBuffer) {
-		[self.audioBuffer setLength:0];
+	@synchronized(audioChunks) {
+		[self.audioChunks removeAllObjects];
 	}
 	
 	self.currentTrackPosition = 0.0;
@@ -104,22 +106,28 @@
 
 #pragma mark Audio Processing
 
-#define kMaximumBytesInBuffer 1024 * 256
-
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
-	@synchronized(audioBuffer) {
+	@synchronized(audioChunks) {
 		
 		if (frameCount == 0) {
-			[self.audioBuffer setData:[NSData data]];
+			[self.audioChunks removeAllObjects];
 			return 0; // Audio discontinuity!
 		}
 		
-		if ([self.audioBuffer length] >= kMaximumBytesInBuffer) {
+		if ([self.audioChunks count] >= kMaximumChunksInBuffer) {
 			return 0;
 		}
 		
-		[self.audioBuffer appendBytes:audioFrames length:frameCount * sizeof(sint16) * audioFormat->channels];
+        // Core Audio wants 2048 bytes (512 frames) per channel per callback, and we get 2048 frames per LibSpotify push.
+        
+        NSData *audioData = [NSData dataWithBytes:audioFrames length:frameCount * sizeof(sint16) * audioFormat->channels];
+        
+        NSUInteger chunkSize = 512 * sizeof(sint16) * audioFormat->channels;
+        
+        for (NSUInteger chunkStart = 0; chunkStart < [audioData length]; chunkStart += chunkSize) {
+            [self.audioChunks addObject:[audioData subdataWithRange:NSMakeRange(chunkStart, chunkSize)]];
+        }
 	}
 	
 	if (self.audioUnit == nil) {
@@ -141,52 +149,57 @@
            audioData:(AudioBufferList *)ioData;
 {
 	
-	@synchronized(audioBuffer) {
-		// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
-		
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		NSUInteger sourceByteCount = inNumberFrames * sizeof(SInt16) * ioData->mNumberBuffers;
-		const void *sourceBytes = [self.audioBuffer bytes];
-		sint16 *sourceFrames = (sint16 *)sourceBytes;
-		NSUInteger actualNumberOfFrames = inNumberFrames;
-		
-		AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
-		AudioBuffer *rightBuffer = &(ioData->mBuffers[1]); 
-		
-		if ([self.audioBuffer length] < sourceByteCount) {
-			NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Underrun!");
-			sourceByteCount = [self.audioBuffer length];
-			actualNumberOfFrames = [self.audioBuffer length] / 4;
-		}
-		
-		float *leftChannelBuffer = (float*)(leftBuffer->mData);
-		float *rightChannelBuffer = (float*)(rightBuffer->mData);
-		
-		for(int sample = 0; sample < actualNumberOfFrames; sample++) {
-			
-			float leftSample = (float)(sourceFrames[sample * 2]);
-			float destinationLeftSample = leftSample/(float)INT16_MAX;
-			
-			float rightSample = (float)(sourceFrames[(sample * 2) + 1]);
-			float destinationRightSample = rightSample/(float)INT16_MAX;
-			
-			leftChannelBuffer[sample] = destinationLeftSample;
-			rightChannelBuffer[sample] = destinationRightSample;
-		}	
-		
-		leftBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
-		rightBuffer->mDataByteSize = (UInt32)actualNumberOfFrames * 4;
-		
-		self.currentTrackPosition += (double)actualNumberOfFrames / 44100;
-		
-		[self.audioBuffer replaceBytesInRange:NSMakeRange(0, sourceByteCount)
-								  withBytes:NULL
-									 length:0];
-		[pool drain];
-		return noErr;
-		
-	}
+    // Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSData *data = nil;
+    
+	@synchronized(audioChunks) {
+            
+        if ([self.audioChunks count] > 0) {
+            data = [[self.audioChunks objectAtIndex:0] retain];
+            [self.audioChunks removeObjectAtIndex:0];
+        }
+    }
+    
+    AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
+    AudioBuffer *rightBuffer = &(ioData->mBuffers[1]); 
+    
+    if (data == nil) {
+        memset(leftBuffer, 0, leftBuffer->mDataByteSize);
+        memset(rightBuffer, 0, rightBuffer->mDataByteSize);
+        *ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
+        [pool drain];
+        return noErr;
+    }
+    
+    const void *sourceBytes = [data bytes];
+    sint16 *sourceFrames = (sint16 *)sourceBytes;
+    NSUInteger actualNumberOfFramesPerChannel = [data length] / 4; // 2 channels @ 16 bits per channel 
+    
+    leftBuffer->mDataByteSize = (UInt32)actualNumberOfFramesPerChannel * 4;
+    rightBuffer->mDataByteSize = (UInt32)actualNumberOfFramesPerChannel * 4;
+    
+    float *leftChannelBuffer = (float*)(leftBuffer->mData);
+    float *rightChannelBuffer = (float*)(rightBuffer->mData);
+    
+    for(int sample = 0; sample < actualNumberOfFramesPerChannel; sample++) {
+        
+        float leftSample = (float)(sourceFrames[sample * 2]);
+        float destinationLeftSample = leftSample/(float)INT16_MAX;
+        
+        float rightSample = (float)(sourceFrames[(sample * 2) + 1]);
+        float destinationRightSample = rightSample/(float)INT16_MAX;
+        
+        leftChannelBuffer[sample] = destinationLeftSample;
+        rightChannelBuffer[sample] = destinationRightSample;
+    }	
+    
+    self.currentTrackPosition += (double)actualNumberOfFramesPerChannel / 44100;
+    
+    [data release];
+    [pool drain];
+    return noErr;
 }
 
 - (void)dealloc {
@@ -197,7 +210,7 @@
 	self.playbackContext = nil;
 	[self.audioUnit stop];
 	self.audioUnit = nil;
-	self.audioBuffer = nil;
+    self.audioChunks = nil;
 	self.playbackSession = nil;
 	
     [super dealloc];
