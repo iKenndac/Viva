@@ -1,0 +1,11 @@
+Programming (Daniel & Nevyn):
+			
+	- Modifying source list layout via XML/etc for AB testing etc
+	- Playback UI (album art & track information in bottom-left)
+	- Notification bubbles
+	- Improve playlist view (higher line-height, custom row colours, etc)
+
+Graphics (Tobi):
+	- Sidebar graphics 
+	- Disabled/background graphics 
+	- HTML pages/templates for "What's New" and profile pages
