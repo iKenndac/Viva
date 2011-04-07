@@ -18,6 +18,7 @@
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
 		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
+		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
 		506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F347713438755002BA308 /* VivaPlaybackManager.m */; };
 		506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 506F34891343DCFB002BA308 /* VivaIcon.icns */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
@@ -151,6 +152,8 @@
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
+		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
+		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
 		506F347613438755002BA308 /* VivaPlaybackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackManager.h; sourceTree = "<group>"; };
 		506F347713438755002BA308 /* VivaPlaybackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackManager.m; sourceTree = "<group>"; };
@@ -356,6 +359,8 @@
 				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
 				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
 				509AAEDE13390BDE0009B6EE /* Custom Controls */,
+				5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */,
+				5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -786,6 +791,7 @@
 				50D192C8134280E400D02FDF /* NCCommon.m in Sources */,
 				506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */,
 				50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */,
+				5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

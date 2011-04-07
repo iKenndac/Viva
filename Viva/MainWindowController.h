@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "FooterViewController.h"
+#import "VivaURLNavigationController.h"
 
 @interface MainWindowController : NSWindowController <NSSplitViewDelegate> {
 @private
@@ -18,6 +19,7 @@
 	NSBox *contentBox;
 	NSTreeController *playlistTreeController;
 	NSViewController *currentViewController;
+	VivaURLNavigationController *navigationController;
 	
 	NSWindow *urlSheet;
 	NSTextField *urlField;
@@ -30,6 +32,7 @@
 @property (assign) IBOutlet NSTreeController *playlistTreeController;
 @property (nonatomic, retain, readonly) NSViewController *currentViewController;
 @property (nonatomic, retain, readonly) FooterViewController *footerViewController;
+@property (nonatomic, retain, readonly) VivaURLNavigationController *navigationController;
 
 @property (assign) IBOutlet NSWindow *urlSheet;
 @property (assign) IBOutlet NSTextField *urlField;
@@ -38,5 +41,7 @@
 - (IBAction)showOpenURLSheet:(id)sender;
 - (IBAction)openURL:(id)sender;
 - (IBAction)cancelOpenURL:(id)sender;
+- (IBAction)navigateForward:(id)sender;
+- (IBAction)navigateBackward:(id)sender;
 
 @end

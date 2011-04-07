@@ -15,6 +15,7 @@ static NSString * const kVivaKeychainServiceName = @"Viva";
 // ------ User Defaults ------
 
 static NSString * const kVivaLastUserNameUserDefaultsKey = @"LastUser";
+static NSString * const kVivaMainViewHistoryUserDefaultsKey = @"History";
 
 // ------ Notifications ------
 

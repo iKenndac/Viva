@@ -11,11 +11,13 @@
 #import "VivaInternalURLManager.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "VivaAppDelegate.h"
+#import "Constants.h"
 
 @interface MainWindowController ()
 
 @property (nonatomic, retain, readwrite) NSViewController *currentViewController;
 @property (nonatomic, retain, readwrite) FooterViewController *footerViewController;
+@property (nonatomic, retain, readwrite) VivaURLNavigationController *navigationController;
 
 @end
 
@@ -30,6 +32,7 @@
 @synthesize contentBox;
 @synthesize playlistTreeController;
 @synthesize footerViewController;
+@synthesize navigationController;
 
 -(id)init {
 	return [super initWithWindowNibName:@"MainWindow"];
@@ -38,8 +41,10 @@
 - (void)dealloc
 {
 	[self removeObserver:self forKeyPath:@"currentViewController"];
-	[self.playlistTreeController removeObserver:self forKeyPath:@"selection"];
+	[self.playlistTreeController removeObserver:self forKeyPath:@"selection.spotifyURL"];
+	[self removeObserver:self forKeyPath:@"navigationController.thePresent"];
 	
+	self.navigationController = nil;
 	self.currentViewController = nil;
 	self.footerViewController = nil;
     [super dealloc];
@@ -54,15 +59,22 @@
 			  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
 			  context:nil];
 	
+	[self addObserver:self
+		   forKeyPath:@"navigationController.thePresent"
+			  options:0
+			  context:nil];
+	
 	[self.playlistTreeController addObserver:self
-								  forKeyPath:@"selection"
-									 options:NSKeyValueObservingOptionInitial
+								  forKeyPath:@"selection.spotifyURL"
+									 options:0
 									 context:nil];
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
 	footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
 	[self.footerViewContainer addSubview:footerViewController.view];
+	
+	self.navigationController = [[[VivaURLNavigationController alloc] initWithUserDefaultsKey:kVivaMainViewHistoryUserDefaultsKey] autorelease];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:footerViewController
 											 selector:@selector(splitViewDidResizeSubviews:)
@@ -71,18 +83,25 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"selection"]) {
-        
+    if ([keyPath isEqualToString:@"selection.spotifyURL"]) {
+		// Push the selected URL to the navigation controller.
+		
 		id selectedObject = self.playlistTreeController.selectedObjects.lastObject;
-		NSViewController *newViewController = nil;
 		
 		if ([selectedObject respondsToSelector:@selector(spotifyURL)]) {
-			newViewController = [[VivaInternalURLManager sharedInstance] viewControllerForURL:[selectedObject performSelector:@selector(spotifyURL) withObject:nil]];
+			NSURL *aURL = [selectedObject performSelector:@selector(spotifyURL) withObject:nil];
+			if (aURL != nil) {
+				self.navigationController.thePresent = aURL;
+			}
 		}
+	
+	} else if ([keyPath isEqualToString:@"navigationController.thePresent"]) {
+		// Set the current view controller to the view controller for the current URL
 		
-		[self setCurrentViewController:newViewController];
+		[self setCurrentViewController:[[VivaInternalURLManager sharedInstance] viewControllerForURL:self.navigationController.thePresent]];
 		
 	} else if ([keyPath isEqualToString:@"currentViewController"]) {
+		// Display the view controller
 		
 		NSViewController *newViewController = [change valueForKey:NSKeyValueChangeNewKey];
 		
@@ -117,7 +136,7 @@
 		return;
 	}
 	
-	self.currentViewController = [[VivaInternalURLManager sharedInstance] viewControllerForURL:aURL];
+	self.navigationController.thePresent = aURL;
 	
 	[self cancelOpenURL:nil];
 }
@@ -125,6 +144,22 @@
 - (IBAction)cancelOpenURL:(id)sender {
 	[NSApp endSheet:self.urlSheet];
 	[self.urlSheet orderOut:sender];
+}
+
+- (IBAction)navigateForward:(id)sender {
+	if ([self.navigationController.theFuture count] > 0) {
+		self.navigationController.thePresent = [self.navigationController.theFuture objectAtIndex:0];
+	} else {
+		NSBeep();
+	}
+}
+
+- (IBAction)navigateBackward:(id)sender {
+	if ([self.navigationController.thePast count] > 0) {
+		self.navigationController.thePresent = [self.navigationController.thePast lastObject];
+	} else {
+		NSBeep();
+	}
 }
 
 #pragma mark -
