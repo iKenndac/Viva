@@ -285,6 +285,7 @@
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
+				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
 				50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
@@ -356,7 +357,6 @@
 		503EABFC133D81AF00C4607E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				50DD06AF133A25B200CDE1C1 /* Window Controllers */,
 				50C7B3B6132E2F5D0055EDE0 /* View Controllers */,
 				509AAEDE13390BDE0009B6EE /* Custom Controls */,
 				5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */,
@@ -553,6 +553,7 @@
 				50E3F765133FC37900FF4618 /* Main Window */,
 			);
 			name = "Window Controllers";
+			path = Viva;
 			sourceTree = "<group>";
 		};
 		50E3F743133FB9A900FF4618 /* Toolbar */ = {

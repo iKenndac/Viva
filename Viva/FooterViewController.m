@@ -9,6 +9,12 @@
 #import "FooterViewController.h"
 #import "VivaPlaybackManager.h"
 
+@interface FooterViewController ()
+
+-(NSString *)displayStringForTimeInterval:(NSTimeInterval)anInterval;
+
+@end
+
 @implementation FooterViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -101,6 +107,8 @@
     }
 }
 
+#pragma mark -
+
 @synthesize trackIsStarredButton;
 @synthesize playbackIsRepeatingButton;
 @synthesize playbackIsShuffledButton;
@@ -112,6 +120,32 @@
 @synthesize playbackManager;
 @synthesize playbackRepeats;
 @synthesize playbackIsShuffled;
+
++(NSSet *)keyPathsForValuesAffectingCurrentTrackPositionDisplayString {
+	return [NSSet setWithObjects:@"playbackManager.currentTrack", @"playbackManager.currentTrackPosition", nil];
+}
+
+-(NSString *)currentTrackPositionDisplayString {
+	if (self.playbackManager.currentTrack != nil) {
+		return [self displayStringForTimeInterval:self.playbackManager.currentTrackPosition];
+	} else {
+		return [self displayStringForTimeInterval:-1.0];
+	}
+}
+
++(NSSet *)keyPathsForValuesAffectingCurrentTrackDurationDisplayString {
+	return [NSSet setWithObject:@"playbackManager.currentTrack"];
+}
+
+-(NSString *)currentTrackDurationDisplayString {
+	if (self.playbackManager.currentTrack != nil) {
+		return [self displayStringForTimeInterval:self.playbackManager.currentTrack.duration];
+	} else {
+		return [self displayStringForTimeInterval:-1.0];
+	}
+}
+
+#pragma mark -
 
 -(void)awakeFromNib {
 	
@@ -140,6 +174,39 @@
 - (IBAction)playPauseButtonWasClicked:(id)sender {
     self.playbackManager.playbackSession.isPlaying = !self.playbackManager.playbackSession.isPlaying;
 }
+
+#pragma mark -
+
+-(NSString *)displayStringForTimeInterval:(NSTimeInterval)anInterval {
+	
+	if (anInterval < 0.0) {
+		return @"--:--";
+	}
+	
+	BOOL hasHours = NO;
+	
+	if (anInterval > 3600.0) {
+		hasHours = YES;
+	}
+	
+	int hours = (int)floor(anInterval/3600);
+	int minutes = (int)floor(anInterval/60) % 60;
+	int seconds = (int)floor(anInterval) % 60;
+	
+	NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
+	[formatter setFormat:@"00"];
+	
+	if (hasHours) {
+		return [NSString stringWithFormat:@"%d:%@:%@", 
+				hours, 
+				[formatter stringFromNumber:[NSNumber numberWithInt:minutes]],
+				[formatter stringFromNumber:[NSNumber numberWithInt:seconds]]];
+	} else {
+		return [NSString stringWithFormat:@"%d:%@", minutes, [formatter stringFromNumber:[NSNumber numberWithInt:seconds]]];
+	}
+	
+}
+
 
 
 #pragma mark -

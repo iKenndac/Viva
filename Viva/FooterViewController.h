@@ -35,6 +35,9 @@
 @property (assign) IBOutlet NSView *leftView;
 @property (assign) IBOutlet NSView *playbackControlsView;
 
+@property (readonly) NSString *currentTrackPositionDisplayString;
+@property (readonly) NSString *currentTrackDurationDisplayString;
+
 - (IBAction)starredButtonWasClicked:(id)sender;
 - (IBAction)repeatButtonWasClicked:(id)sender;
 - (IBAction)shuffleButtonWasClicked:(id)sender;
