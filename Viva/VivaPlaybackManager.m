@@ -203,7 +203,20 @@ static UInt32 framesSinceLastUpdate = 0;
 			
 			if (framesSinceLastUpdate >= 8820) {
 				// Update 5 times per second.
-				self.currentTrackPosition += (double)framesSinceLastUpdate/44100;
+				
+				NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
+				
+				SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
+				NSMethodSignature *aSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector];
+				NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
+				[anInvocation setSelector:setTrackPositionSelector];
+				[anInvocation setTarget:self];
+				[anInvocation setArgument:&newTrackPosition atIndex:2];
+				
+				[anInvocation performSelectorOnMainThread:@selector(invoke)
+											   withObject:nil
+											waitUntilDone:NO];
+
 				framesSinceLastUpdate = 0;
 			}
 			
