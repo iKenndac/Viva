@@ -18,7 +18,7 @@
 	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
 	SPSpotifySession *playbackSession;
-    NSMutableArray *audioChunks;
+	NSPointerArray *frameBuffer;
 	double volume;
 }
 

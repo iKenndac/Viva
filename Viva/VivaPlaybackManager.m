@@ -11,11 +11,13 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (retain, readwrite) NSMutableArray *audioChunks;
+@property (retain, readwrite) NSPointerArray *frameBuffer;
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, retain) SPSpotifyTrack *currentTrack;
 @property (readwrite, retain) SPSpotifySession *playbackSession;
+
+-(void)clearAudioBuffer;
 
 @end
 
@@ -30,8 +32,9 @@
 		
 		self.volume = 1.0;
 		self.playbackSession = aSession;
-        self.audioChunks = [NSMutableArray arrayWithCapacity:kMaximumFramesInBuffer * 2];
         
+		self.frameBuffer = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality];
+		
         [self addObserver:self
                forKeyPath:@"playbackSession.isPlaying"
                   options:0
@@ -47,7 +50,7 @@
     return self;
 }
 
-@synthesize audioChunks;
+@synthesize frameBuffer;
 @synthesize audioUnit;
 @synthesize playbackContext;
 @synthesize currentTrack;
@@ -62,9 +65,7 @@
 	[self.audioUnit stop];
 	self.audioUnit = nil;
 	
-	@synchronized(audioChunks) {
-		[self.audioChunks removeAllObjects];
-	}
+	[self clearAudioBuffer];
 	
 	self.currentTrackPosition = 0.0;
 	
@@ -78,6 +79,21 @@
 		[self.playbackSession seekPlaybackToOffset:newPosition];
 		self.currentTrackPosition = newPosition;
 	}	
+}
+
+-(void)clearAudioBuffer {
+	
+	@synchronized(frameBuffer) {
+		for (NSUInteger currentFrame = 0; currentFrame < [self.frameBuffer count]; currentFrame++) {
+			void *ptr = [self.frameBuffer pointerAtIndex:currentFrame];
+			if (ptr != NULL) {
+				free(ptr);
+				[self.frameBuffer replacePointerAtIndex:currentFrame withPointer:NULL];
+			}
+		}
+		
+		[self.frameBuffer compact];
+	}
 }
 
 #pragma mark -
@@ -110,14 +126,14 @@
 
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
-	@synchronized(audioChunks) {
+	@synchronized(frameBuffer) {
 		
 		if (frameCount == 0) {
-			[self.audioChunks removeAllObjects];
+			[self clearAudioBuffer];
 			return 0; // Audio discontinuity!
 		}
 		
-		if ([self.audioChunks count] >= kMaximumFramesInBuffer) {
+		if ([self.frameBuffer count] >= kMaximumFramesInBuffer) {
 			return 0;
 		}
 		
@@ -125,7 +141,9 @@
 		NSUInteger dataLength = frameCount * frameByteSize;
         
         for (NSUInteger chunkStart = 0; chunkStart < dataLength; chunkStart += frameByteSize) {
-            [self.audioChunks addObject:[NSData dataWithBytes:(audioFrames + chunkStart) length:frameByteSize]];
+			void *frame = malloc(frameByteSize);
+			memcpy(frame, (audioFrames + chunkStart), frameByteSize);
+			[self.frameBuffer addPointer:frame];
         }
 	}
 	
@@ -140,6 +158,8 @@
 	return frameCount;
 }
 
+static UInt32 framesSinceLastUpdate = 0;
+
 -(OSStatus)audioUnit:(CoCAAudioUnit*)audioUnit
      renderWithFlags:(AudioUnitRenderActionFlags*)ioActionFlags
                   at:(const AudioTimeStamp*)inTimeStamp
@@ -150,52 +170,49 @@
     // Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSArray *frames = nil;
 	
-	@synchronized(audioChunks) {
+	AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
+	AudioBuffer *rightBuffer = &(ioData->mBuffers[1]);
+
+	@synchronized(frameBuffer) {
             
-        if ([self.audioChunks count] >= inNumberFrames) {
-			NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, inNumberFrames)];
-			frames = [self.audioChunks objectsAtIndexes:indexSet];
-            [self.audioChunks removeObjectsAtIndexes:indexSet];
-        }
-    }
+        if ([self.frameBuffer count] >= inNumberFrames) {
 	
-    AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
-    AudioBuffer *rightBuffer = &(ioData->mBuffers[1]); 
-    
-    if (frames == nil) {
-        leftBuffer->mDataByteSize = 0;
-        rightBuffer->mDataByteSize = 0;
-        *ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
-        [pool drain];
-        return noErr;
+			float *leftChannelBuffer = leftBuffer->mData;
+			float *rightChannelBuffer = rightBuffer->mData;
+			
+			double effectiveVolume = self.volume;
+			
+			for (NSUInteger currentFrame = 0; currentFrame < inNumberFrames; currentFrame++) {
+				
+				sint16 *frame = [self.frameBuffer pointerAtIndex:currentFrame];
+				if (frame != NULL) {
+					
+					// Convert the frames from 16-bit signed integers to floating point, then apply the volume.
+					leftChannelBuffer[currentFrame] = (frame[0]/(float)INT16_MAX) * effectiveVolume;
+					rightChannelBuffer[currentFrame] = (frame[1]/(float)INT16_MAX) * effectiveVolume;
+
+					free(frame);
+					[self.frameBuffer replacePointerAtIndex:currentFrame withPointer:NULL];
+				}
+			}
+			
+			[self.frameBuffer compact];
+			
+			framesSinceLastUpdate += inNumberFrames;
+			
+			if (framesSinceLastUpdate >= 8820) {
+				// Update 5 times per second.
+				self.currentTrackPosition += (double)framesSinceLastUpdate/44100;
+				framesSinceLastUpdate = 0;
+			}
+			
+        } else {
+			leftBuffer->mDataByteSize = 0;
+			rightBuffer->mDataByteSize = 0;
+			*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
+		}
     }
-    
-    leftBuffer->mDataByteSize = inNumberFrames * 4;
-    rightBuffer->mDataByteSize = inNumberFrames * 4;
-    
-    float *leftChannelBuffer = leftBuffer->mData;
-    float *rightChannelBuffer = rightBuffer->mData;
-	
-	double effectiveVolume = self.volume;
-    
-    for(int currentFrame = 0; currentFrame < inNumberFrames; currentFrame++) {
-        
-		NSData *thisFrame = [frames objectAtIndex:currentFrame];
-		sint16 *rawFrames = (sint16 *)[thisFrame bytes];
-		
-        sint16 leftSample = rawFrames[0];
-        float destinationLeftSample = leftSample/(float)INT16_MAX;
-        
-        sint16 rightSample = rawFrames[1];
-        float destinationRightSample = rightSample/(float)INT16_MAX;
-        
-        leftChannelBuffer[currentFrame] = destinationLeftSample * effectiveVolume;
-        rightChannelBuffer[currentFrame] = destinationRightSample * effectiveVolume;
-    }	
-    
-    self.currentTrackPosition += (double)inNumberFrames / 44100;
     
 	[pool drain];
     return noErr;
@@ -205,11 +222,12 @@
 
     [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
 	
+	[self clearAudioBuffer];
+	self.frameBuffer = nil;
     self.currentTrack = nil;
 	self.playbackContext = nil;
 	[self.audioUnit stop];
 	self.audioUnit = nil;
-    self.audioChunks = nil;
 	self.playbackSession = nil;
 	
     [super dealloc];
