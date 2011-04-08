@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11A419</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1530</string>
-		<string key="IBDocument.AppKitVersion">1115.2</string>
-		<string key="IBDocument.HIToolboxVersion">549.00</string>
+		<int key="IBDocument.SystemTarget">1060</int>
+		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1530</string>
+			<string key="NS.object.0">1306</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSSlider</string>
@@ -49,12 +49,11 @@
 					<object class="NSTextField" id="1012276431">
 						<reference key="NSNextResponder" ref="3924048"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{10, 8.73046875}, {125, 15}}</string>
+						<string key="NSFrame">{{10, 8.73047}, {125, 15}}</string>
 						<reference key="NSSuperview" ref="3924048"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="332165747"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
-						<string key="NSReuseIdentifierKey">_NS:3898</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="955474882">
 							<int key="NSCellFlags">67239488</int>
@@ -65,7 +64,6 @@
 								<double key="NSSize">10</double>
 								<int key="NSfFlags">16</int>
 							</object>
-							<string key="NSCellIdentifier">_NS:3898</string>
 							<reference key="NSControlView" ref="1012276431"/>
 							<object class="NSColor" key="NSBackgroundColor" id="81231675">
 								<int key="NSColorSpace">6</int>
@@ -90,7 +88,6 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1012276431"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
-						<string key="NSReuseIdentifierKey">_NS:3898</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="212118334">
 							<int key="NSCellFlags">67239488</int>
@@ -101,7 +98,6 @@
 								<double key="NSSize">12</double>
 								<int key="NSfFlags">16</int>
 							</object>
-							<string key="NSCellIdentifier">_NS:3898</string>
 							<reference key="NSControlView" ref="201626638"/>
 							<reference key="NSBackgroundColor" ref="81231675"/>
 							<reference key="NSTextColor" ref="292490566"/>
@@ -221,7 +217,7 @@
 						<reference key="NSNextKeyView" ref="545421863"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSSliderCell" key="NSCell" id="809040662">
-							<int key="NSCellFlags">-2080244224</int>
+							<int key="NSCellFlags">-2079981824</int>
 							<int key="NSCellFlags2">0</int>
 							<string key="NSContents"/>
 							<reference key="NSControlView" ref="46038901"/>
@@ -594,6 +590,22 @@
 					</object>
 					<int key="connectionID">81</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: playbackManager.volume</string>
+						<reference key="source" ref="46038901"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="46038901"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: playbackManager.volume</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">playbackManager.volume</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">100</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -868,7 +880,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">99</int>
+			<int key="maxID">100</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

@@ -19,6 +19,7 @@
 	NSTimeInterval currentTrackPosition;
 	SPSpotifySession *playbackSession;
     NSMutableArray *audioChunks;
+	double volume;
 }
 
 -(id)initWithPlaybackSession:(SPSpotifySession *)aSession;
@@ -27,6 +28,7 @@
 @property (readwrite) NSTimeInterval currentTrackPosition;
 @property (readonly, retain) SPSpotifyTrack *currentTrack;
 @property (readonly, retain) SPSpotifySession *playbackSession;
+@property (readwrite) double volume;
 
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition;
 

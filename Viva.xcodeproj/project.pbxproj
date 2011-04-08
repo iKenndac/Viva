@@ -152,7 +152,7 @@
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
-		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
+		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
 		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
 		506F347613438755002BA308 /* VivaPlaybackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackManager.h; sourceTree = "<group>"; };
