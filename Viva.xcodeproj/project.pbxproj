@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
 		5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */; };
+		5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008416E1350F40000A2967E /* SPCircularBuffer.m */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -141,6 +142,8 @@
 		5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaInternalURLManager.m; sourceTree = "<group>"; };
 		500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContextViewController.h; sourceTree = "<group>"; };
 		500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackContextViewController.m; sourceTree = "<group>"; };
+		5008416D1350F40000A2967E /* SPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCircularBuffer.h; sourceTree = "<group>"; };
+		5008416E1350F40000A2967E /* SPCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCircularBuffer.m; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -295,6 +298,17 @@
 			name = "Playback Contexts";
 			sourceTree = "<group>";
 		};
+		5008417013510C5600A2967E /* Playback */ = {
+			isa = PBXGroup;
+			children = (
+				506F347613438755002BA308 /* VivaPlaybackManager.h */,
+				506F347713438755002BA308 /* VivaPlaybackManager.m */,
+				5008416D1350F40000A2967E /* SPCircularBuffer.h */,
+				5008416E1350F40000A2967E /* SPCircularBuffer.m */,
+			);
+			name = Playback;
+			sourceTree = "<group>";
+		};
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
@@ -383,10 +397,9 @@
 			children = (
 				506F347413436EF8002BA308 /* Protocols */,
 				50C56A3D133944480072A754 /* Categories */,
+				5008417013510C5600A2967E /* Playback */,
 				5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */,
 				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
-				506F347613438755002BA308 /* VivaPlaybackManager.h */,
-				506F347713438755002BA308 /* VivaPlaybackManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -806,6 +819,7 @@
 				50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */,
 				5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */,
 				5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */,
+				5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

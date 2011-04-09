@@ -11,7 +11,7 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (retain, readwrite) NSPointerArray *frameBuffer;
+@property (retain, readwrite) SPCircularBuffer *audioBuffer;
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, retain) SPSpotifyTrack *currentTrack;
@@ -22,7 +22,7 @@
 
 @end
 
-#define kMaximumFramesInBuffer 44100 // 1 Second
+#define kMaximumBytesInBuffer 44100 * 2 * 2 // 1 Second @ 44.1kHz, 16bit per channel, stereo
 
 @implementation VivaPlaybackManager
 
@@ -34,7 +34,7 @@
 		self.volume = 1.0;
 		self.playbackSession = aSession;
         
-		self.frameBuffer = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality];
+		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
 		
         [self addObserver:self
                forKeyPath:@"playbackSession.isPlaying"
@@ -51,7 +51,7 @@
     return self;
 }
 
-@synthesize frameBuffer;
+@synthesize audioBuffer;
 @synthesize audioUnit;
 @synthesize playbackContext;
 @synthesize currentTrack;
@@ -174,17 +174,7 @@
 
 -(void)clearAudioBuffer {
 	
-	@synchronized(frameBuffer) {
-		for (NSUInteger currentFrame = 0; currentFrame < [self.frameBuffer count]; currentFrame++) {
-			void *ptr = [self.frameBuffer pointerAtIndex:currentFrame];
-			if (ptr != NULL) {
-				free(ptr);
-				[self.frameBuffer replacePointerAtIndex:currentFrame withPointer:NULL];
-			}
-		}
-		
-		[self.frameBuffer compact];
-	}
+	[self.audioBuffer clear];
 }
 
 #pragma mark -
@@ -222,26 +212,21 @@
 
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
-	@synchronized(frameBuffer) {
-		
-		if (frameCount == 0) {
-			[self clearAudioBuffer];
-			return 0; // Audio discontinuity!
-		}
-		
-		if ([self.frameBuffer count] >= kMaximumFramesInBuffer) {
-			return 0;
-		}
-		
-        NSUInteger frameByteSize = sizeof(sint16) * audioFormat->channels;
-		NSUInteger dataLength = frameCount * frameByteSize;
-        
-        for (NSUInteger chunkStart = 0; chunkStart < dataLength; chunkStart += frameByteSize) {
-			void *frame = malloc(frameByteSize);
-			memcpy(frame, (audioFrames + chunkStart), frameByteSize);
-			[self.frameBuffer addPointer:frame];
-        }
+	if (frameCount == 0) {
+		[self clearAudioBuffer];
+		return 0; // Audio discontinuity!
 	}
+	
+	NSUInteger frameByteSize = sizeof(sint16) * audioFormat->channels;
+	NSUInteger dataLength = frameCount * frameByteSize;
+	
+	if ((self.audioBuffer.maximumLength - self.audioBuffer.length) < dataLength) {
+		// Only allow whole deliveries in, since libSpotify wants us to consume whole frames, whereas
+		// the buffer works in bytes, meaning we could consume a fraction of a frame.
+		return 0;
+	}
+	
+	[self.audioBuffer attemptAppendData:audioFrames ofLength:dataLength];
 	
 	if (self.audioUnit == nil) {
 		self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
@@ -264,66 +249,66 @@ static UInt32 framesSinceLastUpdate = 0;
            audioData:(AudioBufferList *)ioData;
 {	
     // Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
-    
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
 	AudioBuffer *rightBuffer = &(ioData->mBuffers[1]);
-
-	@synchronized(frameBuffer) {
-            
-        if ([self.frameBuffer count] >= inNumberFrames) {
 	
-			float *leftChannelBuffer = leftBuffer->mData;
-			float *rightChannelBuffer = rightBuffer->mData;
-			
-			double effectiveVolume = self.volume;
-			
-			for (NSUInteger currentFrame = 0; currentFrame < inNumberFrames; currentFrame++) {
-				
-				sint16 *frame = [self.frameBuffer pointerAtIndex:currentFrame];
-				if (frame != NULL) {
-					
-					// Convert the frames from 16-bit signed integers to floating point, then apply the volume.
-					leftChannelBuffer[currentFrame] = (frame[0]/(float)INT16_MAX) * effectiveVolume;
-					rightChannelBuffer[currentFrame] = (frame[1]/(float)INT16_MAX) * effectiveVolume;
-
-					free(frame);
-					[self.frameBuffer replacePointerAtIndex:currentFrame withPointer:NULL];
-				}
-			}
-			
-			[self.frameBuffer compact];
-			
-			framesSinceLastUpdate += inNumberFrames;
-			
-			if (framesSinceLastUpdate >= 8820) {
-				// Update 5 times per second.
-				
-				NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
-				
-				SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
-				NSMethodSignature *aSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector];
-				NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
-				[anInvocation setSelector:setTrackPositionSelector];
-				[anInvocation setTarget:self];
-				[anInvocation setArgument:&newTrackPosition atIndex:2];
-				
-				[anInvocation performSelectorOnMainThread:@selector(invoke)
-											   withObject:nil
-											waitUntilDone:NO];
-
-				framesSinceLastUpdate = 0;
-			}
-			
-        } else {
+	NSUInteger bytesRequired = inNumberFrames * 2 * 2; // 16bit per channel, stereo
+	void *frameBuffer = NULL;
+	
+	@synchronized(audioBuffer) {
+		NSUInteger availableData = [audioBuffer length];
+		if (availableData >= bytesRequired) {
+			[audioBuffer readDataOfLength:bytesRequired intoBuffer:&frameBuffer];
+			// We've done a length check just above, so hopefully we don't have to care about  how much was read.
+		} else {
 			leftBuffer->mDataByteSize = 0;
 			rightBuffer->mDataByteSize = 0;
 			*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
+			return noErr;
 		}
-    }
+	}
+	
+	float *leftChannelBuffer = leftBuffer->mData;
+	float *rightChannelBuffer = rightBuffer->mData;
+	
+	sint16 *frames = frameBuffer;
+	double effectiveVolume = self.volume;
+	
+	for (NSUInteger currentFrame = 0; currentFrame < inNumberFrames; currentFrame++) {
+
+		// Convert the frames from 16-bit signed integers to floating point, then apply the volume.
+		leftChannelBuffer[currentFrame] = (frames[currentFrame * 2]/(float)INT16_MAX) * effectiveVolume;
+		rightChannelBuffer[currentFrame] = (frames[(currentFrame * 2) + 1]/(float)INT16_MAX) * effectiveVolume;
+	}
+	
+	if (frameBuffer != NULL) 
+		free(frameBuffer);
+	frames = NULL;
+	
+	framesSinceLastUpdate += inNumberFrames;
+	
+	if (framesSinceLastUpdate >= 8820) {
+		// Update 5 times per second.
+		
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
+		
+		SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
+		NSMethodSignature *aSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector];
+		NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
+		[anInvocation setSelector:setTrackPositionSelector];
+		[anInvocation setTarget:self];
+		[anInvocation setArgument:&newTrackPosition atIndex:2];
+		
+		[anInvocation performSelectorOnMainThread:@selector(invoke)
+									   withObject:nil
+									waitUntilDone:NO];
+		[pool drain];
+		
+		framesSinceLastUpdate = 0;
+	}
     
-	[pool drain];
     return noErr;
 }
 
@@ -332,7 +317,7 @@ static UInt32 framesSinceLastUpdate = 0;
     [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
 	
 	[self clearAudioBuffer];
-	self.frameBuffer = nil;
+	self.audioBuffer = nil;
     self.currentTrack = nil;
 	self.playbackContext = nil;
 	[self.audioUnit stop];

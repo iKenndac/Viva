@@ -10,6 +10,7 @@
 #import "VivaPlaybackContext.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "CoCA.h"
+#import "SPCircularBuffer.h"
 
 @interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSpotifySessionPlaybackDelegate> {
 @private
@@ -18,7 +19,7 @@
 	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
 	SPSpotifySession *playbackSession;
-	NSPointerArray *frameBuffer;
+	SPCircularBuffer *audioBuffer;
 	double volume;
 	BOOL loopPlayback;
 }
