@@ -20,6 +20,7 @@
 	SPSpotifySession *playbackSession;
 	NSPointerArray *frameBuffer;
 	double volume;
+	BOOL loopPlayback;
 }
 
 -(id)initWithPlaybackSession:(SPSpotifySession *)aSession;
@@ -29,7 +30,14 @@
 @property (readonly, retain) SPSpotifyTrack *currentTrack;
 @property (readonly, retain) SPSpotifySession *playbackSession;
 @property (readwrite) double volume;
+@property (readwrite) BOOL loopPlayback;
+
+@property (readonly) BOOL canSkipToNextTrack;
+@property (readonly) BOOL canSkipToPreviousTrack;
 
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition;
+
+-(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
+-(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
 
 @end

@@ -18,6 +18,7 @@
 @property (readwrite, retain) SPSpotifySession *playbackSession;
 
 -(void)clearAudioBuffer;
+-(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack;
 
 @end
 
@@ -42,7 +43,7 @@
 		
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(playTrack:)
+												 selector:@selector(playTrackFromUserAction:)
 													 name:kTrackShouldBePlayedNotification
 												   object:nil];
     }
@@ -57,8 +58,93 @@
 @synthesize playbackSession;
 @synthesize currentTrackPosition;
 @synthesize volume;
+@synthesize loopPlayback;
 
--(void)playTrack:(NSNotification *)aNotification {
++(NSSet *)keyPathsForValuesAffectingCanSkipToNextTrack {
+	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", nil];
+}
+
+-(BOOL)canSkipToNextTrack {
+	return (self.loopPlayback || 
+			[self.playbackContext.tracksForPlayback indexOfObject:self.currentTrack] != [self.playbackContext.tracksForPlayback count] - 1);			
+}
+
++(NSSet *)keyPathsForValuesAffectingCanSkipToPreviousTrack {
+	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", nil];
+}
+
+-(BOOL)canSkipToPreviousTrack {
+	return (self.loopPlayback || 
+			[self.playbackContext.tracksForPlayback indexOfObject:self.currentTrack] != 0);			
+}
+
+#pragma mark -
+
+-(void)playTrackFromUserAction:(NSNotification *)aNotification {
+	
+	// User double-clicked, so reset everything and start again.
+	[self.playbackSession setIsPlaying:NO];
+	[self.playbackSession unloadPlayback];
+	[self.audioUnit stop];
+	self.audioUnit = nil;
+	
+	[self clearAudioBuffer];
+	
+	SPSpotifyTrack *track = [[aNotification userInfo] valueForKey:kPlaybackInitialTrackKey];
+	
+	if ([[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
+		self.playbackContext = [aNotification object];
+	}
+	
+	[self playTrackInCurrentContext:track];
+		
+}
+
+-(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack {
+	
+	// Don't clear out the audio buffer just in case we can manage gapless playback.
+	self.currentTrack = newTrack;
+	self.currentTrackPosition = 0.0;
+	[self.playbackSession playTrack:newTrack];
+}
+	
+-(void)seekToTrackPosition:(NSTimeInterval)newPosition {
+	if (newPosition <= self.currentTrack.duration) {
+		[self.playbackSession seekPlaybackToOffset:newPosition];
+		self.currentTrackPosition = newPosition;
+	}	
+}
+
+-(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
+	
+	if (clearExistingAudioBuffers) {
+		[self.playbackSession setIsPlaying:NO];
+		[self.playbackSession unloadPlayback];
+		[self.audioUnit stop];
+		self.audioUnit = nil;
+		
+		[self clearAudioBuffer];
+	}
+	
+	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
+	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
+	
+	if (currentTrackIndex == NSNotFound ||
+		(currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1 && !self.loopPlayback)) {
+		
+		self.currentTrack = nil;
+		[self.audioUnit stop];
+		self.audioUnit = nil;
+		self.currentTrackPosition = 0;
+		
+	} else if (currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1) {
+		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:0]];
+	} else {
+		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex + 1]];
+	}
+}
+
+-(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
 	
 	[self.playbackSession setIsPlaying:NO];
 	[self.playbackSession unloadPlayback];
@@ -67,18 +153,23 @@
 	
 	[self clearAudioBuffer];
 	
-	self.currentTrackPosition = 0.0;
+	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
+	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
 	
-	SPSpotifyTrack *track = [aNotification object];
-	self.currentTrack = track;
-	[self.playbackSession playTrack:track];	
-}
+	if (currentTrackIndex == NSNotFound ||
+		(currentTrackIndex == 0 && !self.loopPlayback)) {
+		
+		self.currentTrack = nil;
+		[self.audioUnit stop];
+		self.audioUnit = nil;
+		self.currentTrackPosition = 0;
+		
+	} else if (currentTrackIndex == 0) {
+		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:[self.playbackContext.tracksForPlayback count] - 1]];
+	} else {
+		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex - 1]];
+	}
 
--(void)seekToTrackPosition:(NSTimeInterval)newPosition {
-	if (newPosition <= self.currentTrack.duration) {
-		[self.playbackSession seekPlaybackToOffset:newPosition];
-		self.currentTrackPosition = newPosition;
-	}	
 }
 
 -(void)clearAudioBuffer {
@@ -102,10 +193,15 @@
 -(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession {}
 
 -(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
-	[self.audioUnit stop];
-	self.audioUnit = nil;
-	self.currentTrackPosition = 0;
-	self.currentTrack = nil;
+	// Not routing this through to the main thread causes odd locks and crashes.
+	[self performSelectorOnMainThread:@selector(sessionDidEndPlaybackOnMainThread:)
+						   withObject:aSession
+						waitUntilDone:NO];
+}
+
+-(void)sessionDidEndPlaybackOnMainThread:(SPSpotifySession *)aSession {
+	
+	[self skipToNextTrackInCurrentContext:NO];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

@@ -8,6 +8,7 @@
 
 #import "FooterViewController.h"
 #import "VivaPlaybackManager.h"
+#import "Constants.h"
 
 @interface FooterViewController ()
 
@@ -25,7 +26,7 @@
 		[self view];
 		
 		[self addObserver:self 
-			   forKeyPath:@"playbackRepeats"
+			   forKeyPath:@"playbackManager.loopPlayback"
 				  options:NSKeyValueObservingOptionInitial
 				  context:nil];
 	
@@ -55,9 +56,9 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"playbackRepeats"]) {
+	if ([keyPath isEqualToString:@"playbackManager.loopPlayback"]) {
         
-		if (self.playbackRepeats) {
+		if (self.playbackManager.loopPlayback) {
 			
 			[playbackIsRepeatingButton setImage:[NSImage imageNamed:@"repeat-on"]];
 			[playbackIsRepeatingButton setAlternateImage:[NSImage imageNamed:@"repeat-on-pushed"]];
@@ -118,7 +119,6 @@
 @synthesize playbackControlsView;
 
 @synthesize playbackManager;
-@synthesize playbackRepeats;
 @synthesize playbackIsShuffled;
 
 +(NSSet *)keyPathsForValuesAffectingCurrentTrackPositionDisplayString {
@@ -160,7 +160,7 @@
 }
 
 - (IBAction)repeatButtonWasClicked:(id)sender {
-	self.playbackRepeats = !self.playbackRepeats;
+	self.playbackManager.loopPlayback = !self.playbackManager.loopPlayback;
 }
 
 - (IBAction)shuffleButtonWasClicked:(id)sender {
@@ -173,6 +173,18 @@
 
 - (IBAction)playPauseButtonWasClicked:(id)sender {
     self.playbackManager.playbackSession.isPlaying = !self.playbackManager.playbackSession.isPlaying;
+}
+
+- (IBAction)previousTrackButtonWasClicked:(id)sender {
+	if (self.playbackManager.currentTrackPosition > kSkipBackThreshold) {
+		[self.playbackManager seekToTrackPosition:0.0];
+	} else {
+		[self.playbackManager skipToPreviousTrackInCurrentContext:YES];
+	}
+}
+
+- (IBAction)nextTrackButtonWasClicked:(id)sender {
+	[self.playbackManager skipToNextTrackInCurrentContext:YES];
 }
 
 #pragma mark -
@@ -241,7 +253,7 @@
     [self removeObserver:self forKeyPath:@"playbackManager.playbackSession.isPlaying"];
 	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackIsShuffled"];
-	[self removeObserver:self forKeyPath:@"playbackRepeats"];
+	[self removeObserver:self forKeyPath:@"playbackManager.loopPlayback"];
 	
     [super dealloc];
 }

@@ -10,10 +10,13 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @protocol VivaPlaybackContext <NSObject>
+@required
 
 // This must be KVO compliant, for e.g. when the user filters the playlist
--(NSArray *)tracksForPlayback;
+@property (readonly, nonatomic, retain) NSArray *tracksForPlayback;
+@property (readonly, nonatomic, copy) NSURL *spotifyURL;
 
+@optional
 -(void)setPlayingTrack:(SPSpotifyTrack *)playingTrack;
 
 @end

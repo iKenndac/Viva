@@ -9,7 +9,6 @@
 #import "PlaylistViewController.h"
 #import "SPTableHeaderCell.h"
 #import "SPTableCorner.h"
-#import "Constants.h"
 #import "VivaAppDelegate.h"
 
 @interface PlaylistViewController ()
@@ -20,15 +19,11 @@
 
 @implementation PlaylistViewController
 
--(id)initWithPlaylist:(SPSpotifyPlaylist *)aPlaylist {
-	if ((self = [super initWithNibName:@"PlaylistViewController" bundle:nil])) {
-		self.playlist = aPlaylist;
+-(id)initWithObjectFromURL:(NSURL *)aURL {
+	if ((self = [super initWithObjectFromURL:aURL])) {
+		self.playlist = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL];
 	}
 	return self;
-}
-
--(id)initWithObjectFromURL:(NSURL *)aURL {
-	return [self initWithPlaylist:[[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL]];
 }
 
 -(void)awakeFromNib {
@@ -50,17 +45,23 @@
 -(IBAction)playTrack:(id)sender {
 	if ([self.trackTable clickedRow] > -1) {
 		SPSpotifyTrack *track = [[self.tracksArrayController arrangedObjects] objectAtIndex:[self.trackTable clickedRow]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
-															object:track];
+		[self playTrackInThisContext:track];
 	}
+}
+
++(NSSet *)keyPathsForValuesAffectingTracksForPlayback {
+	return [NSSet setWithObject:@"tracksArrayController.arrangedObjects"];
+}
+
+-(NSArray *)tracksForPlayback {
+	return [NSArray arrayWithArray:[self.tracksArrayController arrangedObjects]];
 }
 
 @synthesize tracksArrayController;
 @synthesize trackTable;
 @synthesize playlist;
 
-- (void)dealloc
-{
+- (void)dealloc {
 	self.playlist = nil;
     [super dealloc];
 }

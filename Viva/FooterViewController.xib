@@ -42,6 +42,7 @@
 				<string key="NSFrameSize">{480, 46}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSClassName">SPBackgroundColorView</string>
 			</object>
 			<object class="NSCustomView" id="3924048">
@@ -696,6 +697,82 @@
 					</object>
 					<int key="connectionID">108</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: playbackManager.canSkipToNextTrack</string>
+						<reference key="source" ref="404799513"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="637561443">
+							<reference key="NSSource" ref="404799513"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: playbackManager.canSkipToNextTrack</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">playbackManager.canSkipToNextTrack</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">109</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">previousTrackButtonWasClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="662465533"/>
+					</object>
+					<int key="connectionID">110</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">nextTrackButtonWasClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="404799513"/>
+					</object>
+					<int key="connectionID">111</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: playbackManager.currentTrack</string>
+						<reference key="source" ref="662465533"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="662465533"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: playbackManager.currentTrack</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">playbackManager.currentTrack</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSIsNotNil</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">113</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: playbackManager.currentTrack</string>
+						<reference key="source" ref="404799513"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="404799513"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled2: playbackManager.currentTrack</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">playbackManager.currentTrack</string>
+							<dictionary key="NSOptions">
+								<integer value="-1" key="NSMultipleValuesPlaceholder"/>
+								<integer value="-1" key="NSNoSelectionPlaceholder"/>
+								<integer value="-1" key="NSNotApplicablePlaceholder"/>
+								<integer value="-1" key="NSNullPlaceholder"/>
+								<string key="NSValueTransformerName">NSIsNotNil</string>
+							</dictionary>
+							<reference key="NSPreviousConnector" ref="637561443"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">115</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1012,7 +1089,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">108</int>
+			<int key="maxID">115</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1020,19 +1097,29 @@
 					<string key="className">FooterViewController</string>
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="nextTrackButtonWasClicked:">id</string>
 						<string key="playPauseButtonWasClicked:">id</string>
 						<string key="positionSliderWasDragged:">id</string>
+						<string key="previousTrackButtonWasClicked:">id</string>
 						<string key="repeatButtonWasClicked:">id</string>
 						<string key="shuffleButtonWasClicked:">id</string>
 						<string key="starredButtonWasClicked:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="nextTrackButtonWasClicked:">
+							<string key="name">nextTrackButtonWasClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="playPauseButtonWasClicked:">
 							<string key="name">playPauseButtonWasClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="positionSliderWasDragged:">
 							<string key="name">positionSliderWasDragged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="previousTrackButtonWasClicked:">
+							<string key="name">previousTrackButtonWasClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="repeatButtonWasClicked:">

@@ -7,11 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "VivaPlaybackContext.h"
+#import "VivaInternalURLManager.h"
 
-
-@interface VivaPlaybackContextViewController : NSViewController {
+@interface VivaPlaybackContextViewController : NSViewController <VivaPlaybackContext, VivaViewController> {
 @private
-    
+    NSArray *tracksForPlayback;
+	NSURL *spotifyURL;
 }
+
+-(void)playTrackInThisContext:(SPSpotifyTrack *)track;
 
 @end

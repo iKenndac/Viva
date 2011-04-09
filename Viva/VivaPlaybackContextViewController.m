@@ -7,22 +7,35 @@
 //
 
 #import "VivaPlaybackContextViewController.h"
+#import "Constants.h"
 
+@interface VivaPlaybackContextViewController()
+
+@property (nonatomic, readwrite, copy) NSURL *spotifyURL;
+
+@end
 
 @implementation VivaPlaybackContextViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
+-(id)initWithObjectFromURL:(NSURL *)aURL {
+	if ((self = [super initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]])) {
+		self.spotifyURL = aURL;
+	}
+	return self;
+}
+
+@synthesize spotifyURL;
+@synthesize tracksForPlayback;
+
+-(void)playTrackInThisContext:(SPSpotifyTrack *)track {
+	[[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:track forKey:kPlaybackInitialTrackKey]];
 }
 
 - (void)dealloc
 {
+	self.spotifyURL = nil;
     [super dealloc];
 }
 

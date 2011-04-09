@@ -7,10 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CocoaLibSpotify/CocoaLibSpotify.h>
-#import "VivaInternalURLManager.h"
+#import "VivaPlaybackContextViewController.h"
 
-@interface PlaylistViewController : NSViewController <VivaViewController> {
+@interface PlaylistViewController : VivaPlaybackContextViewController {
 @private
 
 	SPSpotifyPlaylist *playlist;
@@ -18,8 +17,6 @@
 	NSTableView *trackTable;
 	NSArrayController *tracksArrayController;
 }
-
--(id)initWithPlaylist:(SPSpotifyPlaylist *)aPlaylist;
 
 @property (assign) IBOutlet NSArrayController *tracksArrayController;
 @property (assign) IBOutlet NSTableView *trackTable;
