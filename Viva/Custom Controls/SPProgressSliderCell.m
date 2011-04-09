@@ -76,6 +76,10 @@ static NSImage *pressedKnobImage;
 
 -(NSRect)knobRectFlipped:(BOOL)flipped {
 	
+	if (NSEqualRects(NSZeroRect, lastFrame)) {
+		return NSZeroRect;
+	}
+
 	double progress = ([self doubleValue] - [self minValue]) / ([self maxValue] - [self minValue]);
 	
 	NSRect rect = (NSRect) {
