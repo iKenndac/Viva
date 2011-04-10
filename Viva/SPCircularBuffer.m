@@ -90,7 +90,6 @@
 		NSUInteger wraparoundByteCount = readableByteCount - directCopyByteCount;
 		
 		void *destinationBuffer = malloc(readableByteCount);
-		memset(destinationBuffer, 0 , readableByteCount);
 		
 		if (directCopyByteCount > 0) {
 			memcpy(destinationBuffer, buffer + dataStartOffset, directCopyByteCount);
