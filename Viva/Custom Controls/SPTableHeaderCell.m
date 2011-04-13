@@ -16,6 +16,7 @@
     self = [super init];
     if (self) {
         // Initialization code here.
+		sortPriority = 1;
     }
     
     return self;
@@ -52,7 +53,7 @@
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)view {
 	
-	NSImage *image = [NSImage imageNamed:@"sortbar"];
+	NSImage *image = [NSImage imageNamed:[self state] == NSOnState ? @"sortbar-pressed" : @"sortbar"];
 	[image setFlipped:YES];
 	
 	[image drawInRect:frame
@@ -72,9 +73,24 @@
 				 fraction:1.0];
 	
 	[self drawInteriorWithFrame:frame inView:view];
+	[self drawSortIndicatorWithFrame:frame inView:view ascending:sortAscending priority:sortPriority];
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+    SPTableHeaderCell *cell = (SPTableHeaderCell *)[super copyWithZone:zone];
+	cell->sortAscending = sortAscending;
+	cell->sortPriority = sortPriority;
+    return cell;
+}
 
+-(void)setSortAscending:(BOOL)asc priority:(NSInteger)pri {
+	sortPriority = pri;
+	sortAscending = asc;
+}
+
+-(NSInteger)sortPriority {
+	return sortPriority;
+}
 
 - (void)dealloc
 {

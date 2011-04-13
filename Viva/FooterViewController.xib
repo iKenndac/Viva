@@ -204,7 +204,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="553429723">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTextField" id="293554606">
@@ -212,6 +212,7 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{418, 16}, {46, 15}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="986908900"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<bool key="NSEnabled">YES</bool>
@@ -237,6 +238,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{235, 16}, {46, 15}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="168471358"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<bool key="NSEnabled">YES</bool>
@@ -266,6 +268,7 @@
 						</set>
 						<string key="NSFrame">{{221, 10}, {15, 23}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="312850252"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="963817026">
@@ -287,6 +290,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{122, 11}, {96, 21}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="545421863"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSSliderCell" key="NSCell" id="809040662">
@@ -309,6 +313,7 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{290, 11}, {119, 21}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="293554606"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSSliderCell" key="NSCell" id="638919524">
@@ -331,6 +336,7 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{461, 11}, {23, 21}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="930722672"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="108105677">
@@ -360,6 +366,8 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{492, 13}, {19, 17}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="617810175">
 							<int key="NSCellFlags">67239424</int>
@@ -388,6 +396,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{80, 8}, {26, 27}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="46038901"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="258926106">
@@ -417,6 +426,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{11, 8}, {26, 27}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="782497285"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="568343519">
@@ -446,6 +456,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{41, 4}, {35, 36}}</string>
 						<reference key="NSSuperview" ref="553429723"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="404799513"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="859201571">
@@ -472,6 +483,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{529, 46}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="662465533"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -597,26 +610,6 @@
 						<reference key="destination" ref="782497285"/>
 					</object>
 					<int key="connectionID">68</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: playbackManager.currentTrack.album.artist.name</string>
-						<reference key="source" ref="1012276431"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1012276431"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: playbackManager.currentTrack.album.artist.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">playbackManager.currentTrack.album.artist.name</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string type="base64-UTF8" key="NS.object.0">IA</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">78</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -821,6 +814,26 @@
 						</object>
 					</object>
 					<int key="connectionID">120</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: playbackManager.currentTrack.condensedArtist</string>
+						<reference key="source" ref="1012276431"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1012276431"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: playbackManager.currentTrack.condensedArtist</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">playbackManager.currentTrack.condensedArtist</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">121</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1154,7 +1167,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">120</int>
+			<int key="maxID">121</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

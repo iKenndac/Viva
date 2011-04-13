@@ -16,6 +16,7 @@
     
 	NSTableView *trackTable;
 	NSArrayController *tracksArrayController;
+	BOOL sortAscending;
 }
 
 @property (assign) IBOutlet NSArrayController *tracksArrayController;

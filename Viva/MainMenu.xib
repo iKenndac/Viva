@@ -2124,26 +2124,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">title: playbackManager.currentTrack.album.artist.name</string>
-						<reference key="source" ref="558404332"/>
-						<reference key="destination" ref="976324537"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="558404332"/>
-							<reference key="NSDestination" ref="976324537"/>
-							<string key="NSLabel">title: playbackManager.currentTrack.album.artist.name</string>
-							<string key="NSBinding">title</string>
-							<string key="NSKeyPath">playbackManager.currentTrack.album.artist.name</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">-</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">799</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: playbackManager.loopPlayback</string>
 						<reference key="source" ref="436191011"/>
 						<reference key="destination" ref="976324537"/>
@@ -2289,6 +2269,26 @@
 						</object>
 					</object>
 					<int key="connectionID">823</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: playbackManager.currentTrack.condensedArtist</string>
+						<reference key="source" ref="558404332"/>
+						<reference key="destination" ref="976324537"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="558404332"/>
+							<reference key="NSDestination" ref="976324537"/>
+							<string key="NSLabel">title: playbackManager.currentTrack.condensedArtist</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">playbackManager.currentTrack.condensedArtist</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string key="NS.object.0">-</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">824</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3960,7 +3960,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">823</int>
+			<int key="maxID">824</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

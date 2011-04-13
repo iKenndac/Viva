@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */; };
+		5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFF13562440000EA08A /* VivaTrackExtensions.m */; };
+		500470021356322C000EA08A /* sortbar-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 500470011356322C000EA08A /* sortbar-pressed.png */; };
 		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
 		5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */; };
 		5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008416E1350F40000A2967E /* SPCircularBuffer.m */; };
@@ -138,6 +141,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		50046FFB1356231B000EA08A /* VivaSortDescriptorExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaSortDescriptorExtensions.h; sourceTree = "<group>"; };
+		50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaSortDescriptorExtensions.m; sourceTree = "<group>"; };
+		50046FFE13562440000EA08A /* VivaTrackExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackExtensions.h; sourceTree = "<group>"; };
+		50046FFF13562440000EA08A /* VivaTrackExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackExtensions.m; sourceTree = "<group>"; };
+		500470011356322C000EA08A /* sortbar-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sortbar-pressed.png"; sourceTree = "<group>"; };
 		5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaInternalURLManager.h; sourceTree = "<group>"; };
 		5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaInternalURLManager.m; sourceTree = "<group>"; };
 		500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContextViewController.h; sourceTree = "<group>"; };
@@ -471,6 +479,7 @@
 			children = (
 				509AAEBB1339097C0009B6EE /* share.png */,
 				509AAEBC1339097C0009B6EE /* sortbar-split.png */,
+				500470011356322C000EA08A /* sortbar-pressed.png */,
 				509AAEBD1339097C0009B6EE /* sortbar.png */,
 			);
 			path = Playlist;
@@ -532,6 +541,10 @@
 			children = (
 				50C56A3E1339446E0072A754 /* VivaPlaylistExtensions.h */,
 				50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */,
+				50046FFB1356231B000EA08A /* VivaSortDescriptorExtensions.h */,
+				50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */,
+				50046FFE13562440000EA08A /* VivaTrackExtensions.h */,
+				50046FFF13562440000EA08A /* VivaTrackExtensions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -784,6 +797,7 @@
 				50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */,
 				506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */,
 				50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */,
+				500470021356322C000EA08A /* sortbar-pressed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -820,6 +834,8 @@
 				5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */,
 				5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */,
 				5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */,
+				50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */,
+				5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

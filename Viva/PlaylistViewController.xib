@@ -54,7 +54,7 @@
 										<string key="NSFrameSize">{403, 421}</string>
 										<reference key="NSSuperview" ref="300786197"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="833267190"/>
+										<reference key="NSNextKeyView" ref="311329691"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="352945302">
 											<reference key="NSNextResponder" ref="833267190"/>
@@ -75,6 +75,7 @@
 										</object>
 										<array class="NSMutableArray" key="NSTableColumns">
 											<object class="NSTableColumn" id="215727644">
+												<string key="NSIdentifier">title</string>
 												<double key="NSWidth">132</double>
 												<double key="NSMinWidth">40</double>
 												<double key="NSMaxWidth">1000</double>
@@ -128,6 +129,7 @@
 												<reference key="NSTableView" ref="342886202"/>
 											</object>
 											<object class="NSTableColumn" id="645587947">
+												<string key="NSIdentifier">album</string>
 												<double key="NSWidth">162</double>
 												<double key="NSMinWidth">10</double>
 												<double key="NSMaxWidth">3.4028234663852886e+38</double>
@@ -161,6 +163,7 @@
 												<reference key="NSTableView" ref="342886202"/>
 											</object>
 											<object class="NSTableColumn" id="378186717">
+												<string key="NSIdentifier">popularity</string>
 												<double key="NSWidth">100</double>
 												<double key="NSMinWidth">100</double>
 												<double key="NSMaxWidth">100</double>
@@ -184,7 +187,6 @@
 												</object>
 												<int key="NSResizingMask">3</int>
 												<bool key="NSIsResizeable">YES</bool>
-												<bool key="NSIsEditable">YES</bool>
 												<reference key="NSTableView" ref="342886202"/>
 											</object>
 										</array>
@@ -261,7 +263,7 @@
 						<string key="NSFrameSize">{403, 438}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="300786197"/>
+						<reference key="NSNextKeyView" ref="833267190"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="311329691"/>
 						<reference key="NSHScroller" ref="434571912"/>

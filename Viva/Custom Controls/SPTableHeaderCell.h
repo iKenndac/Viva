@@ -11,7 +11,11 @@
 
 @interface SPTableHeaderCell : NSTableHeaderCell {
 @private
-    
+    BOOL sortAscending;
+	NSInteger sortPriority;
 }
+
+-(void)setSortAscending:(BOOL)asc priority:(NSInteger)pri;
+-(NSInteger)sortPriority;
 
 @end

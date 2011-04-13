@@ -6,9 +6,11 @@ Programming (Daniel & Nevyn):
 		- Media keys
 		- Ability to close main window @done
 		- Losing play token doesn't update UI @done
+		- Proper sorting @done
 		- Updating starred elsewhere doesn't update "now playing" UI
 		- Starred/etc lists
 	Longer Term:
+		- Option for Viva to be the default url handler
 		- Modifying source list layout via XML/etc for AB testing etc
 		- Playback UI (album art & track information in bottom-left)
 		- Notification bubbles
