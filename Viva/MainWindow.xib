@@ -57,7 +57,7 @@
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{380, 264}, {700, 460}}</string>
-				<int key="NSWTFlags">1954021376</int>
+				<int key="NSWTFlags">1954022400</int>
 				<string key="NSWindowTitle">Viva</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="590369993">
@@ -96,7 +96,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{3, 14}, {27, 32}}</string>
 									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="468128043">
@@ -148,7 +147,6 @@
 									<int key="NSvFlags">266</int>
 									<string key="NSFrame">{{0, 14}, {292, 22}}</string>
 									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSSearchFieldCell" key="NSCell" id="360135720">
@@ -245,7 +243,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{22, 14}, {27, 27}}</string>
 									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="227712687">
@@ -285,7 +282,6 @@
 									<int key="NSvFlags">268</int>
 									<string key="NSFrame">{{12, 14}, {27, 32}}</string>
 									<reference key="NSSuperview"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="942363013">
@@ -632,6 +628,7 @@
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMinSize">{700, 521}</string>
 				<string key="NSMaxSize">{1e+13, 1e+13}</string>
+				<string key="NSFrameAutosaveName">MainWindow</string>
 			</object>
 			<object class="NSTreeController" id="854874348">
 				<string key="NSObjectClassName">SPSpotifyPlaylist</string>

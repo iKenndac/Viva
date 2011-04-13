@@ -23,6 +23,7 @@
 @synthesize window;
 @synthesize session;
 @synthesize playbackManager;
+@synthesize dockMenu;
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
 	
@@ -36,11 +37,40 @@
     
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
-	playbackManager = [[VivaPlaybackManager alloc] initWithPlaybackSession:self.session];
+	self.playbackManager = [[[VivaPlaybackManager alloc] initWithPlaybackSession:self.session] autorelease];
 	self.session.playbackDelegate = playbackManager;
 	
+	[NSApp setDockMenu:self.dockMenu];
 	[loginWindowController showWindow:nil];
 
+}
+
+-(BOOL)applicationOpenUntitledFile:(NSApplication *)theApplication {
+	if (mainWindowController != nil) {
+		[mainWindowController showWindow:nil];
+	}
+	return YES;
+}
+
+#pragma mark -
+
+// For Applescript, Dock menu, etc
+-(IBAction)performNextTrackAction:(id)sender {
+	if (self.playbackManager.currentTrack != nil) {
+		[self.playbackManager skipToNextTrackInCurrentContext:YES];
+	}
+}
+
+-(IBAction)performPreviousTrackAction:(id)sender {
+	if (self.playbackManager.currentTrack != nil) {
+		[self.playbackManager skipToPreviousTrackInCurrentContext:YES];
+	}
+}
+
+-(IBAction)performPlayPauseAction:(id)sender {
+	if (self.playbackManager.currentTrack != nil) {
+		self.playbackManager.playbackSession.isPlaying = !self.playbackManager.playbackSession.isPlaying;
+	}
 }
 
 #pragma mark -

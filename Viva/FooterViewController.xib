@@ -204,7 +204,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="553429723">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTextField" id="293554606">
@@ -472,7 +472,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{529, 46}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="662465533"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -802,6 +801,26 @@
 						</object>
 					</object>
 					<int key="connectionID">118</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: playbackManager.currentTrack</string>
+						<reference key="source" ref="332165747"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="332165747"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: playbackManager.currentTrack</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">playbackManager.currentTrack</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSIsNotNil</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">120</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1135,7 +1154,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">118</int>
+			<int key="maxID">120</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
