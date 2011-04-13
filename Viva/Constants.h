@@ -13,8 +13,9 @@
 static NSTimeInterval const kSkipBackThreshold = 3.0;
 // ^ If the "skip back" button is clicked after the track has been playing for this long, 
 // the track will be restarted.
-
+static NSTimeInterval const kSeekABitInterval = 1.0;
 static double const kVolumeStepSize = 0.1;
+static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKeyUsingBundleIdentifiersDefaultsKey";
 
 // ------ Keychain ------
 

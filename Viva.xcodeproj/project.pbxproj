@@ -10,6 +10,10 @@
 		50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */; };
 		5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFF13562440000EA08A /* VivaTrackExtensions.m */; };
 		500470021356322C000EA08A /* sortbar-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 500470011356322C000EA08A /* sortbar-pressed.png */; };
+		5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004701313563AD5000EA08A /* SPMediaKeyTap.m */; };
+		5004701713563BA6000EA08A /* NSObject+Spotify.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004701613563BA6000EA08A /* NSObject+Spotify.mm */; };
+		5004701913563C02000EA08A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701813563C01000EA08A /* IOKit.framework */; };
+		5004701B13563C08000EA08A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701A13563C08000EA08A /* Carbon.framework */; };
 		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
 		5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */; };
 		5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008416E1350F40000A2967E /* SPCircularBuffer.m */; };
@@ -146,6 +150,12 @@
 		50046FFE13562440000EA08A /* VivaTrackExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackExtensions.h; sourceTree = "<group>"; };
 		50046FFF13562440000EA08A /* VivaTrackExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackExtensions.m; sourceTree = "<group>"; };
 		500470011356322C000EA08A /* sortbar-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sortbar-pressed.png"; sourceTree = "<group>"; };
+		5004701213563AD5000EA08A /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
+		5004701313563AD5000EA08A /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; };
+		5004701513563BA6000EA08A /* NSObject+Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Spotify.h"; sourceTree = "<group>"; };
+		5004701613563BA6000EA08A /* NSObject+Spotify.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Spotify.mm"; sourceTree = "<group>"; };
+		5004701813563C01000EA08A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		5004701A13563C08000EA08A /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaInternalURLManager.h; sourceTree = "<group>"; };
 		5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaInternalURLManager.m; sourceTree = "<group>"; };
 		500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContextViewController.h; sourceTree = "<group>"; };
@@ -285,6 +295,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5004701B13563C08000EA08A /* Carbon.framework in Frameworks */,
+				5004701913563C02000EA08A /* IOKit.framework in Frameworks */,
 				505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */,
 				50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */,
 				50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */,
@@ -296,6 +308,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5004701113563AD4000EA08A /* Closed Source */ = {
+			isa = PBXGroup;
+			children = (
+				5004701513563BA6000EA08A /* NSObject+Spotify.h */,
+				5004701613563BA6000EA08A /* NSObject+Spotify.mm */,
+				5004701213563AD5000EA08A /* SPMediaKeyTap.h */,
+				5004701313563AD5000EA08A /* SPMediaKeyTap.m */,
+			);
+			path = "Closed Source";
+			sourceTree = "<group>";
+		};
 		500841661350AF9200A2967E /* Playback Contexts */ = {
 			isa = PBXGroup;
 			children = (
@@ -338,6 +361,8 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5004701A13563C08000EA08A /* Carbon.framework */,
+				5004701813563C01000EA08A /* IOKit.framework */,
 				50D192CB134280FB00D02FDF /* CoreAudio.framework */,
 				50D192C9134280F500D02FDF /* AudioUnit.framework */,
 				50E3F778133FD95200FF4618 /* Security.framework */,
@@ -369,6 +394,7 @@
 				503D630413257F28007772CA /* MainMenu.xib */,
 				503D62DF13257D92007772CA /* Supporting Files */,
 				50E3F774133FD92800FF4618 /* Open Source */,
+				5004701113563AD4000EA08A /* Closed Source */,
 			);
 			path = Viva;
 			sourceTree = "<group>";
@@ -836,6 +862,8 @@
 				5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */,
 				50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */,
 				5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */,
+				5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */,
+				5004701713563BA6000EA08A /* NSObject+Spotify.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
