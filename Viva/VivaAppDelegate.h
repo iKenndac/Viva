@@ -31,5 +31,7 @@
 -(IBAction)performNextTrackAction:(id)sender;
 -(IBAction)performPreviousTrackAction:(id)sender;
 -(IBAction)performPlayPauseAction:(id)sender;
+-(IBAction)performVolumeUpAction:(id)sender;
+-(IBAction)performVolumeDownAction:(id)sender;
 
 @end

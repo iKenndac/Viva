@@ -10,9 +10,11 @@
 
 // ------ Playback ------
 
-static NSTimeInterval const kSkipBackThreshold = 3.0; 
+static NSTimeInterval const kSkipBackThreshold = 3.0;
 // ^ If the "skip back" button is clicked after the track has been playing for this long, 
 // the track will be restarted.
+
+static double const kVolumeStepSize = 0.1;
 
 // ------ Keychain ------
 

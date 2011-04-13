@@ -73,6 +73,14 @@
 	}
 }
 
+-(IBAction)performVolumeUpAction:(id)sender {
+	self.playbackManager.volume = MIN(1.0, self.playbackManager.volume + kVolumeStepSize);
+}
+
+-(IBAction)performVolumeDownAction:(id)sender {
+	self.playbackManager.volume = MAX(0.0, self.playbackManager.volume - kVolumeStepSize);
+}
+
 #pragma mark -
 
 -(void)sessionDidLoginSuccessfully:(SPSpotifySession *)aSession; {

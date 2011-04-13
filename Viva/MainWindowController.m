@@ -80,6 +80,8 @@
 											 selector:@selector(splitViewDidResizeSubviews:)
 												 name:NSSplitViewDidResizeSubviewsNotification
 											   object:self.splitView];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:NSSplitViewDidResizeSubviewsNotification object:self.splitView];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
