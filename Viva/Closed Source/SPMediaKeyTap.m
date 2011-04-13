@@ -86,7 +86,7 @@ static CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 
 +(BOOL)usesGlobalMediaKeyTap
 {
-#ifdef _DEBUG
+#ifdef DEBUG
 	return NO;
 #else
 	// XXX(nevyn): MediaKey event tap doesn't work on 10.4, feel free to figure out why if you have the energy.
