@@ -20,9 +20,12 @@
 -(void)clearAudioBuffer;
 -(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack;
 
+-(SPSpotifyTrack *)nextTrackInCurrentContext;
+-(SPSpotifyTrack *)previousTrackInCurrentContext;
+
 @end
 
-#define kMaximumBytesInBuffer 44100 * 2 * 2 // 1 Second @ 44.1kHz, 16bit per channel, stereo
+#define kMaximumBytesInBuffer 44100 * 2 * 2 * 0.5 // 0.5 Second @ 44.1kHz, 16bit per channel, stereo
 
 @implementation VivaPlaybackManager
 
@@ -40,6 +43,16 @@
                forKeyPath:@"playbackSession.isPlaying"
                   options:0
                   context:nil];
+		
+		[self addObserver:self
+			   forKeyPath:@"currentTrack"
+				  options:0
+				  context:nil];
+		
+		[self addObserver:self
+			   forKeyPath:@"currentTrackPosition"
+				  options:0
+				  context:nil];
 		
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -97,7 +110,7 @@
 	}
 	
 	[self playTrackInCurrentContext:track];
-		
+	self.playbackSession.isPlaying = YES;
 }
 
 -(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack {
@@ -115,7 +128,24 @@
 	}	
 }
 
+-(SPSpotifyTrack *)nextTrackInCurrentContext {
+	
+	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
+	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
+	
+	if (currentTrackIndex == NSNotFound ||
+		(currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1 && !self.loopPlayback)) {
+		return nil;
+	} else if (currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1) {
+		return [self.playbackContext.tracksForPlayback objectAtIndex:0];
+	} else {
+		return [self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex + 1];
+	}
+}
+
 -(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
+	
+	BOOL wasPlaying = self.playbackSession.isPlaying;
 	
 	if (clearExistingAudioBuffers) {
 		[self.playbackSession setIsPlaying:NO];
@@ -126,50 +156,58 @@
 		[self clearAudioBuffer];
 	}
 	
-	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
-	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
+	SPSpotifyTrack *nextTrack = [self nextTrackInCurrentContext];
 	
-	if (currentTrackIndex == NSNotFound ||
-		(currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1 && !self.loopPlayback)) {
-		
+	if (nextTrack != nil) {
+		[self playTrackInCurrentContext:nextTrack];	
+		self.playbackSession.isPlaying = wasPlaying;
+	} else {
 		self.currentTrack = nil;
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		self.currentTrackPosition = 0;
-		
-	} else if (currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1) {
-		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:0]];
-	} else {
-		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex + 1]];
 	}
 }
 
--(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
-	
-	[self.playbackSession setIsPlaying:NO];
-	[self.playbackSession unloadPlayback];
-	[self.audioUnit stop];
-	self.audioUnit = nil;
-	
-	[self clearAudioBuffer];
+-(SPSpotifyTrack *)previousTrackInCurrentContext {
 	
 	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
 	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
 	
 	if (currentTrackIndex == NSNotFound ||
 		(currentTrackIndex == 0 && !self.loopPlayback)) {
+		return nil;
+	} else if (currentTrackIndex == 0) {
+		return [self.playbackContext.tracksForPlayback objectAtIndex:[self.playbackContext.tracksForPlayback count] - 1];
+	} else {
+		return [self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex - 1];
+	}
+}
+
+-(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
+	
+	BOOL wasPlaying = self.playbackSession.isPlaying;
+	
+	if (clearExistingAudioBuffers) {
+		[self.playbackSession setIsPlaying:NO];
+		[self.playbackSession unloadPlayback];
+		[self.audioUnit stop];
+		self.audioUnit = nil;
 		
+		[self clearAudioBuffer];
+	}
+	
+	SPSpotifyTrack *previousTrack = [self previousTrackInCurrentContext];
+	
+	if (previousTrack != nil) {
+		[self playTrackInCurrentContext:previousTrack];	
+		self.playbackSession.isPlaying = wasPlaying;
+	} else {
 		self.currentTrack = nil;
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		self.currentTrackPosition = 0;
-		
-	} else if (currentTrackIndex == 0) {
-		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:[self.playbackContext.tracksForPlayback count] - 1]];
-	} else {
-		[self playTrackInCurrentContext:[self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex - 1]];
 	}
-
 }
 
 -(void)clearAudioBuffer {
@@ -202,6 +240,21 @@
         } else {
             [self.audioUnit stop];
         }
+		
+	} else if ([keyPath isEqualToString:@"currentTrack"]) {
+		@synchronized(self) {
+			hasPreCachedNextTrack = NO;
+		}
+	} else if ([keyPath isEqualToString:@"currentTrackPosition"]) {
+		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
+			SPSpotifyTrack *nextTrack = [self nextTrackInCurrentContext];
+			if (nextTrack != nil) {
+				[self.playbackSession preloadTrackForPlayback:nextTrack];
+				@synchronized(self) {
+					hasPreCachedNextTrack = YES;
+				}
+			}
+		}
         
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

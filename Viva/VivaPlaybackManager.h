@@ -22,6 +22,7 @@
 	SPCircularBuffer *audioBuffer;
 	double volume;
 	BOOL loopPlayback;
+	BOOL hasPreCachedNextTrack;
 }
 
 -(id)initWithPlaybackSession:(SPSpotifySession *)aSession;
