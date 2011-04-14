@@ -28,6 +28,9 @@
 		505A929413574F6600136BBF /* VivaTrackInPlaylistReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A929313574F6600136BBF /* VivaTrackInPlaylistReference.m */; };
 		505A9299135784B500136BBF /* playing-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A9298135784B500136BBF /* playing-indicator.png */; };
 		505A929B135785B400136BBF /* paused-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929A135785B400136BBF /* paused-indicator.png */; };
+		505A929E135792DC00136BBF /* paused-indicator-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929C135792DC00136BBF /* paused-indicator-highlighted.png */; };
+		505A929F135792DC00136BBF /* playing-indicator-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929D135792DC00136BBF /* playing-indicator-highlighted.png */; };
+		505A92A21357943A00136BBF /* SPWithAlternateImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */; };
 		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
@@ -183,6 +186,10 @@
 		505A929313574F6600136BBF /* VivaTrackInPlaylistReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackInPlaylistReference.m; sourceTree = "<group>"; };
 		505A9298135784B500136BBF /* playing-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator.png"; sourceTree = "<group>"; };
 		505A929A135785B400136BBF /* paused-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paused-indicator.png"; sourceTree = "<group>"; };
+		505A929C135792DC00136BBF /* paused-indicator-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paused-indicator-highlighted.png"; sourceTree = "<group>"; };
+		505A929D135792DC00136BBF /* playing-indicator-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator-highlighted.png"; sourceTree = "<group>"; };
+		505A92A01357943A00136BBF /* SPWithAlternateImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPWithAlternateImageCell.h; path = "Custom Controls/SPWithAlternateImageCell.h"; sourceTree = "<group>"; };
+		505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPWithAlternateImageCell.m; path = "Custom Controls/SPWithAlternateImageCell.m"; sourceTree = "<group>"; };
 		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
 		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
@@ -450,6 +457,8 @@
 		505A9295135784A500136BBF /* Playback */ = {
 			isa = PBXGroup;
 			children = (
+				505A929C135792DC00136BBF /* paused-indicator-highlighted.png */,
+				505A929D135792DC00136BBF /* playing-indicator-highlighted.png */,
 				505A929A135785B400136BBF /* paused-indicator.png */,
 				505A9298135784B500136BBF /* playing-indicator.png */,
 			);
@@ -554,6 +563,8 @@
 				50E3F763133FBFCD00FF4618 /* SPAccountButtonCell.m */,
 				50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */,
 				50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */,
+				505A92A01357943A00136BBF /* SPWithAlternateImageCell.h */,
+				505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -845,6 +856,8 @@
 				500470021356322C000EA08A /* sortbar-pressed.png in Resources */,
 				505A9299135784B500136BBF /* playing-indicator.png in Resources */,
 				505A929B135785B400136BBF /* paused-indicator.png in Resources */,
+				505A929E135792DC00136BBF /* paused-indicator-highlighted.png in Resources */,
+				505A929F135792DC00136BBF /* playing-indicator-highlighted.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,6 +899,7 @@
 				5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */,
 				5004701713563BA6000EA08A /* NSObject+Spotify.mm in Sources */,
 				505A929413574F6600136BBF /* VivaTrackInPlaylistReference.m in Sources */,
+				505A92A21357943A00136BBF /* SPWithAlternateImageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -130,6 +130,8 @@
 					[self.trackContainerArrayController setSortDescriptors:[NSSortDescriptor trackContainerSortDescriptorsForTitleAscending:sortAscending]];
 				} else if ([[tableColumn identifier] isEqualToString:@"album"]) {
 					[self.trackContainerArrayController setSortDescriptors:[NSSortDescriptor trackContainerSortDescriptorsForAlbumAscending:sortAscending]];
+				} else if ([[tableColumn identifier] isEqualToString:@"artist"]) {
+					[self.trackContainerArrayController setSortDescriptors:[NSSortDescriptor trackContainerSortDescriptorsForArtistAscending:sortAscending]];
 				}
 				[(SPTableHeaderCell *)[col headerCell] setSortAscending:[[[self.trackContainerArrayController sortDescriptors] objectAtIndex:0] ascending] priority:0];
 			} else {
@@ -149,11 +151,14 @@
 			if (container == self.playingTrackContainer) {
 				if (self.playingTrackContainerIsCurrentlyPlaying) {
 					[aCell setImage:[NSImage imageNamed:@"playing-indicator"]];
+					[aCell setAlternateImage:[NSImage imageNamed:@"playing-indicator-highlighted"]];
 				} else {
 					[aCell setImage:[NSImage imageNamed:@"paused-indicator"]];
+					[aCell setAlternateImage:[NSImage imageNamed:@"paused-indicator-highlighted"]];
 				}
 			} else {
 				[aCell setImage:nil];
+				[aCell setAlternateImage:nil];
 			}
 		}
 	}
