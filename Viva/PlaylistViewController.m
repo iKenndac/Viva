@@ -11,10 +11,14 @@
 #import "SPTableCorner.h"
 #import "VivaAppDelegate.h"
 #import "VivaSortDescriptorExtensions.h"
+#import "VivaTrackInPlaylistReference.h"
 
 @interface PlaylistViewController ()
 
 @property (nonatomic, readwrite, retain) SPSpotifyPlaylist *playlist;
+@property (nonatomic, readwrite, retain) NSArray *trackContainers;
+
+-(void)rebuildTrackContainers;
 
 @end
 
@@ -22,6 +26,12 @@
 
 -(id)initWithObjectFromURL:(NSURL *)aURL {
 	if ((self = [super initWithObjectFromURL:aURL])) {
+		
+		[self addObserver:self
+			   forKeyPath:@"playlist.tracks"
+				  options:0
+				  context:nil];
+		
 		self.playlist = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL];
 	}
 	return self;
@@ -45,22 +55,42 @@
 	[self.trackTable setDoubleAction:@selector(playTrack:)];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"playlist.tracks"]) {
+        [self rebuildTrackContainers];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+-(void)rebuildTrackContainers {
+	
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.tracks count]];
+	
+	for (SPSpotifyTrack *aTrack in self.playlist.tracks) {
+		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:aTrack
+																		   inPlaylist:self.playlist] autorelease]];
+	}
+	self.trackContainers = [NSArray arrayWithArray:newContainers];
+}
+
 -(IBAction)playTrack:(id)sender {
 	if ([self.trackTable clickedRow] > -1) {
-		SPSpotifyTrack *track = [[self.tracksArrayController arrangedObjects] objectAtIndex:[self.trackTable clickedRow]];
-		[self playTrackInThisContext:track];
+		id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:[self.trackTable clickedRow]];
+		[self playTrackContainerInThisContext:container];
 	}
 }
 
 +(NSSet *)keyPathsForValuesAffectingTracksForPlayback {
-	return [NSSet setWithObject:@"tracksArrayController.arrangedObjects"];
+	return [NSSet setWithObject:@"trackContainerArrayController.arrangedObjects"];
 }
 
--(NSArray *)tracksForPlayback {
-	return [NSArray arrayWithArray:[self.tracksArrayController arrangedObjects]];
+-(NSArray *)trackContainersForPlayback {
+	return [NSArray arrayWithArray:[self.trackContainerArrayController arrangedObjects]];
 }
 
-@synthesize tracksArrayController;
+@synthesize trackContainers;
+@synthesize trackContainerArrayController;
 @synthesize trackTable;
 @synthesize playlist;
 
@@ -82,11 +112,11 @@
 		if (tableView == self.trackTable) {
 			if (col == tableColumn) {
 				if ([[tableColumn identifier] isEqualToString:@"title"]) {
-					[self.tracksArrayController setSortDescriptors:[NSSortDescriptor trackSortDescriptorsForTitleAscending:sortAscending]];
+					[self.trackContainerArrayController setSortDescriptors:[NSSortDescriptor trackSortDescriptorsForTitleAscending:sortAscending]];
 				} else if ([[tableColumn identifier] isEqualToString:@"album"]) {
-					[self.tracksArrayController setSortDescriptors:[NSSortDescriptor trackSortDescriptorsForAlbumAscending:sortAscending]];
+					[self.trackContainerArrayController setSortDescriptors:[NSSortDescriptor trackSortDescriptorsForAlbumAscending:sortAscending]];
 				}
-				[(SPTableHeaderCell *)[col headerCell] setSortAscending:[[[self.tracksArrayController sortDescriptors] objectAtIndex:0] ascending] priority:0];
+				[(SPTableHeaderCell *)[col headerCell] setSortAscending:[[[self.trackContainerArrayController sortDescriptors] objectAtIndex:0] ascending] priority:0];
 			} else {
 				[(SPTableHeaderCell *)[col headerCell] setSortAscending:YES priority:1];
 			}
@@ -97,6 +127,8 @@
 }
 
 - (void)dealloc {
+	[self removeObserver:self forKeyPath:@"playlist.tracks"];
+	self.trackContainers = nil;
 	self.playlist = nil;
     [super dealloc];
 }

@@ -309,102 +309,6 @@
 					<int key="connectionID">2</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: selection.artists</string>
-						<reference key="source" ref="718082830"/>
-						<reference key="destination" ref="680101217"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="718082830"/>
-							<reference key="NSDestination" ref="680101217"/>
-							<string key="NSLabel">contentArray: selection.artists</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">selection.artists</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">5</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: playlist.tracks</string>
-						<reference key="source" ref="680101217"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="680101217"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: playlist.tracks</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">playlist.tracks</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">7</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.name</string>
-						<reference key="source" ref="215727644"/>
-						<reference key="destination" ref="680101217"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="215727644"/>
-							<reference key="NSDestination" ref="680101217"/>
-							<string key="NSLabel">value: arrangedObjects.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.name</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEditable</string>
-								<boolean value="YES" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">29</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.album.name</string>
-						<reference key="source" ref="645587947"/>
-						<reference key="destination" ref="680101217"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="645587947"/>
-							<reference key="NSDestination" ref="680101217"/>
-							<string key="NSLabel">value: arrangedObjects.album.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.album.name</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEditable</string>
-								<boolean value="YES" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">31</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.popularity</string>
-						<reference key="source" ref="378186717"/>
-						<reference key="destination" ref="680101217"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="378186717"/>
-							<reference key="NSDestination" ref="680101217"/>
-							<string key="NSLabel">value: arrangedObjects.popularity</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.popularity</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">32</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">tracksArrayController</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="680101217"/>
-					</object>
-					<int key="connectionID">62</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="342886202"/>
@@ -419,6 +323,102 @@
 						<reference key="destination" ref="342886202"/>
 					</object>
 					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackContainerArrayController</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="680101217"/>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: trackContainers</string>
+						<reference key="source" ref="680101217"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="680101217"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: trackContainers</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">trackContainers</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">67</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.track.name</string>
+						<reference key="source" ref="215727644"/>
+						<reference key="destination" ref="680101217"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="215727644"/>
+							<reference key="NSDestination" ref="680101217"/>
+							<string key="NSLabel">value: arrangedObjects.track.name</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.track.name</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSConditionallySetsEditable</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.track.album.name</string>
+						<reference key="source" ref="645587947"/>
+						<reference key="destination" ref="680101217"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="645587947"/>
+							<reference key="NSDestination" ref="680101217"/>
+							<string key="NSLabel">value: arrangedObjects.track.album.name</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.track.album.name</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSConditionallySetsEditable</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.track.popularity</string>
+						<reference key="source" ref="378186717"/>
+						<reference key="destination" ref="680101217"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="378186717"/>
+							<reference key="NSDestination" ref="680101217"/>
+							<string key="NSLabel">value: arrangedObjects.track.popularity</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.track.popularity</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: selection.track.artists</string>
+						<reference key="source" ref="718082830"/>
+						<reference key="destination" ref="680101217"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="718082830"/>
+							<reference key="NSDestination" ref="680101217"/>
+							<string key="NSLabel">contentArray: selection.track.artists</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">selection.track.artists</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">74</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -567,7 +567,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">65</int>
+			<int key="maxID">74</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -586,17 +586,17 @@
 						</object>
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="trackContainerArrayController">NSArrayController</string>
 						<string key="trackTable">NSTableView</string>
-						<string key="tracksArrayController">NSArrayController</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="trackContainerArrayController">
+							<string key="name">trackContainerArrayController</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="trackTable">
 							<string key="name">trackTable</string>
 							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tracksArrayController">
-							<string key="name">tracksArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

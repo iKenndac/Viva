@@ -14,14 +14,13 @@
 @property (retain, readwrite) SPCircularBuffer *audioBuffer;
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
-@property (readwrite, retain) SPSpotifyTrack *currentTrack;
+@property (readwrite, retain) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, retain) SPSpotifySession *playbackSession;
 
--(void)clearAudioBuffer;
--(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack;
+-(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack;
 
--(SPSpotifyTrack *)nextTrackInCurrentContext;
--(SPSpotifyTrack *)previousTrackInCurrentContext;
+-(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
+-(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
 
 @end
 
@@ -45,7 +44,7 @@
                   context:nil];
 		
 		[self addObserver:self
-			   forKeyPath:@"currentTrack"
+			   forKeyPath:@"currentTrackContainer"
 				  options:0
 				  context:nil];
 		
@@ -67,11 +66,19 @@
 @synthesize audioBuffer;
 @synthesize audioUnit;
 @synthesize playbackContext;
-@synthesize currentTrack;
+@synthesize currentTrackContainer;
 @synthesize playbackSession;
 @synthesize currentTrackPosition;
 @synthesize volume;
 @synthesize loopPlayback;
+
++(NSSet *)keyPathsForValuesAffectingCurrentTrack {
+	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
+}
+
+-(SPSpotifyTrack *)currentTrack {
+	return self.currentTrackContainer.track;
+}
 
 +(NSSet *)keyPathsForValuesAffectingCanSkipToNextTrack {
 	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", nil];
@@ -79,7 +86,7 @@
 
 -(BOOL)canSkipToNextTrack {
 	return (self.loopPlayback || 
-			[self.playbackContext.tracksForPlayback indexOfObject:self.currentTrack] != [self.playbackContext.tracksForPlayback count] - 1);			
+			[self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrackContainer] != [self.playbackContext.trackContainersForPlayback count] - 1);			
 }
 
 +(NSSet *)keyPathsForValuesAffectingCanSkipToPreviousTrack {
@@ -88,7 +95,7 @@
 
 -(BOOL)canSkipToPreviousTrack {
 	return (self.loopPlayback || 
-			[self.playbackContext.tracksForPlayback indexOfObject:self.currentTrack] != 0);			
+			[self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrack] != 0);			
 }
 
 #pragma mark -
@@ -101,24 +108,24 @@
 	[self.audioUnit stop];
 	self.audioUnit = nil;
 	
-	[self clearAudioBuffer];
+	[self.audioBuffer clear];
 	
-	SPSpotifyTrack *track = [[aNotification userInfo] valueForKey:kPlaybackInitialTrackKey];
+	id <VivaTrackContainer> container = [[aNotification userInfo] valueForKey:kPlaybackInitialTrackContainerKey];
 	
 	if ([[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
 		self.playbackContext = [aNotification object];
 	}
 	
-	[self playTrackInCurrentContext:track];
+	[self playTrackContainerInCurrentContext:container];
 	self.playbackSession.isPlaying = YES;
 }
 
--(void)playTrackInCurrentContext:(SPSpotifyTrack *)newTrack {
+-(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack {
 	
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
-	self.currentTrack = newTrack;
+	self.currentTrackContainer = newTrack;
 	self.currentTrackPosition = 0.0;
-	[self.playbackSession playTrack:newTrack];
+	[self.playbackSession playTrack:self.currentTrackContainer.track];
 }
 	
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition {
@@ -128,18 +135,17 @@
 	}	
 }
 
--(SPSpotifyTrack *)nextTrackInCurrentContext {
+-(id <VivaTrackContainer>)nextTrackContainerInCurrentContext {
 	
-	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
-	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
+	NSUInteger currentTrackIndex = [self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrackContainer];
 	
 	if (currentTrackIndex == NSNotFound ||
-		(currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1 && !self.loopPlayback)) {
+		(currentTrackIndex == [self.playbackContext.trackContainersForPlayback count] - 1 && !self.loopPlayback)) {
 		return nil;
-	} else if (currentTrackIndex == [self.playbackContext.tracksForPlayback count] - 1) {
-		return [self.playbackContext.tracksForPlayback objectAtIndex:0];
+	} else if (currentTrackIndex == [self.playbackContext.trackContainersForPlayback count] - 1) {
+		return [self.playbackContext.trackContainersForPlayback objectAtIndex:0];
 	} else {
-		return [self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex + 1];
+		return [self.playbackContext.trackContainersForPlayback objectAtIndex:currentTrackIndex + 1];
 	}
 }
 
@@ -153,34 +159,33 @@
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		
-		[self clearAudioBuffer];
+		[self.audioBuffer clear];
 	}
 	
-	SPSpotifyTrack *nextTrack = [self nextTrackInCurrentContext];
+	id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 	
-	if (nextTrack != nil) {
-		[self playTrackInCurrentContext:nextTrack];	
+	if (nextContainer != nil) {
+		[self playTrackContainerInCurrentContext:nextContainer];	
 		self.playbackSession.isPlaying = wasPlaying;
 	} else {
-		self.currentTrack = nil;
+		self.currentTrackContainer = nil;
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		self.currentTrackPosition = 0;
 	}
 }
 
--(SPSpotifyTrack *)previousTrackInCurrentContext {
+-(id <VivaTrackContainer>)previousTrackContainerInCurrentContext {
 	
-	// WARNING: This logic falls over as soon as you have the same track in a context more than once.
-	NSUInteger currentTrackIndex = [self.playbackContext.tracksForPlayback indexOfObject:currentTrack];
+	NSUInteger currentTrackIndex = [self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrackContainer];
 	
 	if (currentTrackIndex == NSNotFound ||
 		(currentTrackIndex == 0 && !self.loopPlayback)) {
 		return nil;
 	} else if (currentTrackIndex == 0) {
-		return [self.playbackContext.tracksForPlayback objectAtIndex:[self.playbackContext.tracksForPlayback count] - 1];
+		return [self.playbackContext.trackContainersForPlayback objectAtIndex:[self.playbackContext.trackContainersForPlayback count] - 1];
 	} else {
-		return [self.playbackContext.tracksForPlayback objectAtIndex:currentTrackIndex - 1];
+		return [self.playbackContext.trackContainersForPlayback objectAtIndex:currentTrackIndex - 1];
 	}
 }
 
@@ -194,25 +199,20 @@
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		
-		[self clearAudioBuffer];
+		[self.audioBuffer clear];
 	}
 	
-	SPSpotifyTrack *previousTrack = [self previousTrackInCurrentContext];
+	id <VivaTrackContainer> previousContainer = [self previousTrackContainerInCurrentContext];
 	
-	if (previousTrack != nil) {
-		[self playTrackInCurrentContext:previousTrack];	
+	if (previousContainer != nil) {
+		[self playTrackContainerInCurrentContext:previousContainer];	
 		self.playbackSession.isPlaying = wasPlaying;
 	} else {
-		self.currentTrack = nil;
+		self.currentTrackContainer = nil;
 		[self.audioUnit stop];
 		self.audioUnit = nil;
 		self.currentTrackPosition = 0;
 	}
-}
-
--(void)clearAudioBuffer {
-	
-	[self.audioBuffer clear];
 }
 
 #pragma mark -
@@ -241,15 +241,15 @@
             [self.audioUnit stop];
         }
 		
-	} else if ([keyPath isEqualToString:@"currentTrack"]) {
+	} else if ([keyPath isEqualToString:@"currentTrackContainer"]) {
 		@synchronized(self) {
 			hasPreCachedNextTrack = NO;
 		}
 	} else if ([keyPath isEqualToString:@"currentTrackPosition"]) {
 		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
-			SPSpotifyTrack *nextTrack = [self nextTrackInCurrentContext];
-			if (nextTrack != nil) {
-				[self.playbackSession preloadTrackForPlayback:nextTrack];
+			id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
+			if (nextContainer != nil) {
+				[self.playbackSession preloadTrackForPlayback:nextContainer.track];
 				@synchronized(self) {
 					hasPreCachedNextTrack = YES;
 				}
@@ -266,7 +266,7 @@
 -(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
 	if (frameCount == 0) {
-		[self clearAudioBuffer];
+		[self.audioBuffer clear];
 		return 0; // Audio discontinuity!
 	}
 	
@@ -368,10 +368,12 @@ static UInt32 framesSinceLastUpdate = 0;
 - (void)dealloc {
 
     [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
-	
-	[self clearAudioBuffer];
+	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
+	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
+
+	[self.audioBuffer clear];
 	self.audioBuffer = nil;
-    self.currentTrack = nil;
+    self.currentTrackContainer = nil;
 	self.playbackContext = nil;
 	[self.audioUnit stop];
 	self.audioUnit = nil;

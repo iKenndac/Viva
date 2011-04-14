@@ -13,10 +13,10 @@
 
 @interface VivaPlaybackContextViewController : NSViewController <VivaPlaybackContext, VivaViewController> {
 @private
-    NSArray *tracksForPlayback;
+    NSArray *trackContainersForPlayback;
 	NSURL *spotifyURL;
 }
 
--(void)playTrackInThisContext:(SPSpotifyTrack *)track;
+-(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer;
 
 @end

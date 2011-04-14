@@ -25,12 +25,12 @@
 }
 
 @synthesize spotifyURL;
-@synthesize tracksForPlayback;
+@synthesize trackContainersForPlayback;
 
--(void)playTrackInThisContext:(SPSpotifyTrack *)track {
+-(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
 														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:track forKey:kPlaybackInitialTrackKey]];
+													  userInfo:[NSDictionary dictionaryWithObject:trackContainer forKey:kPlaybackInitialTrackContainerKey]];
 }
 
 - (void)dealloc

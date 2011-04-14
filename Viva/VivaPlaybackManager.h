@@ -15,7 +15,7 @@
 @interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSpotifySessionPlaybackDelegate> {
 @private
     id <VivaPlaybackContext> playbackContext;
-	SPSpotifyTrack *currentTrack;
+	id <VivaTrackContainer> currentTrackContainer;
 	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
 	SPSpotifySession *playbackSession;
@@ -30,6 +30,7 @@
 @property (readonly, retain) id <VivaPlaybackContext> playbackContext;
 @property (readwrite) NSTimeInterval currentTrackPosition;
 @property (readonly, retain) SPSpotifyTrack *currentTrack;
+@property (readonly, retain) id <VivaTrackContainer> currentTrackContainer;
 @property (readonly, retain) SPSpotifySession *playbackSession;
 @property (readwrite) double volume;
 @property (readwrite) BOOL loopPlayback;

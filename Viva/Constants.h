@@ -31,4 +31,4 @@ static NSString * const kVivaMainViewHistoryUserDefaultsKey = @"History";
 // ------ Notifications ------
 
 static NSString * const kTrackShouldBePlayedNotification = @"kTrackShouldBePlayedNotification";
-static NSString * const kPlaybackInitialTrackKey = @"kPlaybackInitialTrackKey";
+static NSString * const kPlaybackInitialTrackContainerKey = @"kPlaybackInitialTrackContainerKey";

@@ -15,13 +15,15 @@
 	SPSpotifyPlaylist *playlist;
     
 	NSTableView *trackTable;
-	NSArrayController *tracksArrayController;
+	NSArrayController *trackContainerArrayController;
 	BOOL sortAscending;
+	NSArray *trackContainers;
 }
 
-@property (assign) IBOutlet NSArrayController *tracksArrayController;
+@property (assign) IBOutlet NSArrayController *trackContainerArrayController;
 @property (assign) IBOutlet NSTableView *trackTable;
 @property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
+@property (nonatomic, readonly, retain) NSArray *trackContainers;
 
 -(IBAction)playTrack:(id)sender;
 
