@@ -1,12 +1,9 @@
 Programming (Daniel & Nevyn):
 	Short Term:
-		- Prepare next track for playback ~3-5sec before its due to be playing to prevent stuttering when starting a non-cached track.  @done
 		- Be smarter in the UI about duration bugs (e.g., Goodnight Elisabeth on New Amsterdam is way longer than the metadata says it is)
-		- Dock menu @done
-		- Media keys @done
-		- Ability to close main window @done
-		- Losing play token doesn't update UI @done
-		- Proper sorting @done
+		- Fix playback context next track logic (track/playlist relationship should be unique) 
+		- Drag & Drop (tracks to playlists, etc)
+		- Unhandled key events (space, arrows, etc) should control playback
 		- Updating starred elsewhere doesn't update "now playing" UI
 		- Starred/etc lists
 	Longer Term:

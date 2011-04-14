@@ -24,7 +24,7 @@
 
 +(NSArray *)trackSortDescriptorsForArtistAscending:(BOOL)ascending {
 	
-	return [[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"condensedArtist" ascending:ascending selector:@selector(caseInsensitiveCompare:)]]
+	return [[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"album.artist.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)]]
 			arrayByAddingObjectsFromArray:[self trackSortDescriptorsForAlbumAscending:ascending]];
 	
 }

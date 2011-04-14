@@ -97,6 +97,7 @@ static CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 + (NSArray*)defaultMediaKeyUserBundleIdentifiers;
 {
 	return [NSArray arrayWithObjects:
+		@"com.spotify.Viva",
 		@"com.spotify.client",
 		@"com.apple.iTunes",
 		@"com.apple.QuickTimePlayerX",
