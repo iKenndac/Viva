@@ -26,6 +26,13 @@
 
 @synthesize spotifyURL;
 @synthesize trackContainersForPlayback;
+@synthesize playingTrackContainer;
+@synthesize playingTrackContainerIsCurrentlyPlaying;
+
+-(void)setPlayingTrackContainer:(id <VivaTrackContainer>)aTrackContainer isPlaying:(BOOL)playing {
+	self.playingTrackContainer = aTrackContainer;
+	playingTrackContainerIsCurrentlyPlaying = playing;
+}
 
 -(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
@@ -33,8 +40,8 @@
 													  userInfo:[NSDictionary dictionaryWithObject:trackContainer forKey:kPlaybackInitialTrackContainerKey]];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
+	self.playingTrackContainer = nil;
 	self.spotifyURL = nil;
     [super dealloc];
 }

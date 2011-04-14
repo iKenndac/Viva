@@ -12,8 +12,8 @@
 @interface NSSortDescriptor (VivaSortDescriptorExtensions)
 
 
-+(NSArray *)trackSortDescriptorsForTitleAscending:(BOOL)ascending;
-+(NSArray *)trackSortDescriptorsForAlbumAscending:(BOOL)ascending;
-+(NSArray *)trackSortDescriptorsForArtistAscending:(BOOL)ascending;
++(NSArray *)trackContainerSortDescriptorsForTitleAscending:(BOOL)ascending;
++(NSArray *)trackContainerSortDescriptorsForAlbumAscending:(BOOL)ascending;
++(NSArray *)trackContainerSortDescriptorsForArtistAscending:(BOOL)ascending;
 
 @end

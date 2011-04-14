@@ -23,6 +23,6 @@
 @property (readonly, nonatomic, copy) NSURL *spotifyURL;
 
 @optional
--(void)setPlayingTrack:(SPSpotifyTrack *)playingTrack;
+-(void)setPlayingTrackContainer:(id <VivaTrackContainer>)aTrackContainer isPlaying:(BOOL)playing;
 
 @end

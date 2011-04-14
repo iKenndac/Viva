@@ -15,8 +15,13 @@
 @private
     NSArray *trackContainersForPlayback;
 	NSURL *spotifyURL;
+	id <VivaTrackContainer> playingTrackContainer;
+	BOOL playingTrackContainerIsCurrentlyPlaying;
 }
 
 -(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer;
+
+@property (retain, readwrite) id <VivaTrackContainer> playingTrackContainer;
+@property (readwrite) BOOL playingTrackContainerIsCurrentlyPlaying;
 
 @end

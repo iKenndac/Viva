@@ -53,6 +53,11 @@
 				  options:0
 				  context:nil];
 		
+		[self addObserver:self
+			   forKeyPath:@"playbackContext"
+				  options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+				  context:nil];
+		
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playTrackFromUserAction:)
@@ -241,10 +246,35 @@
             [self.audioUnit stop];
         }
 		
+		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
+			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+		}
+		
 	} else if ([keyPath isEqualToString:@"currentTrackContainer"]) {
 		@synchronized(self) {
 			hasPreCachedNextTrack = NO;
 		}
+		
+		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
+			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+		}
+		
+	} else if ([keyPath isEqualToString:@"playbackContext"]) {
+		
+		id oldContext = [change valueForKey:NSKeyValueChangeOldKey];
+		if (oldContext != nil && oldContext != [NSNull null]) {
+			if ([oldContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
+				[oldContext setPlayingTrackContainer:nil isPlaying:NO];
+			}
+		}
+		
+		id newContext = [change valueForKey:NSKeyValueChangeNewKey];
+		if (newContext != nil && newContext != [NSNull null]) {
+			if ([newContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
+				[newContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+			}
+		}
+		
 	} else if ([keyPath isEqualToString:@"currentTrackPosition"]) {
 		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
 			id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
@@ -370,7 +400,8 @@ static UInt32 framesSinceLastUpdate = 0;
     [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
-
+	[self removeObserver:self forKeyPath:@"playbackContext"];
+	
 	[self.audioBuffer clear];
 	self.audioBuffer = nil;
     self.currentTrackContainer = nil;

@@ -26,6 +26,8 @@
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		503D630913257F5B007772CA /* libspotify_appkey.key in Resources */ = {isa = PBXBuildFile; fileRef = 503D630813257F5B007772CA /* libspotify_appkey.key */; };
 		505A929413574F6600136BBF /* VivaTrackInPlaylistReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A929313574F6600136BBF /* VivaTrackInPlaylistReference.m */; };
+		505A9299135784B500136BBF /* playing-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A9298135784B500136BBF /* playing-indicator.png */; };
+		505A929B135785B400136BBF /* paused-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929A135785B400136BBF /* paused-indicator.png */; };
 		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
@@ -179,6 +181,8 @@
 		503D630813257F5B007772CA /* libspotify_appkey.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = libspotify_appkey.key; sourceTree = "<group>"; };
 		505A929213574F6600136BBF /* VivaTrackInPlaylistReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackInPlaylistReference.h; sourceTree = "<group>"; };
 		505A929313574F6600136BBF /* VivaTrackInPlaylistReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackInPlaylistReference.m; sourceTree = "<group>"; };
+		505A9298135784B500136BBF /* playing-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator.png"; sourceTree = "<group>"; };
+		505A929A135785B400136BBF /* paused-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paused-indicator.png"; sourceTree = "<group>"; };
 		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
 		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
@@ -443,6 +447,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		505A9295135784A500136BBF /* Playback */ = {
+			isa = PBXGroup;
+			children = (
+				505A929A135785B400136BBF /* paused-indicator.png */,
+				505A9298135784B500136BBF /* playing-indicator.png */,
+			);
+			path = Playback;
+			sourceTree = "<group>";
+		};
 		506F347413436EF8002BA308 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				506F34891343DCFB002BA308 /* VivaIcon.icns */,
+				505A9295135784A500136BBF /* Playback */,
 				50E3F76C133FC47C00FF4618 /* Login */,
 				50E3F743133FB9A900FF4618 /* Toolbar */,
 				509AAE9C1339097C0009B6EE /* Footer */,
@@ -829,6 +843,8 @@
 				506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */,
 				50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */,
 				500470021356322C000EA08A /* sortbar-pressed.png in Resources */,
+				505A9299135784B500136BBF /* playing-indicator.png in Resources */,
+				505A929B135785B400136BBF /* paused-indicator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

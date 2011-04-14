@@ -10,22 +10,22 @@
 
 @implementation NSSortDescriptor (VivaSortDescriptorExtensions)
 
-+(NSArray *)trackSortDescriptorsForTitleAscending:(BOOL)ascending {
-	return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:ascending selector:@selector(caseInsensitiveCompare:)]];
++(NSArray *)trackContainerSortDescriptorsForTitleAscending:(BOOL)ascending {
+	return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"track.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)]];
 }
 
-+(NSArray *)trackSortDescriptorsForAlbumAscending:(BOOL)ascending {
++(NSArray *)trackContainerSortDescriptorsForAlbumAscending:(BOOL)ascending {
 	return [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"album.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)],
-			[NSSortDescriptor sortDescriptorWithKey:@"discNumber" ascending:YES selector:@selector(compare:)],
-			[NSSortDescriptor sortDescriptorWithKey:@"trackNumber" ascending:YES selector:@selector(compare:)],
+			[NSSortDescriptor sortDescriptorWithKey:@"track.album.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)],
+			[NSSortDescriptor sortDescriptorWithKey:@"track.discNumber" ascending:YES selector:@selector(compare:)],
+			[NSSortDescriptor sortDescriptorWithKey:@"track.trackNumber" ascending:YES selector:@selector(compare:)],
 			nil];
 }
 
-+(NSArray *)trackSortDescriptorsForArtistAscending:(BOOL)ascending {
++(NSArray *)trackContainerSortDescriptorsForArtistAscending:(BOOL)ascending {
 	
-	return [[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"album.artist.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)]]
-			arrayByAddingObjectsFromArray:[self trackSortDescriptorsForAlbumAscending:ascending]];
+	return [[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"track.album.artist.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)]]
+			arrayByAddingObjectsFromArray:[self trackContainerSortDescriptorsForAlbumAscending:ascending]];
 	
 }
 

@@ -1,7 +1,7 @@
 Programming (Daniel & Nevyn):
 	Short Term:
 		- Be smarter in the UI about duration bugs (e.g., Goodnight Elisabeth on New Amsterdam is way longer than the metadata says it is)
-		- Fix playback context next track logic (track/playlist relationship should be unique) 
+		- Fix playback context next track logic (track/playlist relationship should be unique)  @done
 		- Drag & Drop (tracks to playlists, etc)
 		- Unhandled key events (space, arrows, etc) should control playback
 		- Updating starred elsewhere doesn't update "now playing" UI
@@ -9,7 +9,6 @@ Programming (Daniel & Nevyn):
 	Longer Term:
 		- Option for Viva to be the default url handler
 		- Modifying source list layout via XML/etc for AB testing etc
-		- Playback UI (album art & track information in bottom-left)
 		- Notification bubbles
 		- Improve playlist view (higher line-height, custom row colours, etc)
 
