@@ -105,10 +105,24 @@
 	} else if ([keyPath isEqualToString:@"currentViewController"]) {
 		// Display the view controller
 		
+		NSViewController *oldViewController = [change valueForKey:NSKeyValueChangeOldKey];
 		NSViewController *newViewController = [change valueForKey:NSKeyValueChangeNewKey];
+		
+		if (oldViewController != (id)[NSNull null]) {
+			[[self window] setNextResponder:[oldViewController nextResponder]];
+			[oldViewController setNextResponder:nil];
+		}
 		
 		if (newViewController != nil && newViewController != (id)[NSNull null]) {
 			self.contentBox.contentView = newViewController.view;
+			
+			NSResponder *responder = [[self window] nextResponder];
+			
+			if (responder != newViewController) {
+				[[self window] setNextResponder:newViewController];
+				[newViewController setNextResponder:responder];
+			}
+
 		} else {
 			self.contentBox.contentView = nil;
 		}

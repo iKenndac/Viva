@@ -12,6 +12,7 @@
 #import "VivaAppDelegate.h"
 #import "VivaSortDescriptorExtensions.h"
 #import "VivaTrackInPlaylistReference.h"
+#import "Constants.h"
 
 @interface PlaylistViewController ()
 
@@ -61,6 +62,9 @@
 	
 	[self.trackTable setCornerView:[[[SPTableCorner alloc] init] autorelease]];
 	
+	[self.trackTable setDraggingSourceOperationMask:NSDragOperationNone forLocal:NO];
+	[self.trackTable setDraggingSourceOperationMask:NSDragOperationMove | NSDragOperationCopy forLocal:YES];
+	[self.trackTable registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyTrackURLListDragIdentifier, kSpotifyTrackMoveSourceIndexSetDragIdentifier, nil]];
 	[self.trackTable setTarget:self];
 	[self.trackTable setDoubleAction:@selector(playTrack:)];
 }
@@ -76,10 +80,10 @@
 }
 
 -(void)rebuildTrackContainers {
+
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[[self.playlist mutableArrayValueForKey:@"tracks"] count]];
 	
-	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.tracks count]];
-	
-	for (SPSpotifyTrack *aTrack in self.playlist.tracks) {
+	for (SPSpotifyTrack *aTrack in [self.playlist mutableArrayValueForKey:@"tracks"]) {
 		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:aTrack
 																		   inPlaylist:self.playlist] autorelease]];
 	}
@@ -105,6 +109,20 @@
 @synthesize trackContainerArrayController;
 @synthesize trackTable;
 @synthesize playlist;
+
+-(void)keyDown:(NSEvent *)theEvent {
+	[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+}
+
+-(void)deleteBackward:(id)sender {
+	
+	if (self.trackContainerArrayController.selectedObjects.count == 0) {
+		NSBeep();
+		return;
+	}
+	
+	[self.playlist.tracks removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
+}
 
 #pragma mark -
 
@@ -163,6 +181,92 @@
 		}
 	}
 	
+}
+
+#pragma mark -
+
+- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard {
+	
+	if ([self.trackContainerArrayController.sortDescriptors count] != 0)
+		return NO;
+	
+	NSArray *containers = [self.trackContainerArrayController.arrangedObjects objectsAtIndexes:rowIndexes];
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[[containers valueForKey:@"track"] valueForKey:@"spotifyURL"]]
+														forType:kSpotifyTrackURLListDragIdentifier];
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:rowIndexes] forType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
+	
+	
+	return YES;
+}
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation {
+	
+	NSData *dragData = nil;
+	
+	if ([info draggingSource] == self.trackTable) 
+		dragData = [[info draggingPasteboard] dataForType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
+	else
+		dragData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+	
+	if (!dragData)
+		return NSDragOperationNone;
+	
+	if (operation == NSTableViewDropOn)
+		[aTableView setDropRow:row dropOperation:NSTableViewDropAbove];
+	
+	if ([info draggingSource] == self.trackTable) {
+		return ([NSEvent modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask ? NSDragOperationCopy : NSDragOperationMove;
+	} else {
+		return NSDragOperationCopy;
+	}
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation {
+	
+	NSData *dragData = nil;
+	
+	if ([info draggingSource] == self.trackTable) 
+		dragData = [[info draggingPasteboard] dataForType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
+	else
+		dragData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+	
+	if (!dragData)
+		return NO;
+
+	if ([info draggingSource] == self.trackTable) {
+		
+		NSIndexSet *trackIndexesToMove = [NSKeyedUnarchiver unarchiveObjectWithData:dragData];
+		
+		if (([NSEvent modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) {
+			// Copy
+			NSArray *tracksToMove = [self.playlist.tracks objectsAtIndexes:trackIndexesToMove];
+			[self.playlist.tracks insertObjects:tracksToMove 
+									  atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToMove count])]];
+
+		} else {
+			[self.playlist moveTracksAtIndexes:trackIndexesToMove toIndex:row];
+		}
+		
+		return YES;
+		
+	} else {
+		
+		NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:dragData];
+		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
+		
+		for (NSURL *trackURL in trackURLs) {
+			SPSpotifyTrack *track = [SPSpotifyTrack trackForTrackURL:trackURL inSession:self.playlist.session];
+			if (track != nil) {
+				[tracksToAdd addObject:track];
+			}
+		}
+		
+		[self.playlist.tracks insertObjects:tracksToAdd 
+								  atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToAdd count])]];
+		return YES;
+	}
+	
+	return NO;
 }
 
 - (void)dealloc {

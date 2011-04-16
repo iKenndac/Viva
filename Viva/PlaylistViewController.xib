@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<int key="IBDocument.SystemTarget">1070</int>
+		<string key="IBDocument.SystemVersion">11A430e</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1545</string>
+		<string key="IBDocument.AppKitVersion">1117</string>
+		<string key="IBDocument.HIToolboxVersion">552.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1306</string>
+			<string key="NS.object.0">1545</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSCustomObject</string>
@@ -62,15 +62,13 @@
 											<string key="NSFrameSize">{463, 17}</string>
 											<reference key="NSSuperview" ref="833267190"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="235230301"/>
+											<reference key="NSNextKeyView" ref="300786197"/>
 											<reference key="NSTableView" ref="342886202"/>
 										</object>
-										<object class="_NSCornerView" key="NSCornerView" id="235230301">
-											<reference key="NSNextResponder" ref="251166248"/>
+										<object class="_NSCornerView" key="NSCornerView">
+											<nil key="NSNextResponder"/>
 											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{388, 0}, {16, 17}}</string>
-											<reference key="NSSuperview" ref="251166248"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="300786197"/>
 										</object>
 										<array class="NSMutableArray" key="NSTableColumns">
@@ -231,7 +229,7 @@
 											</object>
 										</object>
 										<double key="NSRowHeight">24</double>
-										<int key="NSTvFlags">-759136256</int>
+										<int key="NSTvFlags">-624918528</int>
 										<reference key="NSDelegate"/>
 										<reference key="NSDataSource"/>
 										<int key="NSColumnAutoresizingStyle">1</int>
@@ -239,6 +237,7 @@
 										<int key="NSDraggingSourceMaskForNonLocal">0</int>
 										<bool key="NSAllowsTypeSelect">YES</bool>
 										<int key="NSTableViewDraggingDestinationStyle">0</int>
+										<int key="NSTableViewGroupRowStyle">1</int>
 									</object>
 								</array>
 								<string key="NSFrame">{{0, 17}, {463, 421}}</string>
@@ -252,7 +251,7 @@
 							<object class="NSScroller" id="311329691">
 								<reference key="NSNextResponder" ref="251166248"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{388, 17}, {15, 403.758}}</string>
+								<string key="NSFrame">{{388, 17}, {15, 403.75799999999998}}</string>
 								<reference key="NSSuperview" ref="251166248"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="434571912"/>
@@ -263,7 +262,7 @@
 							<object class="NSScroller" id="434571912">
 								<reference key="NSNextResponder" ref="251166248"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{0, 420.758}, {388, 15}}</string>
+								<string key="NSFrame">{{0, 420.75799999999998}, {388, 15}}</string>
 								<reference key="NSSuperview" ref="251166248"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -287,18 +286,16 @@
 								<reference key="NSBGColor" ref="825429019"/>
 								<int key="NScvFlags">4</int>
 							</object>
-							<reference ref="235230301"/>
 						</array>
 						<string key="NSFrameSize">{463, 438}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="833267190"/>
-						<int key="NSsFlags">688</int>
+						<int key="NSsFlags">133808</int>
 						<reference key="NSVScroller" ref="311329691"/>
 						<reference key="NSHScroller" ref="434571912"/>
 						<reference key="NSContentView" ref="300786197"/>
 						<reference key="NSHeaderClipView" ref="833267190"/>
-						<reference key="NSCornerView" ref="235230301"/>
 						<bytes key="NSScrollAmts">QSAAAEEgAABB0AAAQdAAAA</bytes>
 					</object>
 				</array>
@@ -310,12 +307,14 @@
 			</object>
 			<object class="NSArrayController" id="680101217">
 				<string key="NSObjectClassName">SPSpotifyTrack</string>
+				<bool key="NSEditable">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSArrayController" id="718082830">
 				<string key="NSObjectClassName">SPSpotifyArtist</string>
@@ -452,6 +451,14 @@
 						</object>
 					</object>
 					<int key="connectionID">84</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="342886202"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">85</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -619,7 +626,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">84</int>
+			<int key="maxID">85</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

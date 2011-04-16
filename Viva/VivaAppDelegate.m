@@ -66,6 +66,11 @@
 	return YES;
 }
 
+-(void)applicationWillTerminate:(NSNotification *)notification {
+	
+	[self.session logout];
+}
+
 #pragma mark -
 
 -(void)mediaKeyTap:(SPMediaKeyTap*)keyTap receivedMediaKeyEvent:(NSEvent*)event {
