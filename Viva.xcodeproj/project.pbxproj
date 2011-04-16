@@ -120,6 +120,9 @@
 		50E3F777133FD92800FF4618 /* EMKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E3F776133FD92800FF4618 /* EMKeychainItem.m */; };
 		50E3F779133FD95200FF4618 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E3F778133FD95200FF4618 /* Security.framework */; };
 		50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E819CE133926A3000CE44D /* SPBackgroundColorView.m */; };
+		50F00924135A0182009D25B1 /* dragBallLeft.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00921135A0182009D25B1 /* dragBallLeft.tiff */; };
+		50F00925135A0182009D25B1 /* dragBallMiddle.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00922135A0182009D25B1 /* dragBallMiddle.tiff */; };
+		50F00926135A0182009D25B1 /* dragBallRight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00923135A0182009D25B1 /* dragBallRight.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +311,9 @@
 		50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaLibSpotify.xcodeproj; path = cocoalibspotify/CocoaLibSpotify.xcodeproj; sourceTree = "<group>"; };
 		50E819CD133926A3000CE44D /* SPBackgroundColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPBackgroundColorView.h; path = "Custom Controls/SPBackgroundColorView.h"; sourceTree = "<group>"; };
 		50E819CE133926A3000CE44D /* SPBackgroundColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPBackgroundColorView.m; path = "Custom Controls/SPBackgroundColorView.m"; sourceTree = "<group>"; };
+		50F00921135A0182009D25B1 /* dragBallLeft.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallLeft.tiff; sourceTree = "<group>"; };
+		50F00922135A0182009D25B1 /* dragBallMiddle.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallMiddle.tiff; sourceTree = "<group>"; };
+		50F00923135A0182009D25B1 /* dragBallRight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallRight.tiff; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +489,7 @@
 			isa = PBXGroup;
 			children = (
 				506F34891343DCFB002BA308 /* VivaIcon.icns */,
+				50F00920135A0182009D25B1 /* Dragging */,
 				505A9295135784A500136BBF /* Playback */,
 				50E3F76C133FC47C00FF4618 /* Login */,
 				50E3F743133FB9A900FF4618 /* Toolbar */,
@@ -737,6 +744,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		50F00920135A0182009D25B1 /* Dragging */ = {
+			isa = PBXGroup;
+			children = (
+				50F00921135A0182009D25B1 /* dragBallLeft.tiff */,
+				50F00922135A0182009D25B1 /* dragBallMiddle.tiff */,
+				50F00923135A0182009D25B1 /* dragBallRight.tiff */,
+			);
+			path = Dragging;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -876,6 +893,9 @@
 				505A929B135785B400136BBF /* paused-indicator.png in Resources */,
 				505A929E135792DC00136BBF /* paused-indicator-highlighted.png in Resources */,
 				505A929F135792DC00136BBF /* playing-indicator-highlighted.png in Resources */,
+				50F00924135A0182009D25B1 /* dragBallLeft.tiff in Resources */,
+				50F00925135A0182009D25B1 /* dragBallMiddle.tiff in Resources */,
+				50F00926135A0182009D25B1 /* dragBallRight.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

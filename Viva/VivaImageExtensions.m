@@ -91,5 +91,97 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	return [mosaicImage autorelease];
 }
 
+#pragma mark Decorated
+
++(NSImage *)decoratedMosaicWithTracks:(NSArray *)tracks badgeLabel:(NSString *)label {
+	return [self decoratedMosaicWithTracks:tracks badgeLabel:label aspect:kDefaultMosaicImageSize];
+}
+
++(NSImage *)decoratedMosaicWithTracks:(NSArray *)tracks badgeLabel:(NSString *)label aspect:(double)mosaicSideSize {
+	
+	NSImage *mosaic = [self mosaicImageWithTracks:tracks aspect:mosaicSideSize];
+	
+	if (mosaic == nil)
+		return nil;
+	
+	NSImage *badge = nil;
+	
+	if ([label length] > 0) {
+		
+		NSMutableParagraphStyle *para = [[[NSMutableParagraphStyle alloc] init] autorelease];
+		[para setAlignment:NSCenterTextAlignment];
+		
+		// Create attributes for drawing the count.
+		NSDictionary * attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:11.0],
+									 NSFontAttributeName, [NSColor whiteColor],
+									 NSForegroundColorAttributeName,
+									 para, NSParagraphStyleAttributeName, nil];
+		
+		NSSize numSize = [label sizeWithAttributes:attributes];
+		
+		// Create a red circle in the icon large enough to hold the count.
+		
+		NSImage *ballLeft = [NSImage imageNamed:@"dragBallLeft"];
+		NSImage *ballRight = [NSImage imageNamed:@"dragBallRight"];
+		NSImage *ballMiddle = [NSImage imageNamed:@"dragBallMiddle"];
+		
+		float correction = 10.0;
+		if (numSize.width < 10) {
+			correction = numSize.width;
+		}
+		
+		badge = [[[NSImage alloc] initWithSize:NSMakeSize([ballLeft size].width + [ballRight size].width + numSize.width - correction, [ballLeft size].height)] autorelease];
+		[badge lockFocus];
+		
+		NSDrawThreePartImage(NSMakeRect(0.0, 0.0, badge.size.width, badge.size.height),
+							 ballLeft, 
+							 ballMiddle, 
+							 ballRight, 
+							 NO, 
+							 NSCompositeSourceOver,
+							 1.0,
+							 NO);
+		
+		NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
+		[shadow setShadowColor:[NSColor blackColor]];
+		[shadow setShadowBlurRadius:1.0];
+		[shadow setShadowOffset:NSMakeSize(1.0, -1.0)];
+		[shadow set];
+		
+		[label drawInRect:NSMakeRect(0.0, -4.0, [badge size].width, [badge size].height)
+		   withAttributes:attributes];
+		
+		[badge unlockFocus];
+	}
+	
+	NSSize decoratedImageSize = mosaic.size;
+	
+	if (badge != nil) {
+		decoratedImageSize.width += badge.size.width;
+		decoratedImageSize.height += badge.size.height;
+	}
+	
+	NSImage *decoratedMosaic = [[[NSImage alloc] initWithSize:decoratedImageSize] autorelease];
+	[decoratedMosaic lockFocus];
+	
+	[mosaic drawAtPoint:NSMakePoint((decoratedImageSize.width / 2) - (mosaic.size.width / 2), 
+									(decoratedImageSize.height / 2) - (mosaic.size.height / 2))
+			   fromRect:NSZeroRect
+			  operation:NSCompositeSourceOver
+			   fraction:1.0];
+	
+	if (badge != nil) {
+		[badge drawAtPoint:NSMakePoint(decoratedImageSize.width - badge.size.width,
+									   0.0)
+				  fromRect:NSZeroRect
+				 operation:NSCompositeSourceOver
+				  fraction:1.0];
+	}
+	
+	[decoratedMosaic unlockFocus];
+	
+	return decoratedMosaic;
+}
+
 
 @end
