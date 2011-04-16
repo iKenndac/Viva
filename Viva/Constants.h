@@ -23,6 +23,7 @@ static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKey
 
 static NSString * const kSpotifyTrackURLListDragIdentifier = @"com.spotify.Viva.TrackURLList";
 static NSString * const kSpotifyTrackMoveSourceIndexSetDragIdentifier = @"com.spotify.Viva.TrackInPlaylistIndexSet";
+static double const kDragImageMaximumMosaicSize = 64.0;
 
 // ------ Keychain ------
 

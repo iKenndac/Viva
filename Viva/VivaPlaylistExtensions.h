@@ -12,7 +12,7 @@
 @interface SPSpotifyPlaylist (VivaPlaylistExtensions)
 
 -(NSImage *)icon;
--(NSImage *)generateMosaicImageWithImages:(NSArray *)images;
+-(NSImage *)generatePlaylistImage;
 
 @end
 

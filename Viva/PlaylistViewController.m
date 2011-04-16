@@ -13,6 +13,7 @@
 #import "VivaSortDescriptorExtensions.h"
 #import "VivaTrackInPlaylistReference.h"
 #import "Constants.h"
+#import "VivaImageExtensions.h"
 
 @interface PlaylistViewController ()
 
@@ -179,7 +180,13 @@
 				[aCell setAlternateImage:nil];
 			}
 		}
-	}
+	}	
+}
+
+-(NSImage *)tableView:(NSTableView *)tableView dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset {
+	
+	return [NSImage mosaicImageWithTracks:[[self.trackContainerArrayController.arrangedObjects objectsAtIndexes:dragRows] valueForKey:@"track"]
+								   aspect:kDragImageMaximumMosaicSize];
 	
 }
 
@@ -215,6 +222,13 @@
 		[aTableView setDropRow:row dropOperation:NSTableViewDropAbove];
 	
 	if ([info draggingSource] == self.trackTable) {
+		
+		NSIndexSet *indexSet = [NSKeyedUnarchiver unarchiveObjectWithData:dragData];
+		// Some heuristics to make dragging less annoying
+		if ([indexSet count] == 1 && ([indexSet containsIndex:row] || [indexSet containsIndex:row-1]))
+			// Don't let the user reorder their track to the same place 
+			return NSDragOperationNone;
+		
 		return ([NSEvent modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask ? NSDragOperationCopy : NSDragOperationMove;
 	} else {
 		return NSDragOperationCopy;

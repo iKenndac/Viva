@@ -33,6 +33,7 @@
 @synthesize playlistTreeController;
 @synthesize footerViewController;
 @synthesize navigationController;
+@synthesize sourceList;
 
 -(id)init {
 	return [super initWithWindowNibName:@"MainWindow"];
@@ -68,6 +69,8 @@
 								  forKeyPath:@"selection.spotifyURL"
 									 options:0
 									 context:nil];
+	
+	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObject:kSpotifyTrackURLListDragIdentifier]];
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
@@ -244,5 +247,48 @@
 	[(ImageAndTextCell *)cell setImage:[[item representedObject] icon]];
 	
 } 
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView 
+				  validateDrop:(id < NSDraggingInfo >)info 
+				  proposedItem:(id)item 
+			proposedChildIndex:(NSInteger)index {
+	
+	if ((![[item representedObject] isKindOfClass:[SPSpotifyPlaylist class]]) ||
+		([[item representedObject] isKindOfClass:[SPSpotifyPlaylistFolder class]]))
+		return NSDragOperationNone;
+	
+	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+	
+	if (urlData != nil)
+		return NSDragOperationCopy;
+	else
+		return NSDragOperationNone;
+	
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id < NSDraggingInfo >)info item:(id)item childIndex:(NSInteger)index {
+	
+	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+
+	if (urlData == nil)
+		return NO;
+	
+	NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
+	NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
+	
+	for (NSURL *url in trackURLs) {
+		SPSpotifyTrack *track = nil;
+		track = [SPSpotifyTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
+		if (track != nil) {
+			[tracksToAdd addObject:track];
+		}
+	}
+	
+	SPSpotifyPlaylist *targetPlaylist = [item representedObject];
+	[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
+	return YES;
+	
+}
+
 
 @end

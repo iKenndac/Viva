@@ -20,6 +20,7 @@
 	NSTreeController *playlistTreeController;
 	NSViewController *currentViewController;
 	VivaURLNavigationController *navigationController;
+	NSOutlineView *sourceList;
 	
 	NSWindow *urlSheet;
 	NSTextField *urlField;
@@ -33,6 +34,7 @@
 @property (nonatomic, retain, readonly) NSViewController *currentViewController;
 @property (nonatomic, retain, readonly) FooterViewController *footerViewController;
 @property (nonatomic, retain, readonly) VivaURLNavigationController *navigationController;
+@property (assign) IBOutlet NSOutlineView *sourceList;
 
 @property (assign) IBOutlet NSWindow *urlSheet;
 @property (assign) IBOutlet NSTextField *urlField;
