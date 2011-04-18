@@ -82,6 +82,8 @@
 		
 	} else if ([keyPath isEqualToString:@"playingTrackContainer"] || [keyPath isEqualToString:@"playingTrackContainerIsCurrentlyPlaying"]) {
 		[self.trackTable reloadData];
+		if (self.playingTrackContainer != nil)
+			[self.trackTable scrollRowToVisible:[self.trackContainerArrayController.arrangedObjects indexOfObject:self.playingTrackContainer]];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

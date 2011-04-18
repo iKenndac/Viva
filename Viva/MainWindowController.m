@@ -182,6 +182,25 @@
 }
 
 #pragma mark -
+
+-(void)keyDown:(NSEvent *)theEvent {
+	
+	if ([theEvent keyCode] == 49) {
+		[[NSApp delegate] performPlayPauseAction:nil];
+	} else {
+		[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	}
+}
+
+-(void)moveLeft:(id)sender {
+	[[NSApp delegate] performPreviousTrackAction:sender];
+}
+
+-(void)moveRight:(id)sender {
+	[[NSApp delegate] performNextTrackAction:sender];
+}
+
+#pragma mark -
 #pragma mark Split view
 
 -(CGFloat)splitView:(NSSplitView *)aSplitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex {

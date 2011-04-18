@@ -123,8 +123,10 @@
 	if (self.playbackManager.currentTrack != nil) {
 		if (self.playbackManager.currentTrackPosition > kSkipBackThreshold) {
 			[self.playbackManager seekToTrackPosition:0.0];
-		} else {
+		} else if ([self.playbackManager canSkipToPreviousTrack]) {
 			[self.playbackManager skipToPreviousTrackInCurrentContext:YES];
+		} else {
+			NSBeep();
 		}
 	}
 }
