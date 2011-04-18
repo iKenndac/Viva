@@ -86,7 +86,7 @@
 }
 
 +(NSSet *)keyPathsForValuesAffectingCanSkipToNextTrack {
-	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", nil];
+	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", @"playbackContext.trackContainersForPlayback", nil];
 }
 
 -(BOOL)canSkipToNextTrack {
@@ -95,7 +95,7 @@
 }
 
 +(NSSet *)keyPathsForValuesAffectingCanSkipToPreviousTrack {
-	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", nil];
+	return [NSSet setWithObjects:@"loopPlayback", @"currentTrack", @"playbackContext.trackContainersForPlayback", nil];
 }
 
 -(BOOL)canSkipToPreviousTrack {

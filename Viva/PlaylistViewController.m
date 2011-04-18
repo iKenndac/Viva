@@ -18,7 +18,7 @@
 @interface PlaylistViewController ()
 
 @property (nonatomic, readwrite, retain) SPSpotifyPlaylist *playlist;
-@property (nonatomic, readwrite, retain) NSArray *trackContainers;
+@property (nonatomic, readwrite, retain) NSMutableArray *trackContainers;
 
 -(void)rebuildTrackContainers;
 
@@ -45,6 +45,7 @@
 				  context:nil];
 		
 		self.playlist = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL];
+		self.playlist.delegate = self;
 	}
 	return self;
 }
@@ -72,7 +73,13 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"playlist.tracks"]) {
-        [self rebuildTrackContainers];
+        
+		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
+		if (![containerTracks isEqualToArray:self.playlist.tracks]) {
+			NSLog(@"Containers not in sync with tracks - rebuilding.");
+			[self rebuildTrackContainers];
+		}
+		
 	} else if ([keyPath isEqualToString:@"playingTrackContainer"] || [keyPath isEqualToString:@"playingTrackContainerIsCurrentlyPlaying"]) {
 		[self.trackTable reloadData];
     } else {
@@ -88,7 +95,7 @@
 		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:aTrack
 																		   inPlaylist:self.playlist] autorelease]];
 	}
-	self.trackContainers = [NSArray arrayWithArray:newContainers];
+	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
 
 -(IBAction)playTrack:(id)sender {
@@ -124,6 +131,49 @@
 	
 	[self.playlist.tracks removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
 }
+
+#pragma mark -
+
++(NSSet *)keyPathsForValuesAffectingTrackContainersForPlayback {
+	return [NSSet setWithObject:@"trackContainers"];
+}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist willRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)outgoingIndexes {
+	
+	[self willChangeValueForKey:@"trackContainers"];
+	[self.trackContainers removeObjectsAtIndexes:outgoingIndexes];
+	[self didChangeValueForKey:@"trackContainers"];
+}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist didRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore; {}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist willAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentYetValid {
+	
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[tracks count]];
+	
+	for (SPSpotifyTrack *newTrack in tracks) {
+		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:newTrack
+																		   inPlaylist:self.playlist] autorelease]];
+	}
+	
+	[self willChangeValueForKey:@"trackContainers"];
+	[self.trackContainers insertObjects:newContainers atIndexes:theseIndexesArentYetValid];
+	[self didChangeValueForKey:@"trackContainers"];
+}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist didAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)newIndexes {}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist willMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
+
+	[self willChangeValueForKey:@"trackContainers"];
+	NSArray *transientContainers = [self.trackContainers objectsAtIndexes:oldIndexes];
+	[self.trackContainers removeObjectsAtIndexes:oldIndexes];
+	[self.trackContainers insertObjects:transientContainers atIndexes:newIndexes];
+	[self didChangeValueForKey:@"trackContainers"];
+}
+
+-(void)playlist:(SPSpotifyPlaylist *)aPlaylist didMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes; {}
+
 
 #pragma mark -
 

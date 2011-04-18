@@ -2,7 +2,7 @@ Programming (Daniel & Nevyn):
 	Short Term:
 		- Be smarter in the UI about duration bugs (e.g., Goodnight Elisabeth on New Amsterdam is way longer than the metadata says it is)
 		- Login failures are broken
-		- Drag & Drop (tracks to playlists, etc)
+		- Playlist reordering
 		- Deleting tracks from playlists when the list is sorted doesn't work
 		- Unhandled key events (space, arrows, etc) should control playback
 		- Starred/etc lists

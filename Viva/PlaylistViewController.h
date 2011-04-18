@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "VivaPlaybackContextViewController.h"
 
-@interface PlaylistViewController : VivaPlaybackContextViewController {
+@interface PlaylistViewController : VivaPlaybackContextViewController <SPSpotifyPlaylistDelegate> {
 @private
 
 	SPSpotifyPlaylist *playlist;
@@ -17,13 +17,13 @@
 	NSTableView *trackTable;
 	NSArrayController *trackContainerArrayController;
 	BOOL sortAscending;
-	NSArray *trackContainers;
+	NSMutableArray *trackContainers;
 }
 
 @property (assign) IBOutlet NSArrayController *trackContainerArrayController;
 @property (assign) IBOutlet NSTableView *trackTable;
 @property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
-@property (nonatomic, readonly, retain) NSArray *trackContainers;
+@property (nonatomic, readonly, retain) NSMutableArray *trackContainers;
 
 -(IBAction)playTrack:(id)sender;
 
