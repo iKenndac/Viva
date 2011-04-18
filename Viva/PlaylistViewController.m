@@ -245,19 +245,26 @@
 
 - (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard {
 	
-	if ([self.trackContainerArrayController.sortDescriptors count] != 0)
-		return NO;
-	
 	NSArray *containers = [self.trackContainerArrayController.arrangedObjects objectsAtIndexes:rowIndexes];
 	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[[containers valueForKey:@"track"] valueForKey:@"spotifyURL"]]
 														forType:kSpotifyTrackURLListDragIdentifier];
-	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:rowIndexes] forType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
+	
+	NSMutableIndexSet *sourceIndexes = [NSMutableIndexSet indexSet];
+	for (VivaTrackInPlaylistReference *ref in containers) {
+		[sourceIndexes addIndex:[self.trackContainers indexOfObject:ref]];
+	}
+	
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:sourceIndexes]
+			forType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
 	
 	
 	return YES;
 }
 
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation {
+	
+	if ([self.trackContainerArrayController.sortDescriptors count] > 0)
+		return NSDragOperationNone;
 	
 	NSData *dragData = nil;
 	
