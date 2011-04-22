@@ -186,7 +186,7 @@
 	NSString *searchQuery = [sender stringValue];
 	
 	if ([searchQuery length] > 0) {
-		NSURL *queryURL = [NSURL URLWithString:[NSString stringWithFormat:@"spotify:search:%@", searchQuery]];
+		NSURL *queryURL = [NSURL URLWithString:[NSString stringWithFormat:@"spotify:search:%@", [NSURL urlEncodedStringForString:searchQuery]]];
 		self.navigationController.thePresent = queryURL;
 	}
 }

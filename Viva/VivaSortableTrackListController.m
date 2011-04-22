@@ -11,6 +11,7 @@
 #import "SPTableCorner.h"
 #import "VivaSortDescriptorExtensions.h"
 #import "Constants.h"
+#import "VivaImageExtensions.h"
 
 @implementation VivaSortableTrackListController
 
@@ -125,6 +126,14 @@
 			}
 		}
 	}	
+}
+
+-(NSImage *)tableView:(NSTableView *)tableView dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset {
+	
+	return [NSImage decoratedMosaicWithTracks:[[self.trackContainerArrayController.arrangedObjects objectsAtIndexes:dragRows] valueForKey:@"track"]
+								   badgeLabel:[dragRows count] > 1 ? [[NSNumber numberWithInteger:[dragRows count]] stringValue] : nil
+									   aspect:kDragImageMaximumMosaicSize];
+	
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard {
