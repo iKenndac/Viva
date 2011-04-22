@@ -45,5 +45,6 @@
 - (IBAction)cancelOpenURL:(id)sender;
 - (IBAction)navigateForward:(id)sender;
 - (IBAction)navigateBackward:(id)sender;
+- (IBAction)performSearch:(id)sender;
 
 @end

@@ -11,6 +11,7 @@
 #import "VivaInternalURLManager.h"
 #import "Constants.h"
 #import "NSObject+Spotify.h"
+#import "SearchResultsViewController.h"
 
 @interface VivaAppDelegate()
 
@@ -35,6 +36,7 @@
 															 nil]];
 	
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[PlaylistViewController class] forURLScheme:@"spotify:user"];
+	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[SearchResultsViewController class] forURLScheme:@"spotify:search"];
 	
     self.session = [SPSpotifySession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
 																															  ofType:@"key"]]

@@ -8,7 +8,7 @@
 
 #import "PlaylistViewController.h"
 #import "VivaAppDelegate.h"
-#import "VivaTrackInPlaylistReference.h"
+#import "VivaTrackInContainerReference.h"
 #import "Constants.h"
 #import "VivaImageExtensions.h"
 
@@ -61,11 +61,11 @@
 
 -(void)rebuildTrackContainers {
 
-	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[[self.playlist mutableArrayValueForKey:@"tracks"] count]];
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.tracks count]];
 	
-	for (SPSpotifyTrack *aTrack in [self.playlist mutableArrayValueForKey:@"tracks"]) {
-		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:aTrack
-																		   inPlaylist:self.playlist] autorelease]];
+	for (SPSpotifyTrack *aTrack in self.playlist.tracks) {
+		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
+																		   inContainer:self.playlist] autorelease]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -105,8 +105,8 @@
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[tracks count]];
 	
 	for (SPSpotifyTrack *newTrack in tracks) {
-		[newContainers addObject:[[[VivaTrackInPlaylistReference alloc] initWithTrack:newTrack
-																		   inPlaylist:self.playlist] autorelease]];
+		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:newTrack
+																		   inContainer:self.playlist] autorelease]];
 	}
 	
 	[self willChangeValueForKey:@"trackContainers"];

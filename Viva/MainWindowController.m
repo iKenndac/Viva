@@ -181,6 +181,16 @@
 	}
 }
 
+- (IBAction)performSearch:(id)sender {
+	
+	NSString *searchQuery = [sender stringValue];
+	
+	if ([searchQuery length] > 0) {
+		NSURL *queryURL = [NSURL URLWithString:[NSString stringWithFormat:@"spotify:search:%@", searchQuery]];
+		self.navigationController.thePresent = queryURL;
+	}
+}
+
 #pragma mark -
 
 -(void)keyDown:(NSEvent *)theEvent {

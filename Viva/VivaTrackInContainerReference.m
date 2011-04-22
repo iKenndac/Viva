@@ -12,36 +12,36 @@
  in it multiple times, and using indexes is stupid.
  */
 
-#import "VivaTrackInPlaylistReference.h"
+#import "VivaTrackInContainerReference.h"
 
-@interface VivaTrackInPlaylistReference ()
+@interface VivaTrackInContainerReference ()
 
 @property (copy, readwrite) NSString *uniqueId;
 @property (assign, readwrite) __weak SPSpotifyTrack *track;
-@property (assign, readwrite) __weak SPSpotifyPlaylist *playlist;
+@property (assign, readwrite) __weak SPSpotifyPlaylist *container;
 
 @end
 
-@implementation VivaTrackInPlaylistReference
+@implementation VivaTrackInContainerReference
 
--(id)initWithTrack:(SPSpotifyTrack *)aTrack inPlaylist:(SPSpotifyPlaylist *)aPlaylist {
+-(id)initWithTrack:(SPSpotifyTrack *)aTrack inContainer:(id)aContainer {
 	if ((self = [super init])) {
 		self.uniqueId = [[NSProcessInfo processInfo] globallyUniqueString];
 		self.track = aTrack;
-		self.playlist = aPlaylist;
+		self.container = aContainer;
 	}
 	return self;
 }
 
 @synthesize track;
-@synthesize playlist;
+@synthesize container;
 @synthesize uniqueId;
 
 -(BOOL)isEqual:(id)object {
-	if ([object isKindOfClass:[VivaTrackInPlaylistReference class]]) {
-		return [((VivaTrackInPlaylistReference *)object).uniqueId isEqualToString:self.uniqueId] && 
-		((VivaTrackInPlaylistReference *)object).playlist == self.playlist && 
-		((VivaTrackInPlaylistReference *)object).track == self.track;
+	if ([object isKindOfClass:[VivaTrackInContainerReference class]]) {
+		return [((VivaTrackInContainerReference *)object).uniqueId isEqualToString:self.uniqueId] && 
+		((VivaTrackInContainerReference *)object).container == self.container && 
+		((VivaTrackInContainerReference *)object).track == self.track;
 	} else {
 		return NO;
 	}
@@ -50,7 +50,7 @@
 - (void)dealloc {
 	self.uniqueId = nil;
 	self.track = nil;
-	self.playlist = nil;
+	self.container = nil;
     [super dealloc];
 }
 
