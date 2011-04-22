@@ -13,12 +13,8 @@
 @private
 
 	SPSpotifyPlaylist *playlist;
-	NSMutableArray *trackContainers;
 }
 
 @property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
-@property (nonatomic, readonly, retain) NSMutableArray *trackContainers;
-
--(IBAction)playTrack:(id)sender;
 
 @end

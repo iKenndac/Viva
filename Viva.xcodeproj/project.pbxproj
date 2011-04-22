@@ -351,6 +351,7 @@
 		500841661350AF9200A2967E /* Playback Contexts */ = {
 			isa = PBXGroup;
 			children = (
+				500B86AD1361704C005FC734 /* Search View */,
 				500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */,
 				500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */,
 				500B86A613616A05005FC734 /* Generic Sortable Track List */,
@@ -377,6 +378,13 @@
 				500B86A813616A23005FC734 /* VivaSortableTrackListController.m */,
 			);
 			name = "Generic Sortable Track List";
+			sourceTree = "<group>";
+		};
+		500B86AD1361704C005FC734 /* Search View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Search View";
 			sourceTree = "<group>";
 		};
 		503D62C913257D92007772CA = {

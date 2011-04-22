@@ -14,8 +14,10 @@
 	NSTableView *trackTable;
 	NSArrayController *trackContainerArrayController;
 	BOOL sortAscending;
+	NSMutableArray *trackContainers;
 }
 
+@property (nonatomic, readwrite, retain) NSMutableArray *trackContainers;
 @property (assign) IBOutlet NSArrayController *trackContainerArrayController;
 @property (assign) IBOutlet NSTableView *trackTable;
 

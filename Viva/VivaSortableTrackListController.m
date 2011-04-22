@@ -10,6 +10,7 @@
 #import "SPTableHeaderCell.h"
 #import "SPTableCorner.h"
 #import "VivaSortDescriptorExtensions.h"
+#import "Constants.h"
 
 @implementation VivaSortableTrackListController
 
@@ -26,10 +27,41 @@
 	}
 	
 	[self.trackTable setCornerView:[[[SPTableCorner alloc] init] autorelease]];
+	
+	[self.trackTable setTarget:self];
+	[self.trackTable setDoubleAction:@selector(playTrack:)];
+	
+	[self addObserver:self 
+		   forKeyPath:@"playingTrackContainerIsCurrentlyPlaying"
+			  options:0
+			  context:nil];
+	
+	[self addObserver:self
+		   forKeyPath:@"playingTrackContainer"
+			  options:0
+			  context:nil];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"playingTrackContainer"] || [keyPath isEqualToString:@"playingTrackContainerIsCurrentlyPlaying"]) {
+		[self.trackTable reloadData];
+		if (self.playingTrackContainer != nil)
+			[self.trackTable scrollRowToVisible:[self.trackContainerArrayController.arrangedObjects indexOfObject:self.playingTrackContainer]];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+@synthesize trackContainers;
 @synthesize trackContainerArrayController;
 @synthesize trackTable;
+
+-(IBAction)playTrack:(id)sender {
+	if ([self.trackTable clickedRow] > -1) {
+		id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:[self.trackTable clickedRow]];
+		[self playTrackContainerInThisContext:container];
+	}
+}
 
 +(NSSet *)keyPathsForValuesAffectingTracksForPlayback {
 	return [NSSet setWithObject:@"trackContainerArrayController.arrangedObjects"];
@@ -74,8 +106,48 @@
 	}
 }
 
-- (void)dealloc
-{
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+	
+	if ([[aTableColumn identifier] isEqualToString:@"playIndicator"]) {
+		if (rowIndex < [[self.trackContainerArrayController arrangedObjects] count]) {
+			id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:rowIndex];
+			if (container == self.playingTrackContainer) {
+				if (self.playingTrackContainerIsCurrentlyPlaying) {
+					[aCell setImage:[NSImage imageNamed:@"playing-indicator"]];
+					[aCell setAlternateImage:[NSImage imageNamed:@"playing-indicator-highlighted"]];
+				} else {
+					[aCell setImage:[NSImage imageNamed:@"paused-indicator"]];
+					[aCell setAlternateImage:[NSImage imageNamed:@"paused-indicator-highlighted"]];
+				}
+			} else {
+				[aCell setImage:nil];
+				[aCell setAlternateImage:nil];
+			}
+		}
+	}	
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard {
+	
+	NSArray *containers = [self.trackContainerArrayController.arrangedObjects objectsAtIndexes:rowIndexes];
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[[containers valueForKey:@"track"] valueForKey:@"spotifyURL"]]
+			forType:kSpotifyTrackURLListDragIdentifier];
+	
+	NSMutableIndexSet *sourceIndexes = [NSMutableIndexSet indexSet];
+	for (id <VivaTrackContainer> ref in containers) {
+		[sourceIndexes addIndex:[self.trackContainers indexOfObject:ref]];
+	}
+	
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:sourceIndexes]
+			forType:kSpotifyTrackMoveSourceIndexSetDragIdentifier];
+	
+	return YES;
+}
+
+- (void)dealloc {
+	self.trackContainers = nil;
+	[self removeObserver:self forKeyPath:@"playingTrackContainerIsCurrentlyPlaying"];
+	[self removeObserver:self forKeyPath:@"playingTrackContainer"];
     [super dealloc];
 }
 
