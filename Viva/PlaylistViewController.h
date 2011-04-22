@@ -7,21 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "VivaPlaybackContextViewController.h"
+#import "VivaSortableTrackListController.h"
 
-@interface PlaylistViewController : VivaPlaybackContextViewController <SPSpotifyPlaylistDelegate> {
+@interface PlaylistViewController : VivaSortableTrackListController <SPSpotifyPlaylistDelegate> {
 @private
 
 	SPSpotifyPlaylist *playlist;
-    
-	NSTableView *trackTable;
-	NSArrayController *trackContainerArrayController;
-	BOOL sortAscending;
 	NSMutableArray *trackContainers;
 }
 
-@property (assign) IBOutlet NSArrayController *trackContainerArrayController;
-@property (assign) IBOutlet NSTableView *trackTable;
 @property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
 @property (nonatomic, readonly, retain) NSMutableArray *trackContainers;
 
