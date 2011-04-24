@@ -20,7 +20,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"FooterViewController" bundle:nibBundleOrNil];
     if (self) {
 		// Force loading of the view right away, so we can do KVO properly. 
 		[self view];

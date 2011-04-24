@@ -1,17 +1,19 @@
 Programming (Daniel & Nevyn):
 	Short Term:
-		- Be smarter in the UI about duration bugs (e.g., Goodnight Elisabeth on New Amsterdam is way longer than the metadata says it is)
 		- Login failures are broken
 		- Playlist reordering
 		- Deleting tracks from playlists when the list is sorted doesn't work
 		- Unhandled key events (space, arrows, etc) should control playback
 		- Starred/etc lists
+		- Shuffle
+		- Save loop/etc state
 	Longer Term:
 		- Option for Viva to be the default url handler
 		- Modifying source list layout via XML/etc for AB testing etc
 		- Notification bubbles
 		- Improve playlist view (higher line-height, custom row colours, etc)
 		- Party mode
+		- Be smarter in the UI about duration bugs (e.g., Goodnight Elisabeth on New Amsterdam is way longer than the metadata says it is)
 
 Graphics (Tobi):
 	- Sidebar graphics 
