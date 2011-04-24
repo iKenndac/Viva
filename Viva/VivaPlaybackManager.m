@@ -130,7 +130,7 @@
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
 	self.currentTrackContainer = newTrack;
 	self.currentTrackPosition = 0.0;
-	[self.playbackSession playTrack:self.currentTrackContainer.track];
+	[self.playbackSession playTrack:self.currentTrackContainer.track error:nil];
 }
 	
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition {
@@ -279,7 +279,7 @@
 		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
 			id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 			if (nextContainer != nil) {
-				[self.playbackSession preloadTrackForPlayback:nextContainer.track];
+				[self.playbackSession preloadTrackForPlayback:nextContainer.track error:nil];
 				@synchronized(self) {
 					hasPreCachedNextTrack = YES;
 				}
