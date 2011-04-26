@@ -25,5 +25,15 @@
 	return ret;
 }
 
+-(void)keyDown:(NSEvent *)theEvent {
+	
+	if ([[theEvent characters] isEqualToString:@" "]) {
+		if ([self.delegate respondsToSelector:@selector(keyDown:)]) {
+			[(NSResponder *)self.delegate keyDown:theEvent];
+		}
+	} else {
+		[super keyDown:theEvent];
+	}
+}
 
 @end

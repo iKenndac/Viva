@@ -1,12 +1,13 @@
 Programming (Daniel & Nevyn):
 	Short Term:
 		- Login failures are broken
+		- Notification popups (can't play track, did you mean?, etc)
 		- Playlist reordering
 		- Deleting tracks from playlists when the list is sorted doesn't work
-		- Unhandled key events (space, arrows, etc) should control playback
 		- Starred/etc lists
 		- Shuffle
 		- Save loop/etc state
+		- Allow for other libSpotify keys
 	Longer Term:
 		- Option for Viva to be the default url handler
 		- Modifying source list layout via XML/etc for AB testing etc

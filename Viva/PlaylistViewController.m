@@ -71,10 +71,6 @@
 
 @synthesize playlist;
 
--(void)keyDown:(NSEvent *)theEvent {
-	[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
-}
-
 -(void)deleteBackward:(id)sender {
 	
 	if (self.trackContainerArrayController.selectedObjects.count == 0) {

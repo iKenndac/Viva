@@ -53,6 +53,27 @@
     }
 }
 
+-(void)keyDown:(NSEvent *)theEvent {
+	
+	if ([[theEvent characters] isEqualToString:@" "]) {
+		[[[NSApp delegate] session] setIsPlaying:![[[NSApp delegate] session] isPlaying]];
+	} else {
+		[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	}
+}
+
+-(void)insertNewline:(id)sender {
+	
+	if (self.trackTable.window.firstResponder == self.trackTable) {
+		if (self.trackContainerArrayController.selectedObjects.count > 0) {
+			id <VivaTrackContainer> container = [[self.trackContainerArrayController selectedObjects] objectAtIndex:0];
+			[self playTrackContainerInThisContext:container];
+			return;
+		}
+	}
+	NSBeep();
+}
+
 @synthesize trackContainers;
 @synthesize trackContainerArrayController;
 @synthesize trackTable;
