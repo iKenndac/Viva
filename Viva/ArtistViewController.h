@@ -12,9 +12,9 @@
 
 @interface ArtistViewController : VivaSortableTrackListController {
 @private
-    SPSpotifyArtistBrowse *artistBrowse;
+    SPArtistBrowse *artistBrowse;
 }
 
-@property (nonatomic, readonly, retain) SPSpotifyArtistBrowse *artistBrowse;
+@property (nonatomic, readonly, retain) SPArtistBrowse *artistBrowse;
 
 @end

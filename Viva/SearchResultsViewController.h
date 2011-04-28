@@ -12,9 +12,9 @@
 
 @interface SearchResultsViewController : VivaSortableTrackListController {
 @private
-	SPSpotifySearch *search;
+	SPSearch *search;
 }
 
-@property (nonatomic, readonly, retain) SPSpotifySearch *search;
+@property (nonatomic, readonly, retain) SPSearch *search;
 
 @end

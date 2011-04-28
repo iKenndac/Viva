@@ -15,7 +15,7 @@
 @property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, retain) id <VivaTrackContainer> currentTrackContainer;
-@property (readwrite, retain) SPSpotifySession *playbackSession;
+@property (readwrite, retain) SPSession *playbackSession;
 
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack;
 
@@ -28,7 +28,7 @@
 
 @implementation VivaPlaybackManager
 
-- (id)initWithPlaybackSession:(SPSpotifySession *)aSession {
+- (id)initWithPlaybackSession:(SPSession *)aSession {
     self = [super init];
     if (self) {
         // Initialization code here.
@@ -81,7 +81,7 @@
 	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
 }
 
--(SPSpotifyTrack *)currentTrack {
+-(SPTrack *)currentTrack {
 	return self.currentTrackContainer.track;
 }
 
@@ -223,16 +223,16 @@
 #pragma mark -
 #pragma mark Playback Callbacks
 
--(void)sessionDidLosePlayToken:(SPSpotifySession *)aSession {}
+-(void)sessionDidLosePlayToken:(SPSession *)aSession {}
 
--(void)sessionDidEndPlayback:(SPSpotifySession *)aSession {
+-(void)sessionDidEndPlayback:(SPSession *)aSession {
 	// Not routing this through to the main thread causes odd locks and crashes.
 	[self performSelectorOnMainThread:@selector(sessionDidEndPlaybackOnMainThread:)
 						   withObject:aSession
 						waitUntilDone:NO];
 }
 
--(void)sessionDidEndPlaybackOnMainThread:(SPSpotifySession *)aSession {
+-(void)sessionDidEndPlaybackOnMainThread:(SPSession *)aSession {
 	
 	[self skipToNextTrackInCurrentContext:NO];
 }
@@ -293,7 +293,7 @@
 
 #pragma mark Audio Processing
 
--(NSInteger)session:(SPSpotifySession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
+-(NSInteger)session:(SPSession *)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
 	if (frameCount == 0) {
 		[self.audioBuffer clear];

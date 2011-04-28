@@ -12,26 +12,26 @@
 #import "CoCA.h"
 #import "SPCircularBuffer.h"
 
-@interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSpotifySessionPlaybackDelegate> {
+@interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSessionPlaybackDelegate> {
 @private
     id <VivaPlaybackContext> playbackContext;
 	id <VivaTrackContainer> currentTrackContainer;
 	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
-	SPSpotifySession *playbackSession;
+	SPSession *playbackSession;
 	SPCircularBuffer *audioBuffer;
 	double volume;
 	BOOL loopPlayback;
 	BOOL hasPreCachedNextTrack;
 }
 
--(id)initWithPlaybackSession:(SPSpotifySession *)aSession;
+-(id)initWithPlaybackSession:(SPSession *)aSession;
 
 @property (readonly, retain) id <VivaPlaybackContext> playbackContext;
 @property (readwrite) NSTimeInterval currentTrackPosition;
-@property (readonly, retain) SPSpotifyTrack *currentTrack;
+@property (readonly, retain) SPTrack *currentTrack;
 @property (readonly, retain) id <VivaTrackContainer> currentTrackContainer;
-@property (readonly, retain) SPSpotifySession *playbackSession;
+@property (readonly, retain) SPSession *playbackSession;
 @property (readwrite) double volume;
 @property (readwrite) BOOL loopPlayback;
 

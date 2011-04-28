@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
-@interface SPSpotifyTrack (VivaTrackExtensions)
+@interface SPTrack (VivaTrackExtensions)
 
 -(NSString *)condensedArtist;
 

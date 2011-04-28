@@ -17,7 +17,7 @@
 
 @interface VivaAppDelegate()
 
-@property (retain, readwrite) SPSpotifySession *session; 
+@property (retain, readwrite) SPSession *session; 
 @property (retain, readwrite) VivaPlaybackManager *playbackManager; 
 @property (retain, readwrite) SPMediaKeyTap *mediaKeyHandler;
 
@@ -42,7 +42,7 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[AlbumViewController class] forURLScheme:@"spotify:album"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
 	
-    self.session = [SPSpotifySession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
+    self.session = [SPSession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
 																															  ofType:@"key"]]
 													 userAgent:@"CocoaLibSpotify"
 														 error:nil];
@@ -159,14 +159,14 @@
 
 #pragma mark -
 
--(void)sessionDidLoginSuccessfully:(SPSpotifySession *)aSession; {
+-(void)sessionDidLoginSuccessfully:(SPSession *)aSession; {
 
 	[mainWindowController showWindow:nil];
 	[[loginWindowController window] orderOut:nil]; 
 	loginWindowController.isLoggingIn = NO;
 }
 
--(void)session:(SPSpotifySession *)aSession didFailToLoginWithError:(NSError *)error; {
+-(void)session:(SPSession *)aSession didFailToLoginWithError:(NSError *)error; {
     
     [NSApp presentError:error
          modalForWindow:[loginWindowController window]
@@ -177,13 +177,13 @@
 	loginWindowController.isLoggingIn = NO;
 }
     
--(void)sessionDidLogOut:(SPSpotifySession *)aSession; {}
+-(void)sessionDidLogOut:(SPSession *)aSession; {}
 
--(void)session:(SPSpotifySession *)aSession didEncounterNetworkError:(NSError *)error; {}
--(void)session:(SPSpotifySession *)aSession didLogMessage:(NSString *)aMessage; {}
--(void)sessionDidChangeMetadata:(SPSpotifySession *)aSession; {}
+-(void)session:(SPSession *)aSession didEncounterNetworkError:(NSError *)error; {}
+-(void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage; {}
+-(void)sessionDidChangeMetadata:(SPSession *)aSession; {}
 
--(void)session:(SPSpotifySession *)aSession recievedMessageForUser:(NSString *)aMessage; {}
+-(void)session:(SPSession *)aSession recievedMessageForUser:(NSString *)aMessage; {}
 
 -(void)dealloc {
 	[playbackManager release];

@@ -17,14 +17,14 @@
 @interface VivaTrackInContainerReference ()
 
 @property (copy, readwrite) NSString *uniqueId;
-@property (assign, readwrite) __weak SPSpotifyTrack *track;
-@property (assign, readwrite) __weak SPSpotifyPlaylist *container;
+@property (assign, readwrite) __weak SPTrack *track;
+@property (assign, readwrite) __weak SPPlaylist *container;
 
 @end
 
 @implementation VivaTrackInContainerReference
 
--(id)initWithTrack:(SPSpotifyTrack *)aTrack inContainer:(id)aContainer {
+-(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer {
 	if ((self = [super init])) {
 		self.uniqueId = [[NSProcessInfo processInfo] globallyUniqueString];
 		self.track = aTrack;

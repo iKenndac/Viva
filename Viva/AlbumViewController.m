@@ -11,7 +11,7 @@
 
 @interface AlbumViewController ()
 
-@property (nonatomic, readwrite, retain) SPSpotifyAlbumBrowse *albumBrowse;
+@property (nonatomic, readwrite, retain) SPAlbumBrowse *albumBrowse;
 
 -(void)rebuildTrackContainers;
 
@@ -27,8 +27,8 @@
 				  options:0
 				  context:nil];
 		
-		SPSpotifySession *appSession = [[NSApp delegate] session];
-		self.albumBrowse = [[[SPSpotifyAlbumBrowse alloc] initWithAlbum:[SPSpotifyAlbum albumWithAlbumURL:aURL
+		SPSession *appSession = [[NSApp delegate] session];
+		self.albumBrowse = [[[SPAlbumBrowse alloc] initWithAlbum:[SPAlbum albumWithAlbumURL:aURL
 																								inSession:appSession]
 															  inSession:appSession]
 							autorelease];
@@ -54,7 +54,7 @@
 	
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.albumBrowse.tracks count]];
 	
-	for (SPSpotifyTrack *aTrack in self.albumBrowse.tracks) {
+	for (SPTrack *aTrack in self.albumBrowse.tracks) {
 		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
 																		   inContainer:self.albumBrowse] autorelease]];
 	}

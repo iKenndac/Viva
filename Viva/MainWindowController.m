@@ -282,8 +282,8 @@
 				  proposedItem:(id)item 
 			proposedChildIndex:(NSInteger)index {
 	
-	if ((![[item representedObject] isKindOfClass:[SPSpotifyPlaylist class]]) ||
-		([[item representedObject] isKindOfClass:[SPSpotifyPlaylistFolder class]]))
+	if ((![[item representedObject] isKindOfClass:[SPPlaylist class]]) ||
+		([[item representedObject] isKindOfClass:[SPPlaylistFolder class]]))
 		return NSDragOperationNone;
 	
 	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
@@ -306,14 +306,14 @@
 	NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
 	
 	for (NSURL *url in trackURLs) {
-		SPSpotifyTrack *track = nil;
-		track = [SPSpotifyTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
+		SPTrack *track = nil;
+		track = [SPTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
 		if (track != nil) {
 			[tracksToAdd addObject:track];
 		}
 	}
 	
-	SPSpotifyPlaylist *targetPlaylist = [item representedObject];
+	SPPlaylist *targetPlaylist = [item representedObject];
 	[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
 	return YES;
 	

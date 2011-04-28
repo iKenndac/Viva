@@ -8,7 +8,7 @@
 
 #import "VivaAlbumBrowseExtensions.h"
 
-@implementation SPSpotifyAlbumBrowse (VivaAlbumBrowseExtensions)
+@implementation SPAlbumBrowse (VivaAlbumBrowseExtensions)
 
 +(NSSet *)keyPathsForValuesAffectingCondensedCopyrights {
 	return [NSSet setWithObject:@"copyrights"];

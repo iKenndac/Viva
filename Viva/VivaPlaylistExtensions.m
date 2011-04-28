@@ -9,7 +9,7 @@
 #import "VivaPlaylistExtensions.h"
 #import "VivaImageExtensions.h"
 
-@implementation SPSpotifyPlaylist (VivaPlaylistExtensions)
+@implementation SPPlaylist (VivaPlaylistExtensions)
 
 -(NSImage *)icon {
 	[[NSImage imageNamed:@"local_files"] setSize:NSMakeSize(32.0, 32.0)];
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation SPSpotifyPlaylistFolder (VivaPlaylistExtensions)
+@implementation SPPlaylistFolder (VivaPlaylistExtensions)
 
 -(NSImage *)icon {
 	NSImage *image = [[NSWorkspace sharedWorkspace] iconForFile:@"/tmp"];

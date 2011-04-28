@@ -13,7 +13,7 @@
 
 @interface PlaylistViewController ()
 
-@property (nonatomic, readwrite, retain) SPSpotifyPlaylist *playlist;
+@property (nonatomic, readwrite, retain) SPPlaylist *playlist;
 
 -(void)rebuildTrackContainers;
 
@@ -62,7 +62,7 @@
 
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.tracks count]];
 	
-	for (SPSpotifyTrack *aTrack in self.playlist.tracks) {
+	for (SPTrack *aTrack in self.playlist.tracks) {
 		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
 																		   inContainer:self.playlist] autorelease]];
 	}
@@ -86,20 +86,20 @@
 	return [NSSet setWithObject:@"trackContainers"];
 }
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist willRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)outgoingIndexes {
+-(void)playlist:(SPPlaylist *)aPlaylist willRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)outgoingIndexes {
 	
 	[self willChangeValueForKey:@"trackContainers"];
 	[self.trackContainers removeObjectsAtIndexes:outgoingIndexes];
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist didRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore; {}
+-(void)playlist:(SPPlaylist *)aPlaylist didRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore; {}
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist willAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentYetValid {
+-(void)playlist:(SPPlaylist *)aPlaylist willAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentYetValid {
 	
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[tracks count]];
 	
-	for (SPSpotifyTrack *newTrack in tracks) {
+	for (SPTrack *newTrack in tracks) {
 		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:newTrack
 																		   inContainer:self.playlist] autorelease]];
 	}
@@ -109,9 +109,9 @@
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist didAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)newIndexes {}
+-(void)playlist:(SPPlaylist *)aPlaylist didAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)newIndexes {}
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist willMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
+-(void)playlist:(SPPlaylist *)aPlaylist willMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
 
 	[self willChangeValueForKey:@"trackContainers"];
 	NSArray *transientContainers = [self.trackContainers objectsAtIndexes:oldIndexes];
@@ -120,7 +120,7 @@
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPSpotifyPlaylist *)aPlaylist didMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes; {}
+-(void)playlist:(SPPlaylist *)aPlaylist didMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes; {}
 
 #pragma mark -
 
@@ -190,7 +190,7 @@
 		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
 		
 		for (NSURL *trackURL in trackURLs) {
-			SPSpotifyTrack *track = [SPSpotifyTrack trackForTrackURL:trackURL inSession:self.playlist.session];
+			SPTrack *track = [SPTrack trackForTrackURL:trackURL inSession:self.playlist.session];
 			if (track != nil) {
 				[tracksToAdd addObject:track];
 			}

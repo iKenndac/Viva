@@ -13,14 +13,14 @@
 @interface VivaTrackInContainerReference : NSObject <VivaTrackContainer> {
 @private
     NSString *uniqueId;
-	__weak SPSpotifyTrack *track;
+	__weak SPTrack *track;
 	__weak id container;
 }
 
--(id)initWithTrack:(SPSpotifyTrack *)aTrack inContainer:(id)aContainer;
+-(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer;
 
 @property (copy, readonly) NSString *uniqueId;
-@property (assign, readonly) __weak SPSpotifyTrack *track;
+@property (assign, readonly) __weak SPTrack *track;
 @property (assign, readonly) __weak id container;
 
 @end

@@ -9,14 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
-@interface SPSpotifyPlaylist (VivaPlaylistExtensions)
+@interface SPPlaylist (VivaPlaylistExtensions)
 
 -(NSImage *)icon;
 -(NSImage *)generatePlaylistImage;
 
 @end
 
-@interface SPSpotifyPlaylistFolder (VivaPlaylistExtensions)
+@interface SPPlaylistFolder (VivaPlaylistExtensions)
 
 -(NSImage *)icon;
 

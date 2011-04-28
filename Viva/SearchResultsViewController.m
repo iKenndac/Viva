@@ -11,7 +11,7 @@
 
 @interface SearchResultsViewController ()
 
-@property (nonatomic, readwrite, retain) SPSpotifySearch *search;
+@property (nonatomic, readwrite, retain) SPSearch *search;
 
 -(void)rebuildTrackContainers;
 
@@ -27,7 +27,7 @@
 				  options:0
 				  context:nil];
 
-		self.search = [[[SPSpotifySearch alloc] initWithURL:aURL
+		self.search = [[[SPSearch alloc] initWithURL:aURL
 												  inSession:[[NSApp delegate] session]] autorelease];
 	}
 	return self;
@@ -53,7 +53,7 @@
 	
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.search.tracks count]];
 	
-	for (SPSpotifyTrack *aTrack in self.search.tracks) {
+	for (SPTrack *aTrack in self.search.tracks) {
 		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
 																		   inContainer:self.search] autorelease]];
 	}

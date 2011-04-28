@@ -13,10 +13,10 @@
 #import "VivaPlaybackManager.h"
 #import "SPMediaKeyTap.h"
 
-@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSpotifySessionDelegate> {
+@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate> {
 @private
     NSWindow *window;
-    SPSpotifySession *session;
+    SPSession *session;
 	LoginWindowController *loginWindowController;
 	MainWindowController *mainWindowController;
 	VivaPlaybackManager *playbackManager;
@@ -25,7 +25,7 @@
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (retain, readonly) SPSpotifySession *session; 
+@property (retain, readonly) SPSession *session; 
 @property (retain, readonly) VivaPlaybackManager *playbackManager; 
 @property (assign) IBOutlet NSMenu *dockMenu;
 @property (retain, readonly) SPMediaKeyTap *mediaKeyHandler; 

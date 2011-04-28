@@ -9,12 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import "VivaSortableTrackListController.h"
 
-@interface PlaylistViewController : VivaSortableTrackListController <SPSpotifyPlaylistDelegate> {
+@interface PlaylistViewController : VivaSortableTrackListController <SPPlaylistDelegate> {
 @private
 
-	SPSpotifyPlaylist *playlist;
+	SPPlaylist *playlist;
 }
 
-@property (nonatomic, readonly, retain) SPSpotifyPlaylist *playlist;
+@property (nonatomic, readonly, retain) SPPlaylist *playlist;
 
 @end

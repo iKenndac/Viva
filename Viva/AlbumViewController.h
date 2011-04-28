@@ -12,9 +12,9 @@
 
 @interface AlbumViewController : VivaSortableTrackListController {
 @private
-    SPSpotifyAlbumBrowse *albumBrowse;
+    SPAlbumBrowse *albumBrowse;
 }
 
-@property (nonatomic, readonly, retain) SPSpotifyAlbumBrowse *albumBrowse;
+@property (nonatomic, readonly, retain) SPAlbumBrowse *albumBrowse;
 
 @end

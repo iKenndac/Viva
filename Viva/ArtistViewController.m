@@ -11,7 +11,7 @@
 
 @interface ArtistViewController ()
 
-@property (nonatomic, readwrite, retain) SPSpotifyArtistBrowse *artistBrowse;
+@property (nonatomic, readwrite, retain) SPArtistBrowse *artistBrowse;
 
 -(void)rebuildTrackContainers;
 
@@ -27,8 +27,8 @@
 				  options:0
 				  context:nil];
 		
-		SPSpotifySession *appSession = [[NSApp delegate] session];
-		self.artistBrowse = [[[SPSpotifyArtistBrowse alloc] initWithArtist:[SPSpotifyArtist artistWithArtistURL:aURL]
+		SPSession *appSession = [[NSApp delegate] session];
+		self.artistBrowse = [[[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL]
 																 inSession:appSession]
 							autorelease];
 	}
@@ -53,7 +53,7 @@
 	
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.artistBrowse.tracks count]];
 	
-	for (SPSpotifyTrack *aTrack in self.artistBrowse.tracks) {
+	for (SPTrack *aTrack in self.artistBrowse.tracks) {
 		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
 																		   inContainer:self.artistBrowse] autorelease]];
 	}

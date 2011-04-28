@@ -11,7 +11,7 @@
 
 @protocol VivaTrackContainer <NSObject>
 
-@property (readonly) SPSpotifyTrack *track;
+@property (readonly) SPTrack *track;
 
 @end
 

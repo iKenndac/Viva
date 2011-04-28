@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
-@interface SPSpotifyAlbumBrowse (VivaAlbumBrowseExtensions)
+@interface SPAlbumBrowse (VivaAlbumBrowseExtensions)
 
 -(NSString *)condensedCopyrights;
 

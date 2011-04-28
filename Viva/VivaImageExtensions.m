@@ -23,9 +23,9 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	
 	NSMutableArray *imagesWeCanUse = [NSMutableArray array];
 	
-	for (SPSpotifyTrack *track in tracks) {
+	for (SPTrack *track in tracks) {
 		
-		SPSpotifyImage *spImage = [[track album] cover];
+		SPImage *spImage = [[track album] cover];
 		
 		if ([spImage image] != nil && ![imagesWeCanUse containsObject:spImage]) {
 			[imagesWeCanUse addObject:spImage];
@@ -72,7 +72,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	NSSize tileSize = NSMakeSize([mosaicImage size].width / tileEdgeCount, [mosaicImage size].width / tileEdgeCount);
 	
 	NSUInteger imagesDrawn = 0;
-	for (SPSpotifyImage *spImage in imagesWeCanUse) {
+	for (SPImage *spImage in imagesWeCanUse) {
 		
 		[[spImage image] drawInRect:(NSRect) {
 			.origin = NSMakePoint((imagesDrawn % tileEdgeCount) * tileSize.width,

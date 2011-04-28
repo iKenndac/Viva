@@ -9,7 +9,7 @@
 #import "VivaTrackExtensions.h"
 
 
-@implementation SPSpotifyTrack (VivaTrackExtensions)
+@implementation SPTrack (VivaTrackExtensions)
 
 +(NSSet *)keyPathsForValuesAffectingCondensedArtist {
 	return [NSSet setWithObject:@"artists"];
