@@ -19,6 +19,8 @@
 @property (nonatomic, retain, readwrite) FooterViewController *footerViewController;
 @property (nonatomic, retain, readwrite) VivaURLNavigationController *navigationController;
 
+-(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+
 @end
 
 @implementation MainWindowController
@@ -210,6 +212,46 @@
 	[[NSApp delegate] performNextTrackAction:sender];
 }
 
+-(void)delete:(id)sender {
+	
+	if (self.window.firstResponder == self.sourceList) {
+		
+		id playlist = [self.sourceList itemAtRow:self.sourceList.selectedRow];
+		
+		if ([[[playlist representedObject] tracks] count] > 0) {
+			
+			[[NSAlert alertWithMessageText:@"Are you sure you want to delete this playlist?"
+							 defaultButton:@"Delete"
+						   alternateButton:@"Cancel"
+							   otherButton:@""
+				 informativeTextWithFormat:@"This operation cannot be undone, because I haven't written that code yet."]
+			 beginSheetModalForWindow:[self window]
+			 modalDelegate:self
+			 didEndSelector:@selector(confirmPlaylistDeletionSheetDidEnd:returnCode:contextInfo:)
+			 contextInfo:playlist];
+		} else {
+			[self confirmPlaylistDeletionSheetDidEnd:nil returnCode:NSAlertDefaultReturn contextInfo:playlist];
+		}
+	} else {
+		NSBeep();
+	}
+}
+
+
+-(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	
+	if (returnCode == NSAlertDefaultReturn) {
+		SPPlaylist *playlist = [(id)contextInfo representedObject];
+		SPPlaylistFolder *parent = [[self.sourceList parentForItem:contextInfo] representedObject];
+		
+		if (parent != nil) {
+			[parent.playlists removeObject:playlist];
+		} else {
+			[[[[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists] playlists] removeObject:playlist];
+		}
+	}
+}
+
 #pragma mark -
 #pragma mark Split view
 
@@ -316,7 +358,6 @@
 	SPPlaylist *targetPlaylist = [item representedObject];
 	[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
 	return YES;
-	
 }
 
 

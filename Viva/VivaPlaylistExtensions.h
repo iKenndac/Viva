@@ -13,6 +13,7 @@
 
 -(NSImage *)icon;
 -(NSImage *)generatePlaylistImage;
+-(NSArray *)playlists;
 
 @end
 

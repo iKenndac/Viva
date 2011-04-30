@@ -16,9 +16,6 @@
 	return [NSImage imageNamed:@"local_files"];
 }
 
-#pragma mark -
-#pragma mark Mosaic Creation
-
 -(NSImage *)generatePlaylistImage {
 	
 	if ([[self image] image] != nil) {
@@ -26,6 +23,10 @@
 	} else {
 		return [NSImage mosaicImageWithTracks:[self tracks]];
 	}
+}
+
+-(NSArray *)playlists {
+	return nil;
 }
 
 @end
