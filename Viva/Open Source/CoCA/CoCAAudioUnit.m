@@ -55,11 +55,10 @@
 }
 -(CoCAAudioUnit*)initWrappingUnit:(AudioUnit)unit_ closeWhenDone:(BOOL)closeWhenDone_;
 {
-    if( ! [super init] ) return nil;
-    
-    unit = unit_;
-    closeWhenDone = closeWhenDone_;
-    
+    if ((self = [super init])) {    
+		unit = unit_;
+		closeWhenDone = closeWhenDone_;
+    }
     return self;
 }
 

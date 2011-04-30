@@ -71,11 +71,9 @@
 
 -(CoCAAudioDevice*)initForID:(AudioDeviceID)aadid;
 {
-    if(! [super init] )
-        return nil;
-    
-    adid = aadid;
-    
+    if ((self = [super init])) {
+		adid = aadid;
+    }
     return self;
 }
 +(CoCAAudioDevice*)deviceForID:(AudioDeviceID)aadid;
