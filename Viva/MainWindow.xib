@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.SystemVersion">11A444d</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1556</string>
+		<string key="IBDocument.AppKitVersion">1119.1</string>
+		<string key="IBDocument.HIToolboxVersion">555.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1306</string>
+			<string key="NS.object.0">1556</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -227,7 +227,7 @@
 								<nil key="NSToolbarItemTarget"/>
 								<nil key="NSToolbarItemAction"/>
 								<string key="NSToolbarItemMinSize">{200, 22}</string>
-								<string key="NSToolbarItemMaxSize">{9000, 22}</string>
+								<string key="NSToolbarItemMaxSize">{9001, 22}</string>
 								<bool key="NSToolbarItemEnabled">YES</bool>
 								<bool key="NSToolbarItemAutovalidates">YES</bool>
 								<int key="NSToolbarItemTag">0</int>
@@ -404,6 +404,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 					</object>
 				</object>
+				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{700, 460}</string>
 				<object class="NSView" key="NSWindowView" id="439893737">
 					<reference key="NSNextResponder"/>
@@ -496,8 +497,13 @@
 														<string key="NSCatalogName">System</string>
 														<string key="NSColorName">_sourceListBackgroundColor</string>
 														<object class="NSColor" key="NSColor">
-															<int key="NSColorSpace">1</int>
-															<bytes key="NSRGB">MC44MzkyMTU2OTU5IDAuODY2NjY2Njc0NiAwLjg5ODAzOTIyMTgAA</bytes>
+															<int key="NSColorSpace">6</int>
+															<string key="NSCatalogName">System</string>
+															<string key="NSColorName">alternateSelectedControlColor</string>
+															<object class="NSColor" key="NSColor">
+																<int key="NSColorSpace">1</int>
+																<bytes key="NSRGB">MCAwIDEAA</bytes>
+															</object>
 														</object>
 													</object>
 													<object class="NSColor" key="NSGridColor">
@@ -519,6 +525,7 @@
 													<bool key="NSAllowsTypeSelect">YES</bool>
 													<int key="NSTableViewSelectionHighlightStyle">1</int>
 													<int key="NSTableViewDraggingDestinationStyle">1</int>
+													<int key="NSTableViewGroupRowStyle">1</int>
 													<bool key="NSOutlineViewAutoresizesOutlineColumnKey">NO</bool>
 													<float key="NSOutlineViewIndentationPerLevelKey">14</float>
 												</object>
@@ -564,7 +571,7 @@
 									<reference key="NSSuperview" ref="864227752"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="277046624"/>
-									<int key="NSsFlags">560</int>
+									<int key="NSsFlags">133680</int>
 									<reference key="NSVScroller" ref="437601171"/>
 									<reference key="NSHScroller" ref="86483398"/>
 									<reference key="NSContentView" ref="277046624"/>
@@ -625,15 +632,16 @@
 							<string key="NSClassName">NSView</string>
 						</object>
 					</object>
-					<string key="NSFrame">{{7, 11}, {700, 460}}</string>
+					<string key="NSFrameSize">{700, 460}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="864227752"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
-				<string key="NSMinSize">{700, 521}</string>
-				<string key="NSMaxSize">{1e+13, 1e+13}</string>
+				<string key="NSMinSize">{700, 522}</string>
+				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">MainWindow</string>
+				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSTreeController" id="854874348">
 				<string key="NSObjectClassName">SPSpotifyPlaylist</string>
@@ -651,6 +659,7 @@
 				<string key="NSWindowTitle">Go to URL</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
+				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="181784379">
 					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -785,7 +794,8 @@
 					<reference key="NSNextKeyView" ref="902544334"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
-				<string key="NSMaxSize">{1e+13, 1e+13}</string>
+				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">

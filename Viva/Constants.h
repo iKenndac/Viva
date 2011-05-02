@@ -26,6 +26,10 @@ static NSString * const kSpotifyTrackMoveSourceIndexSetDragIdentifier = @"com.sp
 // ^ The indexes in the source playlist rather than the current sort order.
 static double const kDragImageMaximumMosaicSize = 64.0;
 
+static NSString * const kSpotifyPlaylistMoveSourceDragIdentifier = @"com.spotify.Viva.PlaylistInParentIndex";
+static NSString * const kPlaylistURL = @"kPlaylistURL";
+static NSString * const kPlaylistParentId = @"kPlaylistParentId";
+
 // ------ Keychain ------
 
 static NSString * const kVivaKeychainServiceName = @"Viva";

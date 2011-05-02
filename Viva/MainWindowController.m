@@ -72,7 +72,7 @@
 									 options:0
 									 context:nil];
 	
-	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObject:kSpotifyTrackURLListDragIdentifier]];
+	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyTrackURLListDragIdentifier, kSpotifyPlaylistMoveSourceDragIdentifier, nil]];
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
@@ -218,7 +218,7 @@
 		
 		id playlist = [self.sourceList itemAtRow:self.sourceList.selectedRow];
 		
-		if ([[[playlist representedObject] tracks] count] > 0) {
+		if (![[playlist representedObject] isKindOfClass:[SPPlaylistFolder class]] && [[[playlist representedObject] tracks] count] > 0) {
 			
 			[[NSAlert alertWithMessageText:@"Are you sure you want to delete this playlist?"
 							 defaultButton:@"Delete"
@@ -324,41 +324,107 @@
 				  proposedItem:(id)item 
 			proposedChildIndex:(NSInteger)index {
 	
-	if ((![[item representedObject] isKindOfClass:[SPPlaylist class]]) ||
-		([[item representedObject] isKindOfClass:[SPPlaylistFolder class]]))
-		return NSDragOperationNone;
+	NSData *trackUrlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
 	
-	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+	if (trackUrlData != nil) {
+		if ((![[item representedObject] isKindOfClass:[SPPlaylist class]]) ||
+			([[item representedObject] isKindOfClass:[SPPlaylistFolder class]])) {
+			return NSDragOperationNone;
+		} else {
+			return NSDragOperationCopy;
+		}
+	}
 	
-	if (urlData != nil)
-		return NSDragOperationCopy;
-	else
-		return NSDragOperationNone;
+	NSData *playlistUrlData = [[info draggingPasteboard] dataForType:kSpotifyPlaylistMoveSourceDragIdentifier];
+	
+	if (playlistUrlData != nil) {
+		
+		if ([[item representedObject] isKindOfClass:[SPPlaylistFolder class]] || [item representedObject] == nil) {
+			return NSDragOperationMove;
+		} else {
+			
+			SPPlaylistFolder *parent = [[outlineView parentForItem:item] representedObject];
+			
+			[outlineView setDropItem:[outlineView parentForItem:item] 
+					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:[item representedObject]]: 
+			 [[[[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists] playlists] indexOfObject:[item representedObject]]];
+			return NSDragOperationMove;
+		}
+	}
+	
+	return NSDragOperationNone;
 	
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id < NSDraggingInfo >)info item:(id)item childIndex:(NSInteger)index {
 	
 	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
-
-	if (urlData == nil)
-		return NO;
 	
-	NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
-	NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
-	
-	for (NSURL *url in trackURLs) {
-		SPTrack *track = nil;
-		track = [SPTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
-		if (track != nil) {
-			[tracksToAdd addObject:track];
+	if (urlData != nil) {
+		
+		NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
+		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
+		
+		for (NSURL *url in trackURLs) {
+			SPTrack *track = nil;
+			track = [SPTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
+			if (track != nil) {
+				[tracksToAdd addObject:track];
+			}
 		}
+		
+		SPPlaylist *targetPlaylist = [item representedObject];
+		[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
+		return YES;
 	}
 	
-	SPPlaylist *targetPlaylist = [item representedObject];
-	[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
-	return YES;
+	NSData *playlistUrlData = [[info draggingPasteboard] dataForType:kSpotifyPlaylistMoveSourceDragIdentifier];
+	
+	if (playlistUrlData != nil) {
+		
+		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
+		SPPlaylistContainer *userPlaylists = [[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists];
+		SPPlaylist *source = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
+		sp_uint64 parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
+		
+		id parent = parentId == 0 ? userPlaylists :
+		[[(VivaAppDelegate *)[NSApp delegate] session] playlistFolderForFolderId:parentId
+																	 inContainer:userPlaylists];
+		NSError *error = nil;
+		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
+															  ofParent:parent
+															   toIndex:index
+														   ofNewParent:[item representedObject]
+																 error:&error];
+		if (!greatSuccess) {
+			[self presentError:error];
+			return NO;
+		}
+		return YES;
+	}
+	return NO;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
+	
+	id item = [items objectAtIndex:0];
+	id playlist = [item representedObject];
+	
+	SPPlaylistFolder *parent = [[outlineView parentForItem:item] representedObject];
+	
+	NSMutableDictionary *repForReordering = [NSMutableDictionary dictionaryWithCapacity:2];
+	[repForReordering setValue:[playlist spotifyURL]
+						forKey:kPlaylistURL];
+	
+	if (parent != nil)
+		[repForReordering setValue:[NSNumber numberWithUnsignedLongLong:[parent folderId]]
+																 forKey:kPlaylistParentId];
+	
+	[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:repForReordering]
+			forType:kSpotifyPlaylistMoveSourceDragIdentifier];
+
+	
+	return YES;
+}
 
 @end
