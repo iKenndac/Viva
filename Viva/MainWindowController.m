@@ -240,7 +240,6 @@
 	}
 }
 
-
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	
 	if (returnCode == NSAlertDefaultReturn) {
@@ -250,7 +249,7 @@
 		if (parent != nil) {
 			[parent.playlists removeObject:playlist];
 		} else {
-			[[[[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists] playlists] removeObject:playlist];
+			[[[[SPSession sharedSession] userPlaylists] playlists] removeObject:playlist];
 		}
 	}
 }
@@ -350,7 +349,7 @@
 			
 			[outlineView setDropItem:[outlineView parentForItem:item] 
 					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:[item representedObject]]: 
-			 [[[[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists] playlists] indexOfObject:[item representedObject]]];
+			 [[[[SPSession sharedSession] userPlaylists] playlists] indexOfObject:[item representedObject]]];
 			return NSDragOperationMove;
 		}
 	}
@@ -361,8 +360,8 @@
 		
 		NSDictionary *sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
 		sp_uint64 folderId = [[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue];
-		SPPlaylistContainer *userPlaylists = [[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists];
-		SPPlaylistFolder *sourceFolder =  [[(VivaAppDelegate *)[NSApp delegate] session] playlistFolderForFolderId:folderId
+		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
+		SPPlaylistFolder *sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
 																									   inContainer:userPlaylists];
 		
 		if ([[item representedObject] isKindOfClass:[SPPlaylistFolder class]] || [item representedObject] == nil) {
@@ -379,7 +378,7 @@
 			
 			[outlineView setDropItem:[outlineView parentForItem:item] 
 					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:[item representedObject]]: 
-			 [[[[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists] playlists] indexOfObject:[item representedObject]]];
+			 [[[[SPSession sharedSession] userPlaylists] playlists] indexOfObject:[item representedObject]]];
 			return NSDragOperationMove;
 		}
 	}
@@ -398,7 +397,7 @@
 		
 		for (NSURL *url in trackURLs) {
 			SPTrack *track = nil;
-			track = [SPTrack trackForTrackURL:url inSession:[(VivaAppDelegate *)[NSApp delegate] session]];
+			track = [SPTrack trackForTrackURL:url inSession:[SPSession sharedSession]];
 			if (track != nil) {
 				[tracksToAdd addObject:track];
 			}
@@ -414,12 +413,12 @@
 	if (playlistUrlData != nil) {
 		
 		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
-		SPPlaylistContainer *userPlaylists = [[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists];
-		SPPlaylist *source = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
+		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
+		SPPlaylist *source = [[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
 		sp_uint64 parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 		
 		id parent = parentId == 0 ? userPlaylists :
-		[[(VivaAppDelegate *)[NSApp delegate] session] playlistFolderForFolderId:parentId
+		[[SPSession sharedSession] playlistFolderForFolderId:parentId
 																	 inContainer:userPlaylists];
 		NSError *error = nil;
 		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
@@ -440,13 +439,13 @@
 	if (folderSourceData != nil) {
 		
 		NSDictionary *sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
-		SPPlaylistContainer *userPlaylists = [[(VivaAppDelegate *)[NSApp delegate] session] userPlaylists];
-		SPPlaylistFolder *source = [[(VivaAppDelegate *)[NSApp delegate] session] playlistFolderForFolderId:[[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue]
+		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
+		SPPlaylistFolder *source = [[SPSession sharedSession] playlistFolderForFolderId:[[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue]
 																								inContainer:userPlaylists];
 		sp_uint64 parentId = [[sourceFolderInfo valueForKey:kPlaylistParentId] unsignedLongLongValue];
 		
 		id parent = parentId == 0 ? userPlaylists :
-		[[(VivaAppDelegate *)[NSApp delegate] session] playlistFolderForFolderId:parentId
+		[[SPSession sharedSession] playlistFolderForFolderId:parentId
 																	 inContainer:userPlaylists];
 		NSError *error = nil;
 		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]

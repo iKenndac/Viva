@@ -35,6 +35,7 @@ static NSString * const kFolderId = @"kFolderId";
 // ------ Keychain ------
 
 static NSString * const kVivaKeychainServiceName = @"Viva";
+static NSString * const kVivaLibSpotifyUserAgentName = @"com.spotify.Viva";
 
 // ------ User Defaults ------
 

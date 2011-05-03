@@ -122,9 +122,15 @@
 												 forKey:kVivaLastUserNameUserDefaultsKey];
 	}
 	
-	[[(VivaAppDelegate *)[NSApp delegate] session] attemptLoginWithUserName:[userNameField stringValue]
-																   password:[passwordField stringValue]];
+	NSError *error = nil;
+	[[SPSession sharedSession] attemptLoginWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey" ofType:@"key"]]
+													userAgent:kVivaLibSpotifyUserAgentName
+													 userName:[userNameField stringValue]
+													 password:[passwordField stringValue]
+														error:&error];
 	
+	if (error != nil)
+		[self presentError:error];
 }
 
 #pragma mark -

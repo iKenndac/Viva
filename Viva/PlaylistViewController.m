@@ -29,7 +29,7 @@
 				  options:0
 				  context:nil];
 
-		self.playlist = [[(VivaAppDelegate *)[NSApp delegate] session] playlistForURL:aURL];
+		self.playlist = [[SPSession sharedSession] playlistForURL:aURL];
 		self.playlist.delegate = self;
 	}
 	return self;

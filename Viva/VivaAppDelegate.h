@@ -16,7 +16,6 @@
 @interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate> {
 @private
     NSWindow *window;
-    SPSession *session;
 	LoginWindowController *loginWindowController;
 	MainWindowController *mainWindowController;
 	VivaPlaybackManager *playbackManager;
@@ -25,10 +24,10 @@
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (retain, readonly) SPSession *session; 
 @property (retain, readonly) VivaPlaybackManager *playbackManager; 
 @property (assign) IBOutlet NSMenu *dockMenu;
-@property (retain, readonly) SPMediaKeyTap *mediaKeyHandler; 
+@property (retain, readonly) SPMediaKeyTap *mediaKeyHandler;
+@property (readonly) SPSession *session;
 
 // For Applescript, Dock menu, etc
 -(IBAction)performNextTrackAction:(id)sender;

@@ -17,7 +17,6 @@
 
 @interface VivaAppDelegate()
 
-@property (retain, readwrite) SPSession *session; 
 @property (retain, readwrite) VivaPlaybackManager *playbackManager; 
 @property (retain, readwrite) SPMediaKeyTap *mediaKeyHandler;
 
@@ -26,10 +25,13 @@
 @implementation VivaAppDelegate
 
 @synthesize window;
-@synthesize session;
 @synthesize playbackManager;
 @synthesize dockMenu;
 @synthesize mediaKeyHandler;
+
+-(SPSession *)session {
+	return [SPSession sharedSession];
+}
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
 	
@@ -41,17 +43,12 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[SearchResultsViewController class] forURLScheme:@"spotify:search"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[AlbumViewController class] forURLScheme:@"spotify:album"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
-	
-    self.session = [SPSession sessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey"
-																															  ofType:@"key"]]
-													 userAgent:@"CocoaLibSpotify"
-														 error:nil];
-    self.session.delegate = self;
+
+    [SPSession sharedSession].delegate = self;
     
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
-	self.playbackManager = [[[VivaPlaybackManager alloc] initWithPlaybackSession:self.session] autorelease];
-	self.session.playbackDelegate = playbackManager;
+	self.playbackManager = [[[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]] autorelease];
 	
 	if ([SPMediaKeyTap usesGlobalMediaKeyTap]) {
 		self.mediaKeyHandler = [[[SPMediaKeyTap alloc] initWithDelegate:self] autorelease];
@@ -74,7 +71,7 @@
 
 -(void)applicationWillTerminate:(NSNotification *)notification {
 	
-	[self.session logout];
+	[[SPSession sharedSession] logout];
 }
 
 #pragma mark -

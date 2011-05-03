@@ -35,6 +35,7 @@
 		
 		self.volume = 1.0;
 		self.playbackSession = aSession;
+		self.playbackSession.playbackDelegate = self;
         
 		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
 		
