@@ -1,3 +1,6 @@
 [submodule "cocoalibspotify"]
 	path = cocoalibspotify
 	url = git@git.spotify.net:cocoalibspotify.git
+[submodule "Viva/Open Source/CoCA"]
+	path = Viva/Open Source/CoCA
+	url = git@github.com:iKenndac/CoCA.git

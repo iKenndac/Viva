@@ -37,6 +37,10 @@
 		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
+		506DA6141371F266009A8D1F /* NCCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5EA1371F266009A8D1F /* NCCommon.m */; };
+		506DA6171371F266009A8D1F /* CoCAAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5F21371F266009A8D1F /* CoCAAudioDevice.m */; };
+		506DA6181371F266009A8D1F /* CoCAAudioHardwareSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5F41371F266009A8D1F /* CoCAAudioHardwareSystem.m */; };
+		506DA6191371F266009A8D1F /* CoCAAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5F61371F266009A8D1F /* CoCAAudioUnit.m */; };
 		506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F347713438755002BA308 /* VivaPlaybackManager.m */; };
 		506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 506F34891343DCFB002BA308 /* VivaIcon.icns */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
@@ -92,10 +96,6 @@
 		50C7B3BA132E329A0055EDE0 /* PlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */; };
 		50C7B3BB132E329A0055EDE0 /* PlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */; };
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
-		50D192C5134280E400D02FDF /* CoCAAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D192BD134280E400D02FDF /* CoCAAudioDevice.m */; };
-		50D192C6134280E400D02FDF /* CoCAAudioHardwareSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D192BF134280E400D02FDF /* CoCAAudioHardwareSystem.m */; };
-		50D192C7134280E400D02FDF /* CoCAAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D192C1134280E400D02FDF /* CoCAAudioUnit.m */; };
-		50D192C8134280E400D02FDF /* NCCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D192C3134280E400D02FDF /* NCCommon.m */; };
 		50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192C9134280F500D02FDF /* AudioUnit.framework */; };
 		50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192CB134280FB00D02FDF /* CoreAudio.framework */; };
 		50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1931359E1D200437CCB /* VivaImageExtensions.m */; };
@@ -210,6 +210,16 @@
 		505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPWithAlternateImageCell.m; path = "Custom Controls/SPWithAlternateImageCell.m"; sourceTree = "<group>"; };
 		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
 		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
+		506DA5E91371F266009A8D1F /* NCCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCommon.h; sourceTree = "<group>"; };
+		506DA5EA1371F266009A8D1F /* NCCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCommon.m; sourceTree = "<group>"; };
+		506DA5F01371F266009A8D1F /* CoCA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCA.h; sourceTree = "<group>"; };
+		506DA5F11371F266009A8D1F /* CoCAAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioDevice.h; sourceTree = "<group>"; };
+		506DA5F21371F266009A8D1F /* CoCAAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioDevice.m; sourceTree = "<group>"; };
+		506DA5F31371F266009A8D1F /* CoCAAudioHardwareSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioHardwareSystem.h; sourceTree = "<group>"; };
+		506DA5F41371F266009A8D1F /* CoCAAudioHardwareSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioHardwareSystem.m; sourceTree = "<group>"; };
+		506DA5F51371F266009A8D1F /* CoCAAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioUnit.h; sourceTree = "<group>"; };
+		506DA5F61371F266009A8D1F /* CoCAAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioUnit.m; sourceTree = "<group>"; };
+		506DA5F71371F266009A8D1F /* PrivateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateUtil.h; sourceTree = "<group>"; };
 		506F347513436F08002BA308 /* VivaPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContext.h; sourceTree = "<group>"; };
 		506F347613438755002BA308 /* VivaPlaybackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackManager.h; sourceTree = "<group>"; };
 		506F347713438755002BA308 /* VivaPlaybackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackManager.m; sourceTree = "<group>"; };
@@ -281,16 +291,6 @@
 		50C7B3BC132E36D90055EDE0 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		50C7B3BD132E36D90055EDE0 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAppDelegate.h; sourceTree = "<group>"; };
-		50D192BB134280E400D02FDF /* CoCA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCA.h; sourceTree = "<group>"; };
-		50D192BC134280E400D02FDF /* CoCAAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioDevice.h; sourceTree = "<group>"; };
-		50D192BD134280E400D02FDF /* CoCAAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoCAAudioDevice.m; sourceTree = "<group>"; };
-		50D192BE134280E400D02FDF /* CoCAAudioHardwareSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioHardwareSystem.h; sourceTree = "<group>"; };
-		50D192BF134280E400D02FDF /* CoCAAudioHardwareSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CoCAAudioHardwareSystem.m; sourceTree = "<group>"; };
-		50D192C0134280E400D02FDF /* CoCAAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoCAAudioUnit.h; sourceTree = "<group>"; };
-		50D192C1134280E400D02FDF /* CoCAAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoCAAudioUnit.m; sourceTree = "<group>"; };
-		50D192C2134280E400D02FDF /* NCCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCommon.h; sourceTree = "<group>"; };
-		50D192C3134280E400D02FDF /* NCCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCommon.m; sourceTree = "<group>"; };
-		50D192C4134280E400D02FDF /* PrivateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateUtil.h; sourceTree = "<group>"; };
 		50D192C9134280F500D02FDF /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		50D192CB134280FB00D02FDF /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		50D1C1921359E1D200437CCB /* VivaImageExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaImageExtensions.h; sourceTree = "<group>"; };
@@ -521,6 +521,31 @@
 			path = Playback;
 			sourceTree = "<group>";
 		};
+		506DA5BD1371F266009A8D1F /* CoCA */ = {
+			isa = PBXGroup;
+			children = (
+				506DA5E91371F266009A8D1F /* NCCommon.h */,
+				506DA5EA1371F266009A8D1F /* NCCommon.m */,
+				506DA5EF1371F266009A8D1F /* Source */,
+			);
+			path = CoCA;
+			sourceTree = "<group>";
+		};
+		506DA5EF1371F266009A8D1F /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				506DA5F01371F266009A8D1F /* CoCA.h */,
+				506DA5F11371F266009A8D1F /* CoCAAudioDevice.h */,
+				506DA5F21371F266009A8D1F /* CoCAAudioDevice.m */,
+				506DA5F31371F266009A8D1F /* CoCAAudioHardwareSystem.h */,
+				506DA5F41371F266009A8D1F /* CoCAAudioHardwareSystem.m */,
+				506DA5F51371F266009A8D1F /* CoCAAudioUnit.h */,
+				506DA5F61371F266009A8D1F /* CoCAAudioUnit.m */,
+				506DA5F71371F266009A8D1F /* PrivateUtil.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		506F347413436EF8002BA308 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,23 +731,6 @@
 			name = "Playlist View";
 			sourceTree = "<group>";
 		};
-		50D192BA134280E400D02FDF /* CoCA */ = {
-			isa = PBXGroup;
-			children = (
-				50D192BB134280E400D02FDF /* CoCA.h */,
-				50D192BC134280E400D02FDF /* CoCAAudioDevice.h */,
-				50D192BD134280E400D02FDF /* CoCAAudioDevice.m */,
-				50D192BE134280E400D02FDF /* CoCAAudioHardwareSystem.h */,
-				50D192BF134280E400D02FDF /* CoCAAudioHardwareSystem.m */,
-				50D192C0134280E400D02FDF /* CoCAAudioUnit.h */,
-				50D192C1134280E400D02FDF /* CoCAAudioUnit.m */,
-				50D192C2134280E400D02FDF /* NCCommon.h */,
-				50D192C3134280E400D02FDF /* NCCommon.m */,
-				50D192C4134280E400D02FDF /* PrivateUtil.h */,
-			);
-			path = CoCA;
-			sourceTree = "<group>";
-		};
 		50D1C1951359E43400437CCB /* Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -795,7 +803,7 @@
 		50E3F774133FD92800FF4618 /* Open Source */ = {
 			isa = PBXGroup;
 			children = (
-				50D192BA134280E400D02FDF /* CoCA */,
+				506DA5BD1371F266009A8D1F /* CoCA */,
 				50E3F775133FD92800FF4618 /* EMKeychainItem.h */,
 				50E3F776133FD92800FF4618 /* EMKeychainItem.m */,
 			);
@@ -857,6 +865,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				English,
 			);
 			mainGroup = 503D62C913257D92007772CA;
 			productRefGroup = 503D62D513257D92007772CA /* Products */;
@@ -1011,10 +1020,6 @@
 				50E3F764133FBFCD00FF4618 /* SPAccountButtonCell.m in Sources */,
 				50E3F769133FC3A300FF4618 /* LoginWindowController.m in Sources */,
 				50E3F777133FD92800FF4618 /* EMKeychainItem.m in Sources */,
-				50D192C5134280E400D02FDF /* CoCAAudioDevice.m in Sources */,
-				50D192C6134280E400D02FDF /* CoCAAudioHardwareSystem.m in Sources */,
-				50D192C7134280E400D02FDF /* CoCAAudioUnit.m in Sources */,
-				50D192C8134280E400D02FDF /* NCCommon.m in Sources */,
 				506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */,
 				50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */,
 				5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */,
@@ -1033,6 +1038,10 @@
 				5099D8AA1364B175005C7CDC /* AlbumViewController.m in Sources */,
 				5099D8BC1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m in Sources */,
 				5099D8C11364C002005C7CDC /* ArtistViewController.m in Sources */,
+				506DA6141371F266009A8D1F /* NCCommon.m in Sources */,
+				506DA6171371F266009A8D1F /* CoCAAudioDevice.m in Sources */,
+				506DA6181371F266009A8D1F /* CoCAAudioHardwareSystem.m in Sources */,
+				506DA6191371F266009A8D1F /* CoCAAudioUnit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
