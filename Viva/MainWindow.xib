@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11A444d</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1556</string>
-		<string key="IBDocument.AppKitVersion">1119.1</string>
-		<string key="IBDocument.HIToolboxVersion">555.00</string>
+		<string key="IBDocument.SystemVersion">11A459e</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1565</string>
+		<string key="IBDocument.AppKitVersion">1121.2</string>
+		<string key="IBDocument.HIToolboxVersion">557.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1556</string>
+			<string key="NS.object.0">1565</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -32,6 +32,7 @@
 			<string>NSView</string>
 			<string>NSToolbar</string>
 			<string>NSScrollView</string>
+			<string>NSUserDefaultsController</string>
 			<string>NSScroller</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -637,7 +638,7 @@
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="864227752"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{700, 522}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">MainWindow</string>
@@ -793,9 +794,12 @@
 					<string key="NSFrame">{{7, 11}, {390, 133}}</string>
 					<reference key="NSNextKeyView" ref="902544334"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
+			</object>
+			<object class="NSUserDefaultsController" id="1000235793">
+				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -1041,6 +1045,22 @@
 						<reference key="destination" ref="620779527"/>
 					</object>
 					<int key="connectionID">803</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.LastURL</string>
+						<reference key="source" ref="142873667"/>
+						<reference key="destination" ref="1000235793"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="142873667"/>
+							<reference key="NSDestination" ref="1000235793"/>
+							<string key="NSLabel">value: values.LastURL</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.LastURL</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">805</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1375,6 +1395,11 @@
 						<reference key="object" ref="227712687"/>
 						<reference key="parent" ref="50523379"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">804</int>
+						<reference key="object" ref="1000235793"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1490,7 +1515,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">803</int>
+			<int key="maxID">805</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1708,9 +1733,9 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{9, 8}</string>
 				<string>{7, 2}</string>
+				<string>{16, 16}</string>
 				<string>{27, 25}</string>
-				<string>{27, 25}</string>
-				<string>{27, 25}</string>
+				<string>{16, 16}</string>
 				<string>{27, 25}</string>
 			</object>
 		</object>

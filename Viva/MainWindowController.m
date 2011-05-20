@@ -141,7 +141,6 @@
 }
 
 - (IBAction)showOpenURLSheet:(id)sender {
-	[self.urlField setStringValue:@""];
 	[self.invalidURLWarningLabel setHidden:YES];
 	
 	[NSApp beginSheet:self.urlSheet
