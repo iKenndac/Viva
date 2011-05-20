@@ -25,6 +25,8 @@
 
 -(void)registerViewControllerClass:(Class)aViewControllerClass forURLScheme:(NSString *)urlSchemePrefix;
 
+-(BOOL)canHandleURL:(NSURL *)aURL;
 -(NSViewController *)viewControllerForURL:(NSURL *)aURL;
+
 
 @end

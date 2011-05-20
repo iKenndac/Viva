@@ -234,7 +234,6 @@
 }
 
 -(void)sessionDidEndPlaybackOnMainThread:(SPSession *)aSession {
-	
 	[self skipToNextTrackInCurrentContext:NO];
 }
 

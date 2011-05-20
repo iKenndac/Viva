@@ -154,7 +154,7 @@
 	
 	NSURL *aURL = [NSURL URLWithString:[self.urlField stringValue]];
 	
-	if (aURL == nil || [aURL spotifyLinkType] == SP_LINKTYPE_INVALID) {
+	if (aURL == nil || ![[VivaInternalURLManager sharedInstance] canHandleURL:aURL]) {
 		[self.invalidURLWarningLabel setHidden:NO];
 		return;
 	}

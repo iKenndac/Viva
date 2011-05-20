@@ -38,6 +38,20 @@ static VivaInternalURLManager *sharedInstance;
 	} 
 }
 
+-(BOOL)canHandleURL:(NSURL *)aURL {
+	
+	if (aURL == nil)
+		return NO;
+	
+	for (NSString *prefix in prefixToClassLookupTable) {
+		if ([[aURL absoluteString] hasPrefix:prefix]) {
+			return YES;
+		}
+	}
+	
+	return NO;
+}
+
 -(NSViewController *)viewControllerForURL:(NSURL *)aURL {
 	
 	if ([urlToViewControllerLookupTable objectForKey:aURL] != nil) {
