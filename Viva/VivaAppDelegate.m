@@ -14,6 +14,7 @@
 #import "SearchResultsViewController.h"
 #import "AlbumViewController.h"
 #import "ArtistViewController.h"
+#import "EMKeychainItem.h"
 
 @interface VivaAppDelegate()
 
@@ -72,6 +73,19 @@
 -(void)applicationWillTerminate:(NSNotification *)notification {
 	
 	[[SPSession sharedSession] logout];
+}
+
+#pragma mark -
+
+-(void)logOut {
+	EMKeychainItem *keychainItem = [EMGenericKeychainItem genericKeychainItemForService:kVivaKeychainServiceName
+																		   withUsername:[[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastUserNameUserDefaultsKey]];
+	[keychainItem removeFromKeychain];
+	
+	[[SPSession sharedSession] logout];
+	[mainWindowController close];
+	[loginWindowController reset];
+	[loginWindowController showWindow:nil];
 }
 
 #pragma mark -

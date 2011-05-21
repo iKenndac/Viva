@@ -173,6 +173,10 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
     }
 }
 
+-(IBAction)logOut:(id)sender {
+	[[NSApp delegate] logOut];
+}
+
 - (IBAction)showOpenURLSheet:(id)sender {
 	[self.invalidURLWarningLabel setHidden:YES];
 	

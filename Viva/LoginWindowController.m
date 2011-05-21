@@ -105,8 +105,6 @@
 
 - (IBAction)attemptLogin:(id)sender {
 	
-	self.isLoggingIn = YES;
-	
 	if ([[userNameField stringValue] length] == 0 ||
 		[[passwordField stringValue] length] == 0) {
 		NSBeep();
@@ -129,8 +127,17 @@
 													 password:[passwordField stringValue]
 														error:&error];
 	
-	if (error != nil)
+	if (error != nil) {
 		[self presentError:error];
+		return;
+	}
+	
+	self.isLoggingIn = YES;
+}
+
+-(void)reset {
+	self.isLoggingIn = NO;
+	[passwordField setStringValue:@""];
 }
 
 #pragma mark -

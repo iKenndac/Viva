@@ -35,5 +35,6 @@
 @property (assign) IBOutlet NSView *loggingInView;
 
 - (IBAction)attemptLogin:(id)sender;
+-(void)reset;
 
 @end

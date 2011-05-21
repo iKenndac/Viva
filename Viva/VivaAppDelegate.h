@@ -29,6 +29,8 @@
 @property (retain, readonly) SPMediaKeyTap *mediaKeyHandler;
 @property (readonly) SPSession *session;
 
+-(void)logOut;
+
 // For Applescript, Dock menu, etc
 -(IBAction)performNextTrackAction:(id)sender;
 -(IBAction)performSeekForwardABitAction:(id)sender;
