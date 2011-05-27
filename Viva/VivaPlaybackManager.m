@@ -40,7 +40,7 @@
 		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
 		
         [self addObserver:self
-               forKeyPath:@"playbackSession.isPlaying"
+               forKeyPath:@"playbackSession.playing"
                   options:0
                   context:nil];
 		
@@ -109,7 +109,7 @@
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
 	
 	// User double-clicked, so reset everything and start again.
-	[self.playbackSession setIsPlaying:NO];
+	[self.playbackSession setPlaying:NO];
 	[self.playbackSession unloadPlayback];
 	[self.audioUnit stop];
 	self.audioUnit = nil;
@@ -123,7 +123,7 @@
 	}
 	
 	[self playTrackContainerInCurrentContext:container];
-	self.playbackSession.isPlaying = YES;
+	self.playbackSession.playing = YES;
 }
 
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack {
@@ -157,10 +157,10 @@
 
 -(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
 	
-	BOOL wasPlaying = self.playbackSession.isPlaying;
+	BOOL wasPlaying = self.playbackSession.playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.playbackSession setIsPlaying:NO];
+		[self.playbackSession setPlaying:NO];
 		[self.playbackSession unloadPlayback];
 		[self.audioUnit stop];
 		self.audioUnit = nil;
@@ -172,7 +172,7 @@
 	
 	if (nextContainer != nil) {
 		[self playTrackContainerInCurrentContext:nextContainer];	
-		self.playbackSession.isPlaying = wasPlaying;
+		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self.audioUnit stop];
@@ -197,10 +197,10 @@
 
 -(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
 	
-	BOOL wasPlaying = self.playbackSession.isPlaying;
+	BOOL wasPlaying = self.playbackSession.playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.playbackSession setIsPlaying:NO];
+		[self.playbackSession setPlaying:NO];
 		[self.playbackSession unloadPlayback];
 		[self.audioUnit stop];
 		self.audioUnit = nil;
@@ -212,7 +212,7 @@
 	
 	if (previousContainer != nil) {
 		[self playTrackContainerInCurrentContext:previousContainer];	
-		self.playbackSession.isPlaying = wasPlaying;
+		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self.audioUnit stop];
@@ -238,9 +238,9 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"playbackSession.isPlaying"]) {
+    if ([keyPath isEqualToString:@"playbackSession.playing"]) {
         
-        if (self.playbackSession.isPlaying) {
+        if (self.playbackSession.playing) {
             [self.audioUnit start];
         } else {
             [self.audioUnit stop];
@@ -397,7 +397,7 @@ static UInt32 framesSinceLastUpdate = 0;
 
 - (void)dealloc {
 
-    [self removeObserver:self forKeyPath:@"playbackSession.isPlaying"];
+    [self removeObserver:self forKeyPath:@"playbackSession.playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];

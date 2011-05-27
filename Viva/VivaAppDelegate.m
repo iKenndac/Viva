@@ -142,7 +142,7 @@
 
 -(IBAction)performPlayPauseAction:(id)sender {
 	if (self.playbackManager.currentTrack != nil) {
-		self.playbackManager.playbackSession.isPlaying = !self.playbackManager.playbackSession.isPlaying;
+		self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
 	}
 }
 
