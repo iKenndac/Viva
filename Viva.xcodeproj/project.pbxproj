@@ -88,6 +88,9 @@
 		509AAEE6133913370009B6EE /* SPSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE5133913370009B6EE /* SPSplitView.m */; };
 		509AAEEB133916190009B6EE /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE9133916190009B6EE /* FooterViewController.m */; };
 		509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509AAEEA133916190009B6EE /* FooterViewController.xib */; };
+		50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */; };
+		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
+		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
 		50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */ = {isa = PBXBuildFile; fileRef = 50B19FDB134A443900D428FF /* Viva TODO.taskpaper */; };
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
@@ -276,6 +279,11 @@
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
+		50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearchViewController.h; sourceTree = "<group>"; };
+		50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearchViewController.m; sourceTree = "<group>"; };
+		50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSearchViewController.xib; sourceTree = "<group>"; };
+		50AE6A5A13A16AE1006F2B8C /* LiveSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearch.h; sourceTree = "<group>"; };
+		50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearch.m; sourceTree = "<group>"; };
 		50B19FDB134A443900D428FF /* Viva TODO.taskpaper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva TODO.taskpaper"; sourceTree = SOURCE_ROOT; };
 		50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPFooterTextFieldCell.h; path = "Custom Controls/SPFooterTextFieldCell.h"; sourceTree = "<group>"; };
 		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
@@ -777,6 +785,11 @@
 				50C7B3BC132E36D90055EDE0 /* MainWindowController.h */,
 				50C7B3BD132E36D90055EDE0 /* MainWindowController.m */,
 				50E3F771133FD32A00FF4618 /* MainWindow.xib */,
+				50AE6A5A13A16AE1006F2B8C /* LiveSearch.h */,
+				50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */,
+				50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */,
+				50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */,
+				50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */,
 			);
 			name = "Main Window";
 			sourceTree = "<group>";
@@ -857,6 +870,7 @@
 		503D62CB13257D92007772CA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0410;
 				ORGANIZATIONNAME = Spotify;
 			};
 			buildConfigurationList = 503D62CE13257D92007772CA /* Build configuration list for PBXProject "Viva" */;
@@ -975,6 +989,7 @@
 				500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */,
 				5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */,
 				5099D8C21364C002005C7CDC /* ArtistViewController.xib in Resources */,
+				50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,6 +1057,8 @@
 				506DA6171371F266009A8D1F /* CoCAAudioDevice.m in Sources */,
 				506DA6181371F266009A8D1F /* CoCAAudioHardwareSystem.m in Sources */,
 				506DA6191371F266009A8D1F /* CoCAAudioUnit.m in Sources */,
+				50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */,
+				50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1127,14 +1144,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/cocoalibspotify\"",
+					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1148,14 +1167,16 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/cocoalibspotify\"",
+					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
 				);
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

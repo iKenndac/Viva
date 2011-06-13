@@ -11,7 +11,10 @@
 #import "VivaInternalURLManager.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "VivaAppDelegate.h"
+#import "LiveSearchViewController.h"
 #import "Constants.h"
+
+static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kVivaWindowControllerLiveSearchObservationContext";
 
 @interface MainWindowController ()
 
@@ -36,6 +39,9 @@
 @synthesize footerViewController;
 @synthesize navigationController;
 @synthesize sourceList;
+@synthesize searchPopover;
+@synthesize searchField;
+@synthesize liveSearch;
 
 -(id)init {
 	return [super initWithWindowNibName:@"MainWindow"];
@@ -44,6 +50,7 @@
 - (void)dealloc
 {
 	[self removeObserver:self forKeyPath:@"currentViewController"];
+	[self removeObserver:self forKeyPath:@"liveSearch.latestSearch.searchInProgress"];
 	[self.playlistTreeController removeObserver:self forKeyPath:@"selection.spotifyURL"];
 	[self removeObserver:self forKeyPath:@"navigationController.thePresent"];
 	
@@ -66,6 +73,11 @@
 		   forKeyPath:@"navigationController.thePresent"
 			  options:0
 			  context:nil];
+	
+	[self addObserver:self
+				forKeyPath:@"liveSearch.latestSearch.searchInProgress"
+				   options:0
+				   context:kVivaWindowControllerLiveSearchObservationContext];
 	
 	[self.playlistTreeController addObserver:self
 								  forKeyPath:@"selection.spotifyURL"
@@ -90,10 +102,27 @@
 											   object:self.splitView];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:NSSplitViewDidResizeSubviewsNotification object:self.splitView];
+	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"selection.spotifyURL"]) {
+   
+	if (context == kVivaWindowControllerLiveSearchObservationContext) {
+		if (!self.liveSearch.latestSearch.searchInProgress && !self.searchPopover.isShown) {
+			
+			NSText *editor = [self.window fieldEditor:YES forObject:self.searchField];
+			NSRange selection = editor.selectedRange;
+			
+			self.searchPopover.contentViewController = [[[LiveSearchViewController alloc] init] autorelease];
+			self.searchPopover.contentViewController.representedObject = self.liveSearch;
+			self.searchPopover.contentSize = NSMakeSize(self.searchField.frame.size.width, 300.0);
+			[self.searchPopover showRelativeToRect:[self.searchField frame] ofView:self.searchField preferredEdge:NSMaxYEdge];
+			[self.searchField becomeFirstResponder];
+			
+			editor.selectedRange = selection;
+		}
+			
+	} else if ([keyPath isEqualToString:@"selection.spotifyURL"]) {
 		// Push the selected URL to the navigation controller.
 		
 		id selectedObject = self.playlistTreeController.selectedObjects.lastObject;
@@ -134,6 +163,7 @@
 		} else {
 			self.contentBox.contentView = nil;
 		}
+		
 		
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -190,9 +220,13 @@
 	NSString *searchQuery = [sender stringValue];
 	
 	if ([searchQuery length] > 0) {
+		[self.searchPopover close];
 		NSURL *queryURL = [NSURL URLWithString:[NSString stringWithFormat:@"spotify:search:%@", [NSURL urlEncodedStringForString:searchQuery]]];
 		self.navigationController.thePresent = queryURL;
 	}
+}
+
+- (IBAction)accountButtonClicked:(id)sender {
 }
 
 #pragma mark -
@@ -250,6 +284,41 @@
 		} else {
 			[[[[SPSession sharedSession] userPlaylists] playlists] removeObject:playlist];
 		}
+	}
+}
+
+#pragma mark -
+#pragma mark Live Search
+
+-(void)controlTextDidChange:(NSNotification *)obj {
+	
+	if (self.searchField.stringValue.length == 0 && self.searchPopover.isShown) {
+		[self.searchPopover close];
+		self.liveSearch = nil;
+	}
+	
+	[self performSelector:@selector(applyCurrentSearchQueryToLiveSearch)
+			   withObject:nil
+			   afterDelay:kLiveSearchChangeInterval];
+	
+}
+
+-(void)applyCurrentSearchQueryToLiveSearch {
+	
+	[NSThread cancelPreviousPerformRequestsWithTarget:self selector:_cmd object:nil];
+	
+	NSString *searchQuery = self.searchField.stringValue;
+	
+	if ([searchQuery isEqualToString:self.liveSearch.latestSearch.searchQuery] || [searchQuery length] == 0)
+		return;
+	
+	SPSearch *newSearch = [SPSearch searchWithSearchQuery:searchQuery
+												inSession:[SPSession sharedSession]];
+	
+	if (self.liveSearch == nil) {
+		self.liveSearch = [[[LiveSearch alloc] initWithInitialSearch:newSearch] autorelease];
+	} else {
+		self.liveSearch.latestSearch = newSearch;
 	}
 }
 

@@ -19,6 +19,11 @@ static NSTimeInterval const kSeekABitInterval = 1.0;
 static double const kVolumeStepSize = 0.1;
 static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKeyUsingBundleIdentifiersDefaultsKey";
 
+// ------ Search ------
+
+static NSUInteger const kLiveSearchMaximumResultsPerCategoryCount = 5;
+static NSTimeInterval const kLiveSearchChangeInterval = 0.25; // Time between typing and a search starting.
+
 // ------ Drag & Drop ------
 
 static NSString * const kSpotifyTrackURLListDragIdentifier = @"com.spotify.Viva.TrackURLList";
