@@ -57,19 +57,19 @@
 	if ([keyPath isEqualToString:@"latestSearch.albums"]) {
 		if (self.latestSearch.albums.count == 0)
 			return;
-		self.topAlbums = [self.latestSearch.albums subarrayWithRange:NSMakeRange(0, (self.latestSearch.albums.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.albums.count) - 1)];
+		self.topAlbums = [self.latestSearch.albums subarrayWithRange:NSMakeRange(0, self.latestSearch.albums.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.albums.count)];
 	}
 	
 	if ([keyPath isEqualToString:@"latestSearch.artists"]) {
 		if (self.latestSearch.artists.count == 0)
 			return;
-		self.topArtists = [self.latestSearch.artists subarrayWithRange:NSMakeRange(0, (self.latestSearch.artists.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.artists.count) - 1)];
+		self.topArtists = [self.latestSearch.artists subarrayWithRange:NSMakeRange(0, self.latestSearch.artists.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.artists.count)];
 	}
 	
 	if ([keyPath isEqualToString:@"latestSearch.tracks"]) {
 		if (self.latestSearch.tracks.count == 0)
 			return;
-		self.topTracks = [self.latestSearch.tracks subarrayWithRange:NSMakeRange(0, (self.latestSearch.tracks.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.tracks.count) - 1)];
+		self.topTracks = [self.latestSearch.tracks subarrayWithRange:NSMakeRange(0, self.latestSearch.tracks.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.tracks.count)];
 	}
 }
 

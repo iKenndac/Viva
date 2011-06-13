@@ -64,12 +64,11 @@ static VivaInternalURLManager *sharedInstance;
 			
 			Class controllerClass = [prefixToClassLookupTable objectForKey:prefix];
 			
-			NSViewController *newController = [(id <VivaViewController>)[controllerClass alloc] initWithObjectFromURL:aURL];
+			NSViewController <VivaViewController> *newController = [(NSViewController <VivaViewController> *)[controllerClass alloc] initWithObjectFromURL:aURL];
 			if (newController != nil) {
 				[urlToViewControllerLookupTable setObject:newController
 												   forKey:aURL];
 				return [newController autorelease];
-				
 			}
 		}
 	}
