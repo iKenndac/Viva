@@ -107,6 +107,8 @@
 		50DD06B6133A396300CDE1C1 /* meeter-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B3133A396300CDE1C1 /* meeter-left.png */; };
 		50DD06B7133A396300CDE1C1 /* meeter-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B4133A396300CDE1C1 /* meeter-middle.png */; };
 		50DD06B8133A396300CDE1C1 /* meeter-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DD06B5133A396300CDE1C1 /* meeter-right.png */; };
+		50DEB1DB13A69BA700945316 /* livesearch-gutter.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DEB1DA13A69BA700945316 /* livesearch-gutter.png */; };
+		50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DEB1DD13A69D3A00945316 /* SPBackgroundImageView.m */; };
 		50E3F753133FB9A900FF4618 /* account-pushed.png in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F744133FB9A900FF4618 /* account-pushed.png */; };
 		50E3F754133FB9A900FF4618 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F745133FB9A900FF4618 /* account.png */; };
 		50E3F755133FB9A900FF4618 /* back-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F746133FB9A900FF4618 /* back-disabled.png */; };
@@ -310,6 +312,9 @@
 		50DD06B3133A396300CDE1C1 /* meeter-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-left.png"; sourceTree = "<group>"; };
 		50DD06B4133A396300CDE1C1 /* meeter-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-middle.png"; sourceTree = "<group>"; };
 		50DD06B5133A396300CDE1C1 /* meeter-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-right.png"; sourceTree = "<group>"; };
+		50DEB1DA13A69BA700945316 /* livesearch-gutter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-gutter.png"; sourceTree = "<group>"; };
+		50DEB1DC13A69D3A00945316 /* SPBackgroundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPBackgroundImageView.h; sourceTree = "<group>"; };
+		50DEB1DD13A69D3A00945316 /* SPBackgroundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPBackgroundImageView.m; sourceTree = "<group>"; };
 		50E3F744133FB9A900FF4618 /* account-pushed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account-pushed.png"; sourceTree = "<group>"; };
 		50E3F745133FB9A900FF4618 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
 		50E3F746133FB9A900FF4618 /* back-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-disabled.png"; sourceTree = "<group>"; };
@@ -589,6 +594,7 @@
 				50F00920135A0182009D25B1 /* Dragging */,
 				505A9295135784A500136BBF /* Playback */,
 				50E3F76C133FC47C00FF4618 /* Login */,
+				50DEB1D913A69BA700945316 /* Misc */,
 				50E3F743133FB9A900FF4618 /* Toolbar */,
 				509AAE9C1339097C0009B6EE /* Footer */,
 				509AAEBA1339097C0009B6EE /* Playlist */,
@@ -687,6 +693,8 @@
 				509AAEE5133913370009B6EE /* SPSplitView.m */,
 				50E819CD133926A3000CE44D /* SPBackgroundColorView.h */,
 				50E819CE133926A3000CE44D /* SPBackgroundColorView.m */,
+				50DEB1DC13A69D3A00945316 /* SPBackgroundImageView.h */,
+				50DEB1DD13A69D3A00945316 /* SPBackgroundImageView.m */,
 				50C56A3113393AA50072A754 /* SPTableCorner.h */,
 				50C56A3213393AA50072A754 /* SPTableCorner.m */,
 			);
@@ -755,6 +763,14 @@
 				50E3F765133FC37900FF4618 /* Main Window */,
 			);
 			name = "Window Controllers";
+			sourceTree = "<group>";
+		};
+		50DEB1D913A69BA700945316 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				50DEB1DA13A69BA700945316 /* livesearch-gutter.png */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		50E3F743133FB9A900FF4618 /* Toolbar */ = {
@@ -870,7 +886,7 @@
 		503D62CB13257D92007772CA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = Spotify;
 			};
 			buildConfigurationList = 503D62CE13257D92007772CA /* Build configuration list for PBXProject "Viva" */;
@@ -990,6 +1006,7 @@
 				5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */,
 				5099D8C21364C002005C7CDC /* ArtistViewController.xib in Resources */,
 				50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */,
+				50DEB1DB13A69BA700945316 /* livesearch-gutter.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1059,6 +1076,7 @@
 				506DA6191371F266009A8D1F /* CoCAAudioUnit.m in Sources */,
 				50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */,
 				50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */,
+				50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1095,7 +1113,7 @@
 		503D62F013257D92007772CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
@@ -1104,11 +1122,12 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
@@ -1119,17 +1138,18 @@
 		503D62F113257D92007772CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1139,21 +1159,14 @@
 		503D62F313257D92007772CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
 				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1161,22 +1174,15 @@
 		503D62F413257D92007772CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
 				);
-				GCC_DYNAMIC_NO_PIC = YES;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

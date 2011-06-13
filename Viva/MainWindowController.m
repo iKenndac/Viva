@@ -113,7 +113,10 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			NSText *editor = [self.window fieldEditor:YES forObject:self.searchField];
 			NSRange selection = editor.selectedRange;
 			
-			self.searchPopover.contentViewController = [[[LiveSearchViewController alloc] init] autorelease];
+			LiveSearchViewController *ls = [[[LiveSearchViewController alloc] init] autorelease];
+			ls.popover = self.searchPopover;
+			
+			self.searchPopover.contentViewController = ls;
 			self.searchPopover.contentViewController.representedObject = self.liveSearch;
 			self.searchPopover.contentSize = NSMakeSize(self.searchField.frame.size.width, 300.0);
 			[self.searchPopover showRelativeToRect:[self.searchField frame] ofView:self.searchField preferredEdge:NSMaxYEdge];

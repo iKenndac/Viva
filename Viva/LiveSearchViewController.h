@@ -7,7 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "SPBackgroundImageView.h"
 
-@interface LiveSearchViewController : NSViewController
+@interface LiveSearchViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
+	NSTableView *tableView;
+	SPBackgroundImageView *gutterView;
+	NSPopover *popover;
+}
+
+@property (assign) NSPopover *popover;
+@property (assign) IBOutlet NSTableView *tableView;
+@property (assign) IBOutlet SPBackgroundImageView *gutterView;
 
 @end
