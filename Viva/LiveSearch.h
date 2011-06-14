@@ -20,4 +20,6 @@
 @property (nonatomic, readonly, copy) NSArray *topArtists;
 @property (nonatomic, readonly, copy) NSArray *topAlbums;
 
+@property (nonatomic, readonly, retain) id topHit;
+
 @end
