@@ -111,7 +111,7 @@
 	if ([[aTableColumn identifier] isEqualToString:@"HeaderColumn"]) {
 		
 		if (rowIndex == 0 && search.topHit != nil)
-			return [NSImage imageNamed:@"livesearch-topHit"];
+			return [NSImage imageNamed:@"livesearch-tophit"];
 		else if (rowIndex == numberOfTopHitRows + groupOffsetModifier)
 			return [NSImage imageNamed:@"livesearch-tracks"];
 		else if  (rowIndex == numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + 1)
