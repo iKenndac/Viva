@@ -20,6 +20,8 @@
 		500B86AA13616A23005FC734 /* VivaSortableTrackListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86A813616A23005FC734 /* VivaSortableTrackListController.m */; };
 		500B86B11361BC2D005FC734 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */; };
 		500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */; };
+		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
+		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -36,6 +38,14 @@
 		505A92A21357943A00136BBF /* SPWithAlternateImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */; };
 		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
+		5061BD6313B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5C13B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png */; };
+		5061BD6413B0CA7600722D69 /* sidebar-explore.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5D13B0CA7600722D69 /* sidebar-explore.png */; };
+		5061BD6513B0CA7600722D69 /* sidebar-home.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5E13B0CA7600722D69 /* sidebar-home.png */; };
+		5061BD6613B0CA7600722D69 /* sidebar-inbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5F13B0CA7600722D69 /* sidebar-inbox.png */; };
+		5061BD6713B0CA7600722D69 /* sidebar-people.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD6013B0CA7600722D69 /* sidebar-people.png */; };
+		5061BD6813B0CA7600722D69 /* sidebar-radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD6113B0CA7600722D69 /* sidebar-radio.png */; };
+		5061BD6913B0CA7600722D69 /* sidebar-starred.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD6213B0CA7600722D69 /* sidebar-starred.png */; };
+		5061BD6B13B0CEA400722D69 /* sidebar-playlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD6A13B0CEA400722D69 /* sidebar-playlist.png */; };
 		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
 		506DA6141371F266009A8D1F /* NCCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5EA1371F266009A8D1F /* NCCommon.m */; };
 		506DA6171371F266009A8D1F /* CoCAAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 506DA5F21371F266009A8D1F /* CoCAAudioDevice.m */; };
@@ -197,6 +207,9 @@
 		500B86AE1361BC2D005FC734 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
 		500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
 		500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsViewController.xib; sourceTree = "<group>"; };
+		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
+		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
+		501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseSidebarConfiguration.plist; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -219,6 +232,14 @@
 		505A929D135792DC00136BBF /* playing-indicator-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator-highlighted.png"; sourceTree = "<group>"; };
 		505A92A01357943A00136BBF /* SPWithAlternateImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPWithAlternateImageCell.h; path = "Custom Controls/SPWithAlternateImageCell.h"; sourceTree = "<group>"; };
 		505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPWithAlternateImageCell.m; path = "Custom Controls/SPWithAlternateImageCell.m"; sourceTree = "<group>"; };
+		5061BD5C13B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png; sourceTree = "<group>"; };
+		5061BD5D13B0CA7600722D69 /* sidebar-explore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-explore.png"; sourceTree = "<group>"; };
+		5061BD5E13B0CA7600722D69 /* sidebar-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-home.png"; sourceTree = "<group>"; };
+		5061BD5F13B0CA7600722D69 /* sidebar-inbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-inbox.png"; sourceTree = "<group>"; };
+		5061BD6013B0CA7600722D69 /* sidebar-people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-people.png"; sourceTree = "<group>"; };
+		5061BD6113B0CA7600722D69 /* sidebar-radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-radio.png"; sourceTree = "<group>"; };
+		5061BD6213B0CA7600722D69 /* sidebar-starred.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-starred.png"; sourceTree = "<group>"; };
+		5061BD6A13B0CEA400722D69 /* sidebar-playlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-playlist.png"; sourceTree = "<group>"; };
 		5069F758134E3E4F00D95D13 /* VivaURLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaURLNavigationController.h; sourceTree = "<group>"; };
 		5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaURLNavigationController.m; sourceTree = "<group>"; };
 		506DA5E91371F266009A8D1F /* NCCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCommon.h; sourceTree = "<group>"; };
@@ -435,6 +456,16 @@
 			name = "Search View";
 			sourceTree = "<group>";
 		};
+		501C909B13AF72170060A20B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				501C909C13AF72350060A20B /* MainWindowSidebarController.h */,
+				501C909D13AF72350060A20B /* MainWindowSidebarController.m */,
+				501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +514,7 @@
 				50B19FDB134A443900D428FF /* Viva TODO.taskpaper */,
 				50E3F773133FD74500FF4618 /* Constants.h */,
 				503EABFC133D81AF00C4607E /* UI */,
+				501C909B13AF72170060A20B /* Controllers */,
 				503EABFD133D81BD00C4607E /* Model */,
 				50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */,
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
@@ -546,6 +578,21 @@
 			path = Playback;
 			sourceTree = "<group>";
 		};
+		5061BD5B13B0CA7600722D69 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				5061BD5C13B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png */,
+				5061BD5D13B0CA7600722D69 /* sidebar-explore.png */,
+				5061BD5E13B0CA7600722D69 /* sidebar-home.png */,
+				5061BD5F13B0CA7600722D69 /* sidebar-inbox.png */,
+				5061BD6013B0CA7600722D69 /* sidebar-people.png */,
+				5061BD6A13B0CEA400722D69 /* sidebar-playlist.png */,
+				5061BD6113B0CA7600722D69 /* sidebar-radio.png */,
+				5061BD6213B0CA7600722D69 /* sidebar-starred.png */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
 		506DA5BD1371F266009A8D1F /* CoCA */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,6 +652,7 @@
 				506F34891343DCFB002BA308 /* VivaIcon.icns */,
 				50F00920135A0182009D25B1 /* Dragging */,
 				505A9295135784A500136BBF /* Playback */,
+				5061BD5B13B0CA7600722D69 /* Sidebar */,
 				50E3F76C133FC47C00FF4618 /* Login */,
 				50FEC1AA13A75C9C00D8C8A2 /* LiveSearch */,
 				50FEC1B713A7635800D8C8A2 /* Misc */,
@@ -1039,6 +1087,15 @@
 				50FEC1B513A75C9C00D8C8A2 /* livesearch-tophit.png in Resources */,
 				50FEC1B613A75C9C00D8C8A2 /* livesearch-tracks.png in Resources */,
 				50FEC1B913A7635800D8C8A2 /* empty.png in Resources */,
+				501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */,
+				5061BD6313B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png in Resources */,
+				5061BD6413B0CA7600722D69 /* sidebar-explore.png in Resources */,
+				5061BD6513B0CA7600722D69 /* sidebar-home.png in Resources */,
+				5061BD6613B0CA7600722D69 /* sidebar-inbox.png in Resources */,
+				5061BD6713B0CA7600722D69 /* sidebar-people.png in Resources */,
+				5061BD6813B0CA7600722D69 /* sidebar-radio.png in Resources */,
+				5061BD6913B0CA7600722D69 /* sidebar-starred.png in Resources */,
+				5061BD6B13B0CEA400722D69 /* sidebar-playlist.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1109,6 +1166,7 @@
 				50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */,
 				50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */,
 				50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */,
+				501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

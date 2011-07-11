@@ -10,6 +10,8 @@
 #import "FooterViewController.h"
 #import "VivaURLNavigationController.h"
 #import "LiveSearch.h"
+#import "MainWindowSidebarController.h"
+#import "SPBackgroundColorView.h"
 
 @interface MainWindowController : NSWindowController <NSSplitViewDelegate, NSPopoverDelegate, NSTextFieldDelegate> {
 @private
@@ -17,8 +19,10 @@
 	NSView *footerViewContainer;
 	FooterViewController *footerViewController;
 	NSSplitView *splitView;
+	SPBackgroundColorView *sourceListBackgroundColorView;
 	NSBox *contentBox;
 	NSTreeController *playlistTreeController;
+	MainWindowSidebarController *sidebarController;
 	NSViewController *currentViewController;
 	VivaURLNavigationController *navigationController;
 	NSOutlineView *sourceList;
@@ -32,9 +36,11 @@
 }
 
 @property (assign) IBOutlet NSSplitView *splitView;
+@property (assign) IBOutlet SPBackgroundColorView *sourceListBackgroundColorView;
 @property (assign) IBOutlet NSView *footerViewContainer;
 @property (assign) IBOutlet NSBox *contentBox;
 @property (assign) IBOutlet NSTreeController *playlistTreeController;
+@property (assign) IBOutlet MainWindowSidebarController *sidebarController;
 @property (nonatomic, retain, readonly) NSViewController *currentViewController;
 @property (nonatomic, retain, readonly) FooterViewController *footerViewController;
 @property (nonatomic, retain, readonly) VivaURLNavigationController *navigationController;

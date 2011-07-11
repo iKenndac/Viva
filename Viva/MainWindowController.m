@@ -32,10 +32,12 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 @synthesize urlField;
 @synthesize invalidURLWarningLabel;
 @synthesize splitView;
+@synthesize sourceListBackgroundColorView;
 @synthesize currentViewController;
 @synthesize footerViewContainer;
 @synthesize contentBox;
 @synthesize playlistTreeController;
+@synthesize sidebarController;
 @synthesize footerViewController;
 @synthesize navigationController;
 @synthesize sourceList;
@@ -83,6 +85,10 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 								  forKeyPath:@"selection.spotifyURL"
 									 options:0
 									 context:nil];
+	
+	self.sidebarController.userPlaylistController = self.playlistTreeController;
+	
+	self.sourceListBackgroundColorView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell"]];
 	
 	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyTrackURLListDragIdentifier,
 											  kSpotifyPlaylistMoveSourceDragIdentifier, 
