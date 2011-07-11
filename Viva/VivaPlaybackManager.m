@@ -33,6 +33,12 @@
     if (self) {
         // Initialization code here.
 		
+		SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
+		setTrackPositionMethodSignature = [[VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector] retain];
+		setTrackPositionInvocation = [[NSInvocation invocationWithMethodSignature:setTrackPositionMethodSignature] retain];
+		[setTrackPositionInvocation setSelector:setTrackPositionSelector];
+		[setTrackPositionInvocation setTarget:self];
+		
 		self.volume = 1.0;
 		self.playbackSession = aSession;
 		self.playbackSession.playbackDelegate = self;
@@ -338,18 +344,15 @@ static UInt32 framesSinceLastUpdate = 0;
 	
 	NSUInteger bytesRequired = inNumberFrames * 2 * 2; // 16bit per channel, stereo
 	void *frameBuffer = NULL;
-	
-	@synchronized(audioBuffer) {
-		NSUInteger availableData = [audioBuffer length];
-		if (availableData >= bytesRequired) {
-			[audioBuffer readDataOfLength:bytesRequired intoBuffer:&frameBuffer];
-			// We've done a length check just above, so hopefully we don't have to care about  how much was read.
-		} else {
-			leftBuffer->mDataByteSize = 0;
-			rightBuffer->mDataByteSize = 0;
-			*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
-			return noErr;
-		}
+
+	NSUInteger availableData = [audioBuffer length];
+	if (availableData >= bytesRequired) {
+		 [audioBuffer readDataOfLength:bytesRequired intoBuffer:&frameBuffer];
+	} else {
+		leftBuffer->mDataByteSize = 0;
+		rightBuffer->mDataByteSize = 0;
+		*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
+		return noErr;
 	}
 	
 	float *leftChannelBuffer = leftBuffer->mData;
@@ -374,21 +377,12 @@ static UInt32 framesSinceLastUpdate = 0;
 	if (framesSinceLastUpdate >= 8820) {
 		// Update 5 times per second.
 		
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
 		
-		SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
-		NSMethodSignature *aSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector];
-		NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
-		[anInvocation setSelector:setTrackPositionSelector];
-		[anInvocation setTarget:self];
-		[anInvocation setArgument:&newTrackPosition atIndex:2];
-		
-		[anInvocation performSelectorOnMainThread:@selector(invoke)
+		[setTrackPositionInvocation setArgument:&newTrackPosition atIndex:2];
+		[setTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
 									   withObject:nil
-									waitUntilDone:NO];
-		[pool drain];
-		
+									waitUntilDone:NO];		
 		framesSinceLastUpdate = 0;
 	}
     
@@ -401,6 +395,9 @@ static UInt32 framesSinceLastUpdate = 0;
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];
+	
+	[setTrackPositionInvocation release];
+	[setTrackPositionMethodSignature release];
 	
 	[self.audioBuffer clear];
 	self.audioBuffer = nil;

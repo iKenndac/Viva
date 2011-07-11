@@ -23,6 +23,8 @@
 	double volume;
 	BOOL loopPlayback;
 	BOOL hasPreCachedNextTrack;
+	NSMethodSignature *setTrackPositionMethodSignature;
+	NSInvocation *setTrackPositionInvocation;
 }
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
