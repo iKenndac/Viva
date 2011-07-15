@@ -112,9 +112,17 @@
 	}
 	
 	if ([rememberMeCheckbox state] == NSOnState) {
-		[EMGenericKeychainItem addGenericKeychainItemForService:kVivaKeychainServiceName
-												   withUsername:[userNameField stringValue]
-													   password:[passwordField stringValue]];
+		
+		EMGenericKeychainItem *existingItem = [EMGenericKeychainItem genericKeychainItemForService:kVivaKeychainServiceName
+																					  withUsername:[userNameField stringValue]];
+		
+		if (existingItem) {
+			[existingItem setPassword:[passwordField stringValue]];
+		} else {
+			[EMGenericKeychainItem addGenericKeychainItemForService:kVivaKeychainServiceName
+													   withUsername:[userNameField stringValue]
+														   password:[passwordField stringValue]];
+		}
 		
 		[[NSUserDefaults standardUserDefaults] setValue:[userNameField stringValue]
 												 forKey:kVivaLastUserNameUserDefaultsKey];
