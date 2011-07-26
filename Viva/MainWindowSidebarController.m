@@ -106,8 +106,7 @@
 		SPPlaylistFolder *folder = item;
 		return [NSDictionary dictionaryWithObjectsAndKeys:
 				folder.name, SPSidebarTitleKey,
-				[[NSWorkspace sharedWorkspace] iconForFile:@"/Volumes"], SPSidebarImageKey,
-				/*[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,*/
+				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
 				nil];
 		
 	} else if ([item valueForKey:SPGroupIdentifierKey]) {
@@ -124,6 +123,19 @@
 	}
 	
 	return nil;
+}
+
+#pragma mark -
+
+-(NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+	
+	NSTableCellView *view = nil;
+	if ([item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue])
+		view = [outlineView makeViewWithIdentifier:@"SectionHeaderCell" owner:self];
+	else
+		view = [outlineView makeViewWithIdentifier:@"ImageAndTextCell" owner:self];
+	
+	return view;
 }
 
 #pragma mark -
@@ -177,7 +189,7 @@
 }
 
 -(BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item {
-	return [item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue];
+	return NO; //[item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {

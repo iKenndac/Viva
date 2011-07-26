@@ -109,6 +109,7 @@
 		50C7B3BA132E329A0055EDE0 /* PlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */; };
 		50C7B3BB132E329A0055EDE0 /* PlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */; };
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
+		50CCCD4D13DEFD5200DDB85C /* sidebar-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */; };
 		50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192C9134280F500D02FDF /* AudioUnit.framework */; };
 		50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192CB134280FB00D02FDF /* CoreAudio.framework */; };
 		50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1931359E1D200437CCB /* VivaImageExtensions.m */; };
@@ -328,6 +329,7 @@
 		50C7B3BC132E36D90055EDE0 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		50C7B3BD132E36D90055EDE0 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAppDelegate.h; sourceTree = "<group>"; };
+		50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-folder.png"; sourceTree = "<group>"; };
 		50D192C9134280F500D02FDF /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		50D192CB134280FB00D02FDF /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		50D1C1921359E1D200437CCB /* VivaImageExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaImageExtensions.h; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 			isa = PBXGroup;
 			children = (
 				5061BD5C13B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png */,
+				50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */,
 				5061BD5D13B0CA7600722D69 /* sidebar-explore.png */,
 				5061BD5E13B0CA7600722D69 /* sidebar-home.png */,
 				5061BD5F13B0CA7600722D69 /* sidebar-inbox.png */,
@@ -1096,6 +1099,7 @@
 				5061BD6813B0CA7600722D69 /* sidebar-radio.png in Resources */,
 				5061BD6913B0CA7600722D69 /* sidebar-starred.png in Resources */,
 				5061BD6B13B0CEA400722D69 /* sidebar-playlist.png in Resources */,
+				50CCCD4D13DEFD5200DDB85C /* sidebar-folder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
