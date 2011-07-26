@@ -26,7 +26,6 @@
 			<string>NSSearchFieldCell</string>
 			<string>NSWindowTemplate</string>
 			<string>NSTextFieldCell</string>
-			<string>NSTreeController</string>
 			<string>NSButtonCell</string>
 			<string>NSTableColumn</string>
 			<string>NSToolbarSpaceItem</string>
@@ -642,14 +641,6 @@
 				<int key="NSWindowCollectionBehavior">128</int>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
-			<object class="NSTreeController" id="854874348">
-				<string key="NSObjectClassName">SPSpotifyPlaylist</string>
-				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
-				<bool key="NSAvoidsEmptySelection">YES</bool>
-				<bool key="NSPreservesSelection">YES</bool>
-				<bool key="NSSelectsInsertedObjects">YES</bool>
-				<string key="NSTreeContentChildrenKey">playlists</string>
-			</object>
 			<object class="NSWindowTemplate" id="221107980">
 				<int key="NSWindowStyleMask">1</int>
 				<int key="NSWindowBacking">2</int>
@@ -843,14 +834,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">playlistTreeController</string>
-						<reference key="source" ref="1021"/>
-						<reference key="destination" ref="854874348"/>
-					</object>
-					<int key="connectionID">782</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">splitView</string>
 						<reference key="source" ref="1021"/>
 						<reference key="destination" ref="864227752"/>
@@ -912,22 +895,6 @@
 						<reference key="destination" ref="505648081"/>
 					</object>
 					<int key="connectionID">791</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: delegate.session.userPlaylists.playlists</string>
-						<reference key="source" ref="854874348"/>
-						<reference key="destination" ref="1050"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="854874348"/>
-							<reference key="NSDestination" ref="1050"/>
-							<string key="NSLabel">contentArray: delegate.session.userPlaylists.playlists</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">delegate.session.userPlaylists.playlists</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">794</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1251,12 +1218,6 @@
 						</object>
 						<reference key="parent" ref="972006081"/>
 						<string key="objectName">View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">566</int>
-						<reference key="object" ref="854874348"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Playlists Tree Controller</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">690</int>
@@ -1618,7 +1579,6 @@
 					<string>371.IBWindowTemplateEditedContentRect</string>
 					<string>371.NSWindowTemplate.visibleAtLaunch</string>
 					<string>372.IBPluginDependency</string>
-					<string>566.IBPluginDependency</string>
 					<string>569.IBPluginDependency</string>
 					<string>570.IBPluginDependency</string>
 					<string>572.IBPluginDependency</string>
@@ -1684,7 +1644,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{380, 496}, {480, 360}}</string>
 					<boolean value="NO"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1865,7 +1824,6 @@
 							<string>contentBox</string>
 							<string>footerViewContainer</string>
 							<string>invalidURLWarningLabel</string>
-							<string>playlistTreeController</string>
 							<string>searchField</string>
 							<string>searchPopover</string>
 							<string>sidebarController</string>
@@ -1880,7 +1838,6 @@
 							<string>NSBox</string>
 							<string>NSView</string>
 							<string>NSTextField</string>
-							<string>NSTreeController</string>
 							<string>NSSearchField</string>
 							<string>NSPopover</string>
 							<string>MainWindowSidebarController</string>
@@ -1898,7 +1855,6 @@
 							<string>contentBox</string>
 							<string>footerViewContainer</string>
 							<string>invalidURLWarningLabel</string>
-							<string>playlistTreeController</string>
 							<string>searchField</string>
 							<string>searchPopover</string>
 							<string>sidebarController</string>
@@ -1921,10 +1877,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">invalidURLWarningLabel</string>
 								<string key="candidateClassName">NSTextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">playlistTreeController</string>
-								<string key="candidateClassName">NSTreeController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">searchField</string>

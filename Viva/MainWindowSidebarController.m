@@ -31,31 +31,64 @@
 		
 		self.groups = [propertyList valueForKey:@"Groups"];
 		
+		[[SPSession sharedSession] addObserver:self
+									forKeyPath:@"userPlaylists.playlists"
+									   options:0
+									   context:nil];
+		
 		[self addObserver:self
-			   forKeyPath:@"userPlaylistController.arrangedObjects"
+			   forKeyPath:@"selectedURL"
 				  options:0
 				  context:nil];
-		
     }
     
     return self;
 }
 
 @synthesize groups;
-@synthesize userPlaylistController;
 @synthesize sidebar;
+@synthesize selectedURL;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"userPlaylistController.arrangedObjects"]) {
+    if ([keyPath isEqualToString:@"userPlaylists.playlists"]) {
 		[self.sidebar reloadData];
+	} else if ([keyPath isEqualToString:@"selectedURL"]) {
+		
+		for (id group in self.groups) {
+			for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
+					
+				NSDictionary *dict = [self unifiedDictionaryForItem:currentItem];
+				if ([[dict valueForKey:SPSidebarURLKey] isEqual:self.selectedURL]) {
+					NSInteger row = [self.sidebar rowForItem:currentItem];
+					[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+					return;
+				}
+							
+				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+					id playlist = [[SPSession sharedSession] playlistForURL:self.selectedURL];
+					if (playlist != nil) {
+						NSInteger row = [self.sidebar rowForItem:playlist];
+						[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+						return;
+					}
+				}
+			}
+		}
+		
+		// If we get here, the current URL is something we're not displaying!
+		[self.sidebar selectRowIndexes:nil byExtendingSelection:NO];
+		
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
 -(void)dealloc {
-	[self removeObserver:self forKeyPath:@"userPlaylistController.arrangedObjects"];
+	[[SPSession sharedSession] removeObserver:self forKeyPath:@"userPlaylists.playlists"];
+	[self removeObserver:self forKeyPath:@"selectedURL"];
 	self.groups = nil;
+	self.sidebar = nil;
+	self.selectedURL = nil;
 	[super dealloc];
 }
 
@@ -86,11 +119,27 @@
 		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[item valueForKey:SPItemTitleKey], SPSidebarTitleKey,
 				[NSImage imageNamed:[item valueForKey:SPItemImageKeyKey]], SPSidebarImageKey,
-				[item valueForKey:SPItemSpotifyURLKey], SPSidebarURLKey, 
+				[NSURL URLWithString:[item valueForKey:SPItemSpotifyURLKey]], SPSidebarURLKey, 
 				nil];
 	}
 	
 	return nil;
+}
+
+#pragma mark -
+
+-(BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
+	NSDictionary *itemDict = [self unifiedDictionaryForItem:item];
+	return [itemDict valueForKey:SPSidebarURLKey] != nil;
+}
+
+-(void)outlineViewSelectionDidChange:(NSNotification *)aNotification {
+	id item = [self.sidebar itemAtRow:self.sidebar.selectedRow];
+	NSDictionary *itemDict = [self unifiedDictionaryForItem:item];
+	// Remove our internal observer so we don't infinite loop ourselves.
+	[self removeObserver:self forKeyPath:@"selectedURL"];
+	self.selectedURL = [itemDict valueForKey:SPSidebarURLKey];
+	[self addObserver:self forKeyPath:@"selectedURL" options:0 context:nil];
 }
 
 #pragma mark -
@@ -109,7 +158,7 @@
 			
 			for (id item in [group valueForKey:SPGroupItemsKey]) {
 				if ([[item valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle])
-					itemCount += ((NSArray *)(self.userPlaylistController.arrangedObjects)).count;
+					itemCount += [SPSession sharedSession].userPlaylists.playlists.count;
 				else
 					itemCount++;
 			}
@@ -155,14 +204,11 @@
 				
 				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
 					
-					NSInteger playlistCount = ((NSArray *)(self.userPlaylistController.arrangedObjects)).count;
+					NSInteger playlistCount = [SPSession sharedSession].userPlaylists.playlists.count;
 					NSInteger relativeIndex = index - currentIndex;
 					
 					if (relativeIndex < playlistCount) {
-						id childItem = [[[self.userPlaylistController.arrangedObjects
-										  valueForKey:@"childNodes"] 
-										 objectAtIndex:relativeIndex]
-										valueForKey:@"representedObject"];
+						id childItem = [[SPSession sharedSession].userPlaylists.playlists objectAtIndex:relativeIndex];
 						return childItem;
 					} else {
 						currentIndex += playlistCount;

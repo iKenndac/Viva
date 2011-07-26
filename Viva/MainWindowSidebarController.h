@@ -25,10 +25,10 @@ static NSString * const SPSidebarURLKey = @"url";
 
 @interface MainWindowSidebarController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource> {
 	NSOutlineView *sidebar;
+	NSURL *selectedURL;
 }
 
-
-@property (readwrite, retain, nonatomic) NSTreeController *userPlaylistController;
 @property (assign) IBOutlet NSOutlineView *sidebar;
+@property (readwrite, copy, nonatomic) NSURL *selectedURL;
 
 @end

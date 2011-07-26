@@ -36,7 +36,6 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 @synthesize currentViewController;
 @synthesize footerViewContainer;
 @synthesize contentBox;
-@synthesize playlistTreeController;
 @synthesize sidebarController;
 @synthesize footerViewController;
 @synthesize navigationController;
@@ -53,7 +52,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 {
 	[self removeObserver:self forKeyPath:@"currentViewController"];
 	[self removeObserver:self forKeyPath:@"liveSearch.latestSearch.searchInProgress"];
-	[self.playlistTreeController removeObserver:self forKeyPath:@"selection.spotifyURL"];
+	[self.sidebarController removeObserver:self forKeyPath:@"selectedURL"];
 	[self removeObserver:self forKeyPath:@"navigationController.thePresent"];
 	
 	self.navigationController = nil;
@@ -77,16 +76,14 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			  context:nil];
 	
 	[self addObserver:self
-				forKeyPath:@"liveSearch.latestSearch.searchInProgress"
-				   options:0
-				   context:kVivaWindowControllerLiveSearchObservationContext];
+		   forKeyPath:@"liveSearch.latestSearch.searchInProgress"
+			  options:0
+			  context:kVivaWindowControllerLiveSearchObservationContext];
 	
-	[self.playlistTreeController addObserver:self
-								  forKeyPath:@"selection.spotifyURL"
-									 options:0
-									 context:nil];
-	
-	self.sidebarController.userPlaylistController = self.playlistTreeController;
+	[self.sidebarController addObserver:self
+							 forKeyPath:@"selectedURL"
+								options:0
+								context:nil];
 	
 	self.sourceListBackgroundColorView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell"]];
 	
@@ -131,20 +128,17 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			editor.selectedRange = selection;
 		}
 			
-	} else if ([keyPath isEqualToString:@"selection.spotifyURL"]) {
+	} else if ([keyPath isEqualToString:@"selectedURL"]) {
 		// Push the selected URL to the navigation controller.
 		
-		id selectedObject = self.playlistTreeController.selectedObjects.lastObject;
-		
-		if ([selectedObject respondsToSelector:@selector(spotifyURL)]) {
-			NSURL *aURL = [selectedObject performSelector:@selector(spotifyURL) withObject:nil];
-			if (aURL != nil) {
-				self.navigationController.thePresent = aURL;
-			}
-		}
-	
+		if (self.sidebarController.selectedURL != nil)
+			self.navigationController.thePresent = self.sidebarController.selectedURL;
+
 	} else if ([keyPath isEqualToString:@"navigationController.thePresent"]) {
 		// Set the current view controller to the view controller for the current URL
+		
+		if (![self.navigationController.thePresent isEqual:self.sidebarController.selectedURL])
+			self.sidebarController.selectedURL = self.navigationController.thePresent;
 		
 		[self setCurrentViewController:[[VivaInternalURLManager sharedInstance] viewControllerForURL:self.navigationController.thePresent]];
 		

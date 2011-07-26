@@ -21,7 +21,6 @@
 	NSSplitView *splitView;
 	SPBackgroundColorView *sourceListBackgroundColorView;
 	NSBox *contentBox;
-	NSTreeController *playlistTreeController;
 	MainWindowSidebarController *sidebarController;
 	NSViewController *currentViewController;
 	VivaURLNavigationController *navigationController;
@@ -39,7 +38,6 @@
 @property (assign) IBOutlet SPBackgroundColorView *sourceListBackgroundColorView;
 @property (assign) IBOutlet NSView *footerViewContainer;
 @property (assign) IBOutlet NSBox *contentBox;
-@property (assign) IBOutlet NSTreeController *playlistTreeController;
 @property (assign) IBOutlet MainWindowSidebarController *sidebarController;
 @property (nonatomic, retain, readonly) NSViewController *currentViewController;
 @property (nonatomic, retain, readonly) FooterViewController *footerViewController;
