@@ -30,6 +30,12 @@
 																	  error:nil];
 		
 		self.groups = [propertyList valueForKey:@"Groups"];
+		
+		[self addObserver:self
+			   forKeyPath:@"userPlaylistController.arrangedObjects"
+				  options:0
+				  context:nil];
+		
     }
     
     return self;
@@ -37,8 +43,18 @@
 
 @synthesize groups;
 @synthesize userPlaylistController;
+@synthesize sidebar;
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"userPlaylistController.arrangedObjects"]) {
+		[self.sidebar reloadData];
+	} else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 -(void)dealloc {
+	[self removeObserver:self forKeyPath:@"userPlaylistController.arrangedObjects"];
 	self.groups = nil;
 	[super dealloc];
 }
@@ -57,7 +73,8 @@
 		SPPlaylistFolder *folder = item;
 		return [NSDictionary dictionaryWithObjectsAndKeys:
 				folder.name, SPSidebarTitleKey,
-				[NSImage imageNamed:@"folder"], SPSidebarImageKey,
+				[[NSWorkspace sharedWorkspace] iconForFile:@"/Volumes"], SPSidebarImageKey,
+				/*[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,*/
 				nil];
 		
 	} else if ([item valueForKey:SPGroupIdentifierKey]) {
@@ -94,22 +111,24 @@
 				if ([[item valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle])
 					itemCount += ((NSArray *)(self.userPlaylistController.arrangedObjects)).count;
 				else
-					itemCount ++;
+					itemCount++;
 			}
 		}
 		return itemCount;
 		
+	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
+		return [[(SPPlaylistFolder *)item playlists] count];
 	}
 	
 	return 0;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
-	return NO;
+	return [item isKindOfClass:[SPPlaylistFolder class]];
 }
 
 -(BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item {
-	return [[item valueForKey:SPGroupTitleIsShownKey] boolValue];
+	return [item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
@@ -126,22 +145,28 @@
 		
 		for (id group in self.groups) {
 			
-			if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue] && currentIndex == index)
+			if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue] && currentIndex == index) {
 				return group;
-			else if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue])
+			} else if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
 				currentIndex++;
+			}
 			
 			for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
 				
-				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]){
+				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
 					
 					NSInteger playlistCount = ((NSArray *)(self.userPlaylistController.arrangedObjects)).count;
 					NSInteger relativeIndex = index - currentIndex;
 					
-					if (relativeIndex < playlistCount && relativeIndex > 0)
-						return [self.userPlaylistController.arrangedObjects objectAtIndex:relativeIndex];
-					else
+					if (relativeIndex < playlistCount) {
+						id childItem = [[[self.userPlaylistController.arrangedObjects
+										  valueForKey:@"childNodes"] 
+										 objectAtIndex:relativeIndex]
+										valueForKey:@"representedObject"];
+						return childItem;
+					} else {
 						currentIndex += playlistCount;
+					}
 				} else if (currentIndex == index) {
 					return currentItem;
 				} else {
@@ -149,6 +174,8 @@
 				}
 			}
 		}
+	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
+		return [[(SPPlaylistFolder *)item playlists] objectAtIndex:index];
 	}
 	
 	return nil;

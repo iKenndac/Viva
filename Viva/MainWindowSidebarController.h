@@ -23,8 +23,12 @@ static NSString * const SPSidebarTitleKey = @"title";
 static NSString * const SPSidebarImageKey = @"image";
 static NSString * const SPSidebarURLKey = @"url";
 
-@interface MainWindowSidebarController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource>
+@interface MainWindowSidebarController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource> {
+	NSOutlineView *sidebar;
+}
+
 
 @property (readwrite, retain, nonatomic) NSTreeController *userPlaylistController;
+@property (assign) IBOutlet NSOutlineView *sidebar;
 
 @end
