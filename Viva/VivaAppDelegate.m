@@ -15,6 +15,7 @@
 #import "AlbumViewController.h"
 #import "ArtistViewController.h"
 #import "EMKeychainItem.h"
+#import "StarredViewController.h"
 
 @interface VivaAppDelegate()
 
@@ -44,6 +45,7 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[SearchResultsViewController class] forURLScheme:@"spotify:search"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[AlbumViewController class] forURLScheme:@"spotify:album"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
+	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
 
     [SPSession sharedSession].delegate = self;
     

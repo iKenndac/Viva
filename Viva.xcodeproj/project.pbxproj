@@ -110,6 +110,7 @@
 		50C7B3BB132E329A0055EDE0 /* PlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */; };
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
 		50CCCD4D13DEFD5200DDB85C /* sidebar-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */; };
+		50CCCD5113DF1BE700DDB85C /* StarredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CCCD5013DF1BE700DDB85C /* StarredViewController.m */; };
 		50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192C9134280F500D02FDF /* AudioUnit.framework */; };
 		50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192CB134280FB00D02FDF /* CoreAudio.framework */; };
 		50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1931359E1D200437CCB /* VivaImageExtensions.m */; };
@@ -330,6 +331,8 @@
 		50C7B3BD132E36D90055EDE0 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		50C7B3DD132E398E0055EDE0 /* VivaAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAppDelegate.h; sourceTree = "<group>"; };
 		50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-folder.png"; sourceTree = "<group>"; };
+		50CCCD4F13DF1BE700DDB85C /* StarredViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StarredViewController.h; sourceTree = "<group>"; };
+		50CCCD5013DF1BE700DDB85C /* StarredViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarredViewController.m; sourceTree = "<group>"; };
 		50D192C9134280F500D02FDF /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		50D192CB134280FB00D02FDF /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		50D1C1921359E1D200437CCB /* VivaImageExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaImageExtensions.h; sourceTree = "<group>"; };
@@ -421,6 +424,7 @@
 				500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */,
 				500B86A613616A05005FC734 /* Generic Sortable Track List */,
 				50C7B3DC132E39700055EDE0 /* Playlist View */,
+				50CCCD4E13DF1BC100DDB85C /* Starred View */,
 				500B86AD1361704C005FC734 /* Search View */,
 				5099D8A31364B0D0005C7CDC /* Album View */,
 				5099D8BD1364BFAB005C7CDC /* Artist View */,
@@ -811,6 +815,15 @@
 			name = "Playlist View";
 			sourceTree = "<group>";
 		};
+		50CCCD4E13DF1BC100DDB85C /* Starred View */ = {
+			isa = PBXGroup;
+			children = (
+				50CCCD4F13DF1BE700DDB85C /* StarredViewController.h */,
+				50CCCD5013DF1BE700DDB85C /* StarredViewController.m */,
+			);
+			name = "Starred View";
+			sourceTree = "<group>";
+		};
 		50D1C1951359E43400437CCB /* Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -1171,6 +1184,7 @@
 				50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */,
 				50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */,
 				501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */,
+				50CCCD5113DF1BE700DDB85C /* StarredViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

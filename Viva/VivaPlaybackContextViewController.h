@@ -19,6 +19,8 @@
 	BOOL playingTrackContainerIsCurrentlyPlaying;
 }
 
+-(id)initWithObjectFromURL:(NSURL *)aURL nibName:(NSString *)nibName;
+
 -(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer;
 
 @property (retain, readwrite) id <VivaTrackContainer> playingTrackContainer;

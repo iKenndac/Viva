@@ -18,7 +18,11 @@
 @implementation VivaPlaybackContextViewController
 
 -(id)initWithObjectFromURL:(NSURL *)aURL {
-	if ((self = [super initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]])) {
+	return [self initWithObjectFromURL:aURL nibName:NSStringFromClass([self class])];
+}
+
+-(id)initWithObjectFromURL:(NSURL *)aURL nibName:(NSString *)nibName {
+	if ((self = [super initWithNibName:nibName bundle:[NSBundle mainBundle]])) {
 		self.spotifyURL = aURL;
 	}
 	return self;

@@ -22,18 +22,23 @@
 @implementation PlaylistViewController
 
 -(id)initWithObjectFromURL:(NSURL *)aURL {
-	if ((self = [super initWithObjectFromURL:aURL])) {
-		
+	return [self initWithObjectFromURL:aURL nibName:@"PlaylistViewController"];
+}
+
+-(id)initWithObjectFromURL:(NSURL *)aURL nibName:(NSString *)nibName {
+	
+	if (self = [super initWithObjectFromURL:aURL nibName:nibName]) {
 		[self addObserver:self
 			   forKeyPath:@"playlist.tracks"
 				  options:0
 				  context:nil];
-
+		
 		self.playlist = [[SPSession sharedSession] playlistForURL:aURL];
 		self.playlist.delegate = self;
 	}
 	return self;
 }
+
 
 -(void)awakeFromNib {
 
