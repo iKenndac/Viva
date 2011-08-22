@@ -24,7 +24,7 @@
 
 //vDSP 
 
-- (CGFloat)performAcceleratedFastFourierTransformAndReturnMaximumLevel:(float *)waveformArray magnitudesGoHere:(double *)magnitudes;
+- (CGFloat)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
 
 @property (readwrite, retain) NSArray *leftLevels;
 @property (readwrite, retain) NSArray *rightLevels;
@@ -391,17 +391,6 @@ static UInt32 framesSinceLastUpdate = 0;
 		rightChannelBuffer[currentFrame] = (frames[(currentFrame * 2) + 1]/(float)INT16_MAX) * effectiveVolume;
 	}
 	
-	// vDSP
-	
-	if (inNumberFrames == fftWaveCount) {
-		[self performAcceleratedFastFourierTransformAndReturnMaximumLevel:leftChannelBuffer magnitudesGoHere:leftChannelMagnitudes];
-		[self performAcceleratedFastFourierTransformAndReturnMaximumLevel:rightChannelBuffer magnitudesGoHere:rightChannelMagnitudes];		
-	} else {
-		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Mismatch in data sizes; bailing.");
-	}
-	
-	// END vDSP
-	
 	if (frameBuffer != NULL) 
 		free(frameBuffer);
 	frames = NULL;
@@ -418,8 +407,14 @@ static UInt32 framesSinceLastUpdate = 0;
 									   withObject:nil
 									waitUntilDone:NO];		
 		
+		// vDSP
 		
-		// Levels
+		if (inNumberFrames == fftWaveCount) {
+			[self performAcceleratedFastFourierTransformWithWaveform:leftChannelBuffer intoStore:leftChannelMagnitudes];
+			[self performAcceleratedFastFourierTransformWithWaveform:rightChannelBuffer intoStore:rightChannelMagnitudes];		
+		} else {
+			NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Mismatch in data sizes; bailing.");
+		}
 		
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -436,6 +431,8 @@ static UInt32 framesSinceLastUpdate = 0;
 		
 		[pool drain];
 		
+		// END vDSP
+		
 		framesSinceLastUpdate = 0;
 		
 	}
@@ -444,28 +441,21 @@ static UInt32 framesSinceLastUpdate = 0;
 }
 
 
-- (CGFloat)performAcceleratedFastFourierTransformAndReturnMaximumLevel:(float *)waveformArray magnitudesGoHere:(double *)magnitudes;
+- (void)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
 {   
-    for (NSUInteger currentInputSampleIndex = 0; currentInputSampleIndex < fftWaveCount; currentInputSampleIndex++)
-    {
+	if (magnitudes == NULL || waveformArray == NULL)
+		return;
+	
+    for (NSUInteger currentInputSampleIndex = 0; currentInputSampleIndex < fftWaveCount; currentInputSampleIndex++) {
         input.realp[currentInputSampleIndex] = (double)waveformArray[currentInputSampleIndex];
         input.imagp[currentInputSampleIndex] = 0.0f;
     }
 	
     /* 1D in-place complex FFT */
-    vDSP_fft_zipD(fft_weights, &input, 1, 6, FFT_FORWARD);  
-	
-    input.realp[0] = 0.0;
-    input.imagp[0] = 0.0;
+    vDSP_fft_zipD(fft_weights, &input, 1, 6, FFT_FORWARD);
 	
     // Get magnitudes
     vDSP_zvmagsD(&input, 1, magnitudes, 1, fftMagnitudeCount);
-	
-    // Extract the maximum value and its index
-    double fftMax = 0.0;
-    vDSP_maxmgvD(magnitudes, 1, &fftMax, fftMagnitudeCount);
-	
-    return sqrt(fftMax);
 }
 
 #pragma mark -
