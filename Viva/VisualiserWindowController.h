@@ -20,6 +20,12 @@
 @property (readwrite, retain) NSNumber *leftValue8;
 @property (readwrite, retain) NSNumber *leftValue9;
 @property (readwrite, retain) NSNumber *leftValue10;
+@property (readwrite, retain) NSNumber *leftValue11;
+@property (readwrite, retain) NSNumber *leftValue12;
+@property (readwrite, retain) NSNumber *leftValue13;
+@property (readwrite, retain) NSNumber *leftValue14;
+@property (readwrite, retain) NSNumber *leftValue15;
+@property (readwrite, retain) NSNumber *leftValue16;
 
 @property (readwrite, retain) NSNumber *rightValue1;
 @property (readwrite, retain) NSNumber *rightValue2;
@@ -31,5 +37,11 @@
 @property (readwrite, retain) NSNumber *rightValue8;
 @property (readwrite, retain) NSNumber *rightValue9;
 @property (readwrite, retain) NSNumber *rightValue10;
+@property (readwrite, retain) NSNumber *rightValue11;
+@property (readwrite, retain) NSNumber *rightValue12;
+@property (readwrite, retain) NSNumber *rightValue13;
+@property (readwrite, retain) NSNumber *rightValue14;
+@property (readwrite, retain) NSNumber *rightValue15;
+@property (readwrite, retain) NSNumber *rightValue16;
 
 @end

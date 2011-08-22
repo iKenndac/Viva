@@ -24,7 +24,7 @@
 
 //vDSP 
 
-- (CGFloat)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
+- (void)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
 
 @property (readwrite, retain) NSArray *leftLevels;
 @property (readwrite, retain) NSArray *rightLevels;
@@ -34,7 +34,7 @@
 #define kMaximumBytesInBuffer 44100 * 2 * 2 * 0.5 // 0.5 Second @ 44.1kHz, 16bit per channel, stereo
 
 static NSUInteger const fftWaveCount = 512;
-static NSUInteger const fftMagnitudeCount = 10;
+static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 
 @implementation VivaPlaybackManager
 
@@ -82,7 +82,7 @@ static NSUInteger const fftMagnitudeCount = 10;
 												   object:nil];
 
 		/* Setup weights (twiddle factors) */
-		fft_weights = vDSP_create_fftsetupD(6, kFFTRadix2);
+		fft_weights = vDSP_create_fftsetupD((int)sqrt(fftMagnitudeCount), kFFTRadix2);
 		
 		/* Allocate memory to store split-complex input and output data */
 		input.realp = (double *)malloc(fftWaveCount * sizeof(double));
@@ -397,7 +397,7 @@ static UInt32 framesSinceLastUpdate = 0;
 	
 	framesSinceLastUpdate += inNumberFrames;
 	
-	if (framesSinceLastUpdate >= 2205) {
+	if (framesSinceLastUpdate >= 1102) {
 		// Update 5 times per second. (Should be 8820)
 		
 		NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
@@ -418,16 +418,25 @@ static UInt32 framesSinceLastUpdate = 0;
 		
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
-		NSMutableArray *left = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
-		NSMutableArray *right = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
+		NSMutableArray *leftArray = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
+		NSMutableArray *rightArray = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
 		
 		for (int currentLevel = 0; currentLevel < fftMagnitudeCount; currentLevel++) {
-			[left addObject:[NSNumber numberWithDouble:sqrt(leftChannelMagnitudes[currentLevel])]];
-			[right addObject:[NSNumber numberWithDouble:sqrt(rightChannelMagnitudes[currentLevel])]];
+			
+			double left = leftChannelMagnitudes[currentLevel] / 10.0;
+			double right = rightChannelMagnitudes[currentLevel] / 10.0;
+			left = cbrt(MIN(1.0, MAX(0.0, left)));
+			right = cbrt(MIN(1.0, MAX(0.0, right)));
+			
+			[leftArray addObject:[NSNumber numberWithDouble:left]];
+			[rightArray addObject:[NSNumber numberWithDouble:right]];
 		}
 		
-		[self performSelectorOnMainThread:@selector(setLeftLevels:) withObject:left waitUntilDone:NO];
-		[self performSelectorOnMainThread:@selector(setRightLevels:) withObject:right waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(setLeftLevels:) withObject:leftArray waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(setRightLevels:) withObject:rightArray waitUntilDone:NO];
+		
+		[leftArray release];
+		[rightArray release];
 		
 		[pool drain];
 		
@@ -452,7 +461,7 @@ static UInt32 framesSinceLastUpdate = 0;
     }
 	
     /* 1D in-place complex FFT */
-    vDSP_fft_zipD(fft_weights, &input, 1, 6, FFT_FORWARD);
+    vDSP_fft_zipD(fft_weights, &input, 1, (int)sqrt(fftMagnitudeCount), FFT_FORWARD);
 	
     // Get magnitudes
     vDSP_zvmagsD(&input, 1, magnitudes, 1, fftMagnitudeCount);
@@ -479,6 +488,7 @@ static UInt32 framesSinceLastUpdate = 0;
 	self.playbackSession = nil;
 	
 	// vDSP
+	vDSP_destroy_fftsetupD(fft_weights);
 	free(input.realp);
 	free(input.imagp);
 	free(leftChannelMagnitudes);
