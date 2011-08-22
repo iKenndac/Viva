@@ -57,6 +57,8 @@
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
+		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
+		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
 		5099D8AA1364B175005C7CDC /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099D8A81364B175005C7CDC /* AlbumViewController.m */; };
 		5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5099D8A91364B175005C7CDC /* AlbumViewController.xib */; };
 		5099D8BC1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099D8BB1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m */; };
@@ -263,6 +265,9 @@
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
+		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		50881237140264E30094E748 /* VisualiserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualiserWindowController.h; sourceTree = "<group>"; };
+		50881238140264E30094E748 /* VisualiserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualiserWindowController.m; sourceTree = "<group>"; };
 		5099D8A71364B175005C7CDC /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		5099D8A81364B175005C7CDC /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		5099D8A91364B175005C7CDC /* AlbumViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumViewController.xib; sourceTree = "<group>"; };
@@ -393,6 +398,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508812361402525E0094E748 /* Accelerate.framework in Frameworks */,
 				5004701B13563C08000EA08A /* Carbon.framework in Frameworks */,
 				5004701913563C02000EA08A /* IOKit.framework in Frameworks */,
 				505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */,
@@ -468,6 +474,8 @@
 				501C909C13AF72350060A20B /* MainWindowSidebarController.h */,
 				501C909D13AF72350060A20B /* MainWindowSidebarController.m */,
 				501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */,
+				50881237140264E30094E748 /* VisualiserWindowController.h */,
+				50881238140264E30094E748 /* VisualiserWindowController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -493,6 +501,7 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508812351402525E0094E748 /* Accelerate.framework */,
 				5004701A13563C08000EA08A /* Carbon.framework */,
 				5004701813563C01000EA08A /* IOKit.framework */,
 				50D192CB134280FB00D02FDF /* CoreAudio.framework */,
@@ -1185,6 +1194,7 @@
 				50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */,
 				501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */,
 				50CCCD5113DF1BE700DDB85C /* StarredViewController.m in Sources */,
+				50881239140264E30094E748 /* VisualiserWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,9 +22,19 @@
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
 
+//vDSP 
+
+- (CGFloat)performAcceleratedFastFourierTransformAndReturnMaximumLevel:(float *)waveformArray magnitudesGoHere:(double *)magnitudes;
+
+@property (readwrite, retain) NSArray *leftLevels;
+@property (readwrite, retain) NSArray *rightLevels;
+
 @end
 
 #define kMaximumBytesInBuffer 44100 * 2 * 2 * 0.5 // 0.5 Second @ 44.1kHz, 16bit per channel, stereo
+
+static NSUInteger const fftWaveCount = 512;
+static NSUInteger const fftMagnitudeCount = 10;
 
 @implementation VivaPlaybackManager
 
@@ -70,6 +80,15 @@
 												 selector:@selector(playTrackFromUserAction:)
 													 name:kTrackShouldBePlayedNotification
 												   object:nil];
+
+		/* Setup weights (twiddle factors) */
+		fft_weights = vDSP_create_fftsetupD(6, kFFTRadix2);
+		
+		/* Allocate memory to store split-complex input and output data */
+		input.realp = (double *)malloc(fftWaveCount * sizeof(double));
+		input.imagp = (double *)malloc(fftWaveCount * sizeof(double));
+		leftChannelMagnitudes = (double *)malloc(fftMagnitudeCount * sizeof(double));
+		rightChannelMagnitudes = (double *)malloc(fftMagnitudeCount * sizeof(double));
     }
     
     return self;
@@ -83,6 +102,9 @@
 @synthesize currentTrackPosition;
 @synthesize volume;
 @synthesize loopPlayback;
+
+@synthesize leftLevels;
+@synthesize rightLevels;
 
 +(NSSet *)keyPathsForValuesAffectingCurrentTrack {
 	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
@@ -337,7 +359,8 @@ static UInt32 framesSinceLastUpdate = 0;
           frameCount:(UInt32)inNumberFrames
            audioData:(AudioBufferList *)ioData;
 {	
-    // Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
+	
+	// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
 	
 	AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
 	AudioBuffer *rightBuffer = &(ioData->mBuffers[1]);
@@ -368,14 +391,25 @@ static UInt32 framesSinceLastUpdate = 0;
 		rightChannelBuffer[currentFrame] = (frames[(currentFrame * 2) + 1]/(float)INT16_MAX) * effectiveVolume;
 	}
 	
+	// vDSP
+	
+	if (inNumberFrames == fftWaveCount) {
+		[self performAcceleratedFastFourierTransformAndReturnMaximumLevel:leftChannelBuffer magnitudesGoHere:leftChannelMagnitudes];
+		[self performAcceleratedFastFourierTransformAndReturnMaximumLevel:rightChannelBuffer magnitudesGoHere:rightChannelMagnitudes];		
+	} else {
+		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Mismatch in data sizes; bailing.");
+	}
+	
+	// END vDSP
+	
 	if (frameBuffer != NULL) 
 		free(frameBuffer);
 	frames = NULL;
 	
 	framesSinceLastUpdate += inNumberFrames;
 	
-	if (framesSinceLastUpdate >= 8820) {
-		// Update 5 times per second.
+	if (framesSinceLastUpdate >= 2205) {
+		// Update 5 times per second. (Should be 8820)
 		
 		NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
 		
@@ -383,11 +417,58 @@ static UInt32 framesSinceLastUpdate = 0;
 		[setTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
 									   withObject:nil
 									waitUntilDone:NO];		
+		
+		
+		// Levels
+		
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		NSMutableArray *left = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
+		NSMutableArray *right = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
+		
+		for (int currentLevel = 0; currentLevel < fftMagnitudeCount; currentLevel++) {
+			[left addObject:[NSNumber numberWithDouble:sqrt(leftChannelMagnitudes[currentLevel])]];
+			[right addObject:[NSNumber numberWithDouble:sqrt(rightChannelMagnitudes[currentLevel])]];
+		}
+		
+		[self performSelectorOnMainThread:@selector(setLeftLevels:) withObject:left waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(setRightLevels:) withObject:right waitUntilDone:NO];
+		
+		[pool drain];
+		
 		framesSinceLastUpdate = 0;
+		
 	}
     
     return noErr;
 }
+
+
+- (CGFloat)performAcceleratedFastFourierTransformAndReturnMaximumLevel:(float *)waveformArray magnitudesGoHere:(double *)magnitudes;
+{   
+    for (NSUInteger currentInputSampleIndex = 0; currentInputSampleIndex < fftWaveCount; currentInputSampleIndex++)
+    {
+        input.realp[currentInputSampleIndex] = (double)waveformArray[currentInputSampleIndex];
+        input.imagp[currentInputSampleIndex] = 0.0f;
+    }
+	
+    /* 1D in-place complex FFT */
+    vDSP_fft_zipD(fft_weights, &input, 1, 6, FFT_FORWARD);  
+	
+    input.realp[0] = 0.0;
+    input.imagp[0] = 0.0;
+	
+    // Get magnitudes
+    vDSP_zvmagsD(&input, 1, magnitudes, 1, fftMagnitudeCount);
+	
+    // Extract the maximum value and its index
+    double fftMax = 0.0;
+    vDSP_maxmgvD(magnitudes, 1, &fftMax, fftMagnitudeCount);
+	
+    return sqrt(fftMax);
+}
+
+#pragma mark -
 
 - (void)dealloc {
 
@@ -407,6 +488,15 @@ static UInt32 framesSinceLastUpdate = 0;
 	self.audioUnit = nil;
 	self.playbackSession = nil;
 	
+	// vDSP
+	free(input.realp);
+	free(input.imagp);
+	free(leftChannelMagnitudes);
+	free(rightChannelMagnitudes);
+	
+	self.leftLevels = nil;
+	self.rightLevels = nil;
+
     [super dealloc];
 }
 

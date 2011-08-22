@@ -11,6 +11,7 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "CoCA.h"
 #import "SPCircularBuffer.h"
+#import <Accelerate/Accelerate.h>
 
 @interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSessionPlaybackDelegate> {
 @private
@@ -25,6 +26,15 @@
 	BOOL hasPreCachedNextTrack;
 	NSMethodSignature *setTrackPositionMethodSignature;
 	NSInvocation *setTrackPositionInvocation;
+	
+	// vDSP
+	FFTSetupD fft_weights;
+	DSPDoubleSplitComplex input;
+	double *leftChannelMagnitudes;
+	double *rightChannelMagnitudes;
+	
+	NSArray *leftLevels;
+	NSArray *rightLevels;
 }
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
@@ -39,6 +49,9 @@
 
 @property (readonly) BOOL canSkipToNextTrack;
 @property (readonly) BOOL canSkipToPreviousTrack;
+
+@property (readonly, retain) NSArray *leftLevels;
+@property (readonly, retain) NSArray *rightLevels;
 
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition;
 
