@@ -47,8 +47,10 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
 
+    #import "viva_appkey.c"
+    
 	NSError *error = nil;
-	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey" ofType:@"key"]]
+	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:g_appkey length:g_appkey_size]
 											   userAgent:kVivaLibSpotifyUserAgentName
 												   error:&error];
 	
