@@ -47,6 +47,20 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
 
+	NSError *error = nil;
+	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"libspotify_appkey" ofType:@"key"]]
+											   userAgent:kVivaLibSpotifyUserAgentName
+												   error:&error];
+	
+	if (error != nil) {
+		NSRunAlertPanel(@"Initializing CocoaLibSpotify failed!", 
+						[NSString stringWithFormat:@"%@", error], 
+						@"Quit",
+						@"",
+						@"");
+		[NSApp terminate:self];
+	}
+	
     [SPSession sharedSession].delegate = self;
     
 	mainWindowController = [[MainWindowController alloc] init];

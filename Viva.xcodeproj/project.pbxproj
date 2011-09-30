@@ -36,8 +36,6 @@
 		505A929E135792DC00136BBF /* paused-indicator-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929C135792DC00136BBF /* paused-indicator-highlighted.png */; };
 		505A929F135792DC00136BBF /* playing-indicator-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929D135792DC00136BBF /* playing-indicator-highlighted.png */; };
 		505A92A21357943A00136BBF /* SPWithAlternateImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A92A11357943A00136BBF /* SPWithAlternateImageCell.m */; };
-		505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
-		505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */; };
 		5061BD6313B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5C13B0CA7600722D69 /* AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell.png */; };
 		5061BD6413B0CA7600722D69 /* sidebar-explore.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5D13B0CA7600722D69 /* sidebar-explore.png */; };
 		5061BD6513B0CA7600722D69 /* sidebar-home.png in Resources */ = {isa = PBXBuildFile; fileRef = 5061BD5E13B0CA7600722D69 /* sidebar-home.png */; };
@@ -59,6 +57,8 @@
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
+		5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
+		5088AB5F140D28EC009C9FF8 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
 		5099D8AA1364B175005C7CDC /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099D8A81364B175005C7CDC /* AlbumViewController.m */; };
 		5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5099D8A91364B175005C7CDC /* AlbumViewController.xib */; };
 		5099D8BC1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099D8BB1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m */; };
@@ -159,18 +159,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		505D4ED0134477D5006340E5 /* PBXContainerItemProxy */ = {
+		5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 503D630E13258041007772CA;
-			remoteInfo = CocoaLibSpotify;
-		};
-		50E65EA3132585AF00E66AFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */;
+			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 503D630F13258041007772CA;
+			remoteInfo = CocoaLibSpotify;
+		};
+		5088AB5C140D2870009C9FF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 503D630E13258041007772CA;
 			remoteInfo = CocoaLibSpotify;
 		};
 /* End PBXContainerItemProxy section */
@@ -182,7 +182,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				505D4ECD134477B2006340E5 /* CocoaLibSpotify.framework in CopyFiles */,
+				5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +268,7 @@
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		50881237140264E30094E748 /* VisualiserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualiserWindowController.h; sourceTree = "<group>"; };
 		50881238140264E30094E748 /* VisualiserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualiserWindowController.m; sourceTree = "<group>"; };
+		5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CocoaLibSpotify Mac Framework.xcodeproj"; path = "cocoalibspotify/Mac Framework/CocoaLibSpotify Mac Framework.xcodeproj"; sourceTree = "<group>"; };
 		5099D8A71364B175005C7CDC /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		5099D8A81364B175005C7CDC /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		5099D8A91364B175005C7CDC /* AlbumViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumViewController.xib; sourceTree = "<group>"; };
@@ -378,7 +379,6 @@
 		50E3F775133FD92800FF4618 /* EMKeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMKeychainItem.h; sourceTree = "<group>"; };
 		50E3F776133FD92800FF4618 /* EMKeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMKeychainItem.m; sourceTree = "<group>"; };
 		50E3F778133FD95200FF4618 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaLibSpotify.xcodeproj; path = cocoalibspotify/CocoaLibSpotify.xcodeproj; sourceTree = "<group>"; };
 		50E819CD133926A3000CE44D /* SPBackgroundColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPBackgroundColorView.h; path = "Custom Controls/SPBackgroundColorView.h"; sourceTree = "<group>"; };
 		50E819CE133926A3000CE44D /* SPBackgroundColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPBackgroundColorView.m; path = "Custom Controls/SPBackgroundColorView.m"; sourceTree = "<group>"; };
 		50F00921135A0182009D25B1 /* dragBallLeft.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallLeft.tiff; sourceTree = "<group>"; };
@@ -401,8 +401,8 @@
 				508812361402525E0094E748 /* Accelerate.framework in Frameworks */,
 				5004701B13563C08000EA08A /* Carbon.framework in Frameworks */,
 				5004701913563C02000EA08A /* IOKit.framework in Frameworks */,
-				505D4ECC134477AA006340E5 /* CocoaLibSpotify.framework in Frameworks */,
 				50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */,
+				5088AB5F140D28EC009C9FF8 /* CocoaLibSpotify.framework in Frameworks */,
 				50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */,
 				50E3F779133FD95200FF4618 /* Security.framework in Frameworks */,
 				503D62D913257D92007772CA /* Cocoa.framework in Frameworks */,
@@ -483,7 +483,7 @@
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
-				50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */,
+				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
@@ -640,6 +640,14 @@
 				506F347513436F08002BA308 /* VivaPlaybackContext.h */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		5088AB54140D2863009C9FF8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		5099D8A31364B0D0005C7CDC /* Album View */ = {
@@ -917,14 +925,6 @@
 			path = "Open Source";
 			sourceTree = "<group>";
 		};
-		50E65E9D132585AF00E66AFA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		50F00920135A0182009D25B1 /* Dragging */ = {
 			isa = PBXGroup;
 			children = (
@@ -972,7 +972,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				505D4ED1134477D5006340E5 /* PBXTargetDependency */,
+				5088AB5D140D2870009C9FF8 /* PBXTargetDependency */,
 			);
 			name = Viva;
 			productName = Viva;
@@ -1001,8 +1001,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 50E65E9D132585AF00E66AFA /* Products */;
-					ProjectRef = 50E65E9C132585AF00E66AFA /* CocoaLibSpotify.xcodeproj */;
+					ProductGroup = 5088AB54140D2863009C9FF8 /* Products */;
+					ProjectRef = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1013,11 +1013,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		50E65EA4132585AF00E66AFA /* CocoaLibSpotify.framework */ = {
+		5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CocoaLibSpotify.framework;
-			remoteRef = 50E65EA3132585AF00E66AFA /* PBXContainerItemProxy */;
+			remoteRef = 5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1201,10 +1201,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		505D4ED1134477D5006340E5 /* PBXTargetDependency */ = {
+		5088AB5D140D2870009C9FF8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CocoaLibSpotify;
-			targetProxy = 505D4ED0134477D5006340E5 /* PBXContainerItemProxy */;
+			targetProxy = 5088AB5C140D2870009C9FF8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1232,7 +1232,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/cocoalibspotify/libspotify-9.1.24-Darwin-universal/\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1257,7 +1257,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/cocoalibspotify/libspotify-9.1.24-Darwin-universal/\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1278,12 +1278,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
+					"\"$(SRCROOT)/cocoalibspotify/Mac Framework/libspotify-9.1.32-Darwin-universal/\"",
 				);
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1294,12 +1293,11 @@
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/cocoalibspotify/libspotify-0.0.8-Darwin\"",
+					"\"$(SRCROOT)/cocoalibspotify/Mac Framework/libspotify-9.1.32-Darwin-universal/\"",
 				);
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -1086,7 +1086,7 @@
 				<int key="NSWindowStyleMask">23</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{272, 172}, {140, 808}}</string>
-				<int key="NSWTFlags">-461896704</int>
+				<int key="NSWTFlags">1685586944</int>
 				<string key="NSWindowTitle">Visualiser</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
@@ -1116,8 +1116,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="85900138"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1137,8 +1137,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="976773083"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1158,8 +1158,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="1064928240"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1179,8 +1179,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="927191486"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1200,8 +1200,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="774636703"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1221,8 +1221,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="285851205"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1242,8 +1242,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="494334866"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1263,8 +1263,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="785127739"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1284,8 +1284,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="574940347"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1305,8 +1305,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="225218174"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1326,8 +1326,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="471182340"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1347,8 +1347,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="963363009"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1368,8 +1368,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="231271153"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1389,8 +1389,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="802817591"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1410,8 +1410,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="833207720"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1431,8 +1431,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="6651301"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1489,8 +1489,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="682197765"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1510,8 +1510,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="286683090"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1531,8 +1531,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="175791643"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1552,8 +1552,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="1023773622"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1573,8 +1573,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="218345429"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1594,8 +1594,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="623177347"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1615,8 +1615,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="610428703"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1636,8 +1636,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="115872541"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1657,8 +1657,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="813805743"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1678,8 +1678,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="342074602"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1699,8 +1699,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="138059635"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1720,8 +1720,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="1070996021"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1741,8 +1741,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="85087873"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1762,8 +1762,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="538113542"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1783,8 +1783,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="731419955"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
@@ -1804,8 +1804,8 @@
 								<string key="NSCellIdentifier">_NS:1751</string>
 								<reference key="NSControlView" ref="1009583939"/>
 								<double key="NSMaxValue">1</double>
-								<double key="NSWarningValue">7</double>
-								<double key="NSCriticalValue">9</double>
+								<double key="NSWarningValue">1</double>
+								<double key="NSCriticalValue">1</double>
 								<int key="NSIndicatorStyle">1</int>
 							</object>
 						</object>
