@@ -28,24 +28,22 @@
 }
 
 -(void)clear {
-	@synchronized(self) {
-		[self willChangeValueForKey:@"length"];
+	@synchronized(buffer) {
 		memset(buffer, 0, maximumLength);
 		dataStartOffset = 0;
 		dataEndOffset = 0;
 		empty = YES;
-		[self didChangeValueForKey:@"length"];
 	}
 }
 
 -(NSUInteger)attemptAppendData:(const void *)data ofLength:(NSUInteger)dataLength {
-	@synchronized(self) {
-		NSUInteger availableBufferSpace = self.maximumLength - self.length;
+    
+    NSUInteger availableBufferSpace = self.maximumLength - self.length;
+    
+	@synchronized(buffer) {
 	
 		if (availableBufferSpace == 0)
 			return 0;
-		
-		[self willChangeValueForKey:@"length"];
 		
 		NSUInteger writableByteCount = MIN(dataLength, availableBufferSpace);
 		NSUInteger directCopyByteCount = MIN(writableByteCount, self.maximumLength - (dataEndOffset + 1));
@@ -62,8 +60,6 @@
 			dataEndOffset = wraparoundByteCount - 1;
 		}
 		
-		[self didChangeValueForKey:@"length"];
-		
 		if (writableByteCount > 0)
 			empty = NO;
 		
@@ -71,25 +67,24 @@
 	}
 }
 
--(NSUInteger)readDataOfLength:(NSUInteger)desiredLength intoBuffer:(void **)outBuffer {
+-(NSUInteger)readDataOfLength:(NSUInteger)desiredLength intoAllocatedBuffer:(void **)outBuffer {
 	
 	if (outBuffer == NULL || desiredLength == 0)
 		return 0;
 	
-	@synchronized(self) {
-		NSUInteger usedBufferSpace = self.length;
+    NSUInteger usedBufferSpace = self.length;
+    
+	@synchronized(buffer) {
 		
 		if (usedBufferSpace == 0) {
 			return 0;
 		}
 		
-		[self willChangeValueForKey:@"length"];
-		
 		NSUInteger readableByteCount = MIN(usedBufferSpace, desiredLength);
 		NSUInteger directCopyByteCount = MIN(readableByteCount, self.maximumLength - dataStartOffset);
 		NSUInteger wraparoundByteCount = readableByteCount - directCopyByteCount;
 		
-		void *destinationBuffer = malloc(readableByteCount);
+		void *destinationBuffer = *outBuffer;
 		
 		if (directCopyByteCount > 0) {
 			memcpy(destinationBuffer, buffer + dataStartOffset, directCopyByteCount);
@@ -101,9 +96,6 @@
 			dataStartOffset = wraparoundByteCount;
 		}
 		
-		[self didChangeValueForKey:@"length"];
-		
-		*outBuffer = destinationBuffer;
 		return readableByteCount;
 	}
 	
@@ -112,7 +104,7 @@
 -(NSUInteger)length {
 	// Length is the distance between the start offset (start of the data)
 	// and the end offset (end).
-	@synchronized(self) {
+	@synchronized(buffer) {
 		if (dataStartOffset == dataEndOffset) {
 			// Empty!
 			return 0;
@@ -127,7 +119,7 @@
 @synthesize maximumLength;
 
 - (void)dealloc {
-	@synchronized(self) {
+	@synchronized(buffer) {
 		memset(buffer, 0, maximumLength);
 		free(buffer);
 		[super dealloc];

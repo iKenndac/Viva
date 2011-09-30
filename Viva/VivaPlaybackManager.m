@@ -8,11 +8,11 @@
 
 #import "VivaPlaybackManager.h"
 #import "Constants.h"
+#include <sys/time.h>
 
 @interface VivaPlaybackManager  ()
 
 @property (retain, readwrite) SPCircularBuffer *audioBuffer;
-@property (retain, readwrite) CoCAAudioUnit *audioUnit;
 @property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, retain) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, retain) SPSession *playbackSession;
@@ -21,6 +21,20 @@
 
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
+
+// Core Audio
+-(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err;
+-(void)teardownCoreAudio;
+-(void)startAudioUnit;
+-(void)stopAudioUnit;
+-(void)applyVolumeToAudioUnit:(double)vol;
+
+static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
+                                                    AudioUnitRenderActionFlags *ioActionFlags,
+                                                    const AudioTimeStamp *inTimeStamp,
+                                                    UInt32 inBusNumber,
+                                                    UInt32 inNumberFrames,
+                                                    AudioBufferList *ioData);
 
 //vDSP 
 
@@ -43,11 +57,11 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     if (self) {
         // Initialization code here.
 		
-		SEL setTrackPositionSelector = @selector(setCurrentTrackPosition:);
-		setTrackPositionMethodSignature = [[VivaPlaybackManager instanceMethodSignatureForSelector:setTrackPositionSelector] retain];
-		setTrackPositionInvocation = [[NSInvocation invocationWithMethodSignature:setTrackPositionMethodSignature] retain];
-		[setTrackPositionInvocation setSelector:setTrackPositionSelector];
-		[setTrackPositionInvocation setTarget:self];
+		SEL incrementTrackPositionSelector = @selector(incrementTrackPositionWithFrameCount:);
+		incrementTrackPositionMethodSignature = [[VivaPlaybackManager instanceMethodSignatureForSelector:incrementTrackPositionSelector] retain];
+		incrementTrackPositionInvocation = [[NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature] retain];
+		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
+		[incrementTrackPositionInvocation setTarget:self];
 		
 		self.volume = 1.0;
 		self.playbackSession = aSession;
@@ -74,6 +88,11 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 			   forKeyPath:@"playbackContext"
 				  options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
 				  context:nil];
+        
+        [self addObserver:self
+               forKeyPath:@"volume"
+                  options:0
+                  context:nil];
 		
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -95,7 +114,6 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 }
 
 @synthesize audioBuffer;
-@synthesize audioUnit;
 @synthesize playbackContext;
 @synthesize currentTrackContainer;
 @synthesize playbackSession;
@@ -132,6 +150,11 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 			[self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrack] != 0);			
 }
 
+-(float)logarithmicVolume {
+    float vol = self.volume;
+    return (vol * vol * vol);
+}
+
 #pragma mark -
 
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
@@ -139,8 +162,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	// User double-clicked, so reset everything and start again.
 	[self.playbackSession setPlaying:NO];
 	[self.playbackSession unloadPlayback];
-	[self.audioUnit stop];
-	self.audioUnit = nil;
+	[self teardownCoreAudio];
 	
 	[self.audioBuffer clear];
 	
@@ -190,8 +212,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	if (clearExistingAudioBuffers) {
 		[self.playbackSession setPlaying:NO];
 		[self.playbackSession unloadPlayback];
-		[self.audioUnit stop];
-		self.audioUnit = nil;
+		[self teardownCoreAudio];
 		
 		[self.audioBuffer clear];
 	}
@@ -203,8 +224,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self.audioUnit stop];
-		self.audioUnit = nil;
+		[self teardownCoreAudio];
 		self.currentTrackPosition = 0;
 	}
 }
@@ -230,8 +250,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	if (clearExistingAudioBuffers) {
 		[self.playbackSession setPlaying:NO];
 		[self.playbackSession unloadPlayback];
-		[self.audioUnit stop];
-		self.audioUnit = nil;
+		[self teardownCoreAudio];
 		
 		[self.audioBuffer clear];
 	}
@@ -243,8 +262,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self.audioUnit stop];
-		self.audioUnit = nil;
+		[self teardownCoreAudio];
 		self.currentTrackPosition = 0;
 	}
 }
@@ -269,9 +287,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     if ([keyPath isEqualToString:@"playbackSession.playing"]) {
         
         if (self.playbackSession.playing) {
-            [self.audioUnit start];
+            [self startAudioUnit];
         } else {
-            [self.audioUnit stop];
+            [self stopAudioUnit];
         }
 		
 		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
@@ -314,6 +332,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 			}
 		}
         
+    } else if ([keyPath isEqualToString:@"volume"]) {
+        [self applyVolumeToAudioUnit:self.volume];
+        
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -336,117 +357,161 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		// the buffer works in bytes, meaning we could consume a fraction of a frame.
 		return 0;
 	}
-	
+
 	[self.audioBuffer attemptAppendData:audioFrames ofLength:dataLength];
-	
-	if (self.audioUnit == nil) {
-		self.audioUnit = [CoCAAudioUnit defaultOutputUnit];
-		[self.audioUnit setRenderDelegate:self];
-		[self.audioUnit setup];
-    }
-	
-    [self.audioUnit start];
+
+	if (outputAudioUnit == NULL)
+		[self setupCoreAudioWithAudioFormat:audioFormat error:nil];
 	
 	return frameCount;
 }
 
+#pragma mark -
+#pragma mark Core Audio Setup
+         
+-(void)applyVolumeToAudioUnit:(double)vol {
+    
+    if (outputAudioUnit == NULL)
+        return;
+    
+    AudioUnitSetParameter(outputAudioUnit,
+                          kHALOutputParam_Volume,
+                          kAudioUnitScope_Output,
+                          0,
+                          (vol * vol * vol),
+                          0);
+}
+
+-(void)startAudioUnit {
+    if (outputAudioUnit == NULL)
+        return;
+    
+    AudioOutputUnitStart(outputAudioUnit);
+}
+
+-(void)stopAudioUnit {
+    if (outputAudioUnit == NULL)
+        return;
+    
+    AudioOutputUnitStop(outputAudioUnit);
+}
+
+-(void)teardownCoreAudio {
+    if (outputAudioUnit == NULL)
+        return;
+    
+    [self stopAudioUnit];
+    AudioUnitUninitialize(outputAudioUnit);
+    CloseComponent(outputAudioUnit);
+    
+    outputAudioUnit = NULL;
+}
+
+-(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err {
+    
+    if (outputAudioUnit != NULL)
+        [self teardownCoreAudio];
+    
+    // A description of the output device we're looking for.
+    ComponentDescription desc;
+    desc.componentType = kAudioUnitType_Output;
+    desc.componentSubType = kAudioUnitSubType_DefaultOutput;
+    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+    desc.componentFlags = 0;
+    desc.componentFlagsMask = 0;
+    
+    // Find a component that meets the description's specifications
+    Component comp = FindNextComponent(NULL, &desc);
+    
+    if (comp == NULL)	{
+        //RFATAL("Could not find a component that matches our specifications");
+        return NO;
+    }
+
+    // Gain access to the services provided by the component, i.e. find our
+    // output device
+    OSErr status = OpenAComponent(comp, &outputAudioUnit);
+    if (status != noErr) {
+        //RFATAL("Couldn't find a device that matched our criteria (error code %d)", status);
+        return NO;
+    }
+    
+    // Tell Core Audio about libspotify's audio format
+    AudioStreamBasicDescription outputFormat;
+    outputFormat.mSampleRate = (float)audioFormat->sample_rate;
+    outputFormat.mFormatID = kAudioFormatLinearPCM;
+    outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
+    outputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
+    outputFormat.mFramesPerPacket = 1;
+    outputFormat.mBytesPerFrame = outputFormat.mBytesPerPacket;
+    outputFormat.mChannelsPerFrame = audioFormat->channels;
+    outputFormat.mBitsPerChannel = 16;
+    outputFormat.mReserved = 0;
+    
+    AudioUnitSetProperty(outputAudioUnit,
+                         kAudioUnitProperty_StreamFormat,
+                         kAudioUnitScope_Input,
+                         0,
+                         &outputFormat,
+                         sizeof(outputFormat));
+    
+    AURenderCallbackStruct callback;
+    callback.inputProc = VivaAudioUnitRenderDelegateCallback;
+    callback.inputProcRefCon = self;
+    
+    AudioUnitSetProperty(outputAudioUnit,
+                         kAudioUnitProperty_SetRenderCallback,
+                         kAudioUnitScope_Input,
+                         0,
+                         &callback,
+                         sizeof(callback));
+    
+    AudioUnitInitialize(outputAudioUnit);
+    
+    [self startAudioUnit];
+    [self applyVolumeToAudioUnit:self.volume];
+    
+    return YES;
+}
+
 static UInt32 framesSinceLastUpdate = 0;
 
--(OSStatus)audioUnit:(CoCAAudioUnit*)audioUnit
-     renderWithFlags:(AudioUnitRenderActionFlags*)ioActionFlags
-                  at:(const AudioTimeStamp*)inTimeStamp
-               onBus:(UInt32)inBusNumber
-          frameCount:(UInt32)inNumberFrames
-           audioData:(AudioBufferList *)ioData;
-{	
+static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
+                                                    AudioUnitRenderActionFlags *ioActionFlags,
+                                                    const AudioTimeStamp *inTimeStamp,
+                                                    UInt32 inBusNumber,
+                                                    UInt32 inNumberFrames,
+                                                    AudioBufferList *ioData) {
+    VivaPlaybackManager *self = inRefCon;
 	
-	// Core Audio generally expects audio data to be in native-endian 32-bit floating-point linear PCM format.
-	
-	AudioBuffer *leftBuffer = &(ioData->mBuffers[0]);
-	AudioBuffer *rightBuffer = &(ioData->mBuffers[1]);
-	
-	NSUInteger bytesRequired = inNumberFrames * 2 * 2; // 16bit per channel, stereo
-	void *frameBuffer = NULL;
+	AudioBuffer *buffer = &(ioData->mBuffers[0]);
+	UInt32 bytesRequired = buffer->mDataByteSize;
 
-	NSUInteger availableData = [audioBuffer length];
-	if (availableData >= bytesRequired) {
-		 [audioBuffer readDataOfLength:bytesRequired intoBuffer:&frameBuffer];
-	} else {
-		leftBuffer->mDataByteSize = 0;
-		rightBuffer->mDataByteSize = 0;
+	NSUInteger availableData = [self->audioBuffer length];
+	if (availableData < bytesRequired) {
+		buffer->mDataByteSize = 0;
 		*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
 		return noErr;
-	}
-	
-	float *leftChannelBuffer = leftBuffer->mData;
-	float *rightChannelBuffer = rightBuffer->mData;
-	
-	sint16 *frames = frameBuffer;
-	double effectiveVolume = self.volume;
-	
-	for (NSUInteger currentFrame = 0; currentFrame < inNumberFrames; currentFrame++) {
-
-		// Convert the frames from 16-bit signed integers to floating point, then apply the volume.
-		leftChannelBuffer[currentFrame] = (frames[currentFrame * 2]/(float)INT16_MAX) * effectiveVolume;
-		rightChannelBuffer[currentFrame] = (frames[(currentFrame * 2) + 1]/(float)INT16_MAX) * effectiveVolume;
-	}
-	
-	if (frameBuffer != NULL) 
-		free(frameBuffer);
-	frames = NULL;
-	
+    }
+    
+    buffer->mDataByteSize = (UInt32)[self->audioBuffer readDataOfLength:bytesRequired intoAllocatedBuffer:&buffer->mData];
+    
 	framesSinceLastUpdate += inNumberFrames;
 	
-	if (framesSinceLastUpdate >= 1102) {
-		// Update 5 times per second. (Should be 8820)
-		
-		NSTimeInterval newTrackPosition = self.currentTrackPosition + (double)framesSinceLastUpdate/44100.0;
-		
-		[setTrackPositionInvocation setArgument:&newTrackPosition atIndex:2];
-		[setTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
-									   withObject:nil
-									waitUntilDone:NO];		
-		
-		// vDSP
-		
-		if (inNumberFrames == fftWaveCount) {
-			[self performAcceleratedFastFourierTransformWithWaveform:leftChannelBuffer intoStore:leftChannelMagnitudes];
-			[self performAcceleratedFastFourierTransformWithWaveform:rightChannelBuffer intoStore:rightChannelMagnitudes];		
-		} else {
-			NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Mismatch in data sizes; bailing.");
-		}
-		
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		NSMutableArray *leftArray = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
-		NSMutableArray *rightArray = [[NSMutableArray alloc] initWithCapacity:fftMagnitudeCount];
-		
-		for (int currentLevel = 0; currentLevel < fftMagnitudeCount; currentLevel++) {
-			
-			double left = leftChannelMagnitudes[currentLevel] / 10.0;
-			double right = rightChannelMagnitudes[currentLevel] / 10.0;
-			left = cbrt(MIN(1.0, MAX(0.0, left)));
-			right = cbrt(MIN(1.0, MAX(0.0, right)));
-			
-			[leftArray addObject:[NSNumber numberWithDouble:left]];
-			[rightArray addObject:[NSNumber numberWithDouble:right]];
-		}
-		
-		[self performSelectorOnMainThread:@selector(setLeftLevels:) withObject:leftArray waitUntilDone:NO];
-		[self performSelectorOnMainThread:@selector(setRightLevels:) withObject:rightArray waitUntilDone:NO];
-		
-		[leftArray release];
-		[rightArray release];
-		
-		[pool drain];
-		
-		// END vDSP
-		
+	if (framesSinceLastUpdate >= 8820) {
+        // Update 5 times per second
+		[self->incrementTrackPositionInvocation setArgument:&framesSinceLastUpdate atIndex:2];
+		[self->incrementTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
+                                                                 withObject:nil
+                                                              waitUntilDone:NO];
 		framesSinceLastUpdate = 0;
-		
 	}
     
     return noErr;
+}
+
+-(void)incrementTrackPositionWithFrameCount:(UInt32)framesToAppend {
+    self.currentTrackPosition = self.currentTrackPosition + (double)framesToAppend/44100.0;
 }
 
 
@@ -475,16 +540,16 @@ static UInt32 framesSinceLastUpdate = 0;
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];
+    [self removeObserver:self forKeyPath:@"volume"];
 	
-	[setTrackPositionInvocation release];
-	[setTrackPositionMethodSignature release];
+	[incrementTrackPositionInvocation release];
+	[incrementTrackPositionMethodSignature release];
 	
 	[self.audioBuffer clear];
 	self.audioBuffer = nil;
     self.currentTrackContainer = nil;
 	self.playbackContext = nil;
-	[self.audioUnit stop];
-	self.audioUnit = nil;
+	[self teardownCoreAudio];
 	self.playbackSession = nil;
 	
 	// vDSP

@@ -50,16 +50,13 @@
  */
 -(NSUInteger)attemptAppendData:(const void *)data ofLength:(NSUInteger)dataLength;
 
-/** Read data out of the buffer.
- 
- @warning *Important:* If this method returns non-zero, you _must_ free() the given buffer to 
- not leak memory.
+/** Read data out of the buffer into a pre-allocated buffer.
  
  @param desiredLength The desired number of bytes to copy out.
- @param outBuffer A pointer to a buffer, which will be malloc()ed and filled with the read data. 
+ @param outBuffer A pointer to a buffer, which must be malloc'ed with at least `desiredLength` bytes. 
  @return Returns the amount of data copied into the given buffer, in bytes.
  */
--(NSUInteger)readDataOfLength:(NSUInteger)desiredLength intoBuffer:(void **)outBuffer;
+-(NSUInteger)readDataOfLength:(NSUInteger)desiredLength intoAllocatedBuffer:(void **)outBuffer;
 
 /** Returns the amount of data currently in the buffer, in bytes. */
 @property (readonly) NSUInteger length;

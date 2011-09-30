@@ -9,24 +9,26 @@
 #import <Foundation/Foundation.h>
 #import "VivaPlaybackContext.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
-#import "CoCA.h"
 #import "SPCircularBuffer.h"
 #import <Accelerate/Accelerate.h>
+#include <CoreAudio/CoreAudio.h>
+#import <AudioUnit/AudioUnit.h>
 
-@interface VivaPlaybackManager : NSObject <CoCAAudioUnitRenderDelegate, SPSessionPlaybackDelegate> {
+@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate> {
 @private
     id <VivaPlaybackContext> playbackContext;
 	id <VivaTrackContainer> currentTrackContainer;
-	CoCAAudioUnit *audioUnit;
 	NSTimeInterval currentTrackPosition;
 	SPSession *playbackSession;
 	SPCircularBuffer *audioBuffer;
 	double volume;
 	BOOL loopPlayback;
 	BOOL hasPreCachedNextTrack;
-	NSMethodSignature *setTrackPositionMethodSignature;
-	NSInvocation *setTrackPositionInvocation;
+	NSMethodSignature *incrementTrackPositionMethodSignature;
+	NSInvocation *incrementTrackPositionInvocation;
 	
+    AudioUnit outputAudioUnit;
+    
 	// vDSP
 	FFTSetupD fft_weights;
 	DSPDoubleSplitComplex input;
