@@ -41,7 +41,6 @@
         
 		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
 		if (![containerTracks isEqualToArray:self.albumBrowse.tracks]) {
-			NSLog(@"Containers not in sync with tracks - rebuilding.");
 			[self rebuildTrackContainers];
 		}
 		

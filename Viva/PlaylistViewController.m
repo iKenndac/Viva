@@ -54,7 +54,6 @@
         
 		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
 		if (![containerTracks isEqualToArray:self.playlist.tracks]) {
-			NSLog(@"Containers not in sync with tracks - rebuilding.");
 			[self rebuildTrackContainers];
 		}
 		
