@@ -50,10 +50,6 @@ static const double kMinimumMosaicBlockSize = 32.0;
 +(NSImage *)mosaicImageWithSPImages:(NSArray *)images aspect:(double)mosaicSideSize {
 	
 	double actualMosaicAspect = MAX(mosaicSideSize, kMinimumMosaicImageSize);
-	
-	NSImage *mosaicImage = [[NSImage alloc] initWithSize:NSMakeSize(actualMosaicAspect, actualMosaicAspect)];
-	[mosaicImage lockFocus];
-	
 	NSUInteger mosaicEdgeCount = floor(sqrt((double)[images count]));
 	
 	if ((actualMosaicAspect / mosaicEdgeCount) < kMinimumMosaicImageSize) {
@@ -65,6 +61,9 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	if (mosaicImageCount == 0 || mosaicImageCount > [images count]) {
 		return nil;
 	}
+    
+    NSImage *mosaicImage = [[NSImage alloc] initWithSize:NSMakeSize(actualMosaicAspect, actualMosaicAspect)];
+	[mosaicImage lockFocus];
 	
 	NSArray *imagesWeCanUse = [images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, mosaicImageCount)]];
 	

@@ -150,11 +150,6 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 			[self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrack] != 0);			
 }
 
--(float)logarithmicVolume {
-    float vol = self.volume;
-    return (vol * vol * vol);
-}
-
 #pragma mark -
 
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
@@ -348,6 +343,14 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		[self.audioBuffer clear];
 		return 0; // Audio discontinuity!
 	}
+    
+    if (outputAudioUnit == NULL) {
+        NSError *error = nil;
+        if (![self setupCoreAudioWithAudioFormat:audioFormat error:&error]) {
+            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+            return 0;
+        }
+    }
 	
 	NSUInteger frameByteSize = sizeof(sint16) * audioFormat->channels;
 	NSUInteger dataLength = frameCount * frameByteSize;
@@ -359,10 +362,6 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	}
 
 	[self.audioBuffer attemptAppendData:audioFrames ofLength:dataLength];
-
-	if (outputAudioUnit == NULL)
-		[self setupCoreAudioWithAudioFormat:audioFormat error:nil];
-	
 	return frameCount;
 }
 
@@ -407,6 +406,19 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     outputAudioUnit = NULL;
 }
 
+static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDescription, int code) {
+    
+    if (mayBeAnError == NULL)
+        return;
+    
+    *mayBeAnError = [NSError errorWithDomain:@"com.vivaplaybackmanager.coreaudio"
+                                        code:code
+                                    userInfo:localizedDescription ? [NSDictionary dictionaryWithObject:localizedDescription
+                                                                                                forKey:NSLocalizedDescriptionKey]
+                                            : nil];
+    
+}
+
 -(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err {
     
     if (outputAudioUnit != NULL)
@@ -423,8 +435,8 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     // Find a component that meets the description's specifications
     Component comp = FindNextComponent(NULL, &desc);
     
-    if (comp == NULL)	{
-        //RFATAL("Could not find a component that matches our specifications");
+    if (comp == NULL) {
+        fillWithError(err, @"Could not find a component that matches our specifications", -1);
         return NO;
     }
 
@@ -432,7 +444,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     // output device
     OSErr status = OpenAComponent(comp, &outputAudioUnit);
     if (status != noErr) {
-        //RFATAL("Couldn't find a device that matched our criteria (error code %d)", status);
+        fillWithError(err, @"Couldn't find a device that matched our criteria", status);
         return NO;
     }
     
@@ -448,25 +460,37 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     outputFormat.mBitsPerChannel = 16;
     outputFormat.mReserved = 0;
     
-    AudioUnitSetProperty(outputAudioUnit,
-                         kAudioUnitProperty_StreamFormat,
-                         kAudioUnitScope_Input,
-                         0,
-                         &outputFormat,
-                         sizeof(outputFormat));
+    status = AudioUnitSetProperty(outputAudioUnit,
+                                  kAudioUnitProperty_StreamFormat,
+                                  kAudioUnitScope_Input,
+                                  0,
+                                  &outputFormat,
+                                  sizeof(outputFormat));
+    if (status != noErr) {
+        fillWithError(err, @"Couldn't set output format", status);
+        return NO;
+    }
     
     AURenderCallbackStruct callback;
     callback.inputProc = VivaAudioUnitRenderDelegateCallback;
     callback.inputProcRefCon = self;
     
-    AudioUnitSetProperty(outputAudioUnit,
-                         kAudioUnitProperty_SetRenderCallback,
-                         kAudioUnitScope_Input,
-                         0,
-                         &callback,
-                         sizeof(callback));
+    status = AudioUnitSetProperty(outputAudioUnit,
+                                  kAudioUnitProperty_SetRenderCallback,
+                                  kAudioUnitScope_Input,
+                                  0,
+                                  &callback,
+                                  sizeof(callback));
+    if (status != noErr) {
+        fillWithError(err, @"Couldn't set render callback", status);
+        return NO;
+    }
     
-    AudioUnitInitialize(outputAudioUnit);
+    status = AudioUnitInitialize(outputAudioUnit);
+    if (status != noErr) {
+        fillWithError(err, @"Couldn't initialize audio unit", status);
+        return NO;
+    }
     
     [self startAudioUnit];
     [self applyVolumeToAudioUnit:self.volume];

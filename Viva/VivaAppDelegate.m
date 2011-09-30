@@ -111,8 +111,8 @@
 	int keyCode = (([event data1] & 0xFFFF0000) >> 16);
 	int keyFlags = ([event data1] & 0x0000FFFF);
 	int keyState = (((keyFlags & 0xFF00) >> 8)) == 0xA;
-	int keyRepeat = (keyFlags & 0x1);
-	keyRepeat = 0; // Seeking doesn't work properly yet!
+	//int keyRepeat = (keyFlags & 0x1);
+	int keyRepeat = 0; // Seeking doesn't work properly yet!
 	if (keyState == 1) {
 		switch (keyCode) {
 			case NX_KEYTYPE_PLAY:
