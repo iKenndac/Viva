@@ -36,7 +36,6 @@
     
 	// vDSP
 	FFTSetupD fft_weights;
-	DSPDoubleSplitComplex input;
 	double *leftChannelMagnitudes;
 	double *rightChannelMagnitudes;
 	

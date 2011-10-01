@@ -47,8 +47,7 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 
 //vDSP 
 
-- (void)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
-
+static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManager *manager, short *waveformArray, vDSP_Length sampleCount, double *leftDestination, double *rightDestination);
 @property (readwrite, retain) NSArray *leftLevels;
 @property (readwrite, retain) NSArray *rightLevels;
 
@@ -56,8 +55,7 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 
 #define kMaximumBytesInBuffer 44100 * 2 * 2 * 0.5 // 0.5 Second @ 44.1kHz, 16bit per channel, stereo
 
-static NSUInteger const fftWaveCount = 512;
-static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
+static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 @implementation VivaPlaybackManager
 
@@ -126,14 +124,13 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 													 name:kTrackShouldBePlayedNotification
 												   object:nil];
 
-		/* Setup weights (twiddle factors) */
-		fft_weights = vDSP_create_fftsetupD((int)sqrt(fftMagnitudeCount), kFFTRadix2);
+		/* Setup FFT weights (twiddle factors) */
+		fft_weights = vDSP_create_fftsetupD(fftMagnitudeExponent, kFFTRadix2);
 		
-		/* Allocate memory to store split-complex input and output data */
-		input.realp = (double *)malloc(fftWaveCount * sizeof(double));
-		input.imagp = (double *)malloc(fftWaveCount * sizeof(double));
-		leftChannelMagnitudes = (double *)malloc(fftMagnitudeCount * sizeof(double));
-		rightChannelMagnitudes = (double *)malloc(fftMagnitudeCount * sizeof(double));
+        leftChannelMagnitudes = (double *)malloc(exp2(fftMagnitudeExponent) * sizeof(double));
+        rightChannelMagnitudes = (double *)malloc(exp2(fftMagnitudeExponent) * sizeof(double));
+
+		
     }
     
     return self;
@@ -625,7 +622,8 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
     return YES;
 }
 
-static UInt32 framesSinceLastUpdate = 0;
+static UInt32 framesSinceLastTimeUpdate = 0;
+static UInt32 framesSinceLastFFTUpdate = 0;
 
 static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
                                                     AudioUnitRenderActionFlags *ioActionFlags,
@@ -647,16 +645,28 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
     
     buffer->mDataByteSize = (UInt32)[self->audioBuffer readDataOfLength:bytesRequired intoAllocatedBuffer:&buffer->mData];
     
-	framesSinceLastUpdate += inNumberFrames;
+	framesSinceLastTimeUpdate += inNumberFrames;
+    framesSinceLastFFTUpdate += inNumberFrames;
 	
-	if (framesSinceLastUpdate >= 8820) {
+	if (framesSinceLastTimeUpdate >= 8820) {
         // Update 5 times per second
-		[self->incrementTrackPositionInvocation setArgument:&framesSinceLastUpdate atIndex:2];
+		[self->incrementTrackPositionInvocation setArgument:&framesSinceLastTimeUpdate atIndex:2];
 		[self->incrementTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
                                                                  withObject:nil
                                                               waitUntilDone:NO];
-		framesSinceLastUpdate = 0;
+		framesSinceLastTimeUpdate = 0;
 	}
+    
+    if (framesSinceLastFFTUpdate >= 2205) {
+        short *frames = buffer->mData;
+        performAcceleratedFastFourierTransformWithWaveform(self, frames, inNumberFrames, self->leftChannelMagnitudes, self->rightChannelMagnitudes);
+        
+        [self performSelectorOnMainThread:@selector(updateLevels)
+                               withObject:nil
+                            waitUntilDone:NO];
+        
+		framesSinceLastFFTUpdate = 0;
+    }
     
     return noErr;
 }
@@ -665,29 +675,92 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
     self.currentTrackPosition = self.currentTrackPosition + (double)framesToAppend/44100.0;
 }
 
+-(void)updateLevels {
+    
+	NSMutableArray *leftArray = [[NSMutableArray alloc] initWithCapacity:exp2(fftMagnitudeExponent)];
+	NSMutableArray *rightArray = [[NSMutableArray alloc] initWithCapacity:exp2(fftMagnitudeExponent)];
+	
+	for (int currentLevel = 0; currentLevel < exp2(fftMagnitudeExponent); currentLevel++) {
+        
+        double left = leftChannelMagnitudes[currentLevel] / 10.0;
+        double right = rightChannelMagnitudes[currentLevel] / 10.0;
+        left = cbrt(MIN(1.0, MAX(0.0, left)));
+        right = cbrt(MIN(1.0, MAX(0.0, right)));
+        
+        [leftArray addObject:[NSNumber numberWithDouble:left]];
+        [rightArray addObject:[NSNumber numberWithDouble:right]];
+    }
+	
+	self.leftLevels = leftArray;
+    self.rightLevels = rightArray;
+	
+	[leftArray release];
+	[rightArray release];
+
+}
+
 #pragma mark -
 #pragma mark Fourier Transforms
 
-- (void)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
-{   
-	if (magnitudes == NULL || waveformArray == NULL)
+static double *leftInputRealBuffer = NULL;
+static double *leftInputImagBuffer = NULL;
+static double *rightInputRealBuffer = NULL;
+static double *rightInputImagBuffer = NULL;
+
+static vDSP_Length fftSetupForSampleCount = 0;
+
+static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManager *manager, short *frames, vDSP_Length frameCount, double *leftDestination, double *rightDestination) {
+	if (leftDestination == NULL || rightDestination == NULL || frames == NULL || frameCount == 0)
 		return;
-	
-    for (NSUInteger currentInputSampleIndex = 0; currentInputSampleIndex < fftWaveCount; currentInputSampleIndex++) {
-        input.realp[currentInputSampleIndex] = (double)waveformArray[currentInputSampleIndex];
-        input.imagp[currentInputSampleIndex] = 0.0f;
+
+    FFTSetupD fft_weights = manager->fft_weights;
+    
+    if (frameCount != fftSetupForSampleCount) {
+        /* Allocate memory to store split-complex input and output data */
+        
+        if (leftInputRealBuffer != NULL) free(leftInputRealBuffer);
+        if (leftInputImagBuffer != NULL) free(leftInputImagBuffer);
+        
+        leftInputRealBuffer = (double *)malloc(frameCount * sizeof(double));
+        leftInputImagBuffer = (double *)malloc(frameCount * sizeof(double));
+        
+        if (rightInputRealBuffer != NULL) free(rightInputRealBuffer);
+        if (rightInputImagBuffer != NULL) free(rightInputImagBuffer);
+        
+        rightInputRealBuffer = (double *)malloc(frameCount * sizeof(double));
+        rightInputImagBuffer = (double *)malloc(frameCount * sizeof(double));
+        
+        fftSetupForSampleCount = frameCount;
     }
-	
+    
+    memset(leftInputRealBuffer, 0, frameCount * sizeof(double));
+    memset(rightInputRealBuffer, 0, frameCount * sizeof(double));
+    memset(leftInputImagBuffer, 0, frameCount * sizeof(double));
+    memset(rightInputImagBuffer, 0, frameCount * sizeof(double));
+    
+    DSPDoubleSplitComplex leftInput = {leftInputRealBuffer, leftInputImagBuffer};
+    DSPDoubleSplitComplex rightInput = {rightInputRealBuffer, rightInputImagBuffer};
+    
+    // Left
+    for (int i = 0; i < frameCount; i++) {
+        leftInput.realp[i] = ((double)frames[i * 2]) / INT16_MAX;
+        rightInput.realp[i] = ((double)frames[(i * 2) + 1]) / INT16_MAX;
+    }
+    
     /* 1D in-place complex FFT */
-    vDSP_fft_zipD(fft_weights, &input, 1, (int)sqrt(fftMagnitudeCount), FFT_FORWARD);
-	
+    vDSP_fft_zipD(fft_weights, &leftInput, 1, fftMagnitudeExponent, FFT_FORWARD);
     // Get magnitudes
-    vDSP_zvmagsD(&input, 1, magnitudes, 1, fftMagnitudeCount);
+    vDSP_zvmagsD(&leftInput, 1, leftDestination, 1, exp2(fftMagnitudeExponent));
+    
+    /* 1D in-place complex FFT */
+    vDSP_fft_zipD(fft_weights, &rightInput, 1, fftMagnitudeExponent, FFT_FORWARD);
+    // Get magnitudes
+    vDSP_zvmagsD(&rightInput, 1, rightDestination, 1, exp2(fftMagnitudeExponent));   
 }
 
 #pragma mark -
 
-- (void)dealloc {
+-(void)dealloc {
 
     [self removeObserver:self forKeyPath:@"playbackSession.playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
@@ -713,8 +786,6 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 	
 	// vDSP
 	vDSP_destroy_fftsetupD(fft_weights);
-	free(input.realp);
-	free(input.imagp);
 	free(leftChannelMagnitudes);
 	free(rightChannelMagnitudes);
 	
