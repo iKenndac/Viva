@@ -24,6 +24,8 @@
 
 // Shuffle
 
+-(void)addTrackContainerToPastShuffleHistory:(id <VivaTrackContainer>)container;
+-(void)addTrackContainerToFutureShuffleHistory:(id <VivaTrackContainer>)container;
 -(void)resetShuffledPool;
 -(void)resetShuffleHistory;
 -(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext;
@@ -262,7 +264,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 	
     if (self.shufflePlayback && self.currentTrackContainer != nil)
-        [shufflePastHistory addObject:self.currentTrackContainer];
+        [self addTrackContainerToPastShuffleHistory:self.currentTrackContainer];
     
 	if (nextContainer != nil) {
 		[self playTrackContainerInCurrentContext:nextContainer];	
@@ -321,7 +323,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	id <VivaTrackContainer> previousContainer = [self previousTrackContainerInCurrentContext];
 	
     if (self.shufflePlayback && self.currentTrackContainer != nil)
-        [shuffleFutureHistory addObject:self.currentTrackContainer];
+        [self addTrackContainerToFutureShuffleHistory:self.currentTrackContainer];
     
 	if (previousContainer != nil) {
 		[self playTrackContainerInCurrentContext:previousContainer];	
@@ -335,6 +337,22 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 
 #pragma mark -
 #pragma mark Managing Shuffle
+
+-(void)addTrackContainerToPastShuffleHistory:(id <VivaTrackContainer>)container {
+    if (!container) return;
+    if (shufflePastHistory.count >= kShuffleHistoryLength)
+        [shufflePastHistory removeObjectAtIndex:0];
+    
+    [shufflePastHistory addObject:container];
+}
+
+-(void)addTrackContainerToFutureShuffleHistory:(id <VivaTrackContainer>)container {
+    if (!container) return;
+    if (shuffleFutureHistory.count >= kShuffleHistoryLength)
+        [shuffleFutureHistory removeObjectAtIndex:0];
+    
+    [shuffleFutureHistory addObject:container];
+}
 
 -(void)resetShuffledPool {
     [shuffledPool removeAllObjects];
