@@ -33,6 +33,20 @@
 	return self;
 }
 
+-(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer existingId:(NSString *)anId {
+	if ((self = [super init])) {
+		self.uniqueId = anId;
+		self.track = aTrack;
+		self.container = aContainer;
+	}
+	return self;
+}
+
+
+-(id)copyWithZone:(NSZone *)zone {
+    return [[[self class] alloc] initWithTrack:track inContainer:container existingId:uniqueId];
+}
+
 @synthesize track;
 @synthesize container;
 @synthesize uniqueId;

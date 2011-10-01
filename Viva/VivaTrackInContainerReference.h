@@ -10,7 +10,7 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "VivaPlaybackContext.h"
 
-@interface VivaTrackInContainerReference : NSObject <VivaTrackContainer> {
+@interface VivaTrackInContainerReference : NSObject <VivaTrackContainer, NSCopying> {
 @private
     NSString *uniqueId;
 	__weak SPTrack *track;
