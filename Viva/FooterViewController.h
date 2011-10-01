@@ -19,8 +19,6 @@
 	NSButton *playbackIsShuffledButton;
 	NSSlider *playbackProgressSlider;
     NSButton *playPauseButton;
-	
-	BOOL playbackIsShuffled;
     
     VivaPlaybackManager *playbackManager;
 }
@@ -46,7 +44,5 @@
 - (IBAction)nextTrackButtonWasClicked:(id)sender;
 
 @property (retain, readwrite) VivaPlaybackManager *playbackManager;
-
-@property (readwrite, nonatomic) BOOL playbackIsShuffled;
 
 @end

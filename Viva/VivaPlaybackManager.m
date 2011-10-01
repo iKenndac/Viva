@@ -8,7 +8,7 @@
 
 #import "VivaPlaybackManager.h"
 #import "Constants.h"
-#include <sys/time.h>
+#import "SPArrayExtensions.h"
 
 @interface VivaPlaybackManager  ()
 
@@ -21,6 +21,13 @@
 
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
+
+// Shuffle
+
+-(void)resetShuffledPool;
+-(void)resetShuffleHistory;
+-(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext;
+-(void)addTrackContainerToShufflePool:(id <VivaTrackContainer>)track;
 
 // Core Audio
 -(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err;
@@ -56,6 +63,10 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     self = [super init];
     if (self) {
         // Initialization code here.
+        
+        shuffledPool = [NSMutableArray new];
+        shufflePastHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
+        shuffleFutureHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
 		
 		SEL incrementTrackPositionSelector = @selector(incrementTrackPositionWithFrameCount:);
 		incrementTrackPositionMethodSignature = [[VivaPlaybackManager instanceMethodSignatureForSelector:incrementTrackPositionSelector] retain];
@@ -70,6 +81,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
         
         self.loopPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kLoopPlaybackDefaultsKey];
+        self.shufflePlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kShufflePlaybackDefaultsKey];
         		
         [self addObserver:self
                forKeyPath:@"playbackSession.playing"
@@ -100,7 +112,12 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
                forKeyPath:@"loopPlayback"
                   options:0
                   context:nil];
-		
+
+        [self addObserver:self
+               forKeyPath:@"shufflePlayback"
+                  options:0
+                  context:nil];
+
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playTrackFromUserAction:)
@@ -127,6 +144,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 @synthesize currentTrackPosition;
 @synthesize volume;
 @synthesize loopPlayback;
+@synthesize shufflePlayback;
 
 @synthesize leftLevels;
 @synthesize rightLevels;
@@ -158,6 +176,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 }
 
 #pragma mark -
+#pragma mark Playback Control
 
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
 	
@@ -165,6 +184,7 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	[self.playbackSession setPlaying:NO];
 	[self.playbackSession unloadPlayback];
 	[self teardownCoreAudio];
+	[self resetShuffledPool];
 	
 	[self.audioBuffer clear];
 	
@@ -173,7 +193,8 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	if ([[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
 		self.playbackContext = [aNotification object];
 	}
-	
+    if (self.shufflePlayback)
+        [self addTrackContainerToShufflePool:container];
 	[self playTrackContainerInCurrentContext:container];
 	self.playbackSession.playing = YES;
 }
@@ -183,6 +204,8 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
 	self.currentTrackContainer = newTrack;
 	self.currentTrackPosition = 0.0;
+    if (self.shufflePlayback)
+        [self addTrackContainerToShufflePool:currentTrackContainer];
 	[self.playbackSession playTrack:self.currentTrackContainer.track error:nil];
 }
 	
@@ -194,6 +217,23 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 }
 
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext {
+    
+    if (self.shufflePlayback) {
+        id <VivaTrackContainer> track = nil;
+        
+        if (shuffleFutureHistory.count > 0) {
+            track = [shuffleFutureHistory lastObject];
+            [shuffleFutureHistory removeLastObject];
+        } else {
+            track = [self randomAvailableTrackContainerInCurrentContext];
+        }
+        
+        if (track == nil && self.loopPlayback) {
+            [self resetShuffledPool];
+            track = [self randomAvailableTrackContainerInCurrentContext];
+        }
+        return track;
+    }
 	
 	NSUInteger currentTrackIndex = [self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrackContainer];
 	
@@ -221,6 +261,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	
 	id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 	
+    if (self.shufflePlayback && self.currentTrackContainer != nil)
+        [shufflePastHistory addObject:self.currentTrackContainer];
+    
 	if (nextContainer != nil) {
 		[self playTrackContainerInCurrentContext:nextContainer];	
 		self.playbackSession.playing = wasPlaying;
@@ -233,6 +276,24 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext {
 	
+    if (self.shufflePlayback) {
+        id <VivaTrackContainer> track = nil;
+        
+        if (shufflePastHistory.count > 0) {
+            track = [shufflePastHistory lastObject];
+            [shufflePastHistory removeLastObject];
+        } else {
+            track = [self randomAvailableTrackContainerInCurrentContext];
+        }
+        
+        if (track == nil && self.loopPlayback) {
+            [self resetShuffledPool];
+            track = [self randomAvailableTrackContainerInCurrentContext];
+        }
+        return track;
+    }
+
+    
 	NSUInteger currentTrackIndex = [self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrackContainer];
 	
 	if (currentTrackIndex == NSNotFound ||
@@ -259,6 +320,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 	
 	id <VivaTrackContainer> previousContainer = [self previousTrackContainerInCurrentContext];
 	
+    if (self.shufflePlayback && self.currentTrackContainer != nil)
+        [shuffleFutureHistory addObject:self.currentTrackContainer];
+    
 	if (previousContainer != nil) {
 		[self playTrackContainerInCurrentContext:previousContainer];	
 		self.playbackSession.playing = wasPlaying;
@@ -267,6 +331,33 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		[self teardownCoreAudio];
 		self.currentTrackPosition = 0;
 	}
+}
+
+#pragma mark -
+#pragma mark Managing Shuffle
+
+-(void)resetShuffledPool {
+    [shuffledPool removeAllObjects];
+}
+
+-(void)resetShuffleHistory {
+    [shuffleFutureHistory removeAllObjects];
+    [shufflePastHistory removeAllObjects];
+}
+
+-(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext {
+    
+    NSMutableArray *tracks = [[[[self playbackContext] trackContainersForPlayback] mutableCopy] autorelease];;
+    [tracks removeObjectsInArray:shuffledPool];
+    
+    id <VivaTrackContainer> track = [tracks randomObject];
+    [self addTrackContainerToShufflePool:track];
+    return track;
+}
+
+-(void)addTrackContainerToShufflePool:(id <VivaTrackContainer>)track {
+    if (!track) return;
+    [shuffledPool addObject:track];
 }
 
 #pragma mark -
@@ -339,6 +430,14 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
         
     } else if ([keyPath isEqualToString:@"loopPlayback"]) {
         [[NSUserDefaults standardUserDefaults] setBool:self.loopPlayback forKey:kLoopPlaybackDefaultsKey];
+        
+    } else if ([keyPath isEqualToString:@"shufflePlayback"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:self.shufflePlayback forKey:kShufflePlaybackDefaultsKey];
+        [self resetShuffledPool];
+        if (self.shufflePlayback)
+            [self addTrackContainerToShufflePool:self.currentTrackContainer];
+        else
+            [self resetShuffleHistory];
             
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -548,6 +647,8 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
     self.currentTrackPosition = self.currentTrackPosition + (double)framesToAppend/44100.0;
 }
 
+#pragma mark -
+#pragma mark Fourier Transforms
 
 - (void)performAcceleratedFastFourierTransformWithWaveform:(float *)waveformArray intoStore:(double *)magnitudes;
 {   
@@ -576,10 +677,15 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 	[self removeObserver:self forKeyPath:@"playbackContext"];
     [self removeObserver:self forKeyPath:@"volume"];
     [self removeObserver:self forKeyPath:@"loopPlayback"];
+    [self removeObserver:self forKeyPath:@"shufflePlayback"];
 	
 	[incrementTrackPositionInvocation release];
 	[incrementTrackPositionMethodSignature release];
 	
+    [shuffledPool release];
+    [shufflePastHistory release];
+    [shuffleFutureHistory release];
+    
 	[self.audioBuffer clear];
 	self.audioBuffer = nil;
     self.currentTrackContainer = nil;

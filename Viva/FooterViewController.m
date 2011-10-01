@@ -31,7 +31,7 @@
 				  context:nil];
 	
 		[self addObserver:self 
-			   forKeyPath:@"playbackIsShuffled"
+			   forKeyPath:@"playbackManager.shufflePlayback"
 				  options:NSKeyValueObservingOptionInitial
 				  context:nil];
 		
@@ -66,9 +66,9 @@
 			[playbackIsRepeatingButton setImage:[NSImage imageNamed:@"repeat-off"]];
 			[playbackIsRepeatingButton setAlternateImage:[NSImage imageNamed:@"repeat-off-pushed"]];
 		}
-	} else if ([keyPath isEqualToString:@"playbackIsShuffled"]) {
+	} else if ([keyPath isEqualToString:@"playbackManager.shufflePlayback"]) {
         
-		if (self.playbackIsShuffled) {
+		if (self.playbackManager.shufflePlayback) {
 			
 			[playbackIsShuffledButton setImage:[NSImage imageNamed:@"shuffle-on"]];
 			[playbackIsShuffledButton setAlternateImage:[NSImage imageNamed:@"shuffle-on-pushed"]];
@@ -119,7 +119,6 @@
 @synthesize playbackControlsView;
 
 @synthesize playbackManager;
-@synthesize playbackIsShuffled;
 
 +(NSSet *)keyPathsForValuesAffectingCurrentTrackPositionDisplayString {
 	return [NSSet setWithObjects:@"playbackManager.currentTrack", @"playbackManager.currentTrackPosition", nil];
@@ -164,7 +163,7 @@
 }
 
 - (IBAction)shuffleButtonWasClicked:(id)sender {
-	self.playbackIsShuffled = !self.playbackIsShuffled;
+	self.playbackManager.shufflePlayback = !self.playbackManager.shufflePlayback;
 }
 
 - (IBAction)positionSliderWasDragged:(id)sender {
@@ -172,7 +171,11 @@
 }
 
 - (IBAction)playPauseButtonWasClicked:(id)sender {
-    self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
+    if (self.playbackManager.currentTrack == nil) {
+        
+    } else {
+        self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
+    }
 }
 
 - (IBAction)previousTrackButtonWasClicked:(id)sender {
@@ -252,7 +255,7 @@
     [self removeObserver:self forKeyPath:@"playbackManager.currentTrack.starred"];
     [self removeObserver:self forKeyPath:@"playbackManager.playbackSession.playing"];
 	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackPosition"];
-	[self removeObserver:self forKeyPath:@"playbackIsShuffled"];
+	[self removeObserver:self forKeyPath:@"playbackManager.shufflePlayback"];
 	[self removeObserver:self forKeyPath:@"playbackManager.loopPlayback"];
 	
     [super dealloc];

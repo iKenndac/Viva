@@ -23,10 +23,15 @@
 	SPCircularBuffer *audioBuffer;
 	double volume;
 	BOOL loopPlayback;
+    BOOL shufflePlayback;
 	BOOL hasPreCachedNextTrack;
 	NSMethodSignature *incrementTrackPositionMethodSignature;
 	NSInvocation *incrementTrackPositionInvocation;
 	
+    NSMutableArray *shuffledPool;
+    NSMutableArray *shufflePastHistory;
+    NSMutableArray *shuffleFutureHistory;
+    
     AudioUnit outputAudioUnit;
     
 	// vDSP
@@ -48,6 +53,7 @@
 @property (readonly, retain) SPSession *playbackSession;
 @property (readwrite) double volume;
 @property (readwrite) BOOL loopPlayback;
+@property (readwrite) BOOL shufflePlayback;
 
 @property (readonly) BOOL canSkipToNextTrack;
 @property (readonly) BOOL canSkipToPreviousTrack;

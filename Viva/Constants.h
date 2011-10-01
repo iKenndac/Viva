@@ -10,6 +10,8 @@
 
 // ------ Playback ------
 
+static NSUInteger const kShuffleHistoryLength = 1000;
+// ^ The number of tracks to keep in shuffle history.
 static NSTimeInterval const kSkipBackThreshold = 3.0;
 // ^ If the "skip back" button is clicked after the track has been playing for this long, 
 // the track will be restarted.
@@ -19,6 +21,7 @@ static NSTimeInterval const kSeekABitInterval = 1.0;
 static double const kVolumeStepSize = 0.1;
 static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKeyUsingBundleIdentifiersDefaultsKey";
 static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
+static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
 
 // ------ Search ------
 

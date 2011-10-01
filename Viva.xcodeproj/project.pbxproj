@@ -104,6 +104,7 @@
 		50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */; };
 		50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */; };
 		50B72AD6143768E90082E027 /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD5143768E90082E027 /* InboxViewController.m */; };
+		50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD91437742F0082E027 /* SPArrayExtensions.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
 		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
 		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
@@ -317,6 +318,8 @@
 		50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPLinkableItemTableCellView.xib; sourceTree = "<group>"; };
 		50B72AD4143768E90082E027 /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
 		50B72AD5143768E90082E027 /* InboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxViewController.m; sourceTree = "<group>"; };
+		50B72AD81437742F0082E027 /* SPArrayExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPArrayExtensions.h; path = "Viva/Open Source/SPArrayExtensions.h"; sourceTree = SOURCE_ROOT; };
+		50B72AD91437742F0082E027 /* SPArrayExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPArrayExtensions.m; path = "Viva/Open Source/SPArrayExtensions.m"; sourceTree = SOURCE_ROOT; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
 		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
 		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
@@ -527,6 +530,7 @@
 				503D62EB13257D92007772CA /* VivaAppDelegate.m */,
 				503D630413257F28007772CA /* MainMenu.xib */,
 				503D62DF13257D92007772CA /* Supporting Files */,
+				50B72AD71437741E0082E027 /* Open Source */,
 				5004701113563AD4000EA08A /* Closed Source */,
 			);
 			path = Viva;
@@ -772,6 +776,16 @@
 				50B72AD5143768E90082E027 /* InboxViewController.m */,
 			);
 			name = "Inbox View";
+			sourceTree = "<group>";
+		};
+		50B72AD71437741E0082E027 /* Open Source */ = {
+			isa = PBXGroup;
+			children = (
+				50B72AD81437742F0082E027 /* SPArrayExtensions.h */,
+				50B72AD91437742F0082E027 /* SPArrayExtensions.m */,
+			);
+			name = "Open Source";
+			path = "Closed Source";
 			sourceTree = "<group>";
 		};
 		50C56A3D133944480072A754 /* Categories */ = {
@@ -1161,6 +1175,7 @@
 				501ACA6714367F30000BB8EF /* viva_appkey.c in Sources */,
 				50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */,
 				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
+				50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
