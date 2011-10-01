@@ -53,23 +53,26 @@ static NSImage *pressedKnobImage;
 						 1.0,
 						 [controlView isFlipped]);
 	
-	NSRect knobRect = [self knobRectFlipped:[controlView isFlipped]];
-	
-	if (NSMinX(knobRect) > 0.0) {
-		NSRect filledBarFrame = barFrame;
-		filledBarFrame.size.width = NSMaxX(knobRect);
-		
-		NSDrawThreePartImage(filledBarFrame,
-							 filledTrackImageLeft,
-							 filledTrackImageMiddle, 
-							 filledTrackImageRight,
-							 NO,
-							 NSCompositeSourceOver,
-							 1.0,
-							 [controlView isFlipped]);
-	}
-	
-	[self drawKnob:knobRect];
+    if (self.isEnabled) {
+        
+        NSRect knobRect = [self knobRectFlipped:[controlView isFlipped]];
+        
+        if (NSMinX(knobRect) > 0.0) {
+            NSRect filledBarFrame = barFrame;
+            filledBarFrame.size.width = NSMaxX(knobRect);
+            
+            NSDrawThreePartImage(filledBarFrame,
+                                 filledTrackImageLeft,
+                                 filledTrackImageMiddle, 
+                                 filledTrackImageRight,
+                                 NO,
+                                 NSCompositeSourceOver,
+                                 1.0,
+                                 [controlView isFlipped]);
+        }
+        
+        [self drawKnob:knobRect];
+    }
 		
 	[[self controlView] setNeedsDisplayInRect:cellFrame];
 }
