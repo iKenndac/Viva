@@ -103,6 +103,7 @@
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
 		50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */; };
 		50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */; };
+		50B72AD6143768E90082E027 /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD5143768E90082E027 /* InboxViewController.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
 		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
 		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
@@ -314,6 +315,8 @@
 		50B4AA0914372D42007EE67F /* SPLinkableItemTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLinkableItemTableCellView.h; sourceTree = "<group>"; };
 		50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLinkableItemTableCellView.m; sourceTree = "<group>"; };
 		50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPLinkableItemTableCellView.xib; sourceTree = "<group>"; };
+		50B72AD4143768E90082E027 /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
+		50B72AD5143768E90082E027 /* InboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxViewController.m; sourceTree = "<group>"; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
 		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
 		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
@@ -419,6 +422,7 @@
 				500B86A613616A05005FC734 /* Generic Sortable Track List */,
 				50C7B3DC132E39700055EDE0 /* Playlist View */,
 				50CCCD4E13DF1BC100DDB85C /* Starred View */,
+				50B72AD3143768B60082E027 /* Inbox View */,
 				500B86AD1361704C005FC734 /* Search View */,
 				5099D8A31364B0D0005C7CDC /* Album View */,
 				5099D8BD1364BFAB005C7CDC /* Artist View */,
@@ -759,6 +763,15 @@
 				509AAEEA133916190009B6EE /* FooterViewController.xib */,
 			);
 			name = "Playback UI";
+			sourceTree = "<group>";
+		};
+		50B72AD3143768B60082E027 /* Inbox View */ = {
+			isa = PBXGroup;
+			children = (
+				50B72AD4143768E90082E027 /* InboxViewController.h */,
+				50B72AD5143768E90082E027 /* InboxViewController.m */,
+			);
+			name = "Inbox View";
 			sourceTree = "<group>";
 		};
 		50C56A3D133944480072A754 /* Categories */ = {
@@ -1147,6 +1160,7 @@
 				50881239140264E30094E748 /* VisualiserWindowController.m in Sources */,
 				501ACA6714367F30000BB8EF /* viva_appkey.c in Sources */,
 				50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */,
+				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

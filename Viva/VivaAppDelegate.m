@@ -15,6 +15,7 @@
 #import "AlbumViewController.h"
 #import "ArtistViewController.h"
 #import "StarredViewController.h"
+#import "InboxViewController.h"
 
 @interface VivaAppDelegate()
 
@@ -45,6 +46,7 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[AlbumViewController class] forURLScheme:@"spotify:album"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
+	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[InboxViewController class] forURLScheme:@"spotify:internal:inbox"];
 
     #import "viva_appkey.c"
     
