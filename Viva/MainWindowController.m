@@ -111,8 +111,10 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
    
 	if (context == kVivaWindowControllerLiveSearchObservationContext) {
-		if (!self.liveSearch.latestSearch.searchInProgress && !self.searchPopover.isShown) {
+		if (!self.liveSearch.latestSearch.searchInProgress && !self.searchPopover.isShown && self.searchField.stringValue.length > 0) {
 			
+            self.searchPopover = [[[NSPopover alloc] init] autorelease];
+            
 			NSText *editor = [self.window fieldEditor:YES forObject:self.searchField];
 			NSRange selection = editor.selectedRange;
 			
@@ -228,6 +230,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	
 	if ([searchQuery length] > 0) {
 		[self.searchPopover close];
+        self.searchPopover = nil;
 		NSURL *queryURL = [NSURL URLWithString:[NSString stringWithFormat:@"spotify:search:%@", [NSURL urlEncodedStringForString:searchQuery]]];
 		self.navigationController.thePresent = queryURL;
 	}
@@ -301,6 +304,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	
 	if (self.searchField.stringValue.length == 0 && self.searchPopover.isShown) {
 		[self.searchPopover close];
+        self.searchPopover = nil;
 		self.liveSearch = nil;
 	}
 	

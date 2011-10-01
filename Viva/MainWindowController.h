@@ -43,7 +43,7 @@
 @property (nonatomic, retain, readonly) FooterViewController *footerViewController;
 @property (nonatomic, retain, readonly) VivaURLNavigationController *navigationController;
 @property (assign) IBOutlet NSOutlineView *sourceList;
-@property (assign) IBOutlet NSPopover *searchPopover;
+@property (retain) IBOutlet NSPopover *searchPopover;
 @property (assign) IBOutlet NSSearchField *searchField;
 
 @property (assign) IBOutlet NSWindow *urlSheet;

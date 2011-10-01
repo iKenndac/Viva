@@ -36,7 +36,6 @@
 			<string>NSToolbar</string>
 			<string>NSScrollView</string>
 			<string>NSUserDefaultsController</string>
-			<string>NSPopover</string>
 			<string>NSScroller</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -650,7 +649,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="181784379">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -780,7 +779,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{390, 133}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="902544334"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -789,17 +787,6 @@
 			</object>
 			<object class="NSUserDefaultsController" id="1000235793">
 				<bool key="NSSharedInstance">YES</bool>
-			</object>
-			<object class="NSPopover" id="524425240">
-				<nil key="NSNextResponder"/>
-				<object class="NSViewController" key="NSContentViewController">
-					<string key="NSNibName">LiveSearchViewController</string>
-				</object>
-				<int key="NSAppearance">0</int>
-				<int key="NSBehavior">2</int>
-				<double key="NSContentWidth">0.0</double>
-				<double key="NSContentHeight">0.0</double>
-				<bool key="NSAnimates">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="484889497">
 				<string key="NSClassName">MainWindowSidebarController</string>
@@ -911,14 +898,6 @@
 						<reference key="destination" ref="620779527"/>
 					</object>
 					<int key="connectionID">803</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">searchPopover</string>
-						<reference key="source" ref="1021"/>
-						<reference key="destination" ref="524425240"/>
-					</object>
-					<int key="connectionID">809</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1039,14 +1018,6 @@
 						</object>
 					</object>
 					<int key="connectionID">797</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="524425240"/>
-						<reference key="destination" ref="1021"/>
-					</object>
-					<int key="connectionID">846</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1945,12 +1916,6 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">807</int>
-						<reference key="object" ref="524425240"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Popover</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">847</int>
 						<reference key="object" ref="484889497"/>
 						<reference key="parent" ref="0"/>
@@ -2574,7 +2539,6 @@
 					<string>776.IBPluginDependency</string>
 					<string>777.IBPluginDependency</string>
 					<string>804.IBPluginDependency</string>
-					<string>807.IBPluginDependency</string>
 					<string>847.IBPluginDependency</string>
 					<string>856.IBNSViewMetadataConstraints</string>
 					<string>856.IBPluginDependency</string>
@@ -2750,7 +2714,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>SPAccountButtonCell</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

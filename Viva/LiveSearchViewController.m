@@ -74,7 +74,7 @@
 
 	if ([result valueForKey:@"url"]) {
         ((VivaURLNavigationController *)[(MainWindowController *)self.view.window.parentWindow.windowController navigationController]).thePresent = [result valueForKey:@"url"];
-        [self.view.window close];
+        [self.popover performClose:nil];
     }
 }
 
