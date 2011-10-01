@@ -68,7 +68,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
 		self.playbackSession.playbackDelegate = self;
         
 		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
-		
+        
+        self.loopPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kLoopPlaybackDefaultsKey];
+        		
         [self addObserver:self
                forKeyPath:@"playbackSession.playing"
                   options:0
@@ -91,6 +93,11 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
         
         [self addObserver:self
                forKeyPath:@"volume"
+                  options:0
+                  context:nil];
+        
+        [self addObserver:self
+               forKeyPath:@"loopPlayback"
                   options:0
                   context:nil];
 		
@@ -330,6 +337,9 @@ static NSUInteger const fftMagnitudeCount = 16; // Must be power of two
     } else if ([keyPath isEqualToString:@"volume"]) {
         [self applyVolumeToAudioUnit:self.volume];
         
+    } else if ([keyPath isEqualToString:@"loopPlayback"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:self.loopPlayback forKey:kLoopPlaybackDefaultsKey];
+            
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -565,6 +575,7 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];
     [self removeObserver:self forKeyPath:@"volume"];
+    [self removeObserver:self forKeyPath:@"loopPlayback"];
 	
 	[incrementTrackPositionInvocation release];
 	[incrementTrackPositionMethodSignature release];

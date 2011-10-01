@@ -18,6 +18,7 @@ static NSTimeInterval const kNextTrackCacheThreshold = 5.0;
 static NSTimeInterval const kSeekABitInterval = 1.0;
 static double const kVolumeStepSize = 0.1;
 static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKeyUsingBundleIdentifiersDefaultsKey";
+static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
 
 // ------ Search ------
 
