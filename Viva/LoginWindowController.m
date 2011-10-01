@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 #import "VivaAppDelegate.h"
 #import "Constants.h"
-#import "EMKeychainItem.h"
 
 @interface LoginWindowController(ImTotallyAnNSViewIPromise)
 -(float)roundedCornerRadius;
@@ -58,19 +57,13 @@
 	
 	[self.window center];
 	
-	NSString *userName = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastUserNameUserDefaultsKey];
-	EMKeychainItem *keychainItem = [EMGenericKeychainItem genericKeychainItemForService:kVivaKeychainServiceName
-																		   withUsername:userName];
-	NSString *password = keychainItem.password;
-	
+	NSString *userName = [[SPSession sharedSession] storedCredentialsUserName];
+    
 	if ([userName length] > 0)
 		[userNameField setStringValue:userName];
 	
-	if ([password length] > 0)
-		[passwordField setStringValue:password];
-	
-	if ([userName length] > 0 && [password length] > 0) {
-		[self performSelector:@selector(attemptLogin:)
+	if ([userName length] > 0) {
+		[self performSelector:@selector(attemptAutoLogin)
 				   withObject:nil
 				   afterDelay:0.0];
 	}
@@ -110,29 +103,18 @@
 		NSBeep();
 		return;
 	}
-	
-	if ([rememberMeCheckbox state] == NSOnState) {
-		
-		EMGenericKeychainItem *existingItem = [EMGenericKeychainItem genericKeychainItemForService:kVivaKeychainServiceName
-																					  withUsername:[userNameField stringValue]];
-		
-		if (existingItem) {
-			[existingItem setPassword:[passwordField stringValue]];
-		} else {
-			[EMGenericKeychainItem addGenericKeychainItemForService:kVivaKeychainServiceName
-													   withUsername:[userNameField stringValue]
-														   password:[passwordField stringValue]];
-		}
-		
-		[[NSUserDefaults standardUserDefaults] setValue:[userNameField stringValue]
-												 forKey:kVivaLastUserNameUserDefaultsKey];
-	}
-	
+    
 	[[SPSession sharedSession] attemptLoginWithUserName:[userNameField stringValue]
 											   password:[passwordField stringValue]
-									rememberCredentials:NO];
+									rememberCredentials:([rememberMeCheckbox state] == NSOnState)];
 	
 	self.isLoggingIn = YES;
+}
+
+-(void)attemptAutoLogin {
+    NSError *err = nil;
+    if ([[SPSession sharedSession] attemptLoginWithStoredCredentials:&err])
+        self.isLoggingIn = YES;
 }
 
 -(void)reset {
