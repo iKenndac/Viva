@@ -9,6 +9,8 @@
 #import "LiveSearchViewController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "LiveSearch.h"
+#import "VivaURLNavigationController.h"
+#import "MainWindowController.h"
 
 @implementation LiveSearchViewController
 @synthesize tableView;
@@ -27,6 +29,8 @@
 
 -(void)awakeFromNib {
 	self.gutterView.backgroundImage = [NSImage imageNamed:@"livesearch-gutter"];
+    [self.tableView setTarget:self];
+    [self.tableView setAction:@selector(insertNewline:)]; 
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -52,6 +56,30 @@
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
+
+-(void)keyDown:(NSEvent *)theEvent {
+	
+	if ([[theEvent characters] isEqualToString:@" "]) {
+		[[[NSApp delegate] session] setPlaying:![[[NSApp delegate] session] isPlaying]];
+	} else {
+		[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	}
+}
+
+-(void)insertNewline:(id)sender {
+	
+    NSDictionary *result = [self tableView:self.tableView 
+                 objectValueForTableColumn:[self.tableView.tableColumns objectAtIndex:[self.tableView columnWithIdentifier:@"DataColumn"]] 
+                                       row:self.tableView.selectedRow];
+
+	if ([result valueForKey:@"url"]) {
+        ((VivaURLNavigationController *)[(MainWindowController *)self.view.window.parentWindow.windowController navigationController]).thePresent = [result valueForKey:@"url"];
+        [self.view.window close];
+    }
+}
+
+
+#pragma mark -
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
 	
@@ -138,14 +166,18 @@
 			[objectValue setValue:((SPAlbum *)search.topHit).cover forKey:@"cover"];
 			[objectValue setValue:((SPAlbum *)search.topHit).name forKey:@"name"];
 		} 
+        
+        [objectValue setValue:[search.topHit spotifyURL] forKey:@"url"];
 		
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows) {
 		
 		if (search.topTracks.count == 0) {
 			[objectValue setValue:@"No Matches" forKey:@"name"];
 		} else {
-			[objectValue setValue:((SPTrack *)[search.topTracks objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier]).album.cover forKey:@"cover"];
-			[objectValue setValue:((SPTrack *)[search.topTracks objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier]).name forKey:@"name"];
+            SPTrack *track = [search.topTracks objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier];
+			[objectValue setValue:track.album.cover forKey:@"cover"];
+			[objectValue setValue:track.name forKey:@"name"];
+            [objectValue setValue:track.spotifyURL forKey:@"url"];
 		}
 		
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + 1 && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + 1) {
@@ -153,20 +185,25 @@
 		if (search.topArtists.count == 0) {
 			[objectValue setValue:@"No Matches" forKey:@"name"];
 		} else {
+            SPArtist *artist = [search.topArtists objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - 1];
 			[objectValue setValue:[NSImage imageNamed:@"NSUser"] forKey:@"cover.image"];
-			[objectValue setValue:((SPArtist *)[search.topArtists objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - 1]).name forKey:@"name"];
+			[objectValue setValue:artist.name forKey:@"name"];
+            [objectValue setValue:artist.spotifyURL forKey:@"url"];
 		}
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + 2 && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + numberOfAlbumRows + 2) {
 		
 		if (search.topAlbums.count == 0) {
 			[objectValue setValue:@"No Matches" forKey:@"name"];
 		} else {
-			[objectValue setValue:((SPAlbum *)[search.topAlbums objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - numberOfArtistRows - 2]).cover forKey:@"cover"];
-			[objectValue setValue:((SPAlbum *)[search.topAlbums objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - numberOfArtistRows - 2]).name forKey:@"name"];
+            SPAlbum *album = [search.topAlbums objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - numberOfArtistRows - 2];
+			[objectValue setValue:album.cover forKey:@"cover"];
+			[objectValue setValue:album.name forKey:@"name"];
+            [objectValue setValue:album.spotifyURL forKey:@"url"];
 		}
 	} else {
 		[objectValue setValue:@"Show All…" forKey:@"name"];
 		[objectValue setValue:[NSImage imageNamed:@"livesearch-showAll"] forKey:@"cover.image"];
+        [objectValue setValue:search.latestSearch.spotifyURL forKey:@"url"];
 	}
 	
 	return objectValue;
