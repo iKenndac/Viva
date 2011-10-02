@@ -85,6 +85,7 @@ extern char ***_NSGetArgv(void);
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
 	self.playbackManager = [[[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]] autorelease];
+    self.playbackManager.dataSource = mainWindowController;
 	
 	if ([SPMediaKeyTap usesGlobalMediaKeyTap]) {
 		self.mediaKeyHandler = [[[SPMediaKeyTap alloc] initWithDelegate:self] autorelease];
@@ -187,9 +188,14 @@ extern char ***_NSGetArgv(void);
 }
 
 -(IBAction)performPlayPauseAction:(id)sender {
-	if (self.playbackManager.currentTrack != nil) {
-		self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
-	}
+	if (self.playbackManager.currentTrack == nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
+                                                            object:nil
+                                                          userInfo:nil];
+        
+    } else {
+        self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
+    }
 }
 
 -(IBAction)performVolumeUpAction:(id)sender {

@@ -298,6 +298,24 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 }
 
 #pragma mark -
+#pragma mark Playback
+
+-(BOOL)playbackManager:(VivaPlaybackManager *)manager requiresContextForContextlessPlayRequest:(id <VivaPlaybackContext> *)context {
+
+    if (context == NULL)
+        return NO;
+    
+    NSURL *url = self.navigationController.thePresent;
+    id controller = [[VivaInternalURLManager sharedInstance] viewControllerForURL:url];
+    
+    if (![controller conformsToProtocol:@protocol(VivaPlaybackContext)])
+        return NO;
+
+    *context = controller;
+    return YES;
+}
+
+#pragma mark -
 #pragma mark Live Search
 
 -(void)controlTextDidChange:(NSNotification *)obj {

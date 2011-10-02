@@ -11,8 +11,16 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "SPCircularBuffer.h"
 #import <Accelerate/Accelerate.h>
-#include <CoreAudio/CoreAudio.h>
+#import <CoreAudio/CoreAudio.h>
 #import <AudioUnit/AudioUnit.h>
+
+@class VivaPlaybackManager;
+
+@protocol VivaPlaybackManagerDataSource <NSObject>
+
+-(BOOL)playbackManager:(VivaPlaybackManager *)manager requiresContextForContextlessPlayRequest:(id <VivaPlaybackContext> *)context;
+
+@end
 
 @interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate> {
 @private
@@ -33,6 +41,8 @@
     NSMutableArray *shuffleFutureHistory;
     
     AudioUnit outputAudioUnit;
+    
+    __weak id <VivaPlaybackManagerDataSource> dataSource;
     
 	// vDSP
 	FFTSetupD fft_weights;
@@ -56,6 +66,8 @@
 
 @property (readonly) BOOL canSkipToNextTrack;
 @property (readonly) BOOL canSkipToPreviousTrack;
+
+@property (readwrite, assign) __weak id <VivaPlaybackManagerDataSource> dataSource;
 
 @property (readonly, retain) NSArray *leftLevels;
 @property (readonly, retain) NSArray *rightLevels;

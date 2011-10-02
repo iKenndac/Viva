@@ -13,7 +13,7 @@
 #import "MainWindowSidebarController.h"
 #import "SPBackgroundColorView.h"
 
-@interface MainWindowController : NSWindowController <NSSplitViewDelegate, NSPopoverDelegate, NSTextFieldDelegate> {
+@interface MainWindowController : NSWindowController <NSSplitViewDelegate, VivaPlaybackManagerDataSource, NSPopoverDelegate, NSTextFieldDelegate> {
 @private
     
 	NSView *footerViewContainer;

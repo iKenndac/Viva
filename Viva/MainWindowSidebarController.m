@@ -8,6 +8,9 @@
 
 #import "MainWindowSidebarController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "VivaInternalURLManager.h"
+#import "VivaPlaybackContext.h"
+#import "Constants.h"
 
 @interface MainWindowSidebarController ()
 
@@ -40,6 +43,11 @@
 			   forKeyPath:@"selectedURL"
 				  options:0
 				  context:nil];
+        
+        [self addObserver:self
+			   forKeyPath:@"sidebar"
+				  options:0
+				  context:nil];
     }
     
     return self;
@@ -48,6 +56,21 @@
 @synthesize groups;
 @synthesize sidebar;
 @synthesize selectedURL;
+
+-(void)outlineViewItemDoubleClicked:(id)sender {
+    
+    id item = [self unifiedDictionaryForItem:[self.sidebar itemAtRow:self.sidebar.clickedRow]];
+    NSURL *url = [item valueForKey:SPSidebarURLKey];
+    
+    if (!url) return;
+    id controller = [[VivaInternalURLManager sharedInstance] viewControllerForURL:url];
+    
+    if ([controller conformsToProtocol:@protocol(VivaPlaybackContext)]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
+                                                            object:controller
+                                                          userInfo:nil];
+    }
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"userPlaylists.playlists"]) {
@@ -78,6 +101,10 @@
 		// If we get here, the current URL is something we're not displaying!
 		[self.sidebar selectRowIndexes:nil byExtendingSelection:NO];
 		
+    } else if ([keyPath isEqualToString:@"sidebar"]) {
+        self.sidebar.target = self;
+        self.sidebar.doubleAction = @selector(outlineViewItemDoubleClicked:);
+        
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -86,6 +113,7 @@
 -(void)dealloc {
 	[[SPSession sharedSession] removeObserver:self forKeyPath:@"userPlaylists.playlists"];
 	[self removeObserver:self forKeyPath:@"selectedURL"];
+	[self removeObserver:self forKeyPath:@"sidebar"];
 	self.groups = nil;
 	self.sidebar = nil;
 	self.selectedURL = nil;

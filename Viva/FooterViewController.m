@@ -172,6 +172,9 @@
 
 - (IBAction)playPauseButtonWasClicked:(id)sender {
     if (self.playbackManager.currentTrack == nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTrackShouldBePlayedNotification
+                                                            object:nil
+                                                          userInfo:nil];
         
     } else {
         self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;

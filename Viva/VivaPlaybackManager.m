@@ -144,6 +144,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 @synthesize volume;
 @synthesize loopPlayback;
 @synthesize shufflePlayback;
+@synthesize dataSource;
 
 @synthesize leftLevels;
 @synthesize rightLevels;
@@ -186,16 +187,33 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	[self resetShuffledPool];
 	
 	[self.audioBuffer clear];
-	
+    
+	if (![[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
+        id <VivaPlaybackContext> context = nil;
+        
+        if (![self.dataSource playbackManager:self requiresContextForContextlessPlayRequest:&context] || context == nil)
+            return;
+        
+        self.playbackContext = context;
+    } else {
+        self.playbackContext = [aNotification object];
+    }
+    
 	id <VivaTrackContainer> container = [[aNotification userInfo] valueForKey:kPlaybackInitialTrackContainerKey];
-	
-	if ([[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
-		self.playbackContext = [aNotification object];
-	}
+    
+    if (container == nil)
+        container = [self nextTrackContainerInCurrentContext];
+    
+    if (container == nil && self.playbackContext.trackContainersForPlayback.count > 0)
+        container = [self.playbackContext.trackContainersForPlayback objectAtIndex:0];
+    
     if (self.shufflePlayback)
         [self addTrackContainerToShufflePool:container];
-	[self playTrackContainerInCurrentContext:container];
-	self.playbackSession.playing = YES;
+    
+    if (container) {
+        [self playTrackContainerInCurrentContext:container];
+        self.playbackSession.playing = YES;
+    }
 }
 
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack {
