@@ -62,7 +62,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{380, 264}, {764, 493}}</string>
 				<int key="NSWTFlags">1954022400</int>
-				<string key="NSWindowTitle">Viva</string>
+				<string key="NSWindowTitle">Spotify Viva</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="590369993">
 					<object class="NSMutableString" key="NSToolbarIdentifier">
@@ -624,6 +624,7 @@
 							<string key="NSFrameSize">{764, 46}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSClassName">NSView</string>
 						</object>
 					</object>
