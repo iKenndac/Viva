@@ -17,6 +17,9 @@
 #import "StarredViewController.h"
 #import "InboxViewController.h"
 
+extern int *_NSGetArgc(void);
+extern char ***_NSGetArgv(void);
+
 @interface VivaAppDelegate()
 
 @property (retain, readwrite) VivaPlaybackManager *playbackManager; 
@@ -48,11 +51,24 @@
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[InboxViewController class] forURLScheme:@"spotify:internal:inbox"];
 
+    // Look for -mu arguments in argv
+    NSString *muValue = nil;
+    
+    char **argv = *_NSGetArgv();
+    for (NSUInteger argIndex = 0; argIndex < *_NSGetArgc(); argIndex++) {
+        if (strcmp("-mu", argv[argIndex]) == 0 && argIndex < (*_NSGetArgc() - 1))
+            muValue = [NSString stringWithUTF8String:argv[argIndex + 1]];
+    }
+    
     #import "viva_appkey.c"
+    
+    NSString *userAgent = kVivaLibSpotifyUserAgentName;
+    if (muValue)
+        userAgent = [NSString stringWithFormat:@"%@-%@", userAgent, muValue];
     
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:g_appkey length:g_appkey_size]
-											   userAgent:kVivaLibSpotifyUserAgentName
+											   userAgent:userAgent
 												   error:&error];
 	
 	if (error != nil) {
