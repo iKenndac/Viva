@@ -20,7 +20,7 @@
 -(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer;
 
 @property (copy, readonly) NSString *uniqueId;
-@property (assign, readonly) __weak SPTrack *track;
-@property (assign, readonly) __weak id container;
+@property (readonly) __weak SPTrack *track;
+@property (readonly) __weak id container;
 
 @end

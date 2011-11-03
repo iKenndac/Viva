@@ -17,7 +17,6 @@
         
         NSNib *nib = [[NSNib alloc] initWithNibNamed:@"SPLinkableItemTableCellView" bundle:nil];
         [nib instantiateNibWithOwner:self topLevelObjects:nil];
-        [nib release];
         
         self.view.frame = self.bounds;
         [self addSubview:self.view];
@@ -30,9 +29,6 @@
 
 -(void)dealloc {
     [self.view removeFromSuperviewWithoutNeedingDisplay];
-    self.linkButton = nil;
-    self.view = nil;
-    [super dealloc];
 }
 
 -(void)setObjectValue:(id)obj {

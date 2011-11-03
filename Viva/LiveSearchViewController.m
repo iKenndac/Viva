@@ -216,7 +216,6 @@
 	[self removeObserver:self
 			  forKeyPath:@"representedObject.latestSearch.searchInProgress"];
 	
-	[super dealloc];
 }
 
 @end

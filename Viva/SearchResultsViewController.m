@@ -11,7 +11,7 @@
 
 @interface SearchResultsViewController ()
 
-@property (nonatomic, readwrite, retain) SPSearch *search;
+@property (nonatomic, readwrite, strong) SPSearch *search;
 
 -(void)rebuildTrackContainers;
 
@@ -27,8 +27,8 @@
 				  options:0
 				  context:nil];
 
-		self.search = [[[SPSearch alloc] initWithURL:aURL
-												  inSession:[[NSApp delegate] session]] autorelease];
+		self.search = [[SPSearch alloc] initWithURL:aURL
+												  inSession:[[NSApp delegate] session]];
 	}
 	return self;
 }
@@ -53,8 +53,8 @@
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.search.tracks count]];
 	
 	for (SPTrack *aTrack in self.search.tracks) {
-		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
-																		   inContainer:self.search] autorelease]];
+		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
+																		   inContainer:self.search]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -62,8 +62,6 @@
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"search.tracks"];
-	self.search = nil;
-    [super dealloc];
 }
 
 @end

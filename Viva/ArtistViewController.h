@@ -15,6 +15,6 @@
     SPArtistBrowse *artistBrowse;
 }
 
-@property (nonatomic, readonly, retain) SPArtistBrowse *artistBrowse;
+@property (nonatomic, readonly, strong) SPArtistBrowse *artistBrowse;
 
 @end

@@ -12,10 +12,10 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (retain, readwrite) SPCircularBuffer *audioBuffer;
-@property (retain, readwrite) id <VivaPlaybackContext> playbackContext;
-@property (readwrite, retain) id <VivaTrackContainer> currentTrackContainer;
-@property (readwrite, retain) SPSession *playbackSession;
+@property (strong, readwrite) SPCircularBuffer *audioBuffer;
+@property (strong, readwrite) id <VivaPlaybackContext> playbackContext;
+@property (readwrite, strong) id <VivaTrackContainer> currentTrackContainer;
+@property (readwrite, strong) SPSession *playbackSession;
 
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack;
 
@@ -48,8 +48,8 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 //vDSP 
 
 static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManager *manager, short *waveformArray, vDSP_Length sampleCount, double *leftDestination, double *rightDestination);
-@property (readwrite, retain) NSArray *leftLevels;
-@property (readwrite, retain) NSArray *rightLevels;
+@property (readwrite, strong) NSArray *leftLevels;
+@property (readwrite, strong) NSArray *rightLevels;
 
 @end
 
@@ -69,8 +69,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         shuffleFutureHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
 		
 		SEL incrementTrackPositionSelector = @selector(incrementTrackPositionWithFrameCount:);
-		incrementTrackPositionMethodSignature = [[VivaPlaybackManager instanceMethodSignatureForSelector:incrementTrackPositionSelector] retain];
-		incrementTrackPositionInvocation = [[NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature] retain];
+		incrementTrackPositionMethodSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:incrementTrackPositionSelector];
+		incrementTrackPositionInvocation = [NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature];
 		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
 		[incrementTrackPositionInvocation setTarget:self];
 		
@@ -78,7 +78,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.playbackSession = aSession;
 		self.playbackSession.playbackDelegate = self;
         
-		self.audioBuffer = [[[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer] autorelease];
+		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
         
         self.loopPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kLoopPlaybackDefaultsKey];
         self.shufflePlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kShufflePlaybackDefaultsKey];
@@ -380,7 +380,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 -(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext {
     
-    NSMutableArray *tracks = [[[[self playbackContext] trackContainersForPlayback] mutableCopy] autorelease];;
+    NSMutableArray *tracks = [[[self playbackContext] trackContainersForPlayback] mutableCopy];;
     [tracks removeObjectsInArray:shuffledPool];
     
     id <VivaTrackContainer> track = [tracks randomObject];
@@ -615,7 +615,7 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
     
     AURenderCallbackStruct callback;
     callback.inputProc = VivaAudioUnitRenderDelegateCallback;
-    callback.inputProcRefCon = self;
+    callback.inputProcRefCon = (__bridge void *)(self);
     
     status = AudioUnitSetProperty(outputAudioUnit,
                                   kAudioUnitProperty_SetRenderCallback,
@@ -649,7 +649,8 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
                                                     UInt32 inBusNumber,
                                                     UInt32 inNumberFrames,
                                                     AudioBufferList *ioData) {
-    VivaPlaybackManager *self = inRefCon;
+	
+    VivaPlaybackManager *self = (__bridge VivaPlaybackManager *)inRefCon;
 	
 	AudioBuffer *buffer = &(ioData->mBuffers[0]);
 	UInt32 bytesRequired = buffer->mDataByteSize;
@@ -712,8 +713,6 @@ static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
 	self.leftLevels = leftArray;
     self.rightLevels = rightArray;
 	
-	[leftArray release];
-	[rightArray release];
 
 }
 
@@ -788,29 +787,17 @@ static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManag
     [self removeObserver:self forKeyPath:@"loopPlayback"];
     [self removeObserver:self forKeyPath:@"shufflePlayback"];
 	
-	[incrementTrackPositionInvocation release];
-	[incrementTrackPositionMethodSignature release];
 	
-    [shuffledPool release];
-    [shufflePastHistory release];
-    [shuffleFutureHistory release];
     
 	[self.audioBuffer clear];
-	self.audioBuffer = nil;
-    self.currentTrackContainer = nil;
-	self.playbackContext = nil;
 	[self teardownCoreAudio];
-	self.playbackSession = nil;
 	
 	// vDSP
 	vDSP_destroy_fftsetupD(fft_weights);
 	free(leftChannelMagnitudes);
 	free(rightChannelMagnitudes);
 	
-	self.leftLevels = nil;
-	self.rightLevels = nil;
 
-    [super dealloc];
 }
 
 @end

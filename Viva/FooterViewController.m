@@ -211,7 +211,7 @@
 	int minutes = (int)floor(anInterval/60) % 60;
 	int seconds = (int)floor(anInterval) % 60;
 	
-	NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setFormat:@"00"];
 	
 	if (hasHours) {
@@ -253,7 +253,6 @@
 
 - (void)dealloc {
 	
-    self.playbackManager = nil;
     
     [self removeObserver:self forKeyPath:@"playbackManager.currentTrack.starred"];
     [self removeObserver:self forKeyPath:@"playbackManager.playbackSession.playing"];
@@ -261,7 +260,6 @@
 	[self removeObserver:self forKeyPath:@"playbackManager.shufflePlayback"];
 	[self removeObserver:self forKeyPath:@"playbackManager.loopPlayback"];
 	
-    [super dealloc];
 }
 
 

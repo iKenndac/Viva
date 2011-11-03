@@ -15,6 +15,6 @@
 	SPPlaylist *playlist;
 }
 
-@property (nonatomic, readonly, retain) SPPlaylist *playlist;
+@property (nonatomic, readonly, strong) SPPlaylist *playlist;
 
 @end

@@ -10,8 +10,8 @@
 
 @interface SPLinkableItemTableCellView : NSTableCellView
 
-@property (readwrite, nonatomic, retain) IBOutlet NSButton *linkButton;
-@property (readwrite, nonatomic, retain) IBOutlet NSView *view;
+@property (readwrite, nonatomic, strong) IBOutlet NSButton *linkButton;
+@property (readwrite, nonatomic, strong) IBOutlet NSView *view;
 
 -(IBAction)linkButtonClicked:(id)sender;
 

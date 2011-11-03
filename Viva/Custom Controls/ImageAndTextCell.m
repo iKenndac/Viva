@@ -46,14 +46,10 @@
 
 @implementation ImageAndTextCell
 
-- (void) dealloc {
-	[image release];
-	[super dealloc];
-}
 
 - (id) copyWithZone:(NSZone *)zone {
 	ImageAndTextCell *cell = (ImageAndTextCell *)[super copyWithZone:zone];
-	cell->image = [image retain];
+	cell->image = image;
 	return cell;
 }
 
@@ -61,8 +57,7 @@
 
 - (void) setImage:(NSImage *)anImage {
 	if (anImage != image) {
-		[image release];
-		image = [anImage retain];
+		image = anImage;
 	}
 }
 
@@ -139,8 +134,8 @@
 		[image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
 	}
 
-	NSMutableAttributedString *string = [[[self attributedStringValue] mutableCopy] autorelease];
-	NSMutableParagraphStyle *ps = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableAttributedString *string = [[self attributedStringValue] mutableCopy];
+	NSMutableParagraphStyle *ps = [[NSMutableParagraphStyle alloc] init];
 	[ps setLineBreakMode:NSLineBreakByTruncatingTail];
 	
 	[string addAttribute:NSParagraphStyleAttributeName value:ps range:NSMakeRange(0, [string length])];

@@ -39,9 +39,5 @@
 	[imageToDraw setFlipped:wasFlipped];
 }
 
--(void)dealloc {
-	self.alternateImage = nil;
-	[super dealloc];
-}
 
 @end

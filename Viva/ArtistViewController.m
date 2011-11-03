@@ -11,7 +11,7 @@
 
 @interface ArtistViewController ()
 
-@property (nonatomic, readwrite, retain) SPArtistBrowse *artistBrowse;
+@property (nonatomic, readwrite, strong) SPArtistBrowse *artistBrowse;
 
 -(void)rebuildTrackContainers;
 
@@ -28,10 +28,9 @@
 				  context:nil];
 		
 		SPSession *appSession = [[NSApp delegate] session];
-		self.artistBrowse = [[[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL]
+		self.artistBrowse = [[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL]
 																 inSession:appSession
-															   type:SP_ARTISTBROWSE_NO_TRACKS]
-							autorelease];
+															   type:SP_ARTISTBROWSE_NO_TRACKS];
 	}
 	return self;
 }
@@ -54,8 +53,8 @@
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.artistBrowse.tracks count]];
 	
 	for (SPTrack *aTrack in self.artistBrowse.tracks) {
-		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
-																		   inContainer:self.artistBrowse] autorelease]];
+		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
+																		   inContainer:self.artistBrowse]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -65,7 +64,5 @@
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"artistBrowse.tracks"];
-	self.artistBrowse = nil;
-    [super dealloc];
 }
 @end

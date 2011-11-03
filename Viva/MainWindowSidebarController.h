@@ -24,11 +24,11 @@ static NSString * const SPSidebarImageKey = @"image";
 static NSString * const SPSidebarURLKey = @"url";
 
 @interface MainWindowSidebarController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource> {
-	NSOutlineView *sidebar;
+	NSOutlineView *__weak sidebar;
 	NSURL *selectedURL;
 }
 
-@property (assign) IBOutlet NSOutlineView *sidebar;
+@property (weak) IBOutlet NSOutlineView *sidebar;
 @property (readwrite, copy, nonatomic) NSURL *selectedURL;
 
 @end

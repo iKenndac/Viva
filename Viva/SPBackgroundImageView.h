@@ -13,6 +13,6 @@
 	NSImage *backgroundImage;
 }
 
-@property (nonatomic, readwrite, retain) NSImage *backgroundImage;
+@property (nonatomic, readwrite, strong) NSImage *backgroundImage;
 
 @end

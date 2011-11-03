@@ -14,8 +14,8 @@ static NSImage *volumeKnobImage;
 static NSImage *pressedVolumeKnobImage;
 
 +(void)initialize {
-	volumeKnobImage = [[NSImage imageNamed:@"volumeball"] retain];
-	pressedVolumeKnobImage = [[NSImage imageNamed:@"volumeball-pushed"] retain];
+	volumeKnobImage = [NSImage imageNamed:@"volumeball"];
+	pressedVolumeKnobImage = [NSImage imageNamed:@"volumeball-pushed"];
 }
 
 - (void)drawKnob:(NSRect)knobRect {

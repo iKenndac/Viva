@@ -68,17 +68,12 @@ static VivaInternalURLManager *sharedInstance;
 			if (newController != nil) {
 				[urlToViewControllerLookupTable setObject:newController
 												   forKey:aURL];
-				return [newController autorelease];
+				return newController;
 			}
 		}
 	}
 	return nil;
 }
 
-- (void)dealloc {
-	[prefixToClassLookupTable release];
-	[urlToViewControllerLookupTable release];
-    [super dealloc];
-}
 
 @end

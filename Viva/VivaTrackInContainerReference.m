@@ -62,10 +62,8 @@
 }
 
 - (void)dealloc {
-	self.uniqueId = nil;
 	self.track = nil;
 	self.container = nil;
-    [super dealloc];
 }
 
 @end

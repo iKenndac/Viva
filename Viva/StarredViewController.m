@@ -10,7 +10,7 @@
 
 @interface StarredViewController()
 
-@property (nonatomic, readwrite, retain) SPPlaylist *playlist;
+@property (nonatomic, readwrite, strong) SPPlaylist *playlist;
 
 @end
 
@@ -43,7 +43,6 @@
 
 -(void)dealloc {
 	[[SPSession sharedSession] removeObserver:self forKeyPath:@"starredPlaylist"];
-	[super dealloc];
 }
 
 @end

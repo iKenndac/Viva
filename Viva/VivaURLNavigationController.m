@@ -84,11 +84,6 @@ static NSString * const kVivaURLNavigationControllerUserDefaultsFutureKey = @"th
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"thePresent"];
-	self.thePast = nil;
-	self.thePresent = nil;
-	self.theFuture = nil;
-	self.userDefaultsKey = nil;
-    [super dealloc];
 }
 
 #pragma mark -
@@ -107,7 +102,7 @@ static NSString * const kVivaURLNavigationControllerUserDefaultsFutureKey = @"th
 		if ([[self.thePast lastObject] isEqual:self.thePresent]) {
 			// User went back - remove from the backwards queue and add old present to the forwards queue
 			
-			NSMutableArray *mutablePast = [[self.thePast mutableCopy] autorelease];
+			NSMutableArray *mutablePast = [self.thePast mutableCopy];
 			[mutablePast removeObjectAtIndex:[mutablePast count] - 1];
 			self.thePast = [NSArray arrayWithArray:mutablePast];
 
@@ -118,7 +113,7 @@ static NSString * const kVivaURLNavigationControllerUserDefaultsFutureKey = @"th
 		} else if ([self.theFuture count] > 0 && [[self.theFuture objectAtIndex:0] isEqual:self.thePresent]) {
 			// User went forwards. Move from the forwards queue and add old present to the backwards queue. 
 			
-			NSMutableArray *mutableFuture = [[self.theFuture mutableCopy] autorelease];
+			NSMutableArray *mutableFuture = [self.theFuture mutableCopy];
 			[mutableFuture removeObjectAtIndex:0];
 			self.theFuture = [NSArray arrayWithArray:mutableFuture];
 			

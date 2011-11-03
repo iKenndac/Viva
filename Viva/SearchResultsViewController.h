@@ -15,6 +15,6 @@
 	SPSearch *search;
 }
 
-@property (nonatomic, readonly, retain) SPSearch *search;
+@property (nonatomic, readonly, strong) SPSearch *search;
 
 @end

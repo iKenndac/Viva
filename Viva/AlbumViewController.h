@@ -15,6 +15,6 @@
     SPAlbumBrowse *albumBrowse;
 }
 
-@property (nonatomic, readonly, retain) SPAlbumBrowse *albumBrowse;
+@property (nonatomic, readonly, strong) SPAlbumBrowse *albumBrowse;
 
 @end

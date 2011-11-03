@@ -21,16 +21,16 @@ static NSImage *knobImage;
 static NSImage *pressedKnobImage;
 
 +(void)initialize {
-	trackImageLeft = [[NSImage imageNamed:@"meeter-left"] retain];
-	trackImageMiddle = [[NSImage imageNamed:@"meeter-middle"] retain];
-	trackImageRight = [[NSImage imageNamed:@"meeter-right"] retain];
+	trackImageLeft = [NSImage imageNamed:@"meeter-left"];
+	trackImageMiddle = [NSImage imageNamed:@"meeter-middle"];
+	trackImageRight = [NSImage imageNamed:@"meeter-right"];
 
-	filledTrackImageLeft = [[NSImage imageNamed:@"meeter-filled-left"] retain];
-	filledTrackImageMiddle = [[NSImage imageNamed:@"meeter-filled-middle"] retain];
-	filledTrackImageRight = [[NSImage imageNamed:@"meeter-filled-right"] retain];
+	filledTrackImageLeft = [NSImage imageNamed:@"meeter-filled-left"];
+	filledTrackImageMiddle = [NSImage imageNamed:@"meeter-filled-middle"];
+	filledTrackImageRight = [NSImage imageNamed:@"meeter-filled-right"];
 
-	knobImage = [[NSImage imageNamed:@"trackball"] retain];
-	pressedKnobImage = [[NSImage imageNamed:@"trackball-pushed"] retain];
+	knobImage = [NSImage imageNamed:@"trackball"];
+	pressedKnobImage = [NSImage imageNamed:@"trackball-pushed"];
 }
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {

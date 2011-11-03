@@ -25,10 +25,10 @@
 
 -(void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	
-	NSMutableParagraphStyle *style = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 	[style setAlignment:NSLeftTextAlignment];
 	
-	NSShadow *textShadow = [[[NSShadow alloc] init] autorelease];
+	NSShadow *textShadow = [[NSShadow alloc] init];
 	[textShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:.6]];
 	[textShadow setShadowBlurRadius:1.0];
 	[textShadow setShadowOffset:NSMakeSize(0.0, 1.0)];
@@ -92,9 +92,5 @@
 	return sortPriority;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 @end

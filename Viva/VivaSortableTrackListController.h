@@ -11,14 +11,14 @@
 
 @interface VivaSortableTrackListController : VivaPlaybackContextViewController {
 @private
-	NSTableView *trackTable;
-	NSArrayController *trackContainerArrayController;
+	NSTableView *__weak trackTable;
+	NSArrayController *__weak trackContainerArrayController;
 	BOOL sortAscending;
 	NSMutableArray *trackContainers;
 }
 
-@property (nonatomic, readwrite, retain) NSMutableArray *trackContainers;
-@property (assign) IBOutlet NSArrayController *trackContainerArrayController;
-@property (assign) IBOutlet NSTableView *trackTable;
+@property (nonatomic, readwrite, strong) NSMutableArray *trackContainers;
+@property (weak) IBOutlet NSArrayController *trackContainerArrayController;
+@property (weak) IBOutlet NSTableView *trackTable;
 
 @end

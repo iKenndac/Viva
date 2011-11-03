@@ -87,7 +87,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	}
 	
 	[mosaicImage unlockFocus];
-	return [mosaicImage autorelease];
+	return mosaicImage;
 }
 
 #pragma mark Decorated
@@ -107,7 +107,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 	
 	if ([label length] > 0) {
 		
-		NSMutableParagraphStyle *para = [[[NSMutableParagraphStyle alloc] init] autorelease];
+		NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc] init];
 		[para setAlignment:NSCenterTextAlignment];
 		
 		// Create attributes for drawing the count.
@@ -129,7 +129,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 			correction = numSize.width;
 		}
 		
-		badge = [[[NSImage alloc] initWithSize:NSMakeSize([ballLeft size].width + [ballRight size].width + numSize.width - correction, [ballLeft size].height)] autorelease];
+		badge = [[NSImage alloc] initWithSize:NSMakeSize([ballLeft size].width + [ballRight size].width + numSize.width - correction, [ballLeft size].height)];
 		[badge lockFocus];
 		
 		NSDrawThreePartImage(NSMakeRect(0.0, 0.0, badge.size.width, badge.size.height),
@@ -141,7 +141,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 							 1.0,
 							 NO);
 		
-		NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
+		NSShadow *shadow = [[NSShadow alloc] init];
 		[shadow setShadowColor:[NSColor blackColor]];
 		[shadow setShadowBlurRadius:1.0];
 		[shadow setShadowOffset:NSMakeSize(1.0, -1.0)];
@@ -160,7 +160,7 @@ static const double kMinimumMosaicBlockSize = 32.0;
 		decoratedImageSize.height += badge.size.height;
 	}
 	
-	NSImage *decoratedMosaic = [[[NSImage alloc] initWithSize:decoratedImageSize] autorelease];
+	NSImage *decoratedMosaic = [[NSImage alloc] initWithSize:decoratedImageSize];
 	[decoratedMosaic lockFocus];
 	
 	[mosaic drawAtPoint:NSMakePoint((decoratedImageSize.width / 2) - (mosaic.size.width / 2), 

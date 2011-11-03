@@ -22,8 +22,8 @@ extern char ***_NSGetArgv(void);
 
 @interface VivaAppDelegate()
 
-@property (retain, readwrite) VivaPlaybackManager *playbackManager; 
-@property (retain, readwrite) SPMediaKeyTap *mediaKeyHandler;
+@property (strong, readwrite) VivaPlaybackManager *playbackManager; 
+@property (strong, readwrite) SPMediaKeyTap *mediaKeyHandler;
 
 @end
 
@@ -84,11 +84,11 @@ extern char ***_NSGetArgv(void);
     
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
-	self.playbackManager = [[[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]] autorelease];
+	self.playbackManager = [[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]];
     self.playbackManager.dataSource = mainWindowController;
 	
 	if ([SPMediaKeyTap usesGlobalMediaKeyTap]) {
-		self.mediaKeyHandler = [[[SPMediaKeyTap alloc] initWithDelegate:self] autorelease];
+		self.mediaKeyHandler = [[SPMediaKeyTap alloc] initWithDelegate:self];
 		[self.mediaKeyHandler startWatchingMediaKeys];
 	} else {
 		NSLog(@"Media key monitoring disabled because CGEventTap + gdb = pain");
@@ -235,13 +235,8 @@ extern char ***_NSGetArgv(void);
 -(void)session:(SPSession *)aSession recievedMessageForUser:(NSString *)aMessage; {}
 
 -(void)dealloc {
-	[playbackManager release];
-	[mainWindowController release];
-	[loginWindowController release];
 	[self.mediaKeyHandler stopWatchingMediaKeys];
-	self.mediaKeyHandler = nil;
 	
-	[super dealloc];
 }
 
 @end

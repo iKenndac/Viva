@@ -27,20 +27,15 @@
 	free(frameStrings);
 	self.object = nil;
 	self.invocation = nil;
-	[super dealloc];
 }
 -(id)object; { return _object; }
 -(void)setObject:(id)obj;
 {
-	[obj retain];
-	[_object release];
 	_object = obj;
 }
 -(NSInvocation*)invocation; { return _invocation; }
 -(void)setInvocation:(NSInvocation*)inv;
 {
-	[inv retain];
-	[_invocation release];
 	_invocation = inv;
 }
 
@@ -101,22 +96,22 @@ if(NSAppKitVersionNumber < 949 /*NSAppKitVersionNumber10_5*/) return;
 @implementation NSObject (SPInvocationGrabbing)
 -(id)grab;
 {
-	return [[[SPInvocationGrabber alloc] initWithObject:self] autorelease];
+	return [[SPInvocationGrabber alloc] initWithObject:self];
 }
 -(id)grabCheap;
 {
-	return [[[SPInvocationGrabber alloc] initWithObject:self stacktraceSaving:NO] autorelease];
+	return [[SPInvocationGrabber alloc] initWithObject:self stacktraceSaving:NO];
 }
 
 -(id)invokeAfter:(NSTimeInterval)delta;
 {
-	id grabber = [[[SPInvocationGrabber alloc] initWithObject:self] autorelease];
+	id grabber = [[SPInvocationGrabber alloc] initWithObject:self];
 	[NSTimer scheduledTimerWithTimeInterval:delta target:grabber selector:@selector(invoke) userInfo:nil repeats:NO];
 	return grabber;
 }
 -(id)invokeAfterCheap:(NSTimeInterval)delta;
 {
-	id grabber = [[[SPInvocationGrabber alloc] initWithObject:self stacktraceSaving:NO] autorelease];
+	id grabber = [[SPInvocationGrabber alloc] initWithObject:self stacktraceSaving:NO];
 	[NSTimer scheduledTimerWithTimeInterval:delta target:grabber selector:@selector(invoke) userInfo:nil repeats:NO];
 	return grabber;
 }
@@ -138,11 +133,6 @@ if(NSAppKitVersionNumber < 949 /*NSAppKitVersionNumber10_5*/) return;
 	} while(obj);
 	va_end(vlist);
 	return self;
-}
--(void)dealloc;
-{
-	[objects release];
-	[super dealloc];
 }
 -(NSArray*)objects;
 {

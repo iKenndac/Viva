@@ -142,44 +142,11 @@
 }
 
 -(void)dealloc {
-	self.leftValue1 = nil;
-	self.leftValue2 = nil;
-	self.leftValue3 = nil;
-	self.leftValue4 = nil;
-	self.leftValue5 = nil;
-	self.leftValue6 = nil;
-	self.leftValue7 = nil;
-	self.leftValue8 = nil;
-	self.leftValue9 = nil;
-	self.leftValue10 = nil;
-	self.leftValue11 = nil;
-	self.leftValue12 = nil;
-	self.leftValue13 = nil;
-	self.leftValue14 = nil;
-	self.leftValue15 = nil;
-	self.leftValue16 = nil;
 
-	self.rightValue1 = nil;
-	self.rightValue2 = nil;
-	self.rightValue3 = nil;
-	self.rightValue4 = nil;
-	self.rightValue5 = nil;
-	self.rightValue6 = nil;
-	self.rightValue7 = nil;
-	self.rightValue8 = nil;
-	self.rightValue9 = nil;
-	self.rightValue10 = nil;
-	self.rightValue11 = nil;
-	self.rightValue12 = nil;
-	self.rightValue13 = nil;
-	self.rightValue14 = nil;
-	self.rightValue15 = nil;
-	self.rightValue16 = nil;
 	
 	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.leftLevels"];
 	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.rightLevels"];
 	
-	[super dealloc];
 }
 
 @end

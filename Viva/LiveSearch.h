@@ -14,12 +14,12 @@
 -(id)initWithInitialSearch:(SPSearch *)aSearch;
 -(void)clear;
 
-@property (nonatomic, readwrite, retain) SPSearch *latestSearch;
+@property (nonatomic, readwrite, strong) SPSearch *latestSearch;
 
 @property (nonatomic, readonly, copy) NSArray *topTracks;
 @property (nonatomic, readonly, copy) NSArray *topArtists;
 @property (nonatomic, readonly, copy) NSArray *topAlbums;
 
-@property (nonatomic, readonly, retain) id topHit;
+@property (nonatomic, readonly, strong) id topHit;
 
 @end

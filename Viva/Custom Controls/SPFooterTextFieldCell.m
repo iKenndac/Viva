@@ -16,7 +16,7 @@
     NSRect drawingRect = [self drawingRectForBounds:cellFrame];
     NSMutableAttributedString *str = [[self attributedStringValue] mutableCopy];
     
-    NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
+    NSShadow *shadow = [[NSShadow alloc] init];
     [shadow setShadowColor:[NSColor blackColor]];
     [shadow setShadowBlurRadius:0.0];
     [shadow setShadowOffset:NSMakeSize(0.0, 1.0)];
@@ -26,7 +26,6 @@
                 range:NSMakeRange(0, [str length])];
     
     [str drawInRect:drawingRect];
-    [str release];
     
 }
 

@@ -11,7 +11,7 @@
 
 @interface AlbumViewController ()
 
-@property (nonatomic, readwrite, retain) SPAlbumBrowse *albumBrowse;
+@property (nonatomic, readwrite, strong) SPAlbumBrowse *albumBrowse;
 
 -(void)rebuildTrackContainers;
 
@@ -28,10 +28,9 @@
 				  context:nil];
 		
 		SPSession *appSession = [[NSApp delegate] session];
-		self.albumBrowse = [[[SPAlbumBrowse alloc] initWithAlbum:[SPAlbum albumWithAlbumURL:aURL
+		self.albumBrowse = [[SPAlbumBrowse alloc] initWithAlbum:[SPAlbum albumWithAlbumURL:aURL
 																								inSession:appSession]
-															  inSession:appSession]
-							autorelease];
+															  inSession:appSession];
 	}
 	return self;
 }
@@ -54,8 +53,8 @@
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.albumBrowse.tracks count]];
 	
 	for (SPTrack *aTrack in self.albumBrowse.tracks) {
-		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
-																		   inContainer:self.albumBrowse] autorelease]];
+		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
+																		   inContainer:self.albumBrowse]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -65,8 +64,6 @@
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"albumBrowse.tracks"];
-	self.albumBrowse = nil;
-    [super dealloc];
 }
 
 @end

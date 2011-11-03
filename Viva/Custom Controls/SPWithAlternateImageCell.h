@@ -14,6 +14,6 @@
 	NSImage *alternateImage;
 }
 
-@property (nonatomic, readwrite, retain) NSImage *alternateImage;
+@property (nonatomic, readwrite, strong) NSImage *alternateImage;
 
 @end

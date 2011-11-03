@@ -16,41 +16,41 @@
 @interface MainWindowController : NSWindowController <NSSplitViewDelegate, VivaPlaybackManagerDataSource, NSPopoverDelegate, NSTextFieldDelegate> {
 @private
     
-	NSView *footerViewContainer;
+	NSView *__weak footerViewContainer;
 	FooterViewController *footerViewController;
-	NSSplitView *splitView;
-	SPBackgroundColorView *sourceListBackgroundColorView;
-	NSBox *contentBox;
-	MainWindowSidebarController *sidebarController;
+	NSSplitView *__weak splitView;
+	SPBackgroundColorView *__weak sourceListBackgroundColorView;
+	NSBox *__weak contentBox;
+	MainWindowSidebarController *__weak sidebarController;
 	NSViewController *currentViewController;
 	VivaURLNavigationController *navigationController;
-	NSOutlineView *sourceList;
+	NSOutlineView *__weak sourceList;
 	NSPopover *searchPopover;
-	NSSearchField *searchField;
+	NSSearchField *__weak searchField;
 	LiveSearch *liveSearch;
 	
-	NSWindow *urlSheet;
-	NSTextField *urlField;
-	NSTextField *invalidURLWarningLabel;
+	NSWindow *__unsafe_unretained urlSheet;
+	NSTextField *__weak urlField;
+	NSTextField *__weak invalidURLWarningLabel;
 }
 
-@property (assign) IBOutlet NSSplitView *splitView;
-@property (assign) IBOutlet SPBackgroundColorView *sourceListBackgroundColorView;
-@property (assign) IBOutlet NSView *footerViewContainer;
-@property (assign) IBOutlet NSBox *contentBox;
-@property (assign) IBOutlet MainWindowSidebarController *sidebarController;
-@property (nonatomic, retain, readonly) NSViewController *currentViewController;
-@property (nonatomic, retain, readonly) FooterViewController *footerViewController;
-@property (nonatomic, retain, readonly) VivaURLNavigationController *navigationController;
-@property (assign) IBOutlet NSOutlineView *sourceList;
-@property (retain) IBOutlet NSPopover *searchPopover;
-@property (assign) IBOutlet NSSearchField *searchField;
+@property (weak) IBOutlet NSSplitView *splitView;
+@property (weak) IBOutlet SPBackgroundColorView *sourceListBackgroundColorView;
+@property (weak) IBOutlet NSView *footerViewContainer;
+@property (weak) IBOutlet NSBox *contentBox;
+@property (weak) IBOutlet MainWindowSidebarController *sidebarController;
+@property (nonatomic, strong, readonly) NSViewController *currentViewController;
+@property (nonatomic, strong, readonly) FooterViewController *footerViewController;
+@property (nonatomic, strong, readonly) VivaURLNavigationController *navigationController;
+@property (weak) IBOutlet NSOutlineView *sourceList;
+@property (strong) IBOutlet NSPopover *searchPopover;
+@property (weak) IBOutlet NSSearchField *searchField;
 
-@property (assign) IBOutlet NSWindow *urlSheet;
-@property (assign) IBOutlet NSTextField *urlField;
-@property (assign) IBOutlet NSTextField *invalidURLWarningLabel;
+@property (unsafe_unretained) IBOutlet NSWindow *urlSheet;
+@property (weak) IBOutlet NSTextField *urlField;
+@property (weak) IBOutlet NSTextField *invalidURLWarningLabel;
 
-@property (readwrite, nonatomic, retain) LiveSearch *liveSearch;
+@property (readwrite, nonatomic, strong) LiveSearch *liveSearch;
 
 - (IBAction)showOpenURLSheet:(id)sender;
 - (IBAction)openURL:(id)sender;

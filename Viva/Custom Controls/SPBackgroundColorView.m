@@ -25,18 +25,11 @@
 
 -(void)setBackgroundColor:(NSColor *)aBackgroundColor {
 	if (aBackgroundColor != backgroundColor) {
-		[aBackgroundColor retain];
-		[backgroundColor release];
 		backgroundColor = aBackgroundColor;
 		[self setNeedsDisplay:YES];
 	}
 }
 
-- (void)dealloc
-{
-	self.backgroundColor = nil;
-    [super dealloc];
-}
 
 - (void)drawRect:(NSRect)dirtyRect
 {

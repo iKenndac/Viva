@@ -12,28 +12,28 @@
 
 @interface FooterViewController : NSViewController {
 @private
-    NSView *leftView;
-	NSView *playbackControlsView;
-	NSButton *trackIsStarredButton;
-	NSButton *playbackIsRepeatingButton;
-	NSButton *playbackIsShuffledButton;
-	NSSlider *playbackProgressSlider;
-    NSButton *playPauseButton;
+    NSView *__weak leftView;
+	NSView *__weak playbackControlsView;
+	NSButton *__weak trackIsStarredButton;
+	NSButton *__weak playbackIsRepeatingButton;
+	NSButton *__weak playbackIsShuffledButton;
+	NSSlider *__weak playbackProgressSlider;
+    NSButton *__weak playPauseButton;
     
     VivaPlaybackManager *playbackManager;
 }
 
-@property (assign) IBOutlet NSButton *trackIsStarredButton;
-@property (assign) IBOutlet NSButton *playbackIsRepeatingButton;
-@property (assign) IBOutlet NSButton *playbackIsShuffledButton;
-@property (assign) IBOutlet NSSlider *playbackProgressSlider;
-@property (assign) IBOutlet NSButton *playPauseButton;
+@property (weak) IBOutlet NSButton *trackIsStarredButton;
+@property (weak) IBOutlet NSButton *playbackIsRepeatingButton;
+@property (weak) IBOutlet NSButton *playbackIsShuffledButton;
+@property (weak) IBOutlet NSSlider *playbackProgressSlider;
+@property (weak) IBOutlet NSButton *playPauseButton;
 
-@property (assign) IBOutlet NSView *leftView;
-@property (assign) IBOutlet NSView *playbackControlsView;
+@property (weak) IBOutlet NSView *leftView;
+@property (weak) IBOutlet NSView *playbackControlsView;
 
-@property (readonly) NSString *currentTrackPositionDisplayString;
-@property (readonly) NSString *currentTrackDurationDisplayString;
+@property (weak, readonly) NSString *currentTrackPositionDisplayString;
+@property (weak, readonly) NSString *currentTrackDurationDisplayString;
 
 - (IBAction)starredButtonWasClicked:(id)sender;
 - (IBAction)repeatButtonWasClicked:(id)sender;
@@ -43,6 +43,6 @@
 - (IBAction)previousTrackButtonWasClicked:(id)sender;
 - (IBAction)nextTrackButtonWasClicked:(id)sender;
 
-@property (retain, readwrite) VivaPlaybackManager *playbackManager;
+@property (strong, readwrite) VivaPlaybackManager *playbackManager;
 
 @end

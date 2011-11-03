@@ -23,7 +23,7 @@
 
 -(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer;
 
-@property (retain, readwrite) id <VivaTrackContainer> playingTrackContainer;
+@property (strong, readwrite) id <VivaTrackContainer> playingTrackContainer;
 @property (readwrite) BOOL playingTrackContainerIsCurrentlyPlaying;
 
 @end

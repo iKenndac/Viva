@@ -15,24 +15,24 @@
 @interface LoginWindowController : NSWindowController {
 @private
     
-	NSTextField *userNameField;
-	NSSecureTextField *passwordField;
-	NSButton *rememberMeCheckbox;
-	NSBox *contentBox;
-	NSView *credentialsView;
-	NSView *loggingInView;
+	NSTextField *__weak userNameField;
+	NSSecureTextField *__weak passwordField;
+	NSButton *__weak rememberMeCheckbox;
+	NSBox *__weak contentBox;
+	NSView *__weak credentialsView;
+	NSView *__weak loggingInView;
 	
 	BOOL isLoggingIn;
 }
 
 @property (readwrite) BOOL isLoggingIn;
 
-@property (assign) IBOutlet NSTextField *userNameField;
-@property (assign) IBOutlet NSSecureTextField *passwordField;
-@property (assign) IBOutlet NSButton *rememberMeCheckbox;
-@property (assign) IBOutlet NSBox *contentBox;
-@property (assign) IBOutlet NSView *credentialsView;
-@property (assign) IBOutlet NSView *loggingInView;
+@property (weak) IBOutlet NSTextField *userNameField;
+@property (weak) IBOutlet NSSecureTextField *passwordField;
+@property (weak) IBOutlet NSButton *rememberMeCheckbox;
+@property (weak) IBOutlet NSBox *contentBox;
+@property (weak) IBOutlet NSView *credentialsView;
+@property (weak) IBOutlet NSView *loggingInView;
 
 - (IBAction)attemptLogin:(id)sender;
 -(void)reset;

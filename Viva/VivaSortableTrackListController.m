@@ -22,12 +22,12 @@
 	// No IB support for custom headers. Yay!
 	
 	for (NSTableColumn *column in [self.trackTable tableColumns]) {
-		SPTableHeaderCell *newCell = [[[SPTableHeaderCell alloc] init] autorelease];
+		SPTableHeaderCell *newCell = [[SPTableHeaderCell alloc] init];
 		[newCell setObjectValue:[[column headerCell] objectValue]];
 		[column setHeaderCell:newCell];
 	}
 	
-	[self.trackTable setCornerView:[[[SPTableCorner alloc] init] autorelease]];
+	[self.trackTable setCornerView:[[SPTableCorner alloc] init]];
 	
 	[self.trackTable setTarget:self];
 	[self.trackTable setDoubleAction:@selector(playTrack:)];
@@ -175,10 +175,8 @@
 }
 
 - (void)dealloc {
-	self.trackContainers = nil;
 	[self removeObserver:self forKeyPath:@"playingTrackContainerIsCurrentlyPlaying"];
 	[self removeObserver:self forKeyPath:@"playingTrackContainer"];
-    [super dealloc];
 }
 
 @end

@@ -114,10 +114,7 @@
 	[[SPSession sharedSession] removeObserver:self forKeyPath:@"userPlaylists.playlists"];
 	[self removeObserver:self forKeyPath:@"selectedURL"];
 	[self removeObserver:self forKeyPath:@"sidebar"];
-	self.groups = nil;
 	self.sidebar = nil;
-	self.selectedURL = nil;
-	[super dealloc];
 }
 
 -(NSDictionary *)unifiedDictionaryForItem:(id)item {

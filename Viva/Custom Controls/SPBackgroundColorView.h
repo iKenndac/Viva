@@ -14,6 +14,6 @@
     NSColor *backgroundColor;
 }
 
-@property (nonatomic, readwrite, retain) NSColor *backgroundColor;
+@property (nonatomic, readwrite, strong) NSColor *backgroundColor;
 
 @end

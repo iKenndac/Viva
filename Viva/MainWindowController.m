@@ -18,9 +18,9 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 @interface MainWindowController ()
 
-@property (nonatomic, retain, readwrite) NSViewController *currentViewController;
-@property (nonatomic, retain, readwrite) FooterViewController *footerViewController;
-@property (nonatomic, retain, readwrite) VivaURLNavigationController *navigationController;
+@property (nonatomic, strong, readwrite) NSViewController *currentViewController;
+@property (nonatomic, strong, readwrite) FooterViewController *footerViewController;
+@property (nonatomic, strong, readwrite) VivaURLNavigationController *navigationController;
 
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
@@ -55,10 +55,6 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	[self.sidebarController removeObserver:self forKeyPath:@"selectedURL"];
 	[self removeObserver:self forKeyPath:@"navigationController.thePresent"];
 	
-	self.navigationController = nil;
-	self.currentViewController = nil;
-	self.footerViewController = nil;
-    [super dealloc];
 }
 
 - (void)windowDidLoad
@@ -78,7 +74,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	[self addObserver:self
 		   forKeyPath:@"liveSearch.latestSearch.searchInProgress"
 			  options:0
-			  context:kVivaWindowControllerLiveSearchObservationContext];
+			  context:(__bridge void *)kVivaWindowControllerLiveSearchObservationContext];
 	
 	[self.sidebarController addObserver:self
 							 forKeyPath:@"selectedURL"
@@ -97,7 +93,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
 	[self.footerViewContainer addSubview:footerViewController.view];
 	
-	self.navigationController = [[[VivaURLNavigationController alloc] initWithUserDefaultsKey:kVivaMainViewHistoryUserDefaultsKey] autorelease];
+	self.navigationController = [[VivaURLNavigationController alloc] initWithUserDefaultsKey:kVivaMainViewHistoryUserDefaultsKey];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:footerViewController
 											 selector:@selector(splitViewDidResizeSubviews:)
@@ -110,15 +106,15 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
    
-	if (context == kVivaWindowControllerLiveSearchObservationContext) {
+	if (context == (__bridge void *)kVivaWindowControllerLiveSearchObservationContext) {
 		if (!self.liveSearch.latestSearch.searchInProgress && !self.searchPopover.isShown && self.searchField.stringValue.length > 0) {
 			
-            self.searchPopover = [[[NSPopover alloc] init] autorelease];
+            self.searchPopover = [[NSPopover alloc] init];
             
 			NSText *editor = [self.window fieldEditor:YES forObject:self.searchField];
 			NSRange selection = editor.selectedRange;
 			
-			LiveSearchViewController *ls = [[[LiveSearchViewController alloc] init] autorelease];
+			LiveSearchViewController *ls = [[LiveSearchViewController alloc] init];
 			ls.popover = self.searchPopover;
 			
 			self.searchPopover.contentViewController = ls;
@@ -274,9 +270,9 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			 beginSheetModalForWindow:[self window]
 			 modalDelegate:self
 			 didEndSelector:@selector(confirmPlaylistDeletionSheetDidEnd:returnCode:contextInfo:)
-			 contextInfo:playlist];
+			 contextInfo:(__bridge void *)playlist];
 		} else {
-			[self confirmPlaylistDeletionSheetDidEnd:nil returnCode:NSAlertDefaultReturn contextInfo:playlist];
+			[self confirmPlaylistDeletionSheetDidEnd:nil returnCode:NSAlertDefaultReturn contextInfo:(__bridge void *)playlist];
 		}
 	} else {
 		NSBeep();
@@ -286,8 +282,8 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	
 	if (returnCode == NSAlertDefaultReturn) {
-		SPPlaylist *playlist = [(id)contextInfo representedObject];
-		SPPlaylistFolder *parent = [[self.sourceList parentForItem:contextInfo] representedObject];
+		SPPlaylist *playlist = [(__bridge id)contextInfo representedObject];
+		SPPlaylistFolder *parent = [[self.sourceList parentForItem:(__bridge id)contextInfo] representedObject];
 		
 		if (parent != nil) {
 			[parent.playlists removeObject:playlist];
@@ -345,7 +341,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 												inSession:[SPSession sharedSession]];
 	
 	if (self.liveSearch == nil) {
-		self.liveSearch = [[[LiveSearch alloc] initWithInitialSearch:newSearch] autorelease];
+		self.liveSearch = [[LiveSearch alloc] initWithInitialSearch:newSearch];
 	} else {
 		self.liveSearch.latestSearch = newSearch;
 	}

@@ -10,13 +10,13 @@
 #import "SPBackgroundImageView.h"
 
 @interface LiveSearchViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
-	NSTableView *tableView;
-	SPBackgroundImageView *gutterView;
-	NSPopover *popover;
+	NSTableView *__weak tableView;
+	SPBackgroundImageView *__weak gutterView;
+	NSPopover *__weak popover;
 }
 
-@property (assign) NSPopover *popover;
-@property (assign) IBOutlet NSTableView *tableView;
-@property (assign) IBOutlet SPBackgroundImageView *gutterView;
+@property (weak) NSPopover *popover;
+@property (weak) IBOutlet NSTableView *tableView;
+@property (weak) IBOutlet SPBackgroundImageView *gutterView;
 
 @end

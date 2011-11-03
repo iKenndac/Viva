@@ -16,7 +16,6 @@
 		5004701B13563C08000EA08A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701A13563C08000EA08A /* Carbon.framework */; };
 		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
 		5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */; };
-		5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5008416E1350F40000A2967E /* SPCircularBuffer.m */; };
 		500B86AA13616A23005FC734 /* VivaSortableTrackListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86A813616A23005FC734 /* VivaSortableTrackListController.m */; };
 		500B86B11361BC2D005FC734 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */; };
 		500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */; };
@@ -101,6 +100,8 @@
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
 		50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */ = {isa = PBXBuildFile; fileRef = 50B19FDB134A443900D428FF /* Viva TODO.taskpaper */; };
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
+		50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */; };
+		50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */; };
 		50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */; };
 		50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */; };
 		50B72AD6143768E90082E027 /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD5143768E90082E027 /* InboxViewController.m */; };
@@ -203,8 +204,6 @@
 		5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaInternalURLManager.m; sourceTree = "<group>"; };
 		500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackContextViewController.h; sourceTree = "<group>"; };
 		500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackContextViewController.m; sourceTree = "<group>"; };
-		5008416D1350F40000A2967E /* SPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCircularBuffer.h; sourceTree = "<group>"; };
-		5008416E1350F40000A2967E /* SPCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCircularBuffer.m; sourceTree = "<group>"; };
 		500B86A713616A23005FC734 /* VivaSortableTrackListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaSortableTrackListController.h; sourceTree = "<group>"; };
 		500B86A813616A23005FC734 /* VivaSortableTrackListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaSortableTrackListController.m; sourceTree = "<group>"; };
 		500B86AE1361BC2D005FC734 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
@@ -313,6 +312,10 @@
 		50B19FDB134A443900D428FF /* Viva TODO.taskpaper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva TODO.taskpaper"; sourceTree = SOURCE_ROOT; };
 		50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPFooterTextFieldCell.h; path = "Custom Controls/SPFooterTextFieldCell.h"; sourceTree = "<group>"; };
 		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
+		50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCircularBuffer.h; path = "cocoalibspotify/Playback Helper Classes/SPCircularBuffer.h"; sourceTree = SOURCE_ROOT; };
+		50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPCircularBuffer.m; path = "cocoalibspotify/Playback Helper Classes/SPCircularBuffer.m"; sourceTree = SOURCE_ROOT; };
+		50B4774F1462CE4200B04A51 /* SPPlaylistDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPlaylistDelegateProxy.h; sourceTree = "<group>"; };
+		50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPlaylistDelegateProxy.m; sourceTree = "<group>"; };
 		50B4AA0914372D42007EE67F /* SPLinkableItemTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLinkableItemTableCellView.h; sourceTree = "<group>"; };
 		50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLinkableItemTableCellView.m; sourceTree = "<group>"; };
 		50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPLinkableItemTableCellView.xib; sourceTree = "<group>"; };
@@ -438,8 +441,8 @@
 			children = (
 				506F347613438755002BA308 /* VivaPlaybackManager.h */,
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
-				5008416D1350F40000A2967E /* SPCircularBuffer.h */,
-				5008416E1350F40000A2967E /* SPCircularBuffer.m */,
+				50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */,
+				50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */,
 			);
 			name = Playback;
 			sourceTree = "<group>";
@@ -817,6 +820,8 @@
 		50C7B3DC132E39700055EDE0 /* Playlist View */ = {
 			isa = PBXGroup;
 			children = (
+				50B4774F1462CE4200B04A51 /* SPPlaylistDelegateProxy.h */,
+				50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */,
 				50C7B3B7132E329A0055EDE0 /* PlaylistViewController.h */,
 				50C7B3B8132E329A0055EDE0 /* PlaylistViewController.m */,
 				50C7B3B9132E329A0055EDE0 /* PlaylistViewController.xib */,
@@ -1152,7 +1157,6 @@
 				50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */,
 				5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */,
 				5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */,
-				5008416F1350F40000A2967E /* SPCircularBuffer.m in Sources */,
 				50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */,
 				5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */,
 				5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */,
@@ -1176,6 +1180,8 @@
 				50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */,
 				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
 				50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */,
+				50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */,
+				50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1258,6 +1264,7 @@
 		503D62F313257D92007772CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
@@ -1269,6 +1276,7 @@
 		503D62F413257D92007772CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";

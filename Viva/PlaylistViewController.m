@@ -10,10 +10,12 @@
 #import "VivaAppDelegate.h"
 #import "VivaTrackInContainerReference.h"
 #import "Constants.h"
+#import "SPPlaylistDelegateProxy.h"
 
 @interface PlaylistViewController ()
 
-@property (nonatomic, readwrite, retain) SPPlaylist *playlist;
+@property (nonatomic, readwrite, strong) SPPlaylist *playlist;
+@property (nonatomic, readwrite, strong) SPPlaylistDelegateProxy *playlistProxy;
 
 -(void)rebuildTrackContainers;
 -(NSArray *)trackSnapshot;
@@ -34,8 +36,10 @@
 				  options:0
 				  context:nil];
 		
+		self.playlistProxy = [[SPPlaylistDelegateProxy alloc] initWithProxyReceiver:self];
+		
 		self.playlist = [[SPSession sharedSession] playlistForURL:aURL];
-		self.playlist.delegate = self;
+		self.playlist.delegate = self.playlistProxy;
 	}
 	return self;
 }
@@ -80,13 +84,14 @@
 	for (SPPlaylistItem *anItem in self.playlist.items) {
 		
 		if ([anItem.item isKindOfClass:[SPTrack class]])
-			[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:[anItem item]
-																			   inContainer:self.playlist] autorelease]];
+			[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:[anItem item]
+																			   inContainer:self.playlist]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
 
 @synthesize playlist;
+@synthesize playlistProxy;
 
 -(void)deleteBackward:(id)sender {
 	
@@ -117,8 +122,8 @@
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[tracks count]];
 	
 	for (SPTrack *newTrack in tracks) {
-		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:newTrack
-																		   inContainer:self.playlist] autorelease]];
+		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:newTrack
+																		   inContainer:self.playlist]];
 	}
 	
 	[self willChangeValueForKey:@"trackContainers"];
@@ -223,8 +228,6 @@
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"playlist.items"];
-	self.playlist = nil;
-    [super dealloc];
 }
 
 @end

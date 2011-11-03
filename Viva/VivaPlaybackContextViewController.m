@@ -44,10 +44,5 @@
 													  userInfo:[NSDictionary dictionaryWithObject:trackContainer forKey:kPlaybackInitialTrackContainerKey]];
 }
 
-- (void)dealloc {
-	self.playingTrackContainer = nil;
-	self.spotifyURL = nil;
-    [super dealloc];
-}
 
 @end

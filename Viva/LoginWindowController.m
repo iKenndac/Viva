@@ -36,7 +36,6 @@
 
 -(void)dealloc {
 	[self removeObserver:self forKeyPath:@"isLoggingIn"];
-	[super dealloc];
 }
 
 - (void)windowDidLoad {

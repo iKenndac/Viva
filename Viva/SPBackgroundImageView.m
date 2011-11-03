@@ -24,8 +24,6 @@
 
 -(void)setBackgroundImage:(NSImage *)aBackgroundImage {
 	if (aBackgroundImage != backgroundImage) {
-		[aBackgroundImage retain];
-		[backgroundImage release];
 		backgroundImage = aBackgroundImage;
 		[self setNeedsDisplay:YES];
 	}
@@ -34,7 +32,6 @@
 - (void)dealloc
 {
 	self.backgroundImage = nil;
-    [super dealloc];
 }
 
 - (void)drawRect:(NSRect)dirtyRect

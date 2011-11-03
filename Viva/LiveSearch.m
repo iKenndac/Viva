@@ -14,7 +14,7 @@
 @property (nonatomic, readwrite, copy) NSArray *topTracks;
 @property (nonatomic, readwrite, copy) NSArray *topArtists;
 @property (nonatomic, readwrite, copy) NSArray *topAlbums;
-@property (nonatomic, readwrite, retain) id topHit;
+@property (nonatomic, readwrite, strong) id topHit;
 
 @end
 
@@ -101,17 +101,11 @@
 
 -(void)dealloc {
 	
-	self.topTracks = nil;
-	self.topArtists = nil;
-	self.topAlbums = nil;
-	self.topHit = nil;
 	
 	[self removeObserver:self
 			  forKeyPath:@"latestSearch.searchInProgress"];
 	
 	[self clear];
-	self.latestSearch = nil;
-	[super dealloc];
 }
 
 @end

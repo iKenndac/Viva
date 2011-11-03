@@ -15,19 +15,19 @@
 
 @interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate> {
 @private
-    NSWindow *window;
+    NSWindow *__unsafe_unretained window;
 	LoginWindowController *loginWindowController;
 	MainWindowController *mainWindowController;
 	VivaPlaybackManager *playbackManager;
-	NSMenu *dockMenu;
+	NSMenu *__weak dockMenu;
 	SPMediaKeyTap *mediaKeyHandler;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (retain, readonly) VivaPlaybackManager *playbackManager; 
-@property (assign) IBOutlet NSMenu *dockMenu;
-@property (retain, readonly) SPMediaKeyTap *mediaKeyHandler;
-@property (readonly) SPSession *session;
+@property (unsafe_unretained) IBOutlet NSWindow *window;
+@property (strong, readonly) VivaPlaybackManager *playbackManager; 
+@property (weak) IBOutlet NSMenu *dockMenu;
+@property (strong, readonly) SPMediaKeyTap *mediaKeyHandler;
+@property (weak, readonly) SPSession *session;
 
 -(void)logOut;
 
