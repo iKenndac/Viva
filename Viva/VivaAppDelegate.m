@@ -106,10 +106,15 @@ extern char ***_NSGetArgv(void);
 	return YES;
 }
 
--(void)applicationWillTerminate:(NSNotification *)notification {
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+	if ([SPSession sharedSession].connectionState == SP_CONNECTION_STATE_LOGGED_OUT ||
+		[SPSession sharedSession].connectionState == SP_CONNECTION_STATE_UNDEFINED) 
+		return NSTerminateNow;
 	
 	[[SPSession sharedSession] logout];
+	return NSTerminateLater;
 }
+
 
 #pragma mark -
 
@@ -226,7 +231,12 @@ extern char ***_NSGetArgv(void);
 	loginWindowController.isLoggingIn = NO;
 }
     
--(void)sessionDidLogOut:(SPSession *)aSession; {}
+-(void)sessionDidLogOut:(SPSession *)aSession; {
+    if ([NSRunLoop currentRunLoop].currentMode == NSModalPanelRunLoopMode)
+        [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+    // Only quit when logging out if we're in NSModalPanelRunLoopMode, which is what
+    // returning NSTerminateLater in applicationWillTerminate causes.
+}
 
 -(void)session:(SPSession *)aSession didEncounterNetworkError:(NSError *)error; {}
 -(void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage; {}

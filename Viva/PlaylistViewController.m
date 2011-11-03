@@ -10,7 +10,6 @@
 #import "VivaAppDelegate.h"
 #import "VivaTrackInContainerReference.h"
 #import "Constants.h"
-#import "SPPlaylistDelegateProxy.h"
 
 @interface PlaylistViewController ()
 

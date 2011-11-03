@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "VivaSortableTrackListController.h"
+#import "SPPlaylistDelegateProxy.h"
 
 @interface PlaylistViewController : VivaSortableTrackListController <SPPlaylistDelegate> {
 @private
@@ -16,5 +17,6 @@
 }
 
 @property (nonatomic, readonly, strong) SPPlaylist *playlist;
+@property (nonatomic, readonly, strong) SPPlaylistDelegateProxy *playlistProxy;
 
 @end

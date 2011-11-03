@@ -23,9 +23,9 @@
 									forKeyPath:@"inboxPlaylist"
 									   options:0
 									   context:nil];
-		
+
 		self.playlist = [[SPSession sharedSession] inboxPlaylist];
-		self.playlist.delegate = self;
+		self.playlist.delegate = self.playlistProxy;
 	}
 	return self;
 }
@@ -33,7 +33,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"inboxPlaylist"]) {
         self.playlist = [[SPSession sharedSession] inboxPlaylist];
-		self.playlist.delegate = self;
+		self.playlist.delegate = self.playlistProxy;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
