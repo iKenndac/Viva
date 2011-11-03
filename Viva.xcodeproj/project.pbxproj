@@ -1258,12 +1258,9 @@
 		503D62F313257D92007772CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/cocoalibspotify/Mac Framework/libspotify-9.1.32-Darwin-universal/\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1273,12 +1270,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/cocoalibspotify/Mac Framework/libspotify-9.1.32-Darwin-universal/\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
-				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -501,7 +501,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		}
 		
 		SPPlaylist *targetPlaylist = [item representedObject];
-		[targetPlaylist.tracks addObjectsFromArray:tracksToAdd];
+		[targetPlaylist.items addObjectsFromArray:tracksToAdd];
 		return YES;
 	}
 	

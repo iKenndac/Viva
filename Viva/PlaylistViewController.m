@@ -16,6 +16,7 @@
 @property (nonatomic, readwrite, retain) SPPlaylist *playlist;
 
 -(void)rebuildTrackContainers;
+-(NSArray *)trackSnapshot;
 
 @end
 
@@ -29,7 +30,7 @@
 	
 	if (self = [super initWithObjectFromURL:aURL nibName:nibName]) {
 		[self addObserver:self
-			   forKeyPath:@"playlist.tracks"
+			   forKeyPath:@"playlist.items"
 				  options:0
 				  context:nil];
 		
@@ -41,7 +42,7 @@
 
 
 -(void)awakeFromNib {
-
+	
 	[super awakeFromNib];
 	
 	[self.trackTable setDraggingSourceOperationMask:NSDragOperationNone forLocal:NO];
@@ -50,10 +51,10 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"playlist.tracks"]) {
+    if ([keyPath isEqualToString:@"playlist.items"]) {
         
 		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
-		if (![containerTracks isEqualToArray:self.playlist.tracks]) {
+		if (![containerTracks isEqualToArray:self.trackSnapshot]) {
 			[self rebuildTrackContainers];
 		}
 		
@@ -62,13 +63,25 @@
     }
 }
 
--(void)rebuildTrackContainers {
-
-	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.tracks count]];
+-(NSArray *)trackSnapshot {
+	NSMutableArray *trackArray = [NSMutableArray arrayWithCapacity:[self.playlist.items count]];
 	
-	for (SPTrack *aTrack in self.playlist.tracks) {
-		[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
-																		   inContainer:self.playlist] autorelease]];
+	for (SPPlaylistItem *anItem in self.playlist.items) {
+		if ([[anItem itemClass] isKindOfClass:[SPTrack class]])
+			[trackArray addObject:anItem.item];
+	}
+	return [NSArray arrayWithArray:trackArray];
+}
+
+-(void)rebuildTrackContainers {
+	
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.items count]];
+	
+	for (SPPlaylistItem *anItem in self.playlist.items) {
+		
+		if ([anItem.item isKindOfClass:[SPTrack class]])
+			[newContainers addObject:[[[VivaTrackInContainerReference alloc] initWithTrack:[anItem item]
+																			   inContainer:self.playlist] autorelease]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -81,7 +94,7 @@
 		NSBeep();
 		return;
 	}
-	[self.playlist.tracks removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
+	[self.playlist.items removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
 }
 
 #pragma mark -
@@ -116,7 +129,7 @@
 -(void)playlist:(SPPlaylist *)aPlaylist didAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)newIndexes {}
 
 -(void)playlist:(SPPlaylist *)aPlaylist willMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
-
+	
 	[self willChangeValueForKey:@"trackContainers"];
 	NSArray *transientContainers = [self.trackContainers objectsAtIndexes:oldIndexes];
 	[self.trackContainers removeObjectsAtIndexes:oldIndexes];
@@ -171,19 +184,19 @@
 	
 	if (!dragData)
 		return NO;
-
+	
 	if ([info draggingSource] == self.trackTable) {
 		
 		NSIndexSet *trackIndexesToMove = [NSKeyedUnarchiver unarchiveObjectWithData:dragData];
 		
 		if (([NSEvent modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) {
 			// Copy
-			NSArray *tracksToMove = [self.playlist.tracks objectsAtIndexes:trackIndexesToMove];
-			[self.playlist.tracks insertObjects:tracksToMove 
-									  atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToMove count])]];
-
+			NSArray *tracksToMove = [self.playlist.items objectsAtIndexes:trackIndexesToMove];
+			[self.playlist.items insertObjects:tracksToMove 
+									 atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToMove count])]];
+			
 		} else {
-			[self.playlist moveTracksAtIndexes:trackIndexesToMove toIndex:row error:nil];
+			[self.playlist moveItemsAtIndexes:trackIndexesToMove toIndex:row error:nil];
 		}
 		
 		return YES;
@@ -200,8 +213,8 @@
 			}
 		}
 		
-		[self.playlist.tracks insertObjects:tracksToAdd 
-								  atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToAdd count])]];
+		[self.playlist.items insertObjects:tracksToAdd 
+								 atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToAdd count])]];
 		return YES;
 	}
 	
@@ -209,7 +222,7 @@
 }
 
 - (void)dealloc {
-	[self removeObserver:self forKeyPath:@"playlist.tracks"];
+	[self removeObserver:self forKeyPath:@"playlist.items"];
 	self.playlist = nil;
     [super dealloc];
 }

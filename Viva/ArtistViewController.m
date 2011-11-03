@@ -29,7 +29,8 @@
 		
 		SPSession *appSession = [[NSApp delegate] session];
 		self.artistBrowse = [[[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL]
-																 inSession:appSession]
+																 inSession:appSession
+															   type:SP_ARTISTBROWSE_NO_TRACKS]
 							autorelease];
 	}
 	return self;

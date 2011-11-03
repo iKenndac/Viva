@@ -21,7 +21,15 @@
 	if ([[self image] image] != nil) {
 		return [[self image] image];
 	} else {
-		return [NSImage mosaicImageWithTracks:[self tracks]];
+		
+		NSMutableArray *tracks = [NSMutableArray arrayWithCapacity:self.items.count];
+		
+		for (SPPlaylistItem *anItem in self.items) {
+			if (anItem.itemClass == [SPTrack class])
+				[tracks addObject:anItem.item];
+		}
+		
+		return [NSImage mosaicImageWithTracks:tracks];
 	}
 }
 
