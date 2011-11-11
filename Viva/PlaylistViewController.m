@@ -57,7 +57,7 @@
     if ([keyPath isEqualToString:@"playlist.items"]) {
         
 		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
-		if (![containerTracks isEqualToArray:self.trackSnapshot]) {
+		if (self.trackSnapshot.count == 0 || (![containerTracks isEqualToArray:self.trackSnapshot])) {
 			[self rebuildTrackContainers];
 		}
 		
