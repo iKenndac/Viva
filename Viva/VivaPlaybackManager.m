@@ -17,7 +17,7 @@
 @property (readwrite, strong) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong) SPSession *playbackSession;
 
--(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack;
+-(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error;
 
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
@@ -181,11 +181,11 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
 	
 	// User double-clicked, so reset everything and start again.
-	[self.playbackSession setPlaying:NO];
+	self.playbackSession.playing = NO;
+    self.currentTrackContainer = nil;
 	[self.playbackSession unloadPlayback];
 	[self teardownCoreAudio];
 	[self resetShuffledPool];
-	
 	[self.audioBuffer clear];
     
 	if (![[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
@@ -207,23 +207,29 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if (container == nil && self.playbackContext.trackContainersForPlayback.count > 0)
         container = [self.playbackContext.trackContainersForPlayback objectAtIndex:0];
     
-    if (self.shufflePlayback)
-        [self addTrackContainerToShufflePool:container];
-    
-    if (container) {
-        [self playTrackContainerInCurrentContext:container];
+    NSError *error = nil;
+    if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
+       
         self.playbackSession.playing = YES;
+    } else if (error) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
     }
 }
 
--(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack {
+-(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error {
 	
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
-	self.currentTrackContainer = newTrack;
-	self.currentTrackPosition = 0.0;
-    if (self.shufflePlayback)
+    self.currentTrackPosition = 0.0;    
+    
+	BOOL isPlaying = [self.playbackSession playTrack:newTrack.track error:error];
+    
+    if (isPlaying && self.shufflePlayback) {
         [self addTrackContainerToShufflePool:currentTrackContainer];
-	[self.playbackSession playTrack:self.currentTrackContainer.track error:nil];
+    }
+    
+    if (isPlaying) self.currentTrackContainer = newTrack;
+    
+    return isPlaying;
 }
 	
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition {
@@ -281,13 +287,15 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if (self.shufflePlayback && self.currentTrackContainer != nil)
         [self addTrackContainerToPastShuffleHistory:self.currentTrackContainer];
     
-	if (nextContainer != nil) {
-		[self playTrackContainerInCurrentContext:nextContainer];	
+    NSError *error = nil;
+	if (nextContainer != nil && [self playTrackContainerInCurrentContext:nextContainer error:&error]) {
 		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self teardownCoreAudio];
 		self.currentTrackPosition = 0;
+        if (error)
+            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
 	}
 }
 
@@ -339,14 +347,16 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	
     if (self.shufflePlayback && self.currentTrackContainer != nil)
         [self addTrackContainerToFutureShuffleHistory:self.currentTrackContainer];
-    
-	if (previousContainer != nil) {
-		[self playTrackContainerInCurrentContext:previousContainer];	
+
+    NSError *error = nil;
+	if (previousContainer != nil && [self playTrackContainerInCurrentContext:previousContainer error:&error]) {
 		self.playbackSession.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self teardownCoreAudio];
 		self.currentTrackPosition = 0;
+        if (error)
+            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
 	}
 }
 
