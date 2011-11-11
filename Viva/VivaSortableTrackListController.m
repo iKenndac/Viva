@@ -61,8 +61,15 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"playingTrackContainer"] || [keyPath isEqualToString:@"playingTrackContainerIsCurrentlyPlaying"]) {
 		[self.trackTable reloadData];
-		if (self.playingTrackContainer != nil)
-			[self.trackTable scrollRowToVisible:[self.trackContainerArrayController.arrangedObjects indexOfObject:self.playingTrackContainer]];
+		if (self.playingTrackContainer != nil) {
+            
+            NSInteger rowIndex = [self.trackContainerArrayController.arrangedObjects indexOfObject:self.playingTrackContainer];
+            NSRect rowRect = [self.trackTable rectOfRow:rowIndex];
+            
+            if (!NSContainsRect([self.trackTable visibleRect], rowRect))
+                [self.trackTable scrollRowToVisible:rowIndex];
+        }
+			
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -161,7 +168,13 @@
 				[aCell setAlternateImage:nil];
 			}
 		}
-	}	
+	} else {
+        
+        if (rowIndex < [[self.trackContainerArrayController arrangedObjects] count]) {
+			id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:rowIndex];
+            [aCell setEnabled:container.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE];
+        }
+    }
 }
 
 -(NSImage *)tableView:(NSTableView *)tableView dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset {

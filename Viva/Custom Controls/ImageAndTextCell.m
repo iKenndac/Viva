@@ -139,7 +139,8 @@
 	[ps setLineBreakMode:NSLineBreakByTruncatingTail];
 	
 	[string addAttribute:NSParagraphStyleAttributeName value:ps range:NSMakeRange(0, [string length])];
-	
+	[string addAttribute:NSForegroundColorAttributeName value:[self isEnabled] ? [NSColor blackColor] : [NSColor disabledControlTextColor] range:NSMakeRange(0, [string length])];
+    
 	if (string) {
 		NSSize textSize = [string size];
 		if (cellFrame.size.height > textSize.height) {

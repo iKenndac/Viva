@@ -12,7 +12,6 @@
 @private
 	NSImage	*image;
 }
-
 - (void) setImage:(NSImage *)anImage;
 - (NSImage *) image;
 
