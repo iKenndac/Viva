@@ -23,7 +23,7 @@
 									forKeyPath:@"inboxPlaylist"
 									   options:0
 									   context:nil];
-
+		
 		self.playlist = [[SPSession sharedSession] inboxPlaylist];
 		self.playlist.delegate = self.playlistProxy;
 	}

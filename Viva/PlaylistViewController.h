@@ -14,9 +14,11 @@
 @private
 
 	SPPlaylist *playlist;
+	SPPlaylistDelegateProxy *playlistProxy;
 }
 
 @property (nonatomic, readonly, strong) SPPlaylist *playlist;
 @property (nonatomic, readonly, strong) SPPlaylistDelegateProxy *playlistProxy;
 
 @end
+
