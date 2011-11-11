@@ -435,13 +435,21 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSMutableArray *tracks = [[[self playbackContext] trackContainersForPlayback] mutableCopy];
     [tracks removeObjectsInArray:shuffledPool];
     
+    NSMutableArray *unavailableTracks = [NSMutableArray array];
+    
+    for (id <VivaTrackContainer> trackContainer in tracks) {
+        if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE)
+            [unavailableTracks addObject:trackContainer];
+    }
+    
+    [tracks removeObjectsInArray:unavailableTracks];
+
+    if (tracks.count == 0)
+        return nil;
+    
     id <VivaTrackContainer> trackContainer = [tracks randomObject];
     [self addTrackContainerToShufflePool:trackContainer];
-    if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE) {
-        // Beware ye stack overflows!
-        return [self randomAvailableTrackContainerInCurrentContext];
-    } else
-        return trackContainer;
+    return trackContainer;
 }
 
 -(void)addTrackContainerToShufflePool:(id <VivaTrackContainer>)track {
