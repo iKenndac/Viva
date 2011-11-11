@@ -21,6 +21,7 @@
 	VivaPlaybackManager *playbackManager;
 	NSMenu *__weak dockMenu;
 	SPMediaKeyTap *mediaKeyHandler;
+	NSURL *urlToHandleOnLogin;
 }
 
 @property (unsafe_unretained) IBOutlet NSWindow *window;
@@ -28,6 +29,7 @@
 @property (weak) IBOutlet NSMenu *dockMenu;
 @property (strong, readonly) SPMediaKeyTap *mediaKeyHandler;
 @property (weak, readonly) SPSession *session;
+@property (strong, readonly) NSURL *urlToHandleOnLogin;
 
 -(void)logOut;
 

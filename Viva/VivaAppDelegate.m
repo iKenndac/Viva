@@ -26,6 +26,9 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 
 @property (strong, readwrite) VivaPlaybackManager *playbackManager; 
 @property (strong, readwrite) SPMediaKeyTap *mediaKeyHandler;
+@property (strong, readwrite) NSURL *urlToHandleOnLogin;
+
+-(void)handleURL:(NSURL *)url;
 
 @end
 
@@ -35,6 +38,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @synthesize playbackManager;
 @synthesize dockMenu;
 @synthesize mediaKeyHandler;
+@synthesize urlToHandleOnLogin;
 
 -(SPSession *)session {
 	return [SPSession sharedSession];
@@ -224,6 +228,15 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
     
 	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
 	NSURL *url = [NSURL URLWithString:urlString];
+	[self handleURL:url];
+}
+
+-(void)handleURL:(NSURL *)url {
+	
+	if (!mainWindowController.window.isVisible) {
+		self.urlToHandleOnLogin = url;
+		return;
+	}
 	
 	if (![[VivaInternalURLManager sharedInstance] canHandleURL:url]) {
 		
@@ -241,7 +254,6 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 			}
 			return;
 		}
-		
 	}
 	mainWindowController.navigationController.thePresent = url;
 }
@@ -268,6 +280,12 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	[mainWindowController showWindow:nil];
 	[[loginWindowController window] orderOut:nil]; 
 	loginWindowController.isLoggingIn = NO;
+	
+	if (self.urlToHandleOnLogin != nil) {
+		[self handleURL:self.urlToHandleOnLogin];
+		self.urlToHandleOnLogin = nil;
+	}
+	
 }
 
 -(void)session:(SPSession *)aSession didFailToLoginWithError:(NSError *)error; {
