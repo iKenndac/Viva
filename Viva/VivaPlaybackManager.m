@@ -204,8 +204,17 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if (container == nil)
         container = [self nextTrackContainerInCurrentContext];
     
-    if (container == nil && self.playbackContext.trackContainersForPlayback.count > 0)
-        container = [self.playbackContext.trackContainersForPlayback objectAtIndex:0];
+    if (container == nil && self.playbackContext.trackContainersForPlayback.count > 0) {
+        
+        for (NSUInteger containerIndex = 0; containerIndex < self.playbackContext.trackContainersForPlayback.count; containerIndex++) {
+            id <VivaTrackContainer> potentialContainer = [self.playbackContext.trackContainersForPlayback objectAtIndex:containerIndex];
+            if (potentialContainer.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+                container = potentialContainer;
+                break;
+            }
+        }
+    }
+        
     
     NSError *error = nil;
     if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
@@ -263,10 +272,26 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (currentTrackIndex == NSNotFound ||
 		(currentTrackIndex == [self.playbackContext.trackContainersForPlayback count] - 1 && !self.loopPlayback)) {
 		return nil;
-	} else if (currentTrackIndex == [self.playbackContext.trackContainersForPlayback count] - 1) {
-		return [self.playbackContext.trackContainersForPlayback objectAtIndex:0];
+        
 	} else {
-		return [self.playbackContext.trackContainersForPlayback objectAtIndex:currentTrackIndex + 1];
+		
+        NSInteger newTrackIndex = 0;
+        
+        if (currentTrackIndex != [self.playbackContext.trackContainersForPlayback count] - 1)
+            newTrackIndex = currentTrackIndex + 1;
+        
+        id <VivaTrackContainer> nextTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
+        
+        while (!nextTrack.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+            
+            newTrackIndex++;
+            if (newTrackIndex >= self.playbackContext.trackContainersForPlayback.count) {
+                nextTrack = nil;
+                break;
+            }
+            nextTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
+        }
+        return nextTrack;
 	}
 }
 
@@ -324,11 +349,28 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (currentTrackIndex == NSNotFound ||
 		(currentTrackIndex == 0 && !self.loopPlayback)) {
 		return nil;
-	} else if (currentTrackIndex == 0) {
-		return [self.playbackContext.trackContainersForPlayback objectAtIndex:[self.playbackContext.trackContainersForPlayback count] - 1];
-	} else {
-		return [self.playbackContext.trackContainersForPlayback objectAtIndex:currentTrackIndex - 1];
-	}
+        
+        
+    } else {
+        
+        NSInteger newTrackIndex = [self.playbackContext.trackContainersForPlayback count] - 1;
+        
+        if (currentTrackIndex != 0)
+            newTrackIndex = currentTrackIndex - 1;
+        
+        id <VivaTrackContainer> previousTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
+        
+        while (!previousTrack.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+            
+            newTrackIndex--;
+            if (newTrackIndex < 0) {
+                previousTrack = nil;
+                break;
+            }
+            previousTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
+        }
+        return previousTrack;
+    }
 }
 
 -(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
@@ -390,12 +432,16 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 -(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext {
     
-    NSMutableArray *tracks = [[[self playbackContext] trackContainersForPlayback] mutableCopy];;
+    NSMutableArray *tracks = [[[self playbackContext] trackContainersForPlayback] mutableCopy];
     [tracks removeObjectsInArray:shuffledPool];
     
-    id <VivaTrackContainer> track = [tracks randomObject];
-    [self addTrackContainerToShufflePool:track];
-    return track;
+    id <VivaTrackContainer> trackContainer = [tracks randomObject];
+    [self addTrackContainerToShufflePool:trackContainer];
+    if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE) {
+        // Beware ye stack overflows!
+        return [self randomAvailableTrackContainerInCurrentContext];
+    } else
+        return trackContainer;
 }
 
 -(void)addTrackContainerToShufflePool:(id <VivaTrackContainer>)track {
