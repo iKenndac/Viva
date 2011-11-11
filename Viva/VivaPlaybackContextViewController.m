@@ -28,6 +28,9 @@
 	return self;
 }
 
+-(void)viewControllerDidActivateWithContext:(id)context {
+}
+
 @synthesize spotifyURL;
 @synthesize trackContainersForPlayback;
 @synthesize playingTrackContainer;

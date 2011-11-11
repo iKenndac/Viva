@@ -43,6 +43,21 @@
 			  context:nil];
 }
 
+-(void)viewControllerDidActivateWithContext:(id)context {
+	if ([context isKindOfClass:[SPTrack class]]) {
+		
+		for (id <VivaTrackContainer> container in self.trackContainerArrayController.arrangedObjects) {
+			
+			if ([container.track isEqual:context]) {
+				[self.trackTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.trackContainerArrayController.arrangedObjects indexOfObject:container]] 
+							 byExtendingSelection:NO];
+				[self.trackTable becomeFirstResponder];
+				return;
+			}
+		}
+	}
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"playingTrackContainer"] || [keyPath isEqualToString:@"playingTrackContainerIsCurrentlyPlaying"]) {
 		[self.trackTable reloadData];

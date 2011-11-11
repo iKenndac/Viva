@@ -171,12 +171,15 @@
 }
 
 -(void)outlineViewSelectionDidChange:(NSNotification *)aNotification {
-	id item = [self.sidebar itemAtRow:self.sidebar.selectedRow];
-	NSDictionary *itemDict = [self unifiedDictionaryForItem:item];
-	// Remove our internal observer so we don't infinite loop ourselves.
-	[self removeObserver:self forKeyPath:@"selectedURL"];
-	self.selectedURL = [itemDict valueForKey:SPSidebarURLKey];
-	[self addObserver:self forKeyPath:@"selectedURL" options:0 context:nil];
+	
+	if (self.sidebar.selectedRowIndexes.count > 0) {
+		id item = [self.sidebar itemAtRow:self.sidebar.selectedRow];
+		NSDictionary *itemDict = [self unifiedDictionaryForItem:item];
+		// Remove our internal observer so we don't infinite loop ourselves.
+		[self removeObserver:self forKeyPath:@"selectedURL"];
+		self.selectedURL = [itemDict valueForKey:SPSidebarURLKey];
+		[self addObserver:self forKeyPath:@"selectedURL" options:0 context:nil];
+	}
 }
 
 #pragma mark -

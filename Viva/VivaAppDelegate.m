@@ -20,6 +20,8 @@
 extern int *_NSGetArgc(void);
 extern char ***_NSGetArgv(void);
 
+static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformActionOnNotificationKVOContext";
+
 @interface VivaAppDelegate()
 
 @property (strong, readwrite) VivaPlaybackManager *playbackManager; 
@@ -39,6 +41,11 @@ extern char ***_NSGetArgv(void);
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
+	
+	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
+													   andSelector:@selector(handleURLEvent:withReplyEvent:)
+													 forEventClass:kInternetEventClass
+														andEventID:kAEGetURL];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 															 [SPMediaKeyTap defaultMediaKeyUserBundleIdentifiers], kMediaKeyUsingBundleIdentifiersDefaultsKey,
@@ -209,6 +216,49 @@ extern char ***_NSGetArgv(void);
 
 -(IBAction)performVolumeDownAction:(id)sender {
 	self.playbackManager.volume = MAX(0.0, self.playbackManager.volume - kVolumeStepSize);
+}
+
+#pragma mark -
+
+- (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
+    
+	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+	NSURL *url = [NSURL URLWithString:urlString];
+	
+	if (![[VivaInternalURLManager sharedInstance] canHandleURL:url]) {
+		
+		if ([url spotifyLinkType] == SP_LINKTYPE_TRACK) {
+			SPTrack *track = [[SPSession sharedSession] trackForURL:url];
+			
+			if (track.album.isLoaded) {
+				SPAlbum *album = track.album;
+				[mainWindowController navigateToURL:album.spotifyURL withContext:track];
+			} else {
+				[track addObserver:self
+						forKeyPath:@"album.loaded"
+						   options:0
+						   context:(__bridge void *)kSPPerformActionOnNotificationKVOContext];
+			}
+			return;
+		}
+		
+	}
+	mainWindowController.navigationController.thePresent = url;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+	if (context == (__bridge void *)kSPPerformActionOnNotificationKVOContext) {
+		if ([keyPath isEqualToString:@"album.loaded"]) {
+			SPTrack *track = object;
+			[track removeObserver:self forKeyPath:@"album.loaded"];
+			SPAlbum *album = track.album;
+			[mainWindowController navigateToURL:album.spotifyURL withContext:track];
+		}
+		
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark -

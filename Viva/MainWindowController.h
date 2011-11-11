@@ -12,6 +12,7 @@
 #import "LiveSearch.h"
 #import "MainWindowSidebarController.h"
 #import "SPBackgroundColorView.h"
+#import "VivaInternalURLManager.h"
 
 @interface MainWindowController : NSWindowController <NSSplitViewDelegate, VivaPlaybackManagerDataSource, NSPopoverDelegate, NSTextFieldDelegate> {
 @private
@@ -22,7 +23,7 @@
 	SPBackgroundColorView *__weak sourceListBackgroundColorView;
 	NSBox *__weak contentBox;
 	MainWindowSidebarController *__weak sidebarController;
-	NSViewController *currentViewController;
+	NSViewController <VivaViewController> *currentViewController;
 	VivaURLNavigationController *navigationController;
 	NSOutlineView *__weak sourceList;
 	NSPopover *searchPopover;
@@ -39,7 +40,7 @@
 @property (weak) IBOutlet NSView *footerViewContainer;
 @property (weak) IBOutlet NSBox *contentBox;
 @property (weak) IBOutlet MainWindowSidebarController *sidebarController;
-@property (nonatomic, strong, readonly) NSViewController *currentViewController;
+@property (nonatomic, strong, readonly) NSViewController <VivaViewController> *currentViewController;
 @property (nonatomic, strong, readonly) FooterViewController *footerViewController;
 @property (nonatomic, strong, readonly) VivaURLNavigationController *navigationController;
 @property (weak) IBOutlet NSOutlineView *sourceList;
@@ -51,6 +52,8 @@
 @property (weak) IBOutlet NSTextField *invalidURLWarningLabel;
 
 @property (readwrite, nonatomic, strong) LiveSearch *liveSearch;
+
+-(void)navigateToURL:(NSURL *)aURL withContext:(id)context;
 
 - (IBAction)showOpenURLSheet:(id)sender;
 - (IBAction)openURL:(id)sender;

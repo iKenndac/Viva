@@ -52,7 +52,7 @@ static VivaInternalURLManager *sharedInstance;
 	return NO;
 }
 
--(NSViewController *)viewControllerForURL:(NSURL *)aURL {
+-(NSViewController <VivaViewController> *)viewControllerForURL:(NSURL *)aURL {
 	
 	if ([urlToViewControllerLookupTable objectForKey:aURL] != nil) {
 		return [urlToViewControllerLookupTable objectForKey:aURL];

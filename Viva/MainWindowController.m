@@ -237,6 +237,16 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 #pragma mark -
 
+-(void)navigateToURL:(NSURL *)aURL withContext:(id)context {
+	
+	if ([[VivaInternalURLManager sharedInstance] canHandleURL:aURL]) {
+		self.navigationController.thePresent = aURL;
+		[self.currentViewController viewControllerDidActivateWithContext:context];
+	}
+}
+
+#pragma mark -
+
 -(void)keyDown:(NSEvent *)theEvent {
 	
 	if ([theEvent keyCode] == 49) {

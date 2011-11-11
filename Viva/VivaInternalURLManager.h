@@ -11,6 +11,7 @@
 @protocol VivaViewController <NSObject>
 
 -(id)initWithObjectFromURL:(NSURL *)aURL;
+-(void)viewControllerDidActivateWithContext:(id)context;
 
 @end
 
@@ -26,7 +27,7 @@
 -(void)registerViewControllerClass:(Class)aViewControllerClass forURLScheme:(NSString *)urlSchemePrefix;
 
 -(BOOL)canHandleURL:(NSURL *)aURL;
--(NSViewController *)viewControllerForURL:(NSURL *)aURL;
+-(NSViewController <VivaViewController> *)viewControllerForURL:(NSURL *)aURL;
 
 
 @end
