@@ -9,6 +9,7 @@
 #import "FooterViewController.h"
 #import "VivaPlaybackManager.h"
 #import "Constants.h"
+#import "LastFMController.h"
 
 @interface FooterViewController ()
 
@@ -156,6 +157,9 @@
 
 - (IBAction)starredButtonWasClicked:(id)sender {
 	self.playbackManager.currentTrack.starred = !self.playbackManager.currentTrack.starred;
+	
+	if (self.playbackManager.currentTrack.starred && [[NSUserDefaults standardUserDefaults] boolForKey:kStarEqualsLastFMLoveUserDefaultsKey])
+		[[LastFMController sharedInstance] notifyLoveTrack:self.playbackManager.currentTrack];
 }
 
 - (IBAction)repeatButtonWasClicked:(id)sender {
