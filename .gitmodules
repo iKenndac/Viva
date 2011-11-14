@@ -8,3 +8,6 @@
 [submodule "EMKeychain"]
 	path = EMKeychain
 	url = git@github.com:iKenndac/EMKeychain.git
+[submodule "Sparkle"]
+	path = Sparkle
+	url = https://github.com/andymatuschak/Sparkle.git
