@@ -2,3 +2,9 @@
 	path = cocoalibspotify
 	url = git@git.spotify.net:cocoalibspotify.git
 	
+[submodule "Scribbler"]
+	path = Scribbler
+	url = git@github.com:iKenndac/Scribbler.git
+[submodule "EMKeychain"]
+	path = EMKeychain
+	url = git@github.com:iKenndac/EMKeychain.git

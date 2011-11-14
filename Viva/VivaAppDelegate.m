@@ -53,6 +53,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 															 [SPMediaKeyTap defaultMediaKeyUserBundleIdentifiers], kMediaKeyUsingBundleIdentifiersDefaultsKey,
+															 [NSNumber numberWithBool:YES], kScrobblePlaybackToLastFMUserDefaultsKey,
+															 [NSNumber numberWithBool:YES], kStarEqualsLastFMLoveUserDefaultsKey,
 															 nil]];
 	
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[PlaylistViewController class] forURLScheme:@"spotify:user"];

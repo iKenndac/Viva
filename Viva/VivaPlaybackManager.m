@@ -9,6 +9,7 @@
 #import "VivaPlaybackManager.h"
 #import "Constants.h"
 #import "SPArrayExtensions.h"
+#import "LastFMController.h"
 
 @interface VivaPlaybackManager  ()
 
@@ -30,6 +31,10 @@
 -(void)resetShuffleHistory;
 -(id <VivaTrackContainer>)randomAvailableTrackContainerInCurrentContext;
 -(void)addTrackContainerToShufflePool:(id <VivaTrackContainer>)track;
+
+// Last.fm
+
+-(void)scrobbleTrackStopped:(SPTrack *)track atPosition:(NSTimeInterval)position;
 
 // Core Audio
 -(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err;
@@ -90,7 +95,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		
 		[self addObserver:self
 			   forKeyPath:@"currentTrackContainer"
-				  options:0
+				  options:NSKeyValueObservingOptionOld
 				  context:nil];
 		
 		[self addObserver:self
@@ -180,6 +185,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 -(void)playTrackFromUserAction:(NSNotification *)aNotification {
 	
+	if (self.currentTrackContainer != nil)
+		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
+	
 	// User double-clicked, so reset everything and start again.
 	self.playbackSession.playing = NO;
     self.currentTrackContainer = nil;
@@ -218,7 +226,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     
     NSError *error = nil;
     if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
-       
         self.playbackSession.playing = YES;
     } else if (error) {
         NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -237,7 +244,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     }
     
     if (isPlaying) self.currentTrackContainer = newTrack;
-    
+	
     return isPlaying;
 }
 	
@@ -296,6 +303,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 }
 
 -(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
+	
+	if (self.currentTrackContainer != nil)
+		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
 	BOOL wasPlaying = self.playbackSession.playing;
 	
@@ -374,6 +384,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 }
 
 -(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers {
+	
+	if (self.currentTrackContainer != nil)
+		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
 	BOOL wasPlaying = self.playbackSession.playing;
 	
@@ -458,6 +471,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 }
 
 #pragma mark -
+#pragma mark Last.fm
+
+-(void)scrobbleTrackStopped:(SPTrack *)track atPosition:(NSTimeInterval)position {
+	if (track != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey])
+		[[LastFMController sharedInstance] notifyTrackPlaybackDidEnd:track atPosition:position];	
+}
+
+#pragma mark -
 #pragma mark Playback Callbacks
 
 -(void)sessionDidLosePlayToken:(SPSession *)aSession {}
@@ -474,13 +495,21 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"playbackSession.playing"]) {
+    
+	if ([keyPath isEqualToString:@"playbackSession.playing"]) {
         
         if (self.playbackSession.playing) {
             [self startAudioUnit];
         } else {
             [self stopAudioUnit];
         }
+		
+		if (self.currentTrackContainer != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey]) {
+			if (self.playbackSession.playing)
+				[[LastFMController sharedInstance] notifyPlaybackDidStart:self.currentTrackContainer.track];
+			else
+				[[LastFMController sharedInstance] notifyPlaybackDidPause:self.currentTrackContainer.track];
+		}
 		
 		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
 			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];

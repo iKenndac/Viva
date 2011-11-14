@@ -23,27 +23,11 @@
 				</dict>
 				<dict>
 					<key>SPItemTitle</key>
-					<string>Explore</string>
-					<key>SPItemImageKey</key>
-					<string>sidebar-explore</string>
-					<key>SPItemSpotifyURL</key>
-					<string>spotify:internal:explore</string>
-				</dict>
-				<dict>
-					<key>SPItemTitle</key>
-					<string>Radio</string>
+					<string>Local Files</string>
 					<key>SPItemImageKey</key>
 					<string>sidebar-radio</string>
 					<key>SPItemSpotifyURL</key>
-					<string>spotify:internal:radio</string>
-				</dict>
-				<dict>
-					<key>SPItemTitle</key>
-					<string>People</string>
-					<key>SPItemImageKey</key>
-					<string>sidebar-people</string>
-					<key>SPItemSpotifyURL</key>
-					<string>spotify:internal:friends</string>
+					<string>spotify:internal:local-files</string>
 				</dict>
 				<dict>
 					<key>SPItemTitle</key>

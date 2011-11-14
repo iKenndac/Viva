@@ -23,6 +23,11 @@ static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKey
 static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
 static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
 
+// ------ Last.fm ------
+
+static NSString * const kScrobblePlaybackToLastFMUserDefaultsKey = @"ScrobbleToLastFM";
+static NSString * const kStarEqualsLastFMLoveUserDefaultsKey = @"StarEqualsLastFMLove";
+
 // ------ Search ------
 
 static NSUInteger const kLiveSearchMaximumResultsPerCategoryCount = 5;

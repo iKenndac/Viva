@@ -19,6 +19,14 @@
 		500B86AA13616A23005FC734 /* VivaSortableTrackListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86A813616A23005FC734 /* VivaSortableTrackListController.m */; };
 		500B86B11361BC2D005FC734 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */; };
 		500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */; };
+		5018CAE01471688400F46F83 /* Scribbler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
+		5018CAE31471689700F46F83 /* Scribbler.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
+		5018CAE814716A6500F46F83 /* VivaGeneralPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */; };
+		5018CAE914716A6500F46F83 /* VivaGeneralPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5018CAE714716A6500F46F83 /* VivaGeneralPreferencePane.xib */; };
+		5018CAEF14716ACD00F46F83 /* VivaLastFMPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAED14716ACD00F46F83 /* VivaLastFMPreferencePane.m */; };
+		5018CAF014716ACD00F46F83 /* VivaLastFMPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5018CAEE14716ACD00F46F83 /* VivaLastFMPreferencePane.xib */; };
+		5018CAF31471784800F46F83 /* LastFMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF21471784800F46F83 /* LastFMController.m */; };
+		5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF514717E0C00F46F83 /* EMKeychain.m */; };
 		501ACA6714367F30000BB8EF /* viva_appkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 501ACA6614367F30000BB8EF /* viva_appkey.c */; };
 		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
 		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
@@ -95,6 +103,7 @@
 		509AAEE6133913370009B6EE /* SPSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE5133913370009B6EE /* SPSplitView.m */; };
 		509AAEEB133916190009B6EE /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 509AAEE9133916190009B6EE /* FooterViewController.m */; };
 		509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509AAEEA133916190009B6EE /* FooterViewController.xib */; };
+		50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */; };
 		50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */; };
 		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
@@ -159,6 +168,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5018CAD91471684400F46F83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5018CACE1471684400F46F83 /* Scribbler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Scribbler;
+		};
+		5018CADB1471684400F46F83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5018CACE1471684400F46F83 /* Scribbler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9D5C78910A28A2500AFCF8A;
+			remoteInfo = "Last.fm Demo";
+		};
+		5018CADD1471684400F46F83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5018CACE1471684400F46F83 /* Scribbler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C97DBFF110AB9D0200B0F18D;
+			remoteInfo = Scrobbly;
+		};
+		5018CAE11471688E00F46F83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5018CACE1471684400F46F83 /* Scribbler.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Scribbler;
+		};
 		5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
@@ -182,6 +219,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				5018CAE31471689700F46F83 /* Scribbler.framework in CopyFiles */,
 				5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,6 +247,17 @@
 		500B86AE1361BC2D005FC734 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
 		500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
 		500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsViewController.xib; sourceTree = "<group>"; };
+		5018CACE1471684400F46F83 /* Scribbler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Scribbler.xcodeproj; path = Scribbler/Scribbler.xcodeproj; sourceTree = "<group>"; };
+		5018CAE514716A6500F46F83 /* VivaGeneralPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaGeneralPreferencePane.h; sourceTree = "<group>"; };
+		5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaGeneralPreferencePane.m; sourceTree = "<group>"; };
+		5018CAE714716A6500F46F83 /* VivaGeneralPreferencePane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VivaGeneralPreferencePane.xib; sourceTree = "<group>"; };
+		5018CAEC14716ACD00F46F83 /* VivaLastFMPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLastFMPreferencePane.h; sourceTree = "<group>"; };
+		5018CAED14716ACD00F46F83 /* VivaLastFMPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLastFMPreferencePane.m; sourceTree = "<group>"; };
+		5018CAEE14716ACD00F46F83 /* VivaLastFMPreferencePane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VivaLastFMPreferencePane.xib; sourceTree = "<group>"; };
+		5018CAF11471784800F46F83 /* LastFMController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFMController.h; sourceTree = "<group>"; };
+		5018CAF21471784800F46F83 /* LastFMController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFMController.m; sourceTree = "<group>"; };
+		5018CAF414717E0C00F46F83 /* EMKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EMKeychain.h; path = EMKeychain/EMKeychain.h; sourceTree = SOURCE_ROOT; };
+		5018CAF514717E0C00F46F83 /* EMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EMKeychain.m; path = EMKeychain/EMKeychain.m; sourceTree = SOURCE_ROOT; };
 		501ACA6614367F30000BB8EF /* viva_appkey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = viva_appkey.c; sourceTree = "<group>"; };
 		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
 		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
@@ -304,6 +353,8 @@
 		509AAEE8133916190009B6EE /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		509AAEE9133916190009B6EE /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		509AAEEA133916190009B6EE /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
+		50A857A914715EE300D49377 /* VivaPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPreferencesWindowController.h; sourceTree = "<group>"; };
+		50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPreferencesWindowController.m; sourceTree = "<group>"; };
 		50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearchViewController.h; sourceTree = "<group>"; };
 		50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearchViewController.m; sourceTree = "<group>"; };
 		50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSearchViewController.xib; sourceTree = "<group>"; };
@@ -395,6 +446,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5018CAE01471688400F46F83 /* Scribbler.framework in Frameworks */,
 				508812361402525E0094E748 /* Accelerate.framework in Frameworks */,
 				5004701B13563C08000EA08A /* Carbon.framework in Frameworks */,
 				5004701913563C02000EA08A /* IOKit.framework in Frameworks */,
@@ -466,6 +518,45 @@
 			name = "Search View";
 			sourceTree = "<group>";
 		};
+		5018CACF1471684400F46F83 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5018CADA1471684400F46F83 /* Scribbler.framework */,
+				5018CADC1471684400F46F83 /* Last.fm Demo.app */,
+				5018CADE1471684400F46F83 /* Scrobbly.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5018CAE4147169B000F46F83 /* Preference Panes */ = {
+			isa = PBXGroup;
+			children = (
+				5018CAEA14716A6A00F46F83 /* General */,
+				5018CAEB14716AB500F46F83 /* Last.fm */,
+			);
+			name = "Preference Panes";
+			sourceTree = "<group>";
+		};
+		5018CAEA14716A6A00F46F83 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				5018CAE514716A6500F46F83 /* VivaGeneralPreferencePane.h */,
+				5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */,
+				5018CAE714716A6500F46F83 /* VivaGeneralPreferencePane.xib */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
+		5018CAEB14716AB500F46F83 /* Last.fm */ = {
+			isa = PBXGroup;
+			children = (
+				5018CAEC14716ACD00F46F83 /* VivaLastFMPreferencePane.h */,
+				5018CAED14716ACD00F46F83 /* VivaLastFMPreferencePane.m */,
+				5018CAEE14716ACD00F46F83 /* VivaLastFMPreferencePane.xib */,
+			);
+			name = Last.fm;
+			sourceTree = "<group>";
+		};
 		501C909B13AF72170060A20B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +565,8 @@
 				501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */,
 				50881237140264E30094E748 /* VisualiserWindowController.h */,
 				50881238140264E30094E748 /* VisualiserWindowController.m */,
+				5018CAF11471784800F46F83 /* LastFMController.h */,
+				5018CAF21471784800F46F83 /* LastFMController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -482,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
+				5018CACE1471684400F46F83 /* Scribbler.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
@@ -772,6 +866,16 @@
 			name = "Playback UI";
 			sourceTree = "<group>";
 		};
+		50A857AC14715EE500D49377 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				50A857A914715EE300D49377 /* VivaPreferencesWindowController.h */,
+				50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */,
+				5018CAE4147169B000F46F83 /* Preference Panes */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
 		50B72AD3143768B60082E027 /* Inbox View */ = {
 			isa = PBXGroup;
 			children = (
@@ -784,6 +888,8 @@
 		50B72AD71437741E0082E027 /* Open Source */ = {
 			isa = PBXGroup;
 			children = (
+				5018CAF414717E0C00F46F83 /* EMKeychain.h */,
+				5018CAF514717E0C00F46F83 /* EMKeychain.m */,
 				50B72AD81437742F0082E027 /* SPArrayExtensions.h */,
 				50B72AD91437742F0082E027 /* SPArrayExtensions.m */,
 			);
@@ -850,6 +956,7 @@
 		50DD06AF133A25B200CDE1C1 /* Window Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				50A857AC14715EE500D49377 /* Preferences */,
 				50E3F766133FC38200FF4618 /* Login Window */,
 				50E3F765133FC37900FF4618 /* Main Window */,
 			);
@@ -959,6 +1066,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5018CAE21471688E00F46F83 /* PBXTargetDependency */,
 				5088AB5D140D2870009C9FF8 /* PBXTargetDependency */,
 			);
 			name = Viva;
@@ -991,6 +1099,10 @@
 					ProductGroup = 5088AB54140D2863009C9FF8 /* Products */;
 					ProjectRef = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
 				},
+				{
+					ProductGroup = 5018CACF1471684400F46F83 /* Products */;
+					ProjectRef = 5018CACE1471684400F46F83 /* Scribbler.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1000,6 +1112,27 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		5018CADA1471684400F46F83 /* Scribbler.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Scribbler.framework;
+			remoteRef = 5018CAD91471684400F46F83 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5018CADC1471684400F46F83 /* Last.fm Demo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Last.fm Demo.app";
+			remoteRef = 5018CADB1471684400F46F83 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5018CADE1471684400F46F83 /* Scrobbly.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Scrobbly.app;
+			remoteRef = 5018CADD1471684400F46F83 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1109,6 +1242,8 @@
 				5061BD6B13B0CEA400722D69 /* sidebar-playlist.png in Resources */,
 				50CCCD4D13DEFD5200DDB85C /* sidebar-folder.png in Resources */,
 				50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */,
+				5018CAE914716A6500F46F83 /* VivaGeneralPreferencePane.xib in Resources */,
+				5018CAF014716ACD00F46F83 /* VivaLastFMPreferencePane.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1182,12 +1317,22 @@
 				50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */,
 				50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */,
 				50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */,
+				50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */,
+				5018CAE814716A6500F46F83 /* VivaGeneralPreferencePane.m in Sources */,
+				5018CAEF14716ACD00F46F83 /* VivaLastFMPreferencePane.m in Sources */,
+				5018CAF31471784800F46F83 /* LastFMController.m in Sources */,
+				5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5018CAE21471688E00F46F83 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Scribbler;
+			targetProxy = 5018CAE11471688E00F46F83 /* PBXContainerItemProxy */;
+		};
 		5088AB5D140D2870009C9FF8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CocoaLibSpotify;
