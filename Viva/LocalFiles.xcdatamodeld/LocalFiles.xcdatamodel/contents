@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C73" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="LocalFile" representedClassName="LocalFile" syncable="YES">
+        <attribute name="album" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="source" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LocalFileSource" inverseName="localFiles" inverseEntity="LocalFileSource" syncable="YES"/>
+    </entity>
+    <entity name="LocalFileSource" representedClassName="LocalFileSource" syncable="YES">
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="localFiles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LocalFile" inverseName="source" inverseEntity="LocalFile" syncable="YES"/>
+    </entity>
+    <fetchRequest name="AllSources" entity="LocalFileSource"/>
+    <fetchRequest name="LocalFileRequest" entity="LocalFile" predicateString="title LIKE $TARGET_TITLE AND artist LIKE $TARGET_ARTIST"/>
+    <fetchRequest name="SourceWithPath" entity="LocalFileSource" predicateString="path == $TARGET_PATH"/>
+    <elements>
+        <element name="LocalFileSource" positionX="153" positionY="213" width="128" height="75"/>
+        <element name="LocalFile" positionX="-29" positionY="153" width="128" height="135"/>
+    </elements>
+</model>

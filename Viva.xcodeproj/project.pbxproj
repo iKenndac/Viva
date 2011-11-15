@@ -40,6 +40,12 @@
 		503D62EC13257D92007772CA /* VivaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62EB13257D92007772CA /* VivaAppDelegate.m */; };
 		503D630513257F28007772CA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503D630413257F28007772CA /* MainMenu.xib */; };
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
+		5053184E147276AA0032B253 /* LocalFilesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053184D147276AA0032B253 /* LocalFilesController.m */; };
+		5053185114727CFD0032B253 /* LocalFiles.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */; };
+		505318841472DCEC0032B253 /* LocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 505318831472DCEC0032B253 /* LocalFile.m */; };
+		505318871472DCED0032B253 /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 505318861472DCED0032B253 /* LocalFileSource.m */; };
+		5053188D1472EB690032B253 /* VivaLocalFilesPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */; };
+		5053188E1472EB690032B253 /* VivaLocalFilesPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5053188C1472EB690032B253 /* VivaLocalFilesPreferencePane.xib */; };
 		505A929413574F6600136BBF /* VivaTrackInContainerReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A929313574F6600136BBF /* VivaTrackInContainerReference.m */; };
 		505A9299135784B500136BBF /* playing-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A9298135784B500136BBF /* playing-indicator.png */; };
 		505A929B135785B400136BBF /* paused-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929A135785B400136BBF /* paused-indicator.png */; };
@@ -323,6 +329,16 @@
 		503D62EB13257D92007772CA /* VivaAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VivaAppDelegate.m; sourceTree = "<group>"; };
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
+		5053184C147276AA0032B253 /* LocalFilesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFilesController.h; sourceTree = "<group>"; };
+		5053184D147276AA0032B253 /* LocalFilesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFilesController.m; sourceTree = "<group>"; };
+		5053185014727CFD0032B253 /* LocalFiles.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalFiles.xcdatamodel; sourceTree = "<group>"; };
+		505318821472DCEC0032B253 /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
+		505318831472DCEC0032B253 /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
+		505318851472DCED0032B253 /* LocalFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFileSource.h; sourceTree = "<group>"; };
+		505318861472DCED0032B253 /* LocalFileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFileSource.m; sourceTree = "<group>"; };
+		5053188A1472EB690032B253 /* VivaLocalFilesPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFilesPreferencePane.h; sourceTree = "<group>"; };
+		5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFilesPreferencePane.m; sourceTree = "<group>"; };
+		5053188C1472EB690032B253 /* VivaLocalFilesPreferencePane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VivaLocalFilesPreferencePane.xib; sourceTree = "<group>"; };
 		505A929213574F6600136BBF /* VivaTrackInContainerReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackInContainerReference.h; sourceTree = "<group>"; };
 		505A929313574F6600136BBF /* VivaTrackInContainerReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackInContainerReference.m; sourceTree = "<group>"; };
 		505A9298135784B500136BBF /* playing-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator.png"; sourceTree = "<group>"; };
@@ -582,6 +598,7 @@
 			children = (
 				5018CAEA14716A6A00F46F83 /* General */,
 				5018CAEB14716AB500F46F83 /* Last.fm */,
+				505318891472EB250032B253 /* Local Files */,
 			);
 			name = "Preference Panes";
 			sourceTree = "<group>";
@@ -729,12 +746,45 @@
 				506F347413436EF8002BA308 /* Protocols */,
 				50C56A3D133944480072A754 /* Categories */,
 				5008417013510C5600A2967E /* Playback */,
+				5053184B147276920032B253 /* Local Files */,
 				5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */,
 				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
 				505A929213574F6600136BBF /* VivaTrackInContainerReference.h */,
 				505A929313574F6600136BBF /* VivaTrackInContainerReference.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		5053184B147276920032B253 /* Local Files */ = {
+			isa = PBXGroup;
+			children = (
+				5053184C147276AA0032B253 /* LocalFilesController.h */,
+				5053184D147276AA0032B253 /* LocalFilesController.m */,
+				505318881472DD180032B253 /* MOC */,
+				5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */,
+			);
+			name = "Local Files";
+			sourceTree = "<group>";
+		};
+		505318881472DD180032B253 /* MOC */ = {
+			isa = PBXGroup;
+			children = (
+				505318851472DCED0032B253 /* LocalFileSource.h */,
+				505318861472DCED0032B253 /* LocalFileSource.m */,
+				505318821472DCEC0032B253 /* LocalFile.h */,
+				505318831472DCEC0032B253 /* LocalFile.m */,
+			);
+			name = MOC;
+			sourceTree = "<group>";
+		};
+		505318891472EB250032B253 /* Local Files */ = {
+			isa = PBXGroup;
+			children = (
+				5053188A1472EB690032B253 /* VivaLocalFilesPreferencePane.h */,
+				5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */,
+				5053188C1472EB690032B253 /* VivaLocalFilesPreferencePane.xib */,
+			);
+			name = "Local Files";
 			sourceTree = "<group>";
 		};
 		505A9295135784A500136BBF /* Playback */ = {
@@ -1349,6 +1399,7 @@
 				5018CAE914716A6500F46F83 /* VivaGeneralPreferencePane.xib in Resources */,
 				5018CAF014716ACD00F46F83 /* VivaLastFMPreferencePane.xib in Resources */,
 				5018CB211471A90100F46F83 /* Viva Update Signing Public Key.pem in Resources */,
+				5053188E1472EB690032B253 /* VivaLocalFilesPreferencePane.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1441,6 +1492,11 @@
 				5018CAEF14716ACD00F46F83 /* VivaLastFMPreferencePane.m in Sources */,
 				5018CAF31471784800F46F83 /* LastFMController.m in Sources */,
 				5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */,
+				5053184E147276AA0032B253 /* LocalFilesController.m in Sources */,
+				5053185114727CFD0032B253 /* LocalFiles.xcdatamodeld in Sources */,
+				505318841472DCEC0032B253 /* LocalFile.m in Sources */,
+				505318871472DCED0032B253 /* LocalFileSource.m in Sources */,
+				5053188D1472EB690032B253 /* VivaLocalFilesPreferencePane.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1577,6 +1633,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5053185014727CFD0032B253 /* LocalFiles.xcdatamodel */,
+			);
+			currentVersion = 5053185014727CFD0032B253 /* LocalFiles.xcdatamodel */;
+			path = LocalFiles.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 503D62CB13257D92007772CA /* Project object */;
 }

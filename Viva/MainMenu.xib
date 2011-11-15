@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
+		<string key="IBDocument.SystemVersion">11C73</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
 		<string key="IBDocument.AppKitVersion">1138.23</string>
 		<string key="IBDocument.HIToolboxVersion">567.00</string>
@@ -1101,7 +1101,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="849722820">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1786,11 +1786,10 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{140, 808}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="85900138"/>
 					<string key="NSReuseIdentifierKey">_NS:2837</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -1822,6 +1821,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>7CDC0737-08EB-47CF-996F-9BECFEB56C99</string>
 							<string>B5A12241-EA31-48FA-B9AD-089F24C98BFA</string>
 							<string>BA3B342F-3144-4BE6-8F75-F410AE8A3763</string>
 							<string>NSToolbarCustomizeToolbarItem</string>
@@ -1830,6 +1830,25 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="NSToolbarItem" id="808586872">
+								<object class="NSMutableString" key="NSToolbarItemIdentifier">
+									<characters key="NS.bytes">7CDC0737-08EB-47CF-996F-9BECFEB56C99</characters>
+								</object>
+								<string key="NSToolbarItemLabel">Local Files</string>
+								<string key="NSToolbarItemPaletteLabel">Local Files</string>
+								<string key="NSToolbarItemToolTip"/>
+								<nil key="NSToolbarItemView"/>
+								<nil key="NSToolbarItemImage"/>
+								<nil key="NSToolbarItemTarget"/>
+								<nil key="NSToolbarItemAction"/>
+								<string key="NSToolbarItemMinSize">{0, 0}</string>
+								<string key="NSToolbarItemMaxSize">{0, 0}</string>
+								<bool key="NSToolbarItemEnabled">YES</bool>
+								<bool key="NSToolbarItemAutovalidates">YES</bool>
+								<int key="NSToolbarItemTag">-1</int>
+								<bool key="NSToolbarIsUserRemovable">YES</bool>
+								<int key="NSToolbarItemVisibilityPriority">0</int>
+							</object>
 							<object class="NSToolbarItem" id="679325981">
 								<object class="NSMutableString" key="NSToolbarItemIdentifier">
 									<characters key="NS.bytes">B5A12241-EA31-48FA-B9AD-089F24C98BFA</characters>
@@ -1957,11 +1976,13 @@
 						<reference ref="691809122"/>
 						<reference ref="732983284"/>
 						<reference ref="679325981"/>
+						<reference ref="808586872"/>
 					</object>
-					<object class="NSArray" key="NSToolbarIBDefaultItems">
+					<object class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="732983284"/>
 						<reference ref="679325981"/>
+						<reference ref="808586872"/>
 					</object>
 					<object class="NSArray" key="NSToolbarIBSelectableItems" id="0">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1977,7 +1998,7 @@
 					<reference key="NSNextKeyView"/>
 					<string key="NSReuseIdentifierKey">_NS:224</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">com.spotify.viva.preferences</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -3324,6 +3345,22 @@
 						<reference key="destination" ref="679325981"/>
 					</object>
 					<int key="connectionID">1078</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">localFilesButton</string>
+						<reference key="source" ref="36086471"/>
+						<reference key="destination" ref="808586872"/>
+					</object>
+					<int key="connectionID">1083</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">switchToLocalFilesPane:</string>
+						<reference key="source" ref="36086471"/>
+						<reference key="destination" ref="808586872"/>
+					</object>
+					<int key="connectionID">1084</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -4694,6 +4731,7 @@
 							<reference ref="691809122"/>
 							<reference ref="732983284"/>
 							<reference ref="679325981"/>
+							<reference ref="808586872"/>
 						</object>
 						<reference key="parent" ref="945801936"/>
 					</object>
@@ -4736,6 +4774,11 @@
 						<int key="objectID">1080</int>
 						<reference key="object" ref="757460128"/>
 						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1082</int>
+						<reference key="object" ref="808586872"/>
+						<reference key="parent" ref="141880569"/>
 					</object>
 				</object>
 			</object>
@@ -4784,6 +4827,8 @@
 					<string>1074.toolbarItem.selectable</string>
 					<string>1079.IBPluginDependency</string>
 					<string>1080.IBPluginDependency</string>
+					<string>1082.IBPluginDependency</string>
+					<string>1082.toolbarItem.selectable</string>
 					<string>124.IBPluginDependency</string>
 					<string>125.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
@@ -4992,6 +5037,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<boolean value="YES"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5168,7 +5215,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1081</int>
+			<int key="maxID">1084</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5630,9 +5677,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>switchToGeneralPane:</string>
 							<string>switchToLastFMPane:</string>
+							<string>switchToLocalFilesPane:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -5643,6 +5692,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>switchToGeneralPane:</string>
 							<string>switchToLastFMPane:</string>
+							<string>switchToLocalFilesPane:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5654,6 +5704,10 @@
 								<string key="name">switchToLastFMPane:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToLocalFilesPane:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -5662,9 +5716,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>generalButton</string>
 							<string>lastFMButton</string>
+							<string>localFilesButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSToolbarItem</string>
 							<string>NSToolbarItem</string>
 							<string>NSToolbarItem</string>
 						</object>
@@ -5675,6 +5731,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>generalButton</string>
 							<string>lastFMButton</string>
+							<string>localFilesButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5684,6 +5741,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">lastFMButton</string>
+								<string key="candidateClassName">NSToolbarItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">localFilesButton</string>
 								<string key="candidateClassName">NSToolbarItem</string>
 							</object>
 						</object>

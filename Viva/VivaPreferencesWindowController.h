@@ -12,8 +12,10 @@
 
 @property (weak) IBOutlet NSToolbarItem *generalButton;
 @property (weak) IBOutlet NSToolbarItem *lastFMButton;
+@property (weak) IBOutlet NSToolbarItem *localFilesButton;
 
 - (IBAction)switchToGeneralPane:(id)sender;
 - (IBAction)switchToLastFMPane:(id)sender;
+- (IBAction)switchToLocalFilesPane:(id)sender;
 
 @end
