@@ -16,6 +16,7 @@
 #import "ArtistViewController.h"
 #import "StarredViewController.h"
 #import "InboxViewController.h"
+#import "LocalFilesController.h"
 
 extern int *_NSGetArgc(void);
 extern char ***_NSGetArgv(void);
@@ -106,6 +107,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	} else {
 		NSLog(@"Media key monitoring disabled because CGEventTap + gdb = pain");
 	}
+	
+	[LocalFilesController sharedInstance];
 	
 	[NSApp setDockMenu:self.dockMenu];
 	[loginWindowController showWindow:nil];

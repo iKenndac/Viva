@@ -63,6 +63,10 @@ static LocalFilesController *sharedInstance;
         // Context
         self.managedObjectContext = [[NSManagedObjectContext alloc] init];
         [self.managedObjectContext setPersistentStoreCoordinator:self.storeCoordinator];
+		
+		for (LocalFileSource *source in self.localFileSources) {
+			[source performUpdateScan];
+		}
     }
 	
 	sharedInstance = self;

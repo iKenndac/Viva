@@ -22,6 +22,7 @@
 @property (nonatomic, readonly, getter = isActive) BOOL active;
 
 -(void)performFullScan;
+-(void)performUpdateScan;
 
 @end
 

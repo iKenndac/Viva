@@ -14,11 +14,19 @@
 
 @property (nonatomic, readwrite, getter = isActive) BOOL active;
 -(LocalFile *)parseMediaFileAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context;
--(void)threadSafePerformScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context;
+-(void)threadSafePerformFreshScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context;
+-(void)threadSafePerformUpdateScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context;
 
 @end
 
 @implementation LocalFileSource
+
+static NSArray *allowedFileExtensions;
+
++(void)initialize {
+	if (allowedFileExtensions == nil)
+		allowedFileExtensions = [NSArray arrayWithObjects:@"mp3", @"m4a", nil];
+}
 
 @dynamic path;
 @dynamic localFiles;
@@ -42,17 +50,18 @@
 	return [[NSWorkspace sharedWorkspace] iconForFile:self.path];
 }
 
-#pragma mark Scanning
+#pragma mark -
+#pragma mark Update Scan
 
--(void)performFullScan {
+-(void)performUpdateScan {
 	
 	self.active = YES;
-	[self performSelectorInBackground:@selector(performRecursiveScanOfDirectory:)
+	[self performSelectorInBackground:@selector(threadSafePerformUpdateScanOfDirectory:)
 						   withObject:self.path];
 	
 }
 
--(void)performRecursiveScanOfDirectory:(NSString *)baseDirectory {
+-(void)threadSafePerformUpdateScanOfDirectory:(NSString *)baseDirectory {
 	
 	@autoreleasepool {
 		
@@ -67,19 +76,93 @@
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:threadContext];
 		
-		[threadSafeSelf threadSafePerformScanOfDirectory:baseDirectory withContext:threadContext];
+		[threadSafeSelf threadSafePerformUpdateScanOfDirectory:baseDirectory withContext:threadContext];
 		[threadContext save:nil];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:NSManagedObjectContextDidSaveNotification
+													  object:threadContext];
 		
 		[self performSelectorOnMainThread:@selector(scanFinished)
 							   withObject:nil
 							waitUntilDone:NO];
-		
 	}
 }
 
--(void)threadSafePerformScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context {
+-(void)threadSafePerformUpdateScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context {
 	
-	NSArray *allowedFileExtensions = [NSArray arrayWithObjects:@"mp3", @"m4a", nil];
+	NSSet *localFileSnapshot = [self.localFiles copy];
+	NSMutableArray *freshPaths = [NSMutableArray arrayWithCapacity:localFileSnapshot.count];
+	
+	NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:path];
+	NSString *relativePath = nil;
+	
+	while ((relativePath = [enumerator nextObject])) {
+		
+		if ([allowedFileExtensions containsObject:relativePath.pathExtension.lowercaseString])
+			[freshPaths addObject:[path stringByAppendingPathComponent:relativePath]];
+	}
+	
+	NSMutableSet *activeFiles = [NSMutableSet setWithCapacity:freshPaths.count];
+	
+	for (LocalFile *localFile in localFileSnapshot) {
+		if ([freshPaths containsObject:localFile.path]) {
+			[activeFiles addObject:localFile];
+			[freshPaths removeObject:localFile.path];
+		}
+	}
+	
+	NSLog(@"[%@ %@]: %@ new files.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [NSNumber numberWithUnsignedInteger:freshPaths.count]);
+	
+	for (NSString *path in freshPaths) {
+		LocalFile *file = [self parseMediaFileAtPath:path intoContext:context];
+		if (file != nil)
+			[activeFiles addObject:file];
+	}
+	
+	[self setLocalFiles:activeFiles];
+}
+
+#pragma mark -
+#pragma mark Full Scan
+
+-(void)performFullScan {
+	
+	self.active = YES;
+	[self performSelectorInBackground:@selector(threadSafePerformFreshScanOfDirectory:)
+						   withObject:self.path];
+	
+}
+
+-(void)threadSafePerformFreshScanOfDirectory:(NSString *)baseDirectory {
+	
+	@autoreleasepool {
+		
+		NSManagedObjectContext *threadContext = [[NSManagedObjectContext alloc] init];
+		threadContext.persistentStoreCoordinator = self.managedObjectContext.persistentStoreCoordinator;
+		threadContext.undoManager = nil;
+		
+		LocalFileSource *threadSafeSelf = (LocalFileSource *)[threadContext objectWithID:self.objectID];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(threadedContextDidSave:)
+													 name:NSManagedObjectContextDidSaveNotification
+												   object:threadContext];
+		
+		[threadSafeSelf threadSafePerformFreshScanOfDirectory:baseDirectory withContext:threadContext];
+		[threadContext save:nil];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:NSManagedObjectContextDidSaveNotification
+													  object:threadContext];
+		
+		[self performSelectorOnMainThread:@selector(scanFinished)
+							   withObject:nil
+							waitUntilDone:NO];
+	}
+}
+
+-(void)threadSafePerformFreshScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context {
 	
 	NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:path];
 	
@@ -107,6 +190,9 @@
 		}
 	}
 }
+
+#pragma mark -
+#pragma mark Scan helpers
 
 -(LocalFile *)parseMediaFileAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context {
 	
