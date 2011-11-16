@@ -143,6 +143,7 @@ static LocalFilesController *sharedInstance;
 	
 	NSDictionary *variables = [NSDictionary dictionaryWithObjectsAndKeys:track.name, @"TARGET_TITLE",
 							   ((SPArtist *)track.artists.lastObject).name, @"TARGET_ARTIST",
+							   track.album.name, @"TARGET_ALBUM",
 							   nil];
 	
 	NSFetchRequest *request = [self.managedObjectModel fetchRequestFromTemplateWithName:@"LocalFileRequest"

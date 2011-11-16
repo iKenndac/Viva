@@ -133,6 +133,7 @@
 	file.title = title;
 	file.artist = artist;
 	file.album = album;
+	file.path = path;
 	file.duration = [NSNumber numberWithDouble:duration];
 	
 	return file;
