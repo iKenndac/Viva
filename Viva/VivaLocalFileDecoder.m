@@ -9,6 +9,7 @@
 #import "VivaLocalFileDecoder.h"
 #import <AVFoundation/AVFoundation.h>
 #import "LocalFilesController.h"
+#import "VivaTrackExtensions.h"
 
 @interface VivaLocalFileDecoder ()
 
@@ -21,11 +22,22 @@
 
 @implementation VivaLocalFileDecoder
 
-@synthesize playing;
 @synthesize playbackDelegate;
 @synthesize cancelled;
 @synthesize currentWorker;
 @synthesize currentAsset;
+
++(NSSet *)keyPathsForValuesAffectingPlaying {
+	return [NSSet setWithObject:@"currentWorker.playing"];
+}
+
+-(BOOL)isPlaying {
+	return self.currentWorker.isPlaying;
+}
+
+-(void)setPlaying:(BOOL)playing {
+	self.currentWorker.playing = playing;
+}
 
 -(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error {
 	// No-op for now.
@@ -34,9 +46,9 @@
 
 -(BOOL)playTrack:(SPTrack *)aTrack error:(NSError **)error {
 	
-	LocalFile *localFile = [[LocalFilesController sharedInstance] localFileForTrack:aTrack];
+	LocalFile *localFile = aTrack.localFile;
 	
-	if (localFile == nil) {
+	if (localFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:localFile.path]) {
 		if (error)
 			*error = [NSError errorWithDomain:@"com.spotify.Viva.LocalFileDecoder" code:67 userInfo:nil];
 		return NO;

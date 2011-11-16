@@ -12,6 +12,7 @@
 
 @synthesize delegate;
 @synthesize cancelled;
+@synthesize playing;
 
 -(void)decodeAsset:(AVAsset *)asset fromPosition:(NSTimeInterval)startTime {
 	

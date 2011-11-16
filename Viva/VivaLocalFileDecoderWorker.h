@@ -23,6 +23,7 @@
 
 @property (nonatomic) __weak id <VivaLocalFileDecoderWorkerDelegate> delegate;
 @property (readwrite) BOOL cancelled;
+@property (readwrite, getter = isPlaying) BOOL playing;
 
 -(void)decodeAsset:(AVAsset *)asset fromPosition:(NSTimeInterval)startTime;
 
