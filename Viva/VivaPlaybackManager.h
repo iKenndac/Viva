@@ -22,36 +22,7 @@
 
 @end
 
-@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate> {
-@private
-    id <VivaPlaybackContext> playbackContext;
-	id <VivaTrackContainer> currentTrackContainer;
-	NSTimeInterval currentTrackPosition;
-	SPSession *playbackSession;
-	SPCircularBuffer *audioBuffer;
-	double volume;
-	BOOL loopPlayback;
-    BOOL shufflePlayback;
-	BOOL hasPreCachedNextTrack;
-	NSMethodSignature *incrementTrackPositionMethodSignature;
-	NSInvocation *incrementTrackPositionInvocation;
-	
-    NSMutableArray *shuffledPool;
-    NSMutableArray *shufflePastHistory;
-    NSMutableArray *shuffleFutureHistory;
-    
-    AudioUnit outputAudioUnit;
-    
-    __unsafe_unretained id <VivaPlaybackManagerDataSource> dataSource;
-    
-	// vDSP
-	FFTSetupD fft_weights;
-	double *leftChannelMagnitudes;
-	double *rightChannelMagnitudes;
-	
-	NSArray *leftLevels;
-	NSArray *rightLevels;
-}
+@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate>
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
 

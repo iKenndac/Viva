@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "SPArrayExtensions.h"
 #import "LastFMController.h"
+#import "LocalFilesController.h"
+#import "VivaLocalFileDecoder.h"
 
 @interface VivaPlaybackManager  ()
 
@@ -17,6 +19,7 @@
 @property (strong, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong) SPSession *playbackSession;
+@property (readwrite, strong) VivaLocalFileDecoder *localFileDecoder;
 
 -(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error;
 
@@ -62,7 +65,23 @@ static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManag
 
 static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
-@implementation VivaPlaybackManager
+@implementation VivaPlaybackManager {
+	
+	BOOL hasPreCachedNextTrack;
+	NSMethodSignature *incrementTrackPositionMethodSignature;
+	NSInvocation *incrementTrackPositionInvocation;
+	
+    NSMutableArray *shuffledPool;
+    NSMutableArray *shufflePastHistory;
+    NSMutableArray *shuffleFutureHistory;
+    
+    AudioUnit outputAudioUnit;
+    
+	// vDSP
+	FFTSetupD fft_weights;
+	double *leftChannelMagnitudes;
+	double *rightChannelMagnitudes;
+}
 
 - (id)initWithPlaybackSession:(SPSession *)aSession {
     self = [super init];
@@ -78,6 +97,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		incrementTrackPositionInvocation = [NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature];
 		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
 		[incrementTrackPositionInvocation setTarget:self];
+		
+		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
+		self.localFileDecoder.playbackDelegate = self;
 		
 		self.volume = 1.0;
 		self.playbackSession = aSession;
@@ -150,6 +172,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 @synthesize loopPlayback;
 @synthesize shufflePlayback;
 @synthesize dataSource;
+@synthesize localFileDecoder;
 
 @synthesize leftLevels;
 @synthesize rightLevels;
@@ -237,6 +260,13 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
     self.currentTrackPosition = 0.0;    
     
+	if (newTrack.track.spotifyURL.spotifyLinkType == SP_LINKTYPE_LOCALTRACK) {
+		[self.localFileDecoder playTrack:newTrack.track error:nil];
+		self.currentTrackContainer = newTrack;
+		
+		return YES;
+	}
+	
 	BOOL isPlaying = [self.playbackSession playTrack:newTrack.track error:error];
     
     if (isPlaying && self.shufflePlayback) {
