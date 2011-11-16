@@ -2,7 +2,7 @@
 //  LocalFileSource.h
 //  Viva
 //
-//  Created by Daniel Kennett on 15/11/2011.
+//  Created by Daniel Kennett on 16/11/2011.
 //  Copyright (c) 2011 Spotify. All rights reserved.
 //
 
@@ -14,9 +14,22 @@
 @interface LocalFileSource : NSManagedObject
 
 @property (nonatomic, retain) NSString * path;
-@property (nonatomic, retain) LocalFile *localFiles;
+@property (nonatomic, retain) NSSet *localFiles;
 
 @property (nonatomic, readonly) NSImage *icon;
 @property (nonatomic, readonly) NSString *displayPath;
+
+@property (nonatomic, readonly, getter = isActive) BOOL active;
+
+-(void)performFullScan;
+
+@end
+
+@interface LocalFileSource (CoreDataGeneratedAccessors)
+
+- (void)addLocalFilesObject:(LocalFile *)value;
+- (void)removeLocalFilesObject:(LocalFile *)value;
+- (void)addLocalFiles:(NSSet *)values;
+- (void)removeLocalFiles:(NSSet *)values;
 
 @end

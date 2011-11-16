@@ -42,10 +42,9 @@
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
 		5053184E147276AA0032B253 /* LocalFilesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053184D147276AA0032B253 /* LocalFilesController.m */; };
 		5053185114727CFD0032B253 /* LocalFiles.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */; };
-		505318841472DCEC0032B253 /* LocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 505318831472DCEC0032B253 /* LocalFile.m */; };
-		505318871472DCED0032B253 /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 505318861472DCED0032B253 /* LocalFileSource.m */; };
 		5053188D1472EB690032B253 /* VivaLocalFilesPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */; };
 		5053188E1472EB690032B253 /* VivaLocalFilesPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5053188C1472EB690032B253 /* VivaLocalFilesPreferencePane.xib */; };
+		5053189A1473C8950032B253 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 505318991473C8950032B253 /* AVFoundation.framework */; };
 		505A929413574F6600136BBF /* VivaTrackInContainerReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 505A929313574F6600136BBF /* VivaTrackInContainerReference.m */; };
 		505A9299135784B500136BBF /* playing-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A9298135784B500136BBF /* playing-indicator.png */; };
 		505A929B135785B400136BBF /* paused-indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 505A929A135785B400136BBF /* paused-indicator.png */; };
@@ -167,6 +166,9 @@
 		50F00924135A0182009D25B1 /* dragBallLeft.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00921135A0182009D25B1 /* dragBallLeft.tiff */; };
 		50F00925135A0182009D25B1 /* dragBallMiddle.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00922135A0182009D25B1 /* dragBallMiddle.tiff */; };
 		50F00926135A0182009D25B1 /* dragBallRight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 50F00923135A0182009D25B1 /* dragBallRight.tiff */; };
+		50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FC8A881473CD6200FA43DD /* CoreMedia.framework */; };
+		50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A941473D5A000FA43DD /* LocalFile.m */; };
+		50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A971473D5A000FA43DD /* LocalFileSource.m */; };
 		50FEC1B113A75C9C00D8C8A2 /* livesearch-albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AB13A75C9C00D8C8A2 /* livesearch-albums.png */; };
 		50FEC1B213A75C9C00D8C8A2 /* livesearch-artists.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AC13A75C9C00D8C8A2 /* livesearch-artists.png */; };
 		50FEC1B313A75C9C00D8C8A2 /* livesearch-gutter.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AD13A75C9C00D8C8A2 /* livesearch-gutter.png */; };
@@ -332,13 +334,10 @@
 		5053184C147276AA0032B253 /* LocalFilesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFilesController.h; sourceTree = "<group>"; };
 		5053184D147276AA0032B253 /* LocalFilesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFilesController.m; sourceTree = "<group>"; };
 		5053185014727CFD0032B253 /* LocalFiles.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalFiles.xcdatamodel; sourceTree = "<group>"; };
-		505318821472DCEC0032B253 /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
-		505318831472DCEC0032B253 /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
-		505318851472DCED0032B253 /* LocalFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFileSource.h; sourceTree = "<group>"; };
-		505318861472DCED0032B253 /* LocalFileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFileSource.m; sourceTree = "<group>"; };
 		5053188A1472EB690032B253 /* VivaLocalFilesPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFilesPreferencePane.h; sourceTree = "<group>"; };
 		5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFilesPreferencePane.m; sourceTree = "<group>"; };
 		5053188C1472EB690032B253 /* VivaLocalFilesPreferencePane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VivaLocalFilesPreferencePane.xib; sourceTree = "<group>"; };
+		505318991473C8950032B253 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		505A929213574F6600136BBF /* VivaTrackInContainerReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackInContainerReference.h; sourceTree = "<group>"; };
 		505A929313574F6600136BBF /* VivaTrackInContainerReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackInContainerReference.m; sourceTree = "<group>"; };
 		505A9298135784B500136BBF /* playing-indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playing-indicator.png"; sourceTree = "<group>"; };
@@ -496,6 +495,11 @@
 		50F00921135A0182009D25B1 /* dragBallLeft.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallLeft.tiff; sourceTree = "<group>"; };
 		50F00922135A0182009D25B1 /* dragBallMiddle.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallMiddle.tiff; sourceTree = "<group>"; };
 		50F00923135A0182009D25B1 /* dragBallRight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = dragBallRight.tiff; sourceTree = "<group>"; };
+		50FC8A881473CD6200FA43DD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		50FC8A931473D5A000FA43DD /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
+		50FC8A941473D5A000FA43DD /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
+		50FC8A961473D5A000FA43DD /* LocalFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFileSource.h; sourceTree = "<group>"; };
+		50FC8A971473D5A000FA43DD /* LocalFileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFileSource.m; sourceTree = "<group>"; wrapsLines = 0; };
 		50FEC1AB13A75C9C00D8C8A2 /* livesearch-albums.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-albums.png"; sourceTree = "<group>"; };
 		50FEC1AC13A75C9C00D8C8A2 /* livesearch-artists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-artists.png"; sourceTree = "<group>"; };
 		50FEC1AD13A75C9C00D8C8A2 /* livesearch-gutter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-gutter.png"; sourceTree = "<group>"; };
@@ -510,6 +514,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */,
+				5053189A1473C8950032B253 /* AVFoundation.framework in Frameworks */,
 				5018CAE01471688400F46F83 /* Scribbler.framework in Frameworks */,
 				508812361402525E0094E748 /* Accelerate.framework in Frameworks */,
 				5004701B13563C08000EA08A /* Carbon.framework in Frameworks */,
@@ -672,6 +678,8 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50FC8A881473CD6200FA43DD /* CoreMedia.framework */,
+				505318991473C8950032B253 /* AVFoundation.framework */,
 				508812351402525E0094E748 /* Accelerate.framework */,
 				5004701A13563C08000EA08A /* Carbon.framework */,
 				5004701813563C01000EA08A /* IOKit.framework */,
@@ -769,10 +777,10 @@
 		505318881472DD180032B253 /* MOC */ = {
 			isa = PBXGroup;
 			children = (
-				505318851472DCED0032B253 /* LocalFileSource.h */,
-				505318861472DCED0032B253 /* LocalFileSource.m */,
-				505318821472DCEC0032B253 /* LocalFile.h */,
-				505318831472DCEC0032B253 /* LocalFile.m */,
+				50FC8A931473D5A000FA43DD /* LocalFile.h */,
+				50FC8A941473D5A000FA43DD /* LocalFile.m */,
+				50FC8A961473D5A000FA43DD /* LocalFileSource.h */,
+				50FC8A971473D5A000FA43DD /* LocalFileSource.m */,
 			);
 			name = MOC;
 			sourceTree = "<group>";
@@ -1494,9 +1502,9 @@
 				5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */,
 				5053184E147276AA0032B253 /* LocalFilesController.m in Sources */,
 				5053185114727CFD0032B253 /* LocalFiles.xcdatamodeld in Sources */,
-				505318841472DCEC0032B253 /* LocalFile.m in Sources */,
-				505318871472DCED0032B253 /* LocalFileSource.m in Sources */,
 				5053188D1472EB690032B253 /* VivaLocalFilesPreferencePane.m in Sources */,
+				50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */,
+				50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

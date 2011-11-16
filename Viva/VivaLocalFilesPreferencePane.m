@@ -39,6 +39,7 @@
 							  NSURL *selectedURL = openPanel.URLs.lastObject;
 							  LocalFileSource *source = [[LocalFilesController sharedInstance] addLocalFileSourceAtPath:selectedURL.path];
 							  self.fileSourceArrayController.selectedObjects = [NSArray arrayWithObject:source];
+							  [source performFullScan];
 						  }
 						  
 					  }];
