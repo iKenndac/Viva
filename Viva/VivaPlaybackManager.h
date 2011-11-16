@@ -30,7 +30,8 @@
 @property (readwrite) NSTimeInterval currentTrackPosition;
 @property (readonly, strong) SPTrack *currentTrack;
 @property (readonly, strong) id <VivaTrackContainer> currentTrackContainer;
-@property (readonly, strong) SPSession *playbackSession;
+@property (readonly, strong) SPSession *session;
+@property (readonly, strong) id <SPSessionPlaybackProvider> currentPlaybackProvider;
 @property (readwrite) double volume;
 @property (readwrite) BOOL loopPlayback;
 @property (readwrite) BOOL shufflePlayback;

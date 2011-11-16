@@ -12,8 +12,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "VivaLocalFileDecoderWorker.h"
 
-@interface VivaLocalFileDecoder : NSObject
+@interface VivaLocalFileDecoder : NSObject <VivaLocalFileDecoderWorkerDelegate, SPSessionPlaybackProvider>
 
 ///----------------------------
 /// @name Audio Playback

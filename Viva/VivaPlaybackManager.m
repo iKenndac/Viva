@@ -18,8 +18,9 @@
 @property (strong, readwrite) SPCircularBuffer *audioBuffer;
 @property (strong, readwrite) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong) id <VivaTrackContainer> currentTrackContainer;
-@property (readwrite, strong) SPSession *playbackSession;
+@property (readwrite, strong) SPSession *session;
 @property (readwrite, strong) VivaLocalFileDecoder *localFileDecoder;
+@property (readwrite, strong) id <SPSessionPlaybackProvider> currentPlaybackProvider;
 
 -(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error;
 
@@ -98,12 +99,12 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
 		[incrementTrackPositionInvocation setTarget:self];
 		
+		self.volume = 1.0;
+		
+		self.session = aSession;
+		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
 		self.localFileDecoder.playbackDelegate = self;
-		
-		self.volume = 1.0;
-		self.playbackSession = aSession;
-		self.playbackSession.playbackDelegate = self;
         
 		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
         
@@ -111,7 +112,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         self.shufflePlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kShufflePlaybackDefaultsKey];
         		
         [self addObserver:self
-               forKeyPath:@"playbackSession.playing"
+               forKeyPath:@"currentPlaybackProvider.playing"
                   options:0
                   context:nil];
 		
@@ -166,7 +167,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 @synthesize audioBuffer;
 @synthesize playbackContext;
 @synthesize currentTrackContainer;
-@synthesize playbackSession;
+@synthesize session;
+@synthesize currentPlaybackProvider;
 @synthesize currentTrackPosition;
 @synthesize volume;
 @synthesize loopPlayback;
@@ -212,9 +214,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
 	// User double-clicked, so reset everything and start again.
-	self.playbackSession.playing = NO;
+	self.currentPlaybackProvider.playing = NO;
     self.currentTrackContainer = nil;
-	[self.playbackSession unloadPlayback];
+	[self.currentPlaybackProvider unloadPlayback];
 	[self teardownCoreAudio];
 	[self resetShuffledPool];
 	[self.audioBuffer clear];
@@ -249,7 +251,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     
     NSError *error = nil;
     if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
-        self.playbackSession.playing = YES;
+        self.currentPlaybackProvider.playing = YES;
     } else if (error) {
         NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
     }
@@ -261,13 +263,12 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     self.currentTrackPosition = 0.0;    
     
 	if (newTrack.track.spotifyURL.spotifyLinkType == SP_LINKTYPE_LOCALTRACK) {
-		[self.localFileDecoder playTrack:newTrack.track error:nil];
-		self.currentTrackContainer = newTrack;
-		
-		return YES;
+		self.currentPlaybackProvider = self.localFileDecoder;
+	} else {
+		self.currentPlaybackProvider = self.session;
 	}
 	
-	BOOL isPlaying = [self.playbackSession playTrack:newTrack.track error:error];
+	BOOL isPlaying = [self.currentPlaybackProvider playTrack:newTrack.track error:error];
     
     if (isPlaying && self.shufflePlayback) {
         [self addTrackContainerToShufflePool:currentTrackContainer];
@@ -280,7 +281,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition {
 	if (newPosition <= self.currentTrack.duration) {
-		[self.playbackSession seekPlaybackToOffset:newPosition];
+		[self.currentPlaybackProvider seekPlaybackToOffset:newPosition];
 		self.currentTrackPosition = newPosition;
 	}	
 }
@@ -337,11 +338,11 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (self.currentTrackContainer != nil)
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
-	BOOL wasPlaying = self.playbackSession.playing;
+	BOOL wasPlaying = self.currentPlaybackProvider.playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.playbackSession setPlaying:NO];
-		[self.playbackSession unloadPlayback];
+		[self.currentPlaybackProvider setPlaying:NO];
+		[self.currentPlaybackProvider unloadPlayback];
 		[self teardownCoreAudio];
 		
 		[self.audioBuffer clear];
@@ -354,7 +355,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     
     NSError *error = nil;
 	if (nextContainer != nil && [self playTrackContainerInCurrentContext:nextContainer error:&error]) {
-		self.playbackSession.playing = wasPlaying;
+		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self teardownCoreAudio];
@@ -418,11 +419,11 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (self.currentTrackContainer != nil)
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
-	BOOL wasPlaying = self.playbackSession.playing;
+	BOOL wasPlaying = self.currentPlaybackProvider.playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.playbackSession setPlaying:NO];
-		[self.playbackSession unloadPlayback];
+		[self.currentPlaybackProvider setPlaying:NO];
+		[self.currentPlaybackProvider unloadPlayback];
 		[self teardownCoreAudio];
 		
 		[self.audioBuffer clear];
@@ -435,7 +436,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
     NSError *error = nil;
 	if (previousContainer != nil && [self playTrackContainerInCurrentContext:previousContainer error:&error]) {
-		self.playbackSession.playing = wasPlaying;
+		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
 		[self teardownCoreAudio];
@@ -526,23 +527,23 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"playbackSession.playing"]) {
+	if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
         
-        if (self.playbackSession.playing) {
+        if (self.currentPlaybackProvider.playing) {
             [self startAudioUnit];
         } else {
             [self stopAudioUnit];
         }
 		
 		if (self.currentTrackContainer != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey]) {
-			if (self.playbackSession.playing)
+			if (self.currentPlaybackProvider.playing)
 				[[LastFMController sharedInstance] notifyPlaybackDidStart:self.currentTrackContainer.track];
 			else
 				[[LastFMController sharedInstance] notifyPlaybackDidPause:self.currentTrackContainer.track];
 		}
 		
 		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
-			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.currentPlaybackProvider.isPlaying];
 		}
 		
 	} else if ([keyPath isEqualToString:@"currentTrackContainer"]) {
@@ -551,7 +552,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		}
 		
 		if ([self.playbackContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
-			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+			[self.playbackContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.currentPlaybackProvider.isPlaying];
 		}
 		
 	} else if ([keyPath isEqualToString:@"playbackContext"]) {
@@ -566,7 +567,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		id newContext = [change valueForKey:NSKeyValueChangeNewKey];
 		if (newContext != nil && newContext != [NSNull null]) {
 			if ([newContext respondsToSelector:@selector(setPlayingTrackContainer:isPlaying:)]) {
-				[newContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.playbackSession.isPlaying];
+				[newContext setPlayingTrackContainer:self.currentTrackContainer isPlaying:self.currentPlaybackProvider.isPlaying];
 			}
 		}
 		
@@ -574,7 +575,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
 			id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 			if (nextContainer != nil) {
-				[self.playbackSession preloadTrackForPlayback:nextContainer.track error:nil];
+				[self.currentPlaybackProvider preloadTrackForPlayback:nextContainer.track error:nil];
 				@synchronized(self) {
 					hasPreCachedNextTrack = YES;
 				}
@@ -902,7 +903,7 @@ static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManag
 
 -(void)dealloc {
 
-    [self removeObserver:self forKeyPath:@"playbackSession.playing"];
+    [self removeObserver:self forKeyPath:@"currentPlaybackProvider.playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];

@@ -42,7 +42,7 @@
 				  context:nil];
         
         [self addObserver:self 
-			   forKeyPath:@"playbackManager.playbackSession.playing"
+			   forKeyPath:@"playbackManager.currentPlaybackProvider.playing"
 				  options:0
 				  context:nil];
         
@@ -94,9 +94,9 @@
 			[self.playbackProgressSlider setDoubleValue:[[self playbackManager] currentTrackPosition]];
 		}
         
-    } else if ([keyPath isEqualToString:@"playbackManager.playbackSession.playing"]) {
+    } else if ([keyPath isEqualToString:@"playbackManager.currentPlaybackProvider.playing"]) {
 
-        if (((VivaPlaybackManager *)[self playbackManager]).playbackSession.playing) {
+        if (((VivaPlaybackManager *)[self playbackManager]).currentPlaybackProvider.playing) {
             [playPauseButton setImage:[NSImage imageNamed:@"pause"]];
             [playPauseButton setAlternateImage:[NSImage imageNamed:@"pause-pushed"]];
         } else {
@@ -181,7 +181,7 @@
                                                           userInfo:nil];
         
     } else {
-        self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
+        self.playbackManager.currentPlaybackProvider.playing = !self.playbackManager.currentPlaybackProvider.playing;
     }
 }
 
@@ -259,7 +259,7 @@
 	
     
     [self removeObserver:self forKeyPath:@"playbackManager.currentTrack.starred"];
-    [self removeObserver:self forKeyPath:@"playbackManager.playbackSession.playing"];
+    [self removeObserver:self forKeyPath:@"playbackManager.currentPlaybackProvider.playing"];
 	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackManager.shufflePlayback"];
 	[self removeObserver:self forKeyPath:@"playbackManager.loopPlayback"];

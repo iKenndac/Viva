@@ -171,6 +171,7 @@
 		50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A971473D5A000FA43DD /* LocalFileSource.m */; };
 		50FC8A9B1474009A00FA43DD /* VivaLocalFileDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */; };
 		50FC8A9D1474030800FA43DD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FC8A9C1474030800FA43DD /* AudioToolbox.framework */; };
+		50FC8AA014742CB100FA43DD /* VivaLocalFileDecoderWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */; };
 		50FEC1B113A75C9C00D8C8A2 /* livesearch-albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AB13A75C9C00D8C8A2 /* livesearch-albums.png */; };
 		50FEC1B213A75C9C00D8C8A2 /* livesearch-artists.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AC13A75C9C00D8C8A2 /* livesearch-artists.png */; };
 		50FEC1B313A75C9C00D8C8A2 /* livesearch-gutter.png in Resources */ = {isa = PBXBuildFile; fileRef = 50FEC1AD13A75C9C00D8C8A2 /* livesearch-gutter.png */; };
@@ -505,6 +506,8 @@
 		50FC8A991474009A00FA43DD /* VivaLocalFileDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoder.h; sourceTree = "<group>"; };
 		50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFileDecoder.m; sourceTree = "<group>"; };
 		50FC8A9C1474030800FA43DD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		50FC8A9E14742CB000FA43DD /* VivaLocalFileDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoderWorker.h; sourceTree = "<group>"; };
+		50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFileDecoderWorker.m; sourceTree = "<group>"; };
 		50FEC1AB13A75C9C00D8C8A2 /* livesearch-albums.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-albums.png"; sourceTree = "<group>"; };
 		50FEC1AC13A75C9C00D8C8A2 /* livesearch-artists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-artists.png"; sourceTree = "<group>"; };
 		50FEC1AD13A75C9C00D8C8A2 /* livesearch-gutter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livesearch-gutter.png"; sourceTree = "<group>"; };
@@ -574,6 +577,8 @@
 				50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */,
 				50FC8A991474009A00FA43DD /* VivaLocalFileDecoder.h */,
 				50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */,
+				50FC8A9E14742CB000FA43DD /* VivaLocalFileDecoderWorker.h */,
+				50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */,
 			);
 			name = Playback;
 			sourceTree = "<group>";
@@ -1515,6 +1520,7 @@
 				50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */,
 				50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */,
 				50FC8A9B1474009A00FA43DD /* VivaLocalFileDecoder.m in Sources */,
+				50FC8AA014742CB100FA43DD /* VivaLocalFileDecoderWorker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -212,7 +212,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
                                                           userInfo:nil];
         
     } else {
-        self.playbackManager.playbackSession.playing = !self.playbackManager.playbackSession.playing;
+        self.playbackManager.currentPlaybackProvider.playing = !self.playbackManager.currentPlaybackProvider.playing;
     }
 }
 
