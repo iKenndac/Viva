@@ -60,7 +60,6 @@
 	self.currentWorker.delegate = self;
 	
 	[self.playbackDelegate session:self shouldDeliverAudioFrames:NULL ofCount:0 format:NULL];
-	
 	[self.currentWorker decodeAsset:self.currentAsset fromPosition:offset];
 }
 
@@ -69,7 +68,6 @@
 
 	self.currentWorker.delegate = nil;
 	self.currentWorker.cancelled = YES;
-	
 	self.currentWorker = nil;
 }
 
@@ -86,7 +84,12 @@
 	return 0;
 }
 
--(void)workerDidCompleteAudioPlayback:(VivaLocalFileDecoderWorker *)worker {}
+-(void)workerDidCompleteAudioPlayback:(VivaLocalFileDecoderWorker *)worker {
+	if (worker == self.currentWorker) {
+		[self unloadPlayback];
+		[self.playbackDelegate sessionDidEndPlayback:self];
+	}
+}
 
 
 @end

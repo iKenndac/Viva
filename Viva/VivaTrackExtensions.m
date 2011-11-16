@@ -7,7 +7,7 @@
 //
 
 #import "VivaTrackExtensions.h"
-
+#import "LocalFilesController.h"
 
 @implementation SPTrack (VivaTrackExtensions)
 
@@ -20,6 +20,11 @@
 		return [[[self artists] valueForKey:@"name"] componentsJoinedByString:@", "];
 	}
 	return nil;
+}
+
+-(LocalFile *)localFile {
+	if (!self.isLocal) return nil;
+	return [[LocalFilesController sharedInstance] localFileForTrack:self];
 }
 
 @end

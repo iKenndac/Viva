@@ -172,7 +172,8 @@
         
         if (rowIndex < [[self.trackContainerArrayController arrangedObjects] count]) {
 			id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:rowIndex];
-            [aCell setEnabled:container.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE];
+			[aCell setEnabled:(container.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE ||
+							   container.track.isLocal)];
         }
     }
 }

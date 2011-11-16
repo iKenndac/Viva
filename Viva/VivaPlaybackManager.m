@@ -12,6 +12,7 @@
 #import "LastFMController.h"
 #import "LocalFilesController.h"
 #import "VivaLocalFileDecoder.h"
+#import "VivaTrackExtensions.h"
 
 @interface VivaPlaybackManager  ()
 
@@ -241,7 +242,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         
         for (NSUInteger containerIndex = 0; containerIndex < self.playbackContext.trackContainersForPlayback.count; containerIndex++) {
             id <VivaTrackContainer> potentialContainer = [self.playbackContext.trackContainersForPlayback objectAtIndex:containerIndex];
-            if (potentialContainer.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+            if (potentialContainer.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE || potentialContainer.track.localFile != nil) {
                 container = potentialContainer;
                 break;
             }
@@ -262,7 +263,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
     self.currentTrackPosition = 0.0;    
     
-	if (newTrack.track.spotifyURL.spotifyLinkType == SP_LINKTYPE_LOCALTRACK) {
+	if (newTrack.track.localFile != nil) {
 		self.currentPlaybackProvider = self.localFileDecoder;
 	} else {
 		self.currentPlaybackProvider = self.session;
@@ -320,7 +321,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         
         id <VivaTrackContainer> nextTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
         
-        while (!nextTrack.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+        while (nextTrack.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE && nextTrack.track.localFile == nil) {
             
             newTrackIndex++;
             if (newTrackIndex >= self.playbackContext.trackContainersForPlayback.count) {
@@ -401,7 +402,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         
         id <VivaTrackContainer> previousTrack = [self.playbackContext.trackContainersForPlayback objectAtIndex:newTrackIndex];
         
-        while (!previousTrack.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE) {
+        while (previousTrack.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE && previousTrack.track.localFile == nil) {
             
             newTrackIndex--;
             if (newTrackIndex < 0) {
@@ -482,7 +483,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSMutableArray *unavailableTracks = [NSMutableArray array];
     
     for (id <VivaTrackContainer> trackContainer in tracks) {
-        if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE)
+        if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE &&
+			trackContainer.track.localFile == nil)
             [unavailableTracks addObject:trackContainer];
     }
     
