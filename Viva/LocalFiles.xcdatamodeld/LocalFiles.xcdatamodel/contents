@@ -13,7 +13,9 @@
         <relationship name="localFiles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LocalFile" inverseName="source" inverseEntity="LocalFile" syncable="YES"/>
     </entity>
     <fetchRequest name="AllSources" entity="LocalFileSource"/>
+    <fetchRequest name="LocalFileAtPath" entity="LocalFile" predicateString="path == $TARGET_PATH"/>
     <fetchRequest name="LocalFileRequest" entity="LocalFile" predicateString="title LIKE $TARGET_TITLE AND artist LIKE $TARGET_ARTIST AND album LIKE $TARGET_ALBUM"/>
+    <fetchRequest name="LocalFilesUnderPath" entity="LocalFile" predicateString="path BEGINSWITH $TARGET_PATH"/>
     <fetchRequest name="SourceWithPath" entity="LocalFileSource" predicateString="path == $TARGET_PATH"/>
     <elements>
         <element name="LocalFile" positionX="-29" positionY="153" width="128" height="135"/>

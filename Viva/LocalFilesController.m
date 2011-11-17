@@ -66,6 +66,7 @@ static LocalFilesController *sharedInstance;
 		
 		for (LocalFileSource *source in self.localFileSources) {
 			[source performUpdateScan];
+			[source startFSEventStream];
 		}
     }
 	
@@ -126,6 +127,7 @@ static LocalFilesController *sharedInstance;
 																									 inManagedObjectContext:self.managedObjectContext]
 														  insertIntoManagedObjectContext:self.managedObjectContext];
 	source.path = path;
+	[source startFSEventStream];
 	[self commit];
 	
 	[self didChangeValueForKey:@"localFileSources"];

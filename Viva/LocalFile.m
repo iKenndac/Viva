@@ -19,4 +19,8 @@
 @dynamic title;
 @dynamic source;
 
+-(NSString *)description {
+	return [NSString stringWithFormat:@"%@: %@", [super description], self.path];
+}
+
 @end

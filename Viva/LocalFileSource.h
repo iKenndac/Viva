@@ -19,10 +19,14 @@
 @property (nonatomic, readonly) NSImage *icon;
 @property (nonatomic, readonly) NSString *displayPath;
 
-@property (nonatomic, readonly, getter = isActive) BOOL active;
+@property (readonly, getter = isActive) BOOL active;
 
 -(void)performFullScan;
 -(void)performUpdateScan;
+
+-(void)startFSEventStream;
+-(void)stopFSEventStream;
+
 
 @end
 
