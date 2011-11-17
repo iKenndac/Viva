@@ -128,7 +128,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 									  streamContext,
 									  (__bridge CFArrayRef)pathToWatch,
 									  kFSEventStreamEventIdSinceNow,
-									  5.0,
+									  2.0,
 									  kFSEventStreamCreateFlagNoDefer | kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamCreateFlagFileEvents);
 	
 	FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
