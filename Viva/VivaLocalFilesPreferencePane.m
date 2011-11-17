@@ -16,16 +16,6 @@
 	return [self initWithNibName:@"VivaLocalFilesPreferencePane" bundle:nil];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
-}
-
 - (IBAction)addLocalFileSource:(id)sender {
 	
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];

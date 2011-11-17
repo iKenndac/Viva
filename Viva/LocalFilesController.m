@@ -138,6 +138,7 @@ static LocalFilesController *sharedInstance;
 -(void)removeLocalFileSource:(LocalFileSource *)source {
 	if (source == nil) return;
 	[self willChangeValueForKey:@"localFileSources"];
+	[source stopFSEventStream];
 	[self.managedObjectContext deleteObject:source];
 	[self commit];
 	[self didChangeValueForKey:@"localFileSources"];

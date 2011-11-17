@@ -129,7 +129,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 									  (__bridge CFArrayRef)pathToWatch,
 									  kFSEventStreamEventIdSinceNow,
 									  2.0,
-									  kFSEventStreamCreateFlagNoDefer | kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamCreateFlagFileEvents);
+									  kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamCreateFlagFileEvents);
 	
 	FSEventStreamScheduleWithRunLoop(eventStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 	FSEventStreamStart(eventStream);
@@ -158,6 +158,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		threadContext.undoManager = nil;
 		
 		LocalFileSource *threadSafeSelf = (LocalFileSource *)[threadContext objectWithID:self.objectID];
+		threadSafeSelf.active = YES;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(threadedContextDidSave:)
@@ -215,7 +216,10 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		[threadContext commitEditing];
 		NSError *error = nil;
 		[threadContext save:&error];
-		NSLog(@"Save error: %@", error);
+		if (error != nil)
+			NSLog(@"Save error: %@", error);
+		
+		threadSafeSelf.active = NO;
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:NSManagedObjectContextDidSaveNotification
@@ -323,6 +327,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		threadContext.undoManager = nil;
 		
 		LocalFileSource *threadSafeSelf = (LocalFileSource *)[threadContext objectWithID:self.objectID];
+		threadSafeSelf.active = YES;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(threadedContextDidSave:)
@@ -336,6 +341,8 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:NSManagedObjectContextDidSaveNotification
 													  object:threadContext];
+		
+		threadSafeSelf.active = NO;
 		
 		[self performSelectorOnMainThread:@selector(scanFinished)
 							   withObject:nil
@@ -404,6 +411,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		threadContext.undoManager = nil;
 		
 		LocalFileSource *threadSafeSelf = (LocalFileSource *)[threadContext objectWithID:self.objectID];
+		threadSafeSelf.active = YES;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(threadedContextDidSave:)
@@ -417,6 +425,8 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:NSManagedObjectContextDidSaveNotification
 													  object:threadContext];
+		
+		threadSafeSelf.active = NO;
 		
 		[self performSelectorOnMainThread:@selector(scanFinished)
 							   withObject:nil
@@ -498,9 +508,6 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 }
 
 -(void)threadedContextDidSave:(NSNotification *)notification {
-	
-	NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Merge+Save");
-	
 	NSManagedObjectContext *mainContext = self.managedObjectContext;
 	[mainContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
 								  withObject:notification
