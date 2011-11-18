@@ -520,7 +520,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	// Not routing this through to the main thread causes odd locks and crashes.
 	[self performSelectorOnMainThread:@selector(sessionDidEndPlaybackOnMainThread:)
 						   withObject:aSession
-						waitUntilDone:NO];
+						waitUntilDone:YES];
 }
 
 -(void)sessionDidEndPlaybackOnMainThread:(SPSession *)aSession {

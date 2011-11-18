@@ -22,22 +22,34 @@
 
 @implementation VivaLocalFileDecoder
 
+-(id)init {
+	
+	self = [super init];
+	
+	if (self) {
+		[self addObserver:self forKeyPath:@"playing" options:0 context:nil];
+	}
+	
+	return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"playing"]) {
+        self.currentWorker.playing = self.playing;
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+-(void)dealloc {
+	[self removeObserver:self forKeyPath:@"playing"];
+}
+
 @synthesize playbackDelegate;
 @synthesize cancelled;
 @synthesize currentWorker;
 @synthesize currentAsset;
-
-+(NSSet *)keyPathsForValuesAffectingPlaying {
-	return [NSSet setWithObject:@"currentWorker.playing"];
-}
-
--(BOOL)isPlaying {
-	return self.currentWorker.isPlaying;
-}
-
--(void)setPlaying:(BOOL)playing {
-	self.currentWorker.playing = playing;
-}
+@synthesize playing;
 
 -(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error {
 	// No-op for now.
@@ -57,10 +69,10 @@
 	[self unloadPlayback];
 	
 	self.currentAsset = [AVAsset assetWithURL:[NSURL fileURLWithPath:localFile.path]];
-	self.playing = YES;
 	self.currentWorker = [[VivaLocalFileDecoderWorker alloc] init];
 	self.currentWorker.delegate = self;
 	[self.currentWorker decodeAsset:self.currentAsset fromPosition:0.0];
+	self.playing = YES;
 	
 	return YES;
 }
@@ -71,8 +83,11 @@
 	self.currentWorker = [[VivaLocalFileDecoderWorker alloc] init];
 	self.currentWorker.delegate = self;
 	
+	// Fake audio delivery to get player to clear buffers.
 	[self.playbackDelegate session:self shouldDeliverAudioFrames:NULL ofCount:0 format:NULL];
+	
 	[self.currentWorker decodeAsset:self.currentAsset fromPosition:offset];
+	self.currentWorker.playing = self.isPlaying;
 }
 
 -(void)unloadPlayback {
@@ -100,6 +115,9 @@
 	if (worker == self.currentWorker) {
 		[self unloadPlayback];
 		[self.playbackDelegate sessionDidEndPlayback:self];
+		
+		if (worker == self.currentWorker || self.currentWorker == nil)
+			self.playing = NO;
 	}
 }
 
