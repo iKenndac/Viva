@@ -72,7 +72,7 @@
 	self.currentWorker = [[VivaLocalFileDecoderWorker alloc] init];
 	self.currentWorker.delegate = self;
 	[self.currentWorker decodeAsset:self.currentAsset fromPosition:0.0];
-	self.playing = YES;
+	self.currentWorker.playing = self.isPlaying;
 	
 	return YES;
 }
