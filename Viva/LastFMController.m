@@ -244,6 +244,7 @@ static LastFMController *sharedInstance;
 	
 	[[NSUserDefaults standardUserDefaults] setObject:theUser forKey:kLastFMUsernameUserDefaultsKey];
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kLastFMConfiguredUserDefaultsKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	NSString *keychainService = [NSString stringWithFormat:@"Last.fm (%@)", [[NSBundle mainBundle] bundleIdentifier]];
 	EMGenericKeychainItem *keyItem = [EMGenericKeychainItem genericKeychainItemForService:keychainService withUsername:theUser];
