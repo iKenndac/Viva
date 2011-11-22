@@ -148,9 +148,25 @@ static LocalFilesController *sharedInstance;
 	
 	if (track == nil) return nil;
 	
-	NSDictionary *variables = [NSDictionary dictionaryWithObjectsAndKeys:track.name, @"TARGET_TITLE",
-							   ((SPArtist *)track.artists.lastObject).name, @"TARGET_ARTIST",
-							   track.album.name, @"TARGET_ALBUM",
+	NSString *targetTitle = track.name;
+	NSString *targetArtist = ((SPArtist *)track.artists.lastObject).name;
+	NSString *targetAlbum = track.album.name;
+	
+	// Core Data + nil == bad.
+	
+	if (targetTitle == nil)
+		targetTitle = @"";
+	
+	if (targetArtist == nil)
+		targetArtist = @"";
+	
+	if (targetAlbum == nil)
+		targetAlbum = @"";
+	
+	NSDictionary *variables = [NSDictionary dictionaryWithObjectsAndKeys:
+							   targetTitle, @"TARGET_TITLE",
+							   targetArtist, @"TARGET_ARTIST",
+							   targetAlbum, @"TARGET_ALBUM",
 							   nil];
 	
 	NSFetchRequest *request = [self.managedObjectModel fetchRequestFromTemplateWithName:@"LocalFileRequest"
