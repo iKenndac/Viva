@@ -189,12 +189,12 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	
 	NSURL *aURL = [NSURL URLWithString:[self.urlField stringValue]];
 	
-	if (aURL == nil || ![[VivaInternalURLManager sharedInstance] canHandleURL:aURL]) {
+	if (aURL == nil) {
 		[self.invalidURLWarningLabel setHidden:NO];
 		return;
 	}
 	
-	self.navigationController.thePresent = aURL;
+	[[NSApp delegate] handleURL:aURL];
 	
 	[self cancelOpenURL:nil];
 }

@@ -31,6 +31,7 @@
 @property (weak, readonly) SPSession *session;
 @property (strong, readonly) NSURL *urlToHandleOnLogin;
 
+-(void)handleURL:(NSURL *)url;
 -(void)logOut;
 
 // For Applescript, Dock menu, etc

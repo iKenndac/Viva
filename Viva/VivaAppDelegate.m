@@ -29,8 +29,6 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @property (strong, readwrite) SPMediaKeyTap *mediaKeyHandler;
 @property (strong, readwrite) NSURL *urlToHandleOnLogin;
 
--(void)handleURL:(NSURL *)url;
-
 @end
 
 @implementation VivaAppDelegate
