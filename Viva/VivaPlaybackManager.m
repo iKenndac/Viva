@@ -484,8 +484,12 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     
     for (id <VivaTrackContainer> trackContainer in tracks) {
         if (trackContainer.track.availability != SP_TRACK_AVAILABILITY_AVAILABLE &&
-			trackContainer.track.localFile == nil)
+			trackContainer.track.localFile == nil) {
             [unavailableTracks addObject:trackContainer];
+			// If a track isn't available, pretend we've played it so we don't have to check the track
+			// every time.
+			[self addTrackContainerToShufflePool:trackContainer];
+		}
     }
     
     [tracks removeObjectsInArray:unavailableTracks];
