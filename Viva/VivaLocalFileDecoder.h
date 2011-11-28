@@ -21,7 +21,7 @@
 ///----------------------------
 
 /** Returns `YES` if the session is currently playing a track, otherwise `NO`. */
-@property (readwrite, getter=isPlaying) BOOL playing;
+@property (nonatomic, readwrite, getter=isPlaying) BOOL playing;
 
 /** Returns the session's playback delegate object.
  
