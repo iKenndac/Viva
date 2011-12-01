@@ -12,6 +12,7 @@
 #import "VivaSortDescriptorExtensions.h"
 #import "Constants.h"
 #import "VivaImageExtensions.h"
+#import "VivaTrackInContainerReference.h"
 
 @implementation VivaSortableTrackListController
 
@@ -41,6 +42,35 @@
 		   forKeyPath:@"playingTrackContainer"
 			  options:0
 			  context:nil];
+}
+
+-(BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+	if (menuItem.action == @selector(copySpotifyURI:)) {
+		return self.trackTable.selectedRowIndexes.count == 1 || self.trackTable.clickedRow != -1;
+	}
+	return [super validateMenuItem:menuItem];
+}
+
+-(IBAction)copySpotifyURI:(id)sender {
+	
+		VivaTrackInContainerReference *item = nil;
+	
+	if (self.trackTable.clickedRow != -1) {
+		item = [self.trackContainerArrayController.arrangedObjects objectAtIndex:self.trackTable.clickedRow];
+	} else if (self.trackTable.selectedRowIndexes.count == 0) {
+		item = [self.trackContainerArrayController.arrangedObjects objectAtIndex:self.trackTable.selectedRowIndexes.firstIndex];
+	}
+	
+	if (item == nil) {
+		NSBeep();
+		return;
+	}
+	
+	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+	
+	[pasteboard declareTypes:[NSArray arrayWithObjects:NSURLPboardType, NSStringPboardType, nil] owner:nil];
+	[item.track.spotifyURL writeToPasteboard:pasteboard];
+	
 }
 
 -(void)viewControllerDidActivateWithContext:(id)context {

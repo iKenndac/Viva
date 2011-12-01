@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<int key="IBDocument.SystemTarget">1070</int>
+		<string key="IBDocument.SystemVersion">11C74</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
+		<string key="IBDocument.AppKitVersion">1138.23</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1306</string>
+			<string key="NS.object.0">1938</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSScroller</string>
 			<string>NSArrayController</string>
 			<string>NSTableHeaderView</string>
+			<string>NSMenu</string>
 			<string>NSScrollView</string>
 			<string>NSTextFieldCell</string>
 			<string>NSImageView</string>
+			<string>NSMenuItem</string>
 			<string>NSImageCell</string>
 			<string>NSTableView</string>
 			<string>NSCustomView</string>
@@ -28,7 +30,10 @@
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</array>
-		<dictionary class="NSMutableDictionary" key="IBDocument.Metadata"/>
+		<object class="NSMutableDictionary" key="IBDocument.Metadata">
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
+		</object>
 		<array class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<object class="NSCustomObject" id="1001">
 				<string key="NSClassName">ArtistViewController</string>
@@ -57,7 +62,7 @@
 										<string key="NSFrameSize">{555, 101}</string>
 										<reference key="NSSuperview" ref="232491811"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="326045572"/>
+										<reference key="NSNextKeyView" ref="558302075"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="1057790601">
 											<reference key="NSNextResponder" ref="558302075"/>
@@ -69,11 +74,9 @@
 											<reference key="NSTableView" ref="796022822"/>
 										</object>
 										<object class="_NSCornerView" key="NSCornerView" id="329814334">
-											<reference key="NSNextResponder" ref="707349054"/>
+											<nil key="NSNextResponder"/>
 											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{224, 0}, {16, 17}}</string>
-											<reference key="NSSuperview" ref="707349054"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="232491811"/>
 										</object>
 										<array class="NSMutableArray" key="NSTableColumns">
@@ -186,6 +189,7 @@
 										<int key="NSDraggingSourceMaskForNonLocal">0</int>
 										<bool key="NSAllowsTypeSelect">YES</bool>
 										<int key="NSTableViewDraggingDestinationStyle">0</int>
+										<int key="NSTableViewGroupRowStyle">1</int>
 									</object>
 								</array>
 								<string key="NSFrame">{{0, 17}, {555, 101}}</string>
@@ -234,18 +238,16 @@
 								<reference key="NSBGColor" ref="430510962"/>
 								<int key="NScvFlags">4</int>
 							</object>
-							<reference ref="329814334"/>
 						</array>
 						<string key="NSFrame">{{0, 198}, {555, 118}}</string>
 						<reference key="NSSuperview" ref="995969511"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="558302075"/>
-						<int key="NSsFlags">560</int>
+						<reference key="NSNextKeyView" ref="232491811"/>
+						<int key="NSsFlags">133680</int>
 						<reference key="NSVScroller" ref="326045572"/>
 						<reference key="NSHScroller" ref="801151900"/>
 						<reference key="NSContentView" ref="232491811"/>
 						<reference key="NSHeaderClipView" ref="558302075"/>
-						<reference key="NSCornerView" ref="329814334"/>
 						<bytes key="NSScrollAmts">QSAAAEEgAABCSAAAQkgAAA</bytes>
 					</object>
 					<object class="NSTextField" id="833665279">
@@ -334,7 +336,7 @@
 										<string key="NSFrameSize">{555, 181}</string>
 										<reference key="NSSuperview" ref="197892721"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="511607273"/>
+										<reference key="NSNextKeyView" ref="917856049"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="628072417">
 											<reference key="NSNextResponder" ref="917856049"/>
@@ -346,11 +348,9 @@
 											<reference key="NSTableView" ref="961042079"/>
 										</object>
 										<object class="_NSCornerView" key="NSCornerView" id="66269712">
-											<reference key="NSNextResponder" ref="644299306"/>
+											<nil key="NSNextResponder"/>
 											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{388, 0}, {16, 17}}</string>
-											<reference key="NSSuperview" ref="644299306"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="197892721"/>
 										</object>
 										<array class="NSMutableArray" key="NSTableColumns">
@@ -510,6 +510,7 @@
 										<int key="NSDraggingSourceMaskForNonLocal">0</int>
 										<bool key="NSAllowsTypeSelect">YES</bool>
 										<int key="NSTableViewDraggingDestinationStyle">0</int>
+										<int key="NSTableViewGroupRowStyle">1</int>
 									</object>
 								</array>
 								<string key="NSFrame">{{0, 17}, {555, 181}}</string>
@@ -523,7 +524,7 @@
 							<object class="NSScroller" id="511607273">
 								<reference key="NSNextResponder" ref="644299306"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{388, 17}, {15, 403.758}}</string>
+								<string key="NSFrame">{{388, 17}, {15, 403.75799999999998}}</string>
 								<reference key="NSSuperview" ref="644299306"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="83430446"/>
@@ -534,10 +535,9 @@
 							<object class="NSScroller" id="83430446">
 								<reference key="NSNextResponder" ref="644299306"/>
 								<int key="NSvFlags">-2147483392</int>
-								<string key="NSFrame">{{0, 420.758}, {388, 15}}</string>
+								<string key="NSFrame">{{0, 420.75799999999998}, {388, 15}}</string>
 								<reference key="NSSuperview" ref="644299306"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="644299306"/>
 								<string key="NSAction">_doScroller:</string>
@@ -557,18 +557,16 @@
 								<reference key="NSBGColor" ref="430510962"/>
 								<int key="NScvFlags">4</int>
 							</object>
-							<reference ref="66269712"/>
 						</array>
 						<string key="NSFrameSize">{555, 198}</string>
 						<reference key="NSSuperview" ref="995969511"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="917856049"/>
-						<int key="NSsFlags">560</int>
+						<reference key="NSNextKeyView" ref="197892721"/>
+						<int key="NSsFlags">133680</int>
 						<reference key="NSVScroller" ref="511607273"/>
 						<reference key="NSHScroller" ref="83430446"/>
 						<reference key="NSContentView" ref="197892721"/>
 						<reference key="NSHeaderClipView" ref="917856049"/>
-						<reference key="NSCornerView" ref="66269712"/>
 						<bytes key="NSScrollAmts">QSAAAEEgAABB0AAAQdAAAA</bytes>
 					</object>
 				</array>
@@ -596,9 +594,148 @@
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
+			<object class="NSMenu" id="370657813">
+				<string key="NSTitle"/>
+				<array class="NSMutableArray" key="NSMenuItems">
+					<object class="NSMenuItem" id="801123465">
+						<reference key="NSMenu" ref="370657813"/>
+						<string key="NSTitle">Copy Spotify URI</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<object class="NSCustomResource" key="NSOnImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuCheckmark</string>
+						</object>
+						<object class="NSCustomResource" key="NSMixedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuMixedState</string>
+						</object>
+					</object>
+				</array>
+			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="995969511"/>
+					</object>
+					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackContainerArrayController</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="954114991"/>
+					</object>
+					<int key="connectionID">31</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">trackTable</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="961042079"/>
+					</object>
+					<int key="connectionID">32</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">copySpotifyURI:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="801123465"/>
+					</object>
+					<int key="connectionID">59</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: trackContainers</string>
+						<reference key="source" ref="954114991"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="954114991"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: trackContainers</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">trackContainers</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: artistBrowse.artist.name</string>
+						<reference key="source" ref="833665279"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="833665279"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: artistBrowse.artist.name</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">artistBrowse.artist.name</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">35</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: artistBrowse.firstPortrait.image</string>
+						<reference key="source" ref="315921257"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="315921257"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: artistBrowse.firstPortrait.image</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">artistBrowse.firstPortrait.image</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: artistBrowse.biography</string>
+						<reference key="source" ref="129436650"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="129436650"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: artistBrowse.biography</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">artistBrowse.biography</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="961042079"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">38</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="961042079"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">menu</string>
+						<reference key="source" ref="961042079"/>
+						<reference key="destination" ref="370657813"/>
+					</object>
+					<int key="connectionID">61</int>
+				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.track.popularity</string>
@@ -618,6 +755,26 @@
 						</object>
 					</object>
 					<int key="connectionID">26</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.track.condensedArtist</string>
+						<reference key="source" ref="676395988"/>
+						<reference key="destination" ref="954114991"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="676395988"/>
+							<reference key="NSDestination" ref="954114991"/>
+							<string key="NSLabel">value: arrangedObjects.track.condensedArtist</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.track.condensedArtist</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSConditionallySetsEditable</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">29</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -661,143 +818,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.track.condensedArtist</string>
-						<reference key="source" ref="676395988"/>
-						<reference key="destination" ref="954114991"/>
+						<string key="label">value: arrangedObjects.cover.image</string>
+						<reference key="source" ref="1044338342"/>
+						<reference key="destination" ref="875761641"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="676395988"/>
-							<reference key="NSDestination" ref="954114991"/>
-							<string key="NSLabel">value: arrangedObjects.track.condensedArtist</string>
+							<reference key="NSSource" ref="1044338342"/>
+							<reference key="NSDestination" ref="875761641"/>
+							<string key="NSLabel">value: arrangedObjects.cover.image</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.track.condensedArtist</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEditable</string>
-								<boolean value="YES" key="NS.object.0"/>
-							</object>
+							<string key="NSKeyPath">arrangedObjects.cover.image</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">29</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">view</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="995969511"/>
-					</object>
-					<int key="connectionID">30</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">trackContainerArrayController</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="954114991"/>
-					</object>
-					<int key="connectionID">31</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">trackTable</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="961042079"/>
-					</object>
-					<int key="connectionID">32</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: trackContainers</string>
-						<reference key="source" ref="954114991"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="954114991"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: trackContainers</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">trackContainers</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">33</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: artistBrowse.artist.name</string>
-						<reference key="source" ref="833665279"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="833665279"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: artistBrowse.artist.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">artistBrowse.artist.name</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">35</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: artistBrowse.biography</string>
-						<reference key="source" ref="129436650"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="129436650"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: artistBrowse.biography</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">artistBrowse.biography</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">36</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: artistBrowse.firstPortrait.image</string>
-						<reference key="source" ref="315921257"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="315921257"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: artistBrowse.firstPortrait.image</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">artistBrowse.firstPortrait.image</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">37</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">dataSource</string>
-						<reference key="source" ref="961042079"/>
-						<reference key="destination" ref="1001"/>
-					</object>
-					<int key="connectionID">38</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="961042079"/>
-						<reference key="destination" ref="1001"/>
-					</object>
-					<int key="connectionID">39</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: artistBrowse.albums</string>
-						<reference key="source" ref="875761641"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="875761641"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: artistBrowse.albums</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">artistBrowse.albums</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">50</int>
+					<int key="connectionID">56</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -817,19 +850,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.cover.image</string>
-						<reference key="source" ref="1044338342"/>
-						<reference key="destination" ref="875761641"/>
+						<string key="label">contentArray: artistBrowse.albums</string>
+						<reference key="source" ref="875761641"/>
+						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1044338342"/>
-							<reference key="NSDestination" ref="875761641"/>
-							<string key="NSLabel">value: arrangedObjects.cover.image</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.cover.image</string>
+							<reference key="NSSource" ref="875761641"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentArray: artistBrowse.albums</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">artistBrowse.albums</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">56</int>
+					<int key="connectionID">50</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="370657813"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">60</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1085,6 +1126,19 @@
 						<reference key="object" ref="125704270"/>
 						<reference key="parent" ref="1044338342"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">57</int>
+						<reference key="object" ref="370657813"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="801123465"/>
+						</array>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">58</int>
+						<reference key="object" ref="801123465"/>
+						<reference key="parent" ref="370657813"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1095,32 +1149,39 @@
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="12.CustomClassName">VivaDragImageFromDataSourceTableView</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="18.CustomClassName">ImageAndTextCell</string>
+				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="19.CustomClassName">SPWithAlternateImageCell</string>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="20.CustomClassName">ImageAndTextCell</string>
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="21.CustomClassName">ImageAndTextCell</string>
+				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="3.IBEditorWindowLastContentRect">{{633, 728}, {480, 272}}</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="3.WindowOrigin">{628, 654}</string>
-				<string key="3.editorWindowContentRectSynchronizationRect">{{357, 416}, {480, 272}}</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="47.CustomClassName">ImageAndTextCell</string>
+				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="49.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1130,7 +1191,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">56</int>
+			<int key="maxID">61</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1202,5 +1263,9 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NSMenuCheckmark">{9, 8}</string>
+			<string key="NSMenuMixedState">{7, 2}</string>
+		</dictionary>
 	</data>
 </archive>
