@@ -30,4 +30,25 @@ static NSImage *pressedVolumeKnobImage;
 				   fraction:1.0];
 }
 
+-(NSRect)knobRectFlipped:(BOOL)flipped {
+	
+	if (NSEqualRects(NSZeroRect, lastFrame)) {
+		return NSZeroRect;
+	}
+	
+	double progress = ([self doubleValue] - [self minValue]) / ([self maxValue] - [self minValue]);
+	
+	NSRect rect = (NSRect) {
+		.size = volumeKnobImage.size,
+		.origin = NSMakePoint(floor((NSWidth(lastFrame) - [self knobThickness]) * progress),
+							  floor(NSMidY(lastFrame) - (volumeKnobImage.size.height / 2) - 1.0))
+	};
+	
+	return rect;
+}
+
+- (CGFloat)knobThickness {
+	return volumeKnobImage.size.width;
+}
+
 @end

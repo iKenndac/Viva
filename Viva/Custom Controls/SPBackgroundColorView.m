@@ -30,6 +30,13 @@
 	}
 }
 
+-(BOOL)isOpaque {
+	return NO;
+}
+
+-(BOOL)mouseDownCanMoveWindow {
+	return YES;
+}
 
 - (void)drawRect:(NSRect)dirtyRect
 {

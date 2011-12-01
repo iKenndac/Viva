@@ -35,7 +35,7 @@ static NSImage *pressedKnobImage;
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
 	
-	[super drawWithFrame:cellFrame inView:controlView];
+	//[super drawWithFrame:cellFrame inView:controlView];
 	
 	lastFrame = cellFrame;
 	
@@ -59,7 +59,7 @@ static NSImage *pressedKnobImage;
         
         if (NSMinX(knobRect) > 0.0) {
             NSRect filledBarFrame = barFrame;
-            filledBarFrame.size.width = NSMaxX(knobRect);
+            filledBarFrame.size.width = NSMidX(knobRect);
             
             NSDrawThreePartImage(filledBarFrame,
                                  filledTrackImageLeft,
@@ -88,7 +88,7 @@ static NSImage *pressedKnobImage;
 	NSRect rect = (NSRect) {
 		.size = knobImage.size,
 		.origin = NSMakePoint(floor((NSWidth(lastFrame) - [self knobThickness]) * progress),
-							  floor(NSMidY(lastFrame) - (knobImage.size.height / 2)))
+							  floor(NSMidY(lastFrame) - (knobImage.size.height / 2) - 1.0))
 	};
 	
 	return rect;

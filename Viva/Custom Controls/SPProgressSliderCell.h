@@ -10,7 +10,6 @@
 
 
 @interface SPProgressSliderCell : NSSliderCell {
-@private
     NSRect lastFrame;
 }
 

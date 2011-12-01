@@ -58,35 +58,24 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
 	if ([keyPath isEqualToString:@"playbackManager.loopPlayback"]) {
-        
-		if (self.playbackManager.loopPlayback) {
 			
-			[playbackIsRepeatingButton setImage:[NSImage imageNamed:@"repeat-on"]];
-			[playbackIsRepeatingButton setAlternateImage:[NSImage imageNamed:@"repeat-on-pushed"]];
-		} else {
-			[playbackIsRepeatingButton setImage:[NSImage imageNamed:@"repeat-off"]];
-			[playbackIsRepeatingButton setAlternateImage:[NSImage imageNamed:@"repeat-off-pushed"]];
-		}
+		[self.playbackStateSegmentedControl setImage:[NSImage imageNamed:self.playbackManager.loopPlayback ? @"repeat-on" : @"repeat-off"]
+											forSegment:0];
+
 	} else if ([keyPath isEqualToString:@"playbackManager.shufflePlayback"]) {
         
-		if (self.playbackManager.shufflePlayback) {
-			
-			[playbackIsShuffledButton setImage:[NSImage imageNamed:@"shuffle-on"]];
-			[playbackIsShuffledButton setAlternateImage:[NSImage imageNamed:@"shuffle-on-pushed"]];
-		} else {
-			[playbackIsShuffledButton setImage:[NSImage imageNamed:@"shuffle-off"]];
-			[playbackIsShuffledButton setAlternateImage:[NSImage imageNamed:@"shuffle-off-pushed"]];
-		}
+		[self.playbackStateSegmentedControl setImage:[NSImage imageNamed:self.playbackManager.shufflePlayback ? @"shuffle-on" : @"shuffle-off"]
+										  forSegment:1];
 		
 	} else if ([keyPath isEqualToString:@"playbackManager.currentTrack.starred"]) {
         
 		if (self.playbackManager.currentTrack.starred) {
 			
-			[trackIsStarredButton setImage:[NSImage imageNamed:@"starred"]];
-			[trackIsStarredButton setAlternateImage:[NSImage imageNamed:@"starred-pushed"]];
+			[self.trackIsStarredButton setImage:[NSImage imageNamed:@"starred"]];
+			[self.trackIsStarredButton setAlternateImage:[NSImage imageNamed:@"starred-pushed"]];
 		} else {
-			[trackIsStarredButton setImage:[NSImage imageNamed:@"star"]];
-			[trackIsStarredButton setAlternateImage:[NSImage imageNamed:@"star-pushed"]];
+			[self.trackIsStarredButton setImage:[NSImage imageNamed:@"star"]];
+			[self.trackIsStarredButton setAlternateImage:[NSImage imageNamed:@"star-pushed"]];
 		}
 		
 	} else if ([keyPath isEqualToString:@"playbackManager.currentTrackPosition"]) {
@@ -97,11 +86,11 @@
     } else if ([keyPath isEqualToString:@"playbackManager.currentPlaybackProvider.playing"]) {
 
         if (((VivaPlaybackManager *)[self playbackManager]).currentPlaybackProvider.playing) {
-            [playPauseButton setImage:[NSImage imageNamed:@"pause"]];
-            [playPauseButton setAlternateImage:[NSImage imageNamed:@"pause-pushed"]];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"pause"]];
+            [self.playPauseButton setAlternateImage:[NSImage imageNamed:@"pause-pushed"]];
         } else {
-            [playPauseButton setImage:[NSImage imageNamed:@"play"]];
-            [playPauseButton setAlternateImage:[NSImage imageNamed:@"play-pushed"]];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"play"]];
+            [self.playPauseButton setAlternateImage:[NSImage imageNamed:@"play-pushed"]];
         }
         
     } else {
@@ -112,12 +101,13 @@
 #pragma mark -
 
 @synthesize trackIsStarredButton;
-@synthesize playbackIsRepeatingButton;
-@synthesize playbackIsShuffledButton;
 @synthesize playbackProgressSlider;
 @synthesize playPauseButton;
-@synthesize leftView;
-@synthesize playbackControlsView;
+@synthesize coverView;
+@synthesize volumePopover;
+@synthesize playbackStateSegmentedControl;
+@synthesize titleField;
+@synthesize artistField;
 
 @synthesize playbackManager;
 
@@ -150,9 +140,10 @@
 -(void)awakeFromNib {
 	
 	((SPBackgroundColorView *)self.view).backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"bg"]];
+	[self.coverView bind:@"image" toObject:self withKeyPath:@"playbackManager.currentTrack.album.cover.image" options:nil];
 	
-	[self.view addSubview:self.leftView];
-	[self.view addSubview:self.playbackControlsView];	
+	[self.titleField setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationHorizontal];
+	[self.artistField setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationHorizontal];
 }
 
 - (IBAction)starredButtonWasClicked:(id)sender {
@@ -160,14 +151,6 @@
 	
 	if (self.playbackManager.currentTrack.starred && [[NSUserDefaults standardUserDefaults] boolForKey:kStarEqualsLastFMLoveUserDefaultsKey])
 		[[LastFMController sharedInstance] notifyLoveTrack:self.playbackManager.currentTrack];
-}
-
-- (IBAction)repeatButtonWasClicked:(id)sender {
-	self.playbackManager.loopPlayback = !self.playbackManager.loopPlayback;
-}
-
-- (IBAction)shuffleButtonWasClicked:(id)sender {
-	self.playbackManager.shufflePlayback = !self.playbackManager.shufflePlayback;
 }
 
 - (IBAction)positionSliderWasDragged:(id)sender {
@@ -195,6 +178,20 @@
 
 - (IBAction)nextTrackButtonWasClicked:(id)sender {
 	[self.playbackManager skipToNextTrackInCurrentContext:YES];
+}
+
+- (IBAction)showVolumePopover:(id)sender {
+	NSView *aView = (NSView *)sender;
+	[self.volumePopover showRelativeToRect:aView.bounds ofView:aView preferredEdge:NSMinYEdge];
+}
+
+- (IBAction)playbackStateControlWasClicked:(id)sender {
+	
+	if (self.playbackStateSegmentedControl.selectedSegment == 0)
+		self.playbackManager.loopPlayback = !self.playbackManager.loopPlayback;
+	else
+		self.playbackManager.shufflePlayback = !self.playbackManager.shufflePlayback;
+	
 }
 
 #pragma mark -
@@ -226,30 +223,6 @@
 	} else {
 		return [NSString stringWithFormat:@"%d:%@", minutes, [formatter stringFromNumber:[NSNumber numberWithInt:seconds]]];
 	}
-	
-}
-
-
-
-#pragma mark -
-#pragma mark SplitView
-
--(void)splitViewDidResizeSubviews:(NSNotification *)aNotification {
-	// Called when a splitview we care about has resized. 
-	
-	NSSplitView *splitView = [aNotification object];
-	
-	CGFloat dividerPosition = floorf([[[splitView subviews] objectAtIndex:0] frame].size.width + [splitView dividerThickness]);
-	
-	leftView.frame = (NSRect) {
-		.origin = leftView.frame.origin,
-		.size = NSMakeSize(dividerPosition, leftView.frame.size.height)
-	};
-	
-	playbackControlsView.frame = (NSRect) {
-		.origin = NSMakePoint(NSMaxX(leftView.frame), playbackControlsView.frame.origin.y),
-		.size = NSMakeSize(NSWidth(self.view.bounds) - dividerPosition, playbackControlsView.frame.size.height)
-	};
 	
 }
 

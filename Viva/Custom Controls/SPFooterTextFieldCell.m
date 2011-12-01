@@ -17,9 +17,9 @@
     NSMutableAttributedString *str = [[self attributedStringValue] mutableCopy];
     
     NSShadow *shadow = [[NSShadow alloc] init];
-    [shadow setShadowColor:[NSColor blackColor]];
+    [shadow setShadowColor:[[NSColor whiteColor] colorWithAlphaComponent:0.6]];
     [shadow setShadowBlurRadius:0.0];
-    [shadow setShadowOffset:NSMakeSize(0.0, 1.0)];
+    [shadow setShadowOffset:NSMakeSize(0.0, -1.0)];
     
     [str addAttribute:NSShadowAttributeName
                 value:shadow
