@@ -17,6 +17,7 @@
 #import "StarredViewController.h"
 #import "InboxViewController.h"
 #import "LocalFilesController.h"
+#import "LibraryViewController.h"
 
 extern int *_NSGetArgc(void);
 extern char ***_NSGetArgv(void);
@@ -62,7 +63,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[ArtistViewController class] forURLScheme:@"spotify:artist"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[StarredViewController class] forURLScheme:@"spotify:internal:starred"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[InboxViewController class] forURLScheme:@"spotify:internal:inbox"];
-
+	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[LibraryViewController class] forURLScheme:@"spotify:internal:library"];
+	
     // Look for -mu arguments in argv
     NSString *muValue = nil;
     

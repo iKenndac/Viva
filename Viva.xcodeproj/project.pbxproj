@@ -40,6 +40,10 @@
 		503D62EC13257D92007772CA /* VivaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62EB13257D92007772CA /* VivaAppDelegate.m */; };
 		503D630513257F28007772CA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 503D630413257F28007772CA /* MainMenu.xib */; };
 		503D630713257F4A007772CA /* local_files.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503D630613257F4A007772CA /* local_files.icns */; };
+		50439AD8148B847D0059B578 /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50439AD6148B847D0059B578 /* LibraryViewController.m */; };
+		50439AD9148B847D0059B578 /* LibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50439AD7148B847D0059B578 /* LibraryViewController.xib */; };
+		50439AE7148B94820059B578 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50439AE6148B94820059B578 /* Quartz.framework */; };
+		50439AEA148B99A20059B578 /* VivaAlbumIKImageViewProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50439AE9148B99A20059B578 /* VivaAlbumIKImageViewProxy.m */; };
 		5053184E147276AA0032B253 /* LocalFilesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053184D147276AA0032B253 /* LocalFilesController.m */; };
 		5053185114727CFD0032B253 /* LocalFiles.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */; };
 		5053188D1472EB690032B253 /* VivaLocalFilesPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5053188B1472EB690032B253 /* VivaLocalFilesPreferencePane.m */; };
@@ -129,6 +133,7 @@
 		50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192CB134280FB00D02FDF /* CoreAudio.framework */; };
 		50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1931359E1D200437CCB /* VivaImageExtensions.m */; };
 		50D1C1991359E45800437CCB /* VivaDragImageFromDataSourceTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1981359E45800437CCB /* VivaDragImageFromDataSourceTableView.m */; };
+		50D3D9D2148BAEE200F6C623 /* 350-album.png in Resources */ = {isa = PBXBuildFile; fileRef = 50D3D9D1148BAEE200F6C623 /* 350-album.png */; };
 		50DC12ED1487ABD300F030FC /* SPNowPlayingCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DC12EC1487ABD300F030FC /* SPNowPlayingCoverView.m */; };
 		50DC12EF1487AF8B00F030FC /* 64-album.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DC12EE1487AF8B00F030FC /* 64-album.png */; };
 		50DC12F21487BDAD00F030FC /* vol-down.png in Resources */ = {isa = PBXBuildFile; fileRef = 50DC12F01487BDAD00F030FC /* vol-down.png */; };
@@ -333,6 +338,12 @@
 		503D62EB13257D92007772CA /* VivaAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VivaAppDelegate.m; sourceTree = "<group>"; };
 		503D630413257F28007772CA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		503D630613257F4A007772CA /* local_files.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = local_files.icns; sourceTree = "<group>"; };
+		50439AD5148B847D0059B578 /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
+		50439AD6148B847D0059B578 /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
+		50439AD7148B847D0059B578 /* LibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LibraryViewController.xib; sourceTree = "<group>"; };
+		50439AE6148B94820059B578 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		50439AE8148B99A20059B578 /* VivaAlbumIKImageViewProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAlbumIKImageViewProxy.h; sourceTree = "<group>"; };
+		50439AE9148B99A20059B578 /* VivaAlbumIKImageViewProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaAlbumIKImageViewProxy.m; sourceTree = "<group>"; };
 		5053184C147276AA0032B253 /* LocalFilesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFilesController.h; sourceTree = "<group>"; };
 		5053184D147276AA0032B253 /* LocalFilesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFilesController.m; sourceTree = "<group>"; };
 		5053185014727CFD0032B253 /* LocalFiles.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalFiles.xcdatamodel; sourceTree = "<group>"; };
@@ -454,6 +465,7 @@
 		50D1C1931359E1D200437CCB /* VivaImageExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaImageExtensions.m; sourceTree = "<group>"; };
 		50D1C1971359E45800437CCB /* VivaDragImageFromDataSourceTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaDragImageFromDataSourceTableView.h; path = "Custom Controls/VivaDragImageFromDataSourceTableView.h"; sourceTree = "<group>"; };
 		50D1C1981359E45800437CCB /* VivaDragImageFromDataSourceTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaDragImageFromDataSourceTableView.m; path = "Custom Controls/VivaDragImageFromDataSourceTableView.m"; sourceTree = "<group>"; };
+		50D3D9D1148BAEE200F6C623 /* 350-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "350-album.png"; sourceTree = "<group>"; };
 		50DC12EB1487ABD300F030FC /* SPNowPlayingCoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPNowPlayingCoverView.h; path = "Custom Controls/SPNowPlayingCoverView.h"; sourceTree = "<group>"; };
 		50DC12EC1487ABD300F030FC /* SPNowPlayingCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPNowPlayingCoverView.m; path = "Custom Controls/SPNowPlayingCoverView.m"; sourceTree = "<group>"; };
 		50DC12EE1487AF8B00F030FC /* 64-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "64-album.png"; sourceTree = "<group>"; };
@@ -521,6 +533,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50439AE7148B94820059B578 /* Quartz.framework in Frameworks */,
 				50FC8A9D1474030800FA43DD /* AudioToolbox.framework in Frameworks */,
 				50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */,
 				5053189A1473C8950032B253 /* AVFoundation.framework in Frameworks */,
@@ -690,6 +703,7 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50439AE6148B94820059B578 /* Quartz.framework */,
 				50FC8A9C1474030800FA43DD /* AudioToolbox.framework */,
 				50FC8A881473CD6200FA43DD /* CoreMedia.framework */,
 				505318991473C8950032B253 /* AVFoundation.framework */,
@@ -772,8 +786,20 @@
 				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
 				505A929213574F6600136BBF /* VivaTrackInContainerReference.h */,
 				505A929313574F6600136BBF /* VivaTrackInContainerReference.m */,
+				50439AE8148B99A20059B578 /* VivaAlbumIKImageViewProxy.h */,
+				50439AE9148B99A20059B578 /* VivaAlbumIKImageViewProxy.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		50439AD4148B842A0059B578 /* Utility Views */ = {
+			isa = PBXGroup;
+			children = (
+				50439AD5148B847D0059B578 /* LibraryViewController.h */,
+				50439AD6148B847D0059B578 /* LibraryViewController.m */,
+				50439AD7148B847D0059B578 /* LibraryViewController.xib */,
+			);
+			name = "Utility Views";
 			sourceTree = "<group>";
 		};
 		5053184B147276920032B253 /* Local Files */ = {
@@ -1050,6 +1076,7 @@
 		50C7B3B6132E2F5D0055EDE0 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				50439AD4148B842A0059B578 /* Utility Views */,
 				500841661350AF9200A2967E /* Playback Contexts */,
 				509AAEE7133915F60009B6EE /* Playback UI */,
 			);
@@ -1178,6 +1205,7 @@
 		50FEC1B713A7635800D8C8A2 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				50D3D9D1148BAEE200F6C623 /* 350-album.png */,
 				50DC12EE1487AF8B00F030FC /* 64-album.png */,
 				50FEC1B813A7635800D8C8A2 /* empty.png */,
 			);
@@ -1419,6 +1447,8 @@
 				50DC12F21487BDAD00F030FC /* vol-down.png in Resources */,
 				50DC12F31487BDAD00F030FC /* vol-up.png in Resources */,
 				50DC12F51487BFCF00F030FC /* volume-button.png in Resources */,
+				50439AD9148B847D0059B578 /* LibraryViewController.xib in Resources */,
+				50D3D9D2148BAEE200F6C623 /* 350-album.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1519,6 +1549,8 @@
 				50FC8A9B1474009A00FA43DD /* VivaLocalFileDecoder.m in Sources */,
 				50FC8AA014742CB100FA43DD /* VivaLocalFileDecoderWorker.m in Sources */,
 				50DC12ED1487ABD300F030FC /* SPNowPlayingCoverView.m in Sources */,
+				50439AD8148B847D0059B578 /* LibraryViewController.m in Sources */,
+				50439AEA148B99A20059B578 /* VivaAlbumIKImageViewProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
