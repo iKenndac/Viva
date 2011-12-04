@@ -15,5 +15,9 @@
 @property (weak) IBOutlet IKImageBrowserView *imageBrowser;
 
 @property (nonatomic, copy, readonly) NSArray *albums;
+@property (nonatomic, copy, readonly) NSArray *artists;
+@property (nonatomic, readonly) BOOL showArtists;
+
+- (IBAction)switchViews:(id)sender;
 
 @end
