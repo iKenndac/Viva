@@ -206,6 +206,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 			[self.playbackContext.trackContainersForPlayback indexOfObject:self.currentTrack] != 0);			
 }
 
++(NSSet *)keyPathsForValuesAffectingPlayPauseToggleMenuText {
+	return [NSSet setWithObject:@"currentPlaybackProvider.playing"];
+}
+
+-(NSString *)playPauseToggleMenuText {
+	return self.currentPlaybackProvider.isPlaying ? @"Pause" : @"Play";
+}
+
 #pragma mark -
 #pragma mark Playback Control
 

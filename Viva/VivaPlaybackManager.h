@@ -36,6 +36,8 @@
 @property (readwrite) BOOL loopPlayback;
 @property (readwrite) BOOL shufflePlayback;
 
+-(NSString *)playPauseToggleMenuText;
+
 @property (readonly) BOOL canSkipToNextTrack;
 @property (readonly) BOOL canSkipToPreviousTrack;
 

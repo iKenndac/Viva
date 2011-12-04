@@ -816,7 +816,8 @@
 								<object class="NSMenuItem" id="470167292">
 									<reference key="NSMenu" ref="457786007"/>
 									<string key="NSTitle">Repeat</string>
-									<string key="NSKeyEquiv"/>
+									<string key="NSKeyEquiv">R</string>
+									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
@@ -824,7 +825,8 @@
 								<object class="NSMenuItem" id="144799936">
 									<reference key="NSMenu" ref="457786007"/>
 									<string key="NSTitle">Shuffle</string>
-									<string key="NSKeyEquiv"/>
+									<string key="NSKeyEquiv">S</string>
+									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
@@ -1077,6 +1079,16 @@
 					<object class="NSMenuItem" id="549852327">
 						<reference key="NSMenu" ref="9797316"/>
 						<string key="NSTitle">Play/Pause</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="35465992"/>
+						<reference key="NSMixedImage" ref="502551668"/>
+					</object>
+					<object class="NSMenuItem" id="145790037">
+						<reference key="NSMenu" ref="9797316"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="35465992"/>
@@ -1798,7 +1810,7 @@
 					<reference key="NSNextKeyView" ref="85900138"/>
 					<string key="NSReuseIdentifierKey">_NS:2837</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -2007,7 +2019,7 @@
 					<reference key="NSNextKeyView"/>
 					<string key="NSReuseIdentifierKey">_NS:224</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">com.spotify.viva.preferences</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -2605,6 +2617,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: playbackManager.playPauseToggleMenuText</string>
+						<reference key="source" ref="549852327"/>
+						<reference key="destination" ref="976324537"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="549852327"/>
+							<reference key="NSDestination" ref="976324537"/>
+							<string key="NSLabel">title: playbackManager.playPauseToggleMenuText</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">playbackManager.playPauseToggleMenuText</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1091</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">enabled: playbackManager.canSkipToNextTrack</string>
 						<reference key="source" ref="638574869"/>
 						<reference key="destination" ref="976324537"/>
@@ -2670,6 +2698,22 @@
 						</object>
 					</object>
 					<int key="connectionID">805</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: playbackManager.playPauseToggleMenuText</string>
+						<reference key="source" ref="904380926"/>
+						<reference key="destination" ref="976324537"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="904380926"/>
+							<reference key="NSDestination" ref="976324537"/>
+							<string key="NSLabel">title: playbackManager.playPauseToggleMenuText</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">playbackManager.playPauseToggleMenuText</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1090</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -4043,6 +4087,7 @@
 							<reference ref="249232254"/>
 							<reference ref="430624950"/>
 							<reference ref="600185005"/>
+							<reference ref="145790037"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Dock Menu</string>
@@ -4803,6 +4848,11 @@
 						<reference key="object" ref="191995760"/>
 						<reference key="parent" ref="789758025"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1092</int>
+						<reference key="object" ref="145790037"/>
+						<reference key="parent" ref="9797316"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -4853,6 +4903,7 @@
 					<string>1082.IBPluginDependency</string>
 					<string>1082.toolbarItem.selectable</string>
 					<string>1085.IBPluginDependency</string>
+					<string>1092.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>125.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
@@ -5179,6 +5230,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5240,7 +5292,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1087</int>
+			<int key="maxID">1092</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
