@@ -69,6 +69,7 @@
 	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
 	
 	[pasteboard declareTypes:[NSArray arrayWithObjects:NSURLPboardType, NSStringPboardType, nil] owner:nil];
+	[pasteboard setString:item.track.spotifyURL.absoluteString forType:NSStringPboardType];
 	[item.track.spotifyURL writeToPasteboard:pasteboard];
 	
 }
