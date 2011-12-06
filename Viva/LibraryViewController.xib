@@ -245,7 +245,7 @@
 										<string key="NSFrameSize">{572, 307}</string>
 										<reference key="NSSuperview" ref="506702679"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="666098065"/>
+										<reference key="NSNextKeyView" ref="920635177"/>
 										<bool key="NSViewWantsBestResolutionOpenGLSurface">YES</bool>
 										<string key="NSReuseIdentifierKey">_NS:23</string>
 										<bool key="constrainsToOriginalSize">NO</bool>
@@ -270,13 +270,8 @@
 								<string key="NSReuseIdentifierKey">_NS:11</string>
 								<reference key="NSDocView" ref="1047057982"/>
 								<object class="NSColor" key="NSBGColor">
-									<int key="NSColorSpace">6</int>
-									<string key="NSCatalogName">System</string>
-									<string key="NSColorName">controlBackgroundColor</string>
-									<object class="NSColor" key="NSColor">
-										<int key="NSColorSpace">3</int>
-										<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
-									</object>
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC45MjU0OTAyNjAxIDAuOTIxNTY4NjkxNyAwLjkwOTgwMzk4NjUAA</bytes>
 								</object>
 								<int key="NScvFlags">6</int>
 							</object>
@@ -286,7 +281,6 @@
 								<string key="NSFrame">{{557, 0}, {15, 307}}</string>
 								<reference key="NSSuperview" ref="776011325"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:26</string>
 								<reference key="NSTarget" ref="776011325"/>
 								<string key="NSAction">_doScroller:</string>
@@ -310,7 +304,7 @@
 						<string key="NSFrameSize">{572, 307}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="920635177"/>
+						<reference key="NSNextKeyView" ref="506702679"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="NSsFlags">133136</int>
 						<reference key="NSVScroller" ref="666098065"/>

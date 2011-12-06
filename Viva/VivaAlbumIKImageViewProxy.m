@@ -49,6 +49,7 @@
     }
 }
 
+@synthesize mode;
 @synthesize album;
 @synthesize imageVersion;
 @synthesize imageView;
@@ -74,7 +75,10 @@
 }
 
 -(NSString *)imageSubtitle {
-	return self.album.artist.name;
+	if (self.mode == kSubtitleModeArtistName)
+		return self.album.artist.name;
+	else
+		return [NSString stringWithFormat:@"%d", self.album.year];
 }
 
 @end
