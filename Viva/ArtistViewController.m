@@ -50,6 +50,7 @@
 }
 
 -(void)awakeFromNib {
+	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
 	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
 	[self.imageBrowser reloadData];
 }

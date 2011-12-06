@@ -40,9 +40,6 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 		self.albumProxyCache = [[NSMutableDictionary alloc] init];
 		self.artistProxyCache = [[NSMutableDictionary alloc] init];
 		
-		[self loadView];
-		[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
-		
 		[[SPSession sharedSession] addObserver:self
 									forKeyPath:@"userPlaylists"
 									   options:0
@@ -55,6 +52,12 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	}
 	
 	return self;
+}
+
+-(void)awakeFromNib {
+	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
+	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
+	[self.imageBrowser reloadData];
 }
 
 -(void)dealloc {
