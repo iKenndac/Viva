@@ -11,6 +11,7 @@
 #import "VivaInternalURLManager.h"
 #import "VivaPlaybackContext.h"
 #import "Constants.h"
+#import "VivaSourceListRowView.h"
 
 @interface MainWindowSidebarController ()
 
@@ -163,12 +164,16 @@
 	return view;
 }
 
-#pragma mark -
+- (NSTableRowView *)outlineView:(NSOutlineView *)outlineView rowViewForItem:(id)item {
+	return [[VivaSourceListRowView alloc] init];
+}
 
 -(BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
 	NSDictionary *itemDict = [self unifiedDictionaryForItem:item];
 	return [itemDict valueForKey:SPSidebarURLKey] != nil;
 }
+
+#pragma mark -
 
 -(void)outlineViewSelectionDidChange:(NSNotification *)aNotification {
 	
