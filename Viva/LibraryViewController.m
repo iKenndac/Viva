@@ -22,6 +22,7 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 @property (nonatomic, readwrite) BOOL showArtists;
 @property (nonatomic, retain, readwrite) NSMutableDictionary *albumProxyCache;
 @property (nonatomic, retain, readwrite) NSMutableDictionary *artistProxyCache;
+@property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbumsAndArtists;
 -(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder;
@@ -58,6 +59,8 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
 	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
 	[self.imageBrowser reloadData];
+	if (self.canAnimateImageBrowser)
+		[self.imageBrowser setAnimates:YES];
 }
 
 -(void)dealloc {
@@ -71,6 +74,7 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 @synthesize albums;
 @synthesize artists;
 @synthesize showArtists;
+@synthesize canAnimateImageBrowser;
 
 -(void)viewControllerDidActivateWithContext:(id)context {}
 
@@ -154,8 +158,10 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 
 	[self.imageBrowser reloadData];
 	
-	if (!hasScheduledRebuild)
+	if (!hasScheduledRebuild) {
+		self.canAnimateImageBrowser = YES;
 		[self.imageBrowser setAnimates:YES];
+	}
 }
 
 -(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder {

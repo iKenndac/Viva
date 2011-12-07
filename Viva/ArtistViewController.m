@@ -18,6 +18,7 @@
 @property (nonatomic, readwrite, strong) NSArray *albums;
 @property (nonatomic, readwrite, strong) NSArray *relatedAlbums;
 @property (nonatomic, retain, readwrite) NSMutableDictionary *albumProxyCache;
+@property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbums;
 -(void)rebuildTrackContainers;
@@ -53,6 +54,8 @@
 	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
 	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
 	[self.imageBrowser reloadData];
+	if (self.canAnimateImageBrowser)
+		[self.imageBrowser setAnimates:YES];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -67,6 +70,7 @@
 		
 		[self rebuildAlbums];
 		[self.imageBrowser setAnimates:YES];
+		self.canAnimateImageBrowser = YES;
 		
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -124,17 +128,20 @@
 @synthesize albums;
 @synthesize relatedAlbums;
 @synthesize albumProxyCache;
+@synthesize canAnimateImageBrowser;
 
 #pragma mark -
 
 -(void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasDoubleClickedAtIndex:(NSUInteger)index {
 	
-	NSURL *url = nil;
+	SPAlbum *album = nil;
 	
-	SPAlbum *album = [self.albums objectAtIndex:index];
-	url = album.spotifyURL;
-	
-	((VivaURLNavigationController *)[(MainWindowController *)self.view.window.windowController navigationController]).thePresent = url;
+	if (index < self.albums.count)
+		album = [self.albums objectAtIndex:index];
+	else
+		album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
+
+	((VivaURLNavigationController *)[(MainWindowController *)self.view.window.windowController navigationController]).thePresent = album.spotifyURL;
 }
 
 -(NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)aBrowser {
