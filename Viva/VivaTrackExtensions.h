@@ -13,6 +13,8 @@
 @interface SPTrack (VivaTrackExtensions)
 
 -(NSString *)condensedArtist;
+-(NSString *)condensedArtistForUIDisplay;
+
 -(LocalFile *)localFile;
 
 @end

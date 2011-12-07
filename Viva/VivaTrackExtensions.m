@@ -22,6 +22,17 @@
 	return nil;
 }
 
++(NSSet *)keyPathsForValuesAffectingCondensedArtistForUIDisplay {
+	return [NSSet setWithObject:@"artists"];
+}
+
+-(NSString *)condensedArtistForUIDisplay {
+	if ([[self artists] count] > 1) {
+		return [[[self artists] valueForKey:@"name"] componentsJoinedByString:@", "];
+	}
+	return nil;
+}
+
 -(LocalFile *)localFile {
 	if (!self.isLocal) return nil;
 	return [[LocalFilesController sharedInstance] localFileForTrack:self];

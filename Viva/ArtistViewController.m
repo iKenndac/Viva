@@ -80,7 +80,7 @@
 	NSMutableSet *appearsInSet = [NSMutableSet setWithCapacity:newAlbums.count];
 	
 	for (SPAlbum *anAlbum in newAlbums) {
-		if (anAlbum.available && ![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"]) {
+		if (![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"]) {
 			if (anAlbum.artist == self.artistBrowse.artist)
 				[albumSet addObject:anAlbum];
 			else
@@ -147,13 +147,11 @@
 
 -(NSDictionary *)imageBrowser:(IKImageBrowserView *)aBrowser groupAtIndex:(NSUInteger)index {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			@"Also Appears In", IKImageBrowserGroupTitleKey,
-			[NSColor redColor], IKImageBrowserGroupBackgroundColorKey,
+			@"Also Appears On", IKImageBrowserGroupTitleKey,
 			[NSNumber numberWithInt:IKGroupDisclosureStyle], IKImageBrowserGroupStyleKey,
 			[NSValue valueWithRange:NSMakeRange(self.albums.count, self.relatedAlbums.count)], IKImageBrowserGroupRangeKey,
 			nil];
 }
-
 
 -(id)imageBrowser:(IKImageBrowserView *)aBrowser itemAtIndex:(NSUInteger)index {
 	
@@ -178,9 +176,9 @@
 	return proxy;
 }
 
-
-- (void)dealloc {
+-(void)dealloc {
 	[self removeObserver:self forKeyPath:@"artistBrowse.tracks"];
 	[self removeObserver:self forKeyPath:@"artistBrowse.albums"];
 }
+
 @end

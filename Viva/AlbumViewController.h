@@ -9,11 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import "VivaSortableTrackListController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "SPBackgroundColorView.h"
 
 @interface AlbumViewController : VivaSortableTrackListController {
 @private
     SPAlbumBrowse *albumBrowse;
 }
+
+@property (weak) IBOutlet SPBackgroundColorView *backgroundColorView;
 
 @property (nonatomic, readonly, strong) SPAlbumBrowse *albumBrowse;
 

@@ -8,6 +8,7 @@
 
 #import "AlbumViewController.h"
 #import "VivaTrackInContainerReference.h"
+#import "VivaAlbumTableRowView.h"
 
 @interface AlbumViewController ()
 
@@ -35,6 +36,15 @@
 	return self;
 }
 
+-(void)awakeFromNib {
+	[super awakeFromNib];
+	self.backgroundColorView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];	
+}
+
+- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row {
+	return [[VivaAlbumTableRowView alloc] init];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"albumBrowse.tracks"]) {
         
@@ -60,6 +70,7 @@
 }
 
 
+@synthesize backgroundColorView;
 @synthesize albumBrowse;
 
 - (void)dealloc {

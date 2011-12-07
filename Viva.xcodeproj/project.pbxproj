@@ -19,6 +19,7 @@
 		500B86AA13616A23005FC734 /* VivaSortableTrackListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86A813616A23005FC734 /* VivaSortableTrackListController.m */; };
 		500B86B11361BC2D005FC734 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */; };
 		500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */; };
+		5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016F533148E905300AEDED2 /* VivaAlbumTableRowView.m */; };
 		5018CAE01471688400F46F83 /* Scribbler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
 		5018CAE31471689700F46F83 /* Scribbler.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
 		5018CAE814716A6500F46F83 /* VivaGeneralPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */; };
@@ -310,6 +311,8 @@
 		500B86AE1361BC2D005FC734 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
 		500B86AF1361BC2D005FC734 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
 		500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsViewController.xib; sourceTree = "<group>"; };
+		5016F532148E905300AEDED2 /* VivaAlbumTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaAlbumTableRowView.h; path = "Custom Controls/VivaAlbumTableRowView.h"; sourceTree = "<group>"; };
+		5016F533148E905300AEDED2 /* VivaAlbumTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaAlbumTableRowView.m; path = "Custom Controls/VivaAlbumTableRowView.m"; sourceTree = "<group>"; };
 		5018CACE1471684400F46F83 /* Scribbler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Scribbler.xcodeproj; path = Scribbler/Scribbler.xcodeproj; sourceTree = "<group>"; };
 		5018CAE514716A6500F46F83 /* VivaGeneralPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaGeneralPreferencePane.h; sourceTree = "<group>"; };
 		5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaGeneralPreferencePane.m; sourceTree = "<group>"; };
@@ -1002,6 +1005,8 @@
 		509AAEE3133913230009B6EE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5016F532148E905300AEDED2 /* VivaAlbumTableRowView.h */,
+				5016F533148E905300AEDED2 /* VivaAlbumTableRowView.m */,
 				509AAEE4133913370009B6EE /* SPSplitView.h */,
 				509AAEE5133913370009B6EE /* SPSplitView.m */,
 				50E819CD133926A3000CE44D /* SPBackgroundColorView.h */,
@@ -1569,6 +1574,7 @@
 				50439AD8148B847D0059B578 /* LibraryViewController.m in Sources */,
 				50439AEA148B99A20059B578 /* VivaAlbumIKImageViewProxy.m in Sources */,
 				50D3D9D6148BB8B400F6C623 /* VivaArtistIKImageViewProxy.m in Sources */,
+				5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

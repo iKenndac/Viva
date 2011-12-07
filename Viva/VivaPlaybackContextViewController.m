@@ -38,7 +38,7 @@
 
 -(void)setPlayingTrackContainer:(id <VivaTrackContainer>)aTrackContainer isPlaying:(BOOL)playing {
 	self.playingTrackContainer = aTrackContainer;
-	playingTrackContainerIsCurrentlyPlaying = playing;
+	self.playingTrackContainerIsCurrentlyPlaying = playing;
 }
 
 -(void)playTrackContainerInThisContext:(id <VivaTrackContainer>)trackContainer {

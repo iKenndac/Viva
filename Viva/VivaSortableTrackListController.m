@@ -53,7 +53,7 @@
 
 -(IBAction)copySpotifyURI:(id)sender {
 	
-		VivaTrackInContainerReference *item = nil;
+	VivaTrackInContainerReference *item = nil;
 	
 	if (self.trackTable.clickedRow != -1) {
 		item = [self.trackContainerArrayController.arrangedObjects objectAtIndex:self.trackTable.clickedRow];
@@ -144,6 +144,33 @@
 
 -(NSArray *)trackContainersForPlayback {
 	return [NSArray arrayWithArray:[self.trackContainerArrayController arrangedObjects]];
+}
+
+-(void)setPlayingTrackContainer:(id <VivaTrackContainer>)aTrackContainer isPlaying:(BOOL)playing {
+	[super setPlayingTrackContainer:aTrackContainer isPlaying:playing];
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+	
+	if ([tableColumn.identifier isEqualToString:@"playIndicator"]) {
+		
+		id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:row];
+		NSImageView *imageView = [cellView.subviews objectAtIndex:0];
+		
+		if (container == self.playingTrackContainer) {
+			if (self.playingTrackContainerIsCurrentlyPlaying) {
+				imageView.image = [NSImage imageNamed:@"playing-indicator"];
+			} else {
+				imageView.image = [NSImage imageNamed:@"paused-indicator"];
+			}
+		} else {
+			imageView.image = nil;
+		}
+		
+	}
+	
+	return cellView;
 }
 
 - (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
