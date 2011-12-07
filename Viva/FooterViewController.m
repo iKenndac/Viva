@@ -108,6 +108,8 @@
 @synthesize playbackStateSegmentedControl;
 @synthesize titleField;
 @synthesize artistField;
+@synthesize errorPopover;
+@synthesize errorLabel;
 
 @synthesize playbackManager;
 
@@ -192,6 +194,21 @@
 	else
 		self.playbackManager.shufflePlayback = !self.playbackManager.shufflePlayback;
 	
+}
+
+#pragma mark -
+
+-(void)playbackManager:(VivaPlaybackManager *)manager didEncounterPlaybackError:(NSError *)error {
+	
+	if (error.code == kVivaTrackTokenLostErrorCode) {
+		self.errorLabel.stringValue = @"Playback was paused because your account was used for playback elsewhere.";
+	} else if ([(SPTrack *)([[error.userInfo valueForKey:kVivaTrackContainerKey] track]) isLocal]) {
+		self.errorLabel.stringValue = @"This local track is not in your library. Visit the Preferences to add it.";
+	} else {
+		self.errorLabel.stringValue = @"This track could not be played because it is not available in your area.";
+	}
+	
+	[self.errorPopover showRelativeToRect:self.coverView.bounds ofView:self.coverView preferredEdge:NSMaxYEdge];
 }
 
 #pragma mark -

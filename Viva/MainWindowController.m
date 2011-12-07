@@ -91,6 +91,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;
 	footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
+	footerViewController.playbackManager.delegate = footerViewController;
 	[self.footerViewContainer addSubview:footerViewController.view];
 	
 	self.navigationController = [[VivaURLNavigationController alloc] initWithUserDefaultsKey:kVivaMainViewHistoryUserDefaultsKey];

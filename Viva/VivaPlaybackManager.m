@@ -176,6 +176,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 @synthesize shufflePlayback;
 @synthesize dataSource;
 @synthesize localFileDecoder;
+@synthesize delegate;
 
 @synthesize leftLevels;
 @synthesize rightLevels;
@@ -261,9 +262,17 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSError *error = nil;
     if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
         self.currentPlaybackProvider.playing = YES;
-    } else if (error) {
-        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
-    }
+    } else {
+		
+		NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
+		[errorDict setValue:container forKey:kVivaTrackContainerKey];
+		if (error) [errorDict setValue:error forKey:NSUnderlyingErrorKey];
+		
+		[self.delegate playbackManager:self
+			 didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
+														   code:kVivaTrackFailedToPlayErrorCode
+													   userInfo:errorDict]];
+	}
 }
 
 -(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error {
@@ -526,7 +535,12 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 #pragma mark -
 #pragma mark Playback Callbacks
 
--(void)sessionDidLosePlayToken:(SPSession *)aSession {}
+-(void)sessionDidLosePlayToken:(SPSession *)aSession {
+	[self.delegate playbackManager:self
+		 didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
+													   code:kVivaTrackTokenLostErrorCode
+												   userInfo:nil]];
+}
 
 -(void)sessionDidEndPlayback:(SPSession *)aSession {
 	// Not routing this through to the main thread causes odd locks and crashes.

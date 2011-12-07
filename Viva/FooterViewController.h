@@ -11,7 +11,7 @@
 #import "VivaPlaybackManager.h"
 #import "SPNowPlayingCoverView.h"
 
-@interface FooterViewController : NSViewController
+@interface FooterViewController : NSViewController <VivaPlaybackManagerDelegate>
 
 @property (weak) IBOutlet NSButton *trackIsStarredButton;
 @property (weak) IBOutlet NSSlider *playbackProgressSlider;
@@ -21,6 +21,8 @@
 @property (weak) IBOutlet NSSegmentedControl *playbackStateSegmentedControl;
 @property (weak) IBOutlet NSTextField *titleField;
 @property (weak) IBOutlet NSTextField *artistField;
+@property (strong) IBOutlet NSPopover *errorPopover;
+@property (weak) IBOutlet NSTextField *errorLabel;
 
 @property (weak, readonly) NSString *currentTrackPositionDisplayString;
 @property (weak, readonly) NSString *currentTrackDurationDisplayString;

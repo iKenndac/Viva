@@ -14,7 +14,18 @@
 #import <CoreAudio/CoreAudio.h>
 #import <AudioUnit/AudioUnit.h>
 
+static NSString * const kVivaPlaybackManagerErrorDomain = @"com.spotify.viva.playback";
+static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;
+static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
+static NSString * const kVivaTrackContainerKey = @"trackContainer";
+
 @class VivaPlaybackManager;
+
+@protocol VivaPlaybackManagerDelegate <NSObject>
+
+-(void)playbackManager:(VivaPlaybackManager *)manager didEncounterPlaybackError:(NSError *)error;
+
+@end
 
 @protocol VivaPlaybackManagerDataSource <NSObject>
 
@@ -42,6 +53,7 @@
 @property (readonly) BOOL canSkipToPreviousTrack;
 
 @property (readwrite, assign) __unsafe_unretained id <VivaPlaybackManagerDataSource> dataSource;
+@property (readwrite, nonatomic, assign) __unsafe_unretained id <VivaPlaybackManagerDelegate> delegate;
 
 @property (readonly, strong) NSArray *leftLevels;
 @property (readonly, strong) NSArray *rightLevels;
