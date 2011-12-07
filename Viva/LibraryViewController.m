@@ -56,6 +56,7 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 }
 
 -(void)awakeFromNib {
+	self.headerView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];
 	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
 	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
 	[self.imageBrowser reloadData];
@@ -74,6 +75,7 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 @synthesize albums;
 @synthesize artists;
 @synthesize showArtists;
+@synthesize headerView;
 @synthesize canAnimateImageBrowser;
 
 -(void)viewControllerDidActivateWithContext:(id)context {}

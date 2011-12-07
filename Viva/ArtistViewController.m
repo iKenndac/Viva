@@ -51,6 +51,7 @@
 }
 
 -(void)awakeFromNib {
+	self.headerView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];
 	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
 	[self.imageBrowser setContentResizingMask:NSViewHeightSizable];
 	[self.imageBrowser reloadData];
@@ -127,6 +128,7 @@
 @synthesize artistBrowse;
 @synthesize albums;
 @synthesize relatedAlbums;
+@synthesize headerView;
 @synthesize albumProxyCache;
 @synthesize canAnimateImageBrowser;
 

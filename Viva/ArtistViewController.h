@@ -10,6 +10,7 @@
 #import "VivaSortableTrackListController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import <Quartz/Quartz.h>
+#import "SPBackgroundColorView.h"
 
 @interface ArtistViewController : VivaSortableTrackListController {
 @private
@@ -17,6 +18,7 @@
 }
 
 @property (weak) IBOutlet IKImageBrowserView *imageBrowser;
+@property (weak) IBOutlet SPBackgroundColorView *headerView;
 
 @property (nonatomic, readonly, strong) SPArtistBrowse *artistBrowse;
 @property (nonatomic, readonly, strong) NSArray *albums;

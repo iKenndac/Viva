@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 #import "VivaInternalURLManager.h"
+#import "SPBackgroundColorView.h"
 
 @interface LibraryViewController : NSViewController <VivaViewController>
 
@@ -17,6 +18,7 @@
 @property (nonatomic, copy, readonly) NSArray *albums;
 @property (nonatomic, copy, readonly) NSArray *artists;
 @property (nonatomic, readonly) BOOL showArtists;
+@property (weak) IBOutlet SPBackgroundColorView *headerView;
 
 - (IBAction)switchViews:(id)sender;
 
