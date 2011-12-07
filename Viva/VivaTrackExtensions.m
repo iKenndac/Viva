@@ -33,6 +33,23 @@
 	return nil;
 }
 
++(NSSet *)keyPathsForValuesAffectingIsEnabledInUI {
+	return [NSSet setWithObjects:@"availability", @"local", nil];
+}
+
+-(BOOL)isEnabledInUI {
+	return (self.availability == SP_TRACK_AVAILABILITY_AVAILABLE ||
+			self.isLocal);
+}
+
++(NSSet *)keyPathsForValuesAffectingUiTextColor {
+	return [NSSet setWithObject:@"isEnabledInUI"];
+}
+
+-(NSColor *)uiTextColor {
+	return self.isEnabledInUI ? [NSColor blackColor] : [NSColor disabledControlTextColor];
+}
+
 -(LocalFile *)localFile {
 	if (!self.isLocal) return nil;
 	return [[LocalFilesController sharedInstance] localFileForTrack:self];

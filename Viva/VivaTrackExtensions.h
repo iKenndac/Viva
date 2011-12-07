@@ -15,6 +15,9 @@
 -(NSString *)condensedArtist;
 -(NSString *)condensedArtistForUIDisplay;
 
+-(BOOL)isEnabledInUI;
+-(NSColor *)uiTextColor;
+
 -(LocalFile *)localFile;
 
 @end
