@@ -586,7 +586,6 @@
 				50B72AD3143768B60082E027 /* Inbox View */,
 				500B86AD1361704C005FC734 /* Search View */,
 				5099D8A31364B0D0005C7CDC /* Album View */,
-				5099D8BD1364BFAB005C7CDC /* Artist View */,
 			);
 			name = "Playback Contexts";
 			sourceTree = "<group>";
@@ -808,6 +807,7 @@
 				50439AD5148B847D0059B578 /* LibraryViewController.h */,
 				50439AD6148B847D0059B578 /* LibraryViewController.m */,
 				50439AD7148B847D0059B578 /* LibraryViewController.xib */,
+				5099D8BD1364BFAB005C7CDC /* Artist View */,
 			);
 			name = "Utility Views";
 			sourceTree = "<group>";

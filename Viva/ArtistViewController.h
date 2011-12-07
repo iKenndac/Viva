@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "VivaSortableTrackListController.h"
+#import "VivaInternalURLManager.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import <Quartz/Quartz.h>
 #import "SPBackgroundColorView.h"
 
-@interface ArtistViewController : VivaSortableTrackListController {
+@interface ArtistViewController : NSViewController <VivaViewController> {
 @private
     SPArtistBrowse *artistBrowse;
 }

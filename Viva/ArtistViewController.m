@@ -21,19 +21,13 @@
 @property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbums;
--(void)rebuildTrackContainers;
 
 @end
 
 @implementation ArtistViewController
 
 -(id)initWithObjectFromURL:(NSURL *)aURL {
-	if ((self = [super initWithObjectFromURL:aURL])) {
-		
-		[self addObserver:self
-			   forKeyPath:@"artistBrowse.tracks"
-				  options:0
-				  context:nil];
+	if ((self = [super initWithNibName:@"ArtistViewController" bundle:nil])) {
 		
 		[self addObserver:self
 			   forKeyPath:@"artistBrowse.albums"
@@ -50,6 +44,8 @@
 	return self;
 }
 
+-(void)viewControllerDidActivateWithContext:(id)context {}
+
 -(void)awakeFromNib {
 	self.headerView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];
 	[self.imageBrowser setValue:[NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000] forKey:IKImageBrowserBackgroundColorKey];
@@ -60,14 +56,8 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"artistBrowse.tracks"]) {
-        
-		NSArray *containerTracks = [self.trackContainers valueForKey:@"track"];
-		if (![containerTracks isEqualToArray:self.artistBrowse.tracks]) {
-			[self rebuildTrackContainers];
-		}
-		
-	} else if ([keyPath isEqualToString:@"artistBrowse.albums"]) {
+	
+	if ([keyPath isEqualToString:@"artistBrowse.albums"]) {
 		
 		[self rebuildAlbums];
 		[self.imageBrowser setAnimates:YES];
@@ -76,6 +66,40 @@
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+-(BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+	if (menuItem.action == @selector(copySpotifyURI:)) {
+		return self.imageBrowser.selectionIndexes.count == 1;
+	}
+	return NO;
+}
+
+-(IBAction)copySpotifyURI:(id)sender {
+	
+	SPAlbum *album = nil;
+	
+	if (self.imageBrowser.selectionIndexes.count == 1) {
+		
+		NSUInteger index = self.imageBrowser.selectionIndexes.firstIndex;
+		
+		if (index < self.albums.count)
+			album = [self.albums objectAtIndex:index];
+		else
+			album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
+	}
+	
+	if (album == nil) {
+		NSBeep();
+		return;
+	}
+	
+	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+	
+	[pasteboard declareTypes:[NSArray arrayWithObjects:NSURLPboardType, NSStringPboardType, nil] owner:nil];
+	[pasteboard setString:album.spotifyURL.absoluteString forType:NSStringPboardType];
+	[album.spotifyURL writeToPasteboard:pasteboard];
+	
 }
 
 -(void)rebuildAlbums {
@@ -110,17 +134,6 @@
 	}];
 	
 	[self.imageBrowser reloadData];
-}
-
--(void)rebuildTrackContainers {
-	
-	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.artistBrowse.tracks count]];
-	
-	for (SPTrack *aTrack in self.artistBrowse.tracks) {
-		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:aTrack
-																		   inContainer:self.artistBrowse]];
-	}
-	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
 
 
@@ -186,7 +199,6 @@
 }
 
 -(void)dealloc {
-	[self removeObserver:self forKeyPath:@"artistBrowse.tracks"];
 	[self removeObserver:self forKeyPath:@"artistBrowse.albums"];
 }
 

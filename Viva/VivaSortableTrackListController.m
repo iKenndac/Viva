@@ -57,7 +57,7 @@
 	
 	if (self.trackTable.clickedRow != -1) {
 		item = [self.trackContainerArrayController.arrangedObjects objectAtIndex:self.trackTable.clickedRow];
-	} else if (self.trackTable.selectedRowIndexes.count == 0) {
+	} else if (self.trackTable.selectedRowIndexes.count == 1) {
 		item = [self.trackContainerArrayController.arrangedObjects objectAtIndex:self.trackTable.selectedRowIndexes.firstIndex];
 	}
 	
