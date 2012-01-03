@@ -27,6 +27,10 @@
 		[self view];
 		
 		[self addObserver:self 
+			   forKeyPath:@"playbackManager" options:0
+				  context:nil];
+		
+		[self addObserver:self 
 			   forKeyPath:@"playbackManager.loopPlayback"
 				  options:NSKeyValueObservingOptionInitial
 				  context:nil];
@@ -57,7 +61,14 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"playbackManager.loopPlayback"]) {
+	if ([keyPath isEqualToString:@"playbackManager"]) {
+		
+		if (self.playbackManager != nil) {
+			self.eqView.currentEQSettings = self.playbackManager.eqBands;
+			[self.playbackManager bind:@"eqBands" toObject:self withKeyPath:@"eqView.currentEQSettings" options:nil];
+		}
+		
+	} else if ([keyPath isEqualToString:@"playbackManager.loopPlayback"]) {
 			
 		[self.playbackStateSegmentedControl setImage:[NSImage imageNamed:self.playbackManager.loopPlayback ? @"repeat-on" : @"repeat-off"]
 											forSegment:0];
@@ -110,6 +121,7 @@
 @synthesize artistField;
 @synthesize errorPopover;
 @synthesize errorLabel;
+@synthesize eqView;
 
 @synthesize playbackManager;
 

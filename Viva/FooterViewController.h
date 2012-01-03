@@ -10,6 +10,7 @@
 #import "SPBackgroundColorView.h"
 #import "VivaPlaybackManager.h"
 #import "SPNowPlayingCoverView.h"
+#import "VivaEQView.h"
 
 @interface FooterViewController : NSViewController <VivaPlaybackManagerDelegate>
 
@@ -23,6 +24,7 @@
 @property (weak) IBOutlet NSTextField *artistField;
 @property (strong) IBOutlet NSPopover *errorPopover;
 @property (weak) IBOutlet NSTextField *errorLabel;
+@property (weak) IBOutlet VivaEQView *eqView;
 
 @property (weak, readonly) NSString *currentTrackPositionDisplayString;
 @property (weak, readonly) NSString *currentTrackDurationDisplayString;
