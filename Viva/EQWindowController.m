@@ -48,6 +48,8 @@
 	bands.band9 = self.band9;
 	bands.band10 = self.band10;
 	
+	self.eqView.currentEQSettings = bands;
+	
 	[[(VivaAppDelegate *)[NSApp delegate] playbackManager] setEqBands:bands];
 }
 
@@ -61,6 +63,7 @@
 @synthesize band8;
 @synthesize band9;
 @synthesize band10;
+@synthesize eqView;
 
 - (void)windowDidLoad
 {

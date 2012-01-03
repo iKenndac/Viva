@@ -68,6 +68,7 @@
 		5069F75A134E3E4F00D95D13 /* VivaURLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5069F759134E3E4F00D95D13 /* VivaURLNavigationController.m */; };
 		506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F347713438755002BA308 /* VivaPlaybackManager.m */; };
 		506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 506F34891343DCFB002BA308 /* VivaIcon.icns */; };
+		50746CAE14B345A00026355B /* VivaEQView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50746CAD14B345A00026355B /* VivaEQView.m */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
@@ -382,6 +383,8 @@
 		506F347613438755002BA308 /* VivaPlaybackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackManager.h; sourceTree = "<group>"; };
 		506F347713438755002BA308 /* VivaPlaybackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPlaybackManager.m; sourceTree = "<group>"; };
 		506F34891343DCFB002BA308 /* VivaIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VivaIcon.icns; sourceTree = "<group>"; };
+		50746CAC14B345A00026355B /* VivaEQView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaEQView.h; path = "Custom Controls/VivaEQView.h"; sourceTree = "<group>"; };
+		50746CAD14B345A00026355B /* VivaEQView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaEQView.m; path = "Custom Controls/VivaEQView.m"; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -1009,6 +1012,8 @@
 		509AAEE3133913230009B6EE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				50746CAC14B345A00026355B /* VivaEQView.h */,
+				50746CAD14B345A00026355B /* VivaEQView.m */,
 				5016F532148E905300AEDED2 /* VivaAlbumTableRowView.h */,
 				5016F533148E905300AEDED2 /* VivaAlbumTableRowView.m */,
 				504F8845148FB9B300271830 /* VivaSourceListRowView.h */,
@@ -1587,6 +1592,7 @@
 				5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */,
 				504F8847148FB9B300271830 /* VivaSourceListRowView.m in Sources */,
 				50D0E2B714B33C1C00D1A3DB /* EQWindowController.m in Sources */,
+				50746CAE14B345A00026355B /* VivaEQView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

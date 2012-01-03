@@ -23,6 +23,7 @@
 			<string>NSSlider</string>
 			<string>NSSliderCell</string>
 			<string>NSCustomObject</string>
+			<string>NSCustomView</string>
 			<string>NSView</string>
 			<string>NSWindowTemplate</string>
 			<string>NSLevelIndicatorCell</string>
@@ -1133,7 +1134,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="849722820">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1802,7 +1803,6 @@
 							<int key="NSvFlags">264</int>
 							<string key="NSFrame">{{20, 20}, {100, 16}}</string>
 							<reference key="NSSuperview" ref="849722820"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1751</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSLevelIndicatorCell" key="NSCell" id="295734458">
@@ -1819,7 +1819,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{140, 808}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="85900138"/>
 					<string key="NSReuseIdentifierKey">_NS:2837</string>
 				</object>
@@ -2024,11 +2023,9 @@
 				</object>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="61359566">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<string key="NSFrameSize">{480, 275}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSNextKeyView"/>
 					<string key="NSReuseIdentifierKey">_NS:224</string>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -2043,9 +2040,9 @@
 				<string key="NSClassName">EQWindowController</string>
 			</object>
 			<object class="NSWindowTemplate" id="148387010">
-				<int key="NSWindowStyleMask">19</int>
+				<int key="NSWindowStyleMask">8219</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{272, 172}, {262, 131}}</string>
+				<string key="NSWindowRect">{{272, 172}, {262, 301}}</string>
 				<int key="NSWTFlags">-461896704</int>
 				<string key="NSWindowTitle">EQ</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -2059,7 +2056,7 @@
 						<object class="NSSlider" id="45626134">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{17, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="562238204"/>
@@ -2084,7 +2081,7 @@
 						<object class="NSSlider" id="562238204">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{40, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{40, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="108057418"/>
@@ -2109,7 +2106,7 @@
 						<object class="NSSlider" id="108057418">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{63, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{63, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="503143867"/>
@@ -2134,7 +2131,7 @@
 						<object class="NSSlider" id="503143867">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{86, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{86, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="929657006"/>
@@ -2159,7 +2156,7 @@
 						<object class="NSSlider" id="929657006">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{109, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{109, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="67252903"/>
@@ -2184,7 +2181,7 @@
 						<object class="NSSlider" id="67252903">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{132, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{132, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="929748178"/>
@@ -2209,7 +2206,7 @@
 						<object class="NSSlider" id="929748178">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{155, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{155, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="354164814"/>
@@ -2234,7 +2231,7 @@
 						<object class="NSSlider" id="354164814">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{178, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{178, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="810492370"/>
@@ -2259,7 +2256,7 @@
 						<object class="NSSlider" id="810492370">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{201, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{201, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="240709596"/>
@@ -2284,10 +2281,10 @@
 						<object class="NSSlider" id="240709596">
 							<reference key="NSNextResponder" ref="111612985"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{224, 17}, {21, 96}}</string>
+							<string key="NSFrame">{{224, 187}, {21, 96}}</string>
 							<reference key="NSSuperview" ref="111612985"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="806956492"/>
 							<string key="NSReuseIdentifierKey">_NS:859</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="759700711">
@@ -2306,8 +2303,18 @@
 								<bool key="NSVertical">YES</bool>
 							</object>
 						</object>
+						<object class="NSCustomView" id="806956492">
+							<reference key="NSNextResponder" ref="111612985"/>
+							<int key="NSvFlags">274</int>
+							<string key="NSFrame">{{20, 20}, {222, 162}}</string>
+							<reference key="NSSuperview" ref="111612985"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<string key="NSReuseIdentifierKey">_NS:1192</string>
+							<string key="NSClassName">VivaEQView</string>
+						</object>
 					</object>
-					<string key="NSFrameSize">{262, 131}</string>
+					<string key="NSFrameSize">{262, 301}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="45626134"/>
@@ -3897,6 +3904,14 @@
 					</object>
 					<int key="connectionID">1151</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">eqView</string>
+						<reference key="source" ref="444809832"/>
+						<reference key="destination" ref="806956492"/>
+					</object>
+					<int key="connectionID">1153</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -5344,6 +5359,7 @@
 							<reference ref="810492370"/>
 							<reference ref="240709596"/>
 							<reference ref="929748178"/>
+							<reference ref="806956492"/>
 						</object>
 						<reference key="parent" ref="148387010"/>
 					</object>
@@ -5498,6 +5514,11 @@
 						<reference key="object" ref="37146996"/>
 						<reference key="parent" ref="835318025"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1152</int>
+						<reference key="object" ref="806956492"/>
+						<reference key="parent" ref="111612985"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -5574,6 +5595,7 @@
 					<string>1124.IBPluginDependency</string>
 					<string>1137.IBPluginDependency</string>
 					<string>1149.IBPluginDependency</string>
+					<string>1152.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>125.IBPluginDependency</string>
 					<string>126.IBPluginDependency</string>
@@ -5926,6 +5948,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5987,7 +6010,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1151</int>
+			<int key="maxID">1153</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5995,6 +6018,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">EQWindowController</string>
 					<string key="superclassName">NSWindowController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">eqView</string>
+						<string key="NS.object.0">VivaEQView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">eqView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">eqView</string>
+							<string key="candidateClassName">VivaEQView</string>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/EQWindowController.h</string>
@@ -6425,6 +6459,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/VivaAppDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">VivaEQView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/VivaEQView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

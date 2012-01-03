@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "VivaEQView.h"
 
 @interface EQWindowController : NSWindowController
 
@@ -20,5 +21,7 @@
 @property (nonatomic, readwrite) double band8;
 @property (nonatomic, readwrite) double band9;
 @property (nonatomic, readwrite) double band10;
+
+@property (weak) IBOutlet VivaEQView *eqView;
 
 @end

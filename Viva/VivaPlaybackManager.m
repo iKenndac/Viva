@@ -1046,8 +1046,6 @@ static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManag
     [self removeObserver:self forKeyPath:@"loopPlayback"];
     [self removeObserver:self forKeyPath:@"shufflePlayback"];
 	
-	
-    
 	[self.audioBuffer clear];
 	[self teardownCoreAudio];
 	
