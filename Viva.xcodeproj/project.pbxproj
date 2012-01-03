@@ -132,7 +132,6 @@
 		50C7B3BE132E36DA0055EDE0 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C7B3BD132E36D90055EDE0 /* MainWindowController.m */; };
 		50CCCD4D13DEFD5200DDB85C /* sidebar-folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */; };
 		50CCCD5113DF1BE700DDB85C /* StarredViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CCCD5013DF1BE700DDB85C /* StarredViewController.m */; };
-		50D0E2B714B33C1C00D1A3DB /* EQWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D0E2B614B33C1C00D1A3DB /* EQWindowController.m */; };
 		50D192CA134280F500D02FDF /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192C9134280F500D02FDF /* AudioUnit.framework */; };
 		50D192CC134280FB00D02FDF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D192CB134280FB00D02FDF /* CoreAudio.framework */; };
 		50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D1C1931359E1D200437CCB /* VivaImageExtensions.m */; };
@@ -471,8 +470,6 @@
 		50CCCD4C13DEFD5200DDB85C /* sidebar-folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar-folder.png"; sourceTree = "<group>"; };
 		50CCCD4F13DF1BE700DDB85C /* StarredViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StarredViewController.h; sourceTree = "<group>"; };
 		50CCCD5013DF1BE700DDB85C /* StarredViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarredViewController.m; sourceTree = "<group>"; };
-		50D0E2B514B33C1C00D1A3DB /* EQWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQWindowController.h; sourceTree = "<group>"; };
-		50D0E2B614B33C1C00D1A3DB /* EQWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQWindowController.m; sourceTree = "<group>"; };
 		50D192C9134280F500D02FDF /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		50D192CB134280FB00D02FDF /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		50D1C1921359E1D200437CCB /* VivaImageExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaImageExtensions.h; sourceTree = "<group>"; };
@@ -1149,8 +1146,6 @@
 			children = (
 				50881237140264E30094E748 /* VisualiserWindowController.h */,
 				50881238140264E30094E748 /* VisualiserWindowController.m */,
-				50D0E2B514B33C1C00D1A3DB /* EQWindowController.h */,
-				50D0E2B614B33C1C00D1A3DB /* EQWindowController.m */,
 				50A857AC14715EE500D49377 /* Preferences */,
 				50E3F766133FC38200FF4618 /* Login Window */,
 				50E3F765133FC37900FF4618 /* Main Window */,
@@ -1591,7 +1586,6 @@
 				50D3D9D6148BB8B400F6C623 /* VivaArtistIKImageViewProxy.m in Sources */,
 				5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */,
 				504F8847148FB9B300271830 /* VivaSourceListRowView.m in Sources */,
-				50D0E2B714B33C1C00D1A3DB /* EQWindowController.m in Sources */,
 				50746CAE14B345A00026355B /* VivaEQView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
