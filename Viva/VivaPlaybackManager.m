@@ -79,7 +79,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSMutableArray *shuffleFutureHistory;
     
     AUGraph audioProcessingGraph;
-	AUNode outputNode;
+	AudioUnit outputUnit;
+	AudioUnit eqUnit;
     
 	// vDSP
 	FFTSetupD fft_weights;
@@ -666,16 +667,10 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
          
 -(void)applyVolumeToAudioUnit:(double)vol {
     
-    if (audioProcessingGraph == NULL)
+    if (audioProcessingGraph == NULL || outputUnit == NULL)
         return;
 	
-	AudioUnit outputAudioUnit;
-	OSErr status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputAudioUnit);
-	if (status != noErr) {
-        return;
-    }
-
-    AudioUnitSetParameter(outputAudioUnit,
+    AudioUnitSetParameter(outputUnit,
                           kHALOutputParam_Volume,
                           kAudioUnitScope_Output,
                           0,
@@ -708,6 +703,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	DisposeAUGraph(audioProcessingGraph);
 	
 	audioProcessingGraph = NULL;
+	outputUnit = NULL;
+	eqUnit = NULL;
 }
 
 static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDescription, int code) {
@@ -736,6 +733,22 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
     outputDescription.componentFlags = 0;
     outputDescription.componentFlagsMask = 0;
 	
+	// A description for the EQ Device
+	AudioComponentDescription eqDescription;
+	eqDescription.componentType = kAudioUnitType_Effect;
+	eqDescription.componentSubType = kAudioUnitSubType_GraphicEQ;
+	eqDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+	eqDescription.componentFlags = 0;
+    eqDescription.componentFlagsMask = 0;
+
+	// A description for the libspotify -> standard PCM device
+	AudioComponentDescription convertorDescription;
+	convertorDescription.componentType = kAudioUnitType_FormatConverter;
+	convertorDescription.componentSubType = kAudioUnitSubType_AUConverter;
+	convertorDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+	convertorDescription.componentFlags = 0;
+    convertorDescription.componentFlagsMask = 0;	
+    
     // Tell Core Audio about libspotify's audio format
     AudioStreamBasicDescription libSpotifyInputFormat;
     libSpotifyInputFormat.mSampleRate = (float)audioFormat->sample_rate;
@@ -754,24 +767,6 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
         fillWithError(err, @"Couldn't init graph", status);
         return NO;
     }
-
-	// Add audio output...
-	status = AUGraphAddNode(audioProcessingGraph, (const AudioComponentDescription *)&outputDescription, &outputNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add output node", status);
-        return NO;
-    }
-	
-	// Set render callback
-	AURenderCallbackStruct rcbs;
-	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
-	rcbs.inputProcRefCon = (__bridge void *)(self);
-	
-	status = AUGraphSetNodeInputCallback(audioProcessingGraph, outputNode, 0, &rcbs);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add render callback", status);
-        return NO;
-    }
 	
 	// Open the graph. AudioUnits are open but not initialized (no resource allocation occurs here)
 	AUGraphOpen(audioProcessingGraph);
@@ -779,16 +774,60 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
         fillWithError(err, @"Couldn't open graph", status);
         return NO;
     }
-	
-	// Set stream format from libspotify format
-	AudioUnit outputUnit;
-	status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputUnit);
+
+	// Add audio output...
+	AUNode outputNode;
+	status = AUGraphAddNode(audioProcessingGraph, &outputDescription, &outputNode);
 	if (status != noErr) {
-        fillWithError(err, @"Couldn't get output unit", status);
+        fillWithError(err, @"Couldn't add output node", status);
         return NO;
     }
 	
-	status = AudioUnitSetProperty(outputUnit,
+	// Create EQ!
+	AUNode eqNode;
+	status = AUGraphAddNode(audioProcessingGraph, &eqDescription, &eqNode);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't add eq node", status);
+        return NO;
+    }
+	
+	status = AUGraphNodeInfo(audioProcessingGraph, eqNode, NULL, &eqUnit);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't get eq unit", status);
+        return NO;
+    }
+	
+	// Set EQ to 10-band
+	AudioUnitSetParameter(eqUnit, 10000, kAudioUnitScope_Global, 0, 0.0, 0);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't set eq node parameter", status);
+        return NO;
+    }
+	
+	// Connect EQ node to output
+	status = AUGraphConnectNodeInput(audioProcessingGraph, eqNode, 0, outputNode, 0);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't connect nodes", status);
+        return NO;
+    }
+	
+	// Create PCM Convertor
+	AUNode convertorNode;
+	status = AUGraphAddNode(audioProcessingGraph, &convertorDescription, &convertorNode);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't add converter node", status);
+        return NO;
+    }
+	
+	// Set stream format from libspotify format
+	AudioUnit converterUnit;
+	status = AUGraphNodeInfo(audioProcessingGraph, convertorNode, NULL, &converterUnit);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't get converter unit", status);
+        return NO;
+    }
+	
+	status = AudioUnitSetProperty(converterUnit,
 								  kAudioUnitProperty_StreamFormat,
 								  kAudioUnitScope_Input,
 								  0,
@@ -798,6 +837,25 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
         fillWithError(err, @"Couldn't set input format", status);
         return NO;
     }
+
+	// Set render callback
+	AURenderCallbackStruct rcbs;
+	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
+	rcbs.inputProcRefCon = (__bridge void *)(self);
+	
+	status = AUGraphSetNodeInputCallback(audioProcessingGraph, convertorNode, 0, &rcbs);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't add render callback", status);
+        return NO;
+    }
+	
+	// Connect converter to EQ
+	// Connect EQ node to output
+	status = AUGraphConnectNodeInput(audioProcessingGraph, convertorNode, 0, eqNode, 0);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't connect converter->eq", status);
+        return NO;
+    }
 	
 	// Init Queue
 	status = AUGraphInitialize(audioProcessingGraph);
@@ -805,6 +863,10 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 		fillWithError(err, @"Couldn't initialize graph", status);
         return NO;
 	}
+	
+	AUGraphUpdate(audioProcessingGraph, NULL);
+	
+	CAShow(audioProcessingGraph);
     
     [self startAudioQueue];
     [self applyVolumeToAudioUnit:self.volume];
