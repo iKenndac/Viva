@@ -13,6 +13,7 @@
 #import "LocalFilesController.h"
 #import "VivaLocalFileDecoder.h"
 #import "VivaTrackExtensions.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface VivaPlaybackManager  ()
 
@@ -44,8 +45,8 @@
 // Core Audio
 -(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err;
 -(void)teardownCoreAudio;
--(void)startAudioUnit;
--(void)stopAudioUnit;
+-(void)startAudioQueue;
+-(void)stopAudioQueue;
 -(void)applyVolumeToAudioUnit:(double)vol;
 
 static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
@@ -77,7 +78,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSMutableArray *shufflePastHistory;
     NSMutableArray *shuffleFutureHistory;
     
-    AudioUnit outputAudioUnit;
+    AUGraph audioProcessingGraph;
+	AUNode outputNode;
     
 	// vDSP
 	FFTSetupD fft_weights;
@@ -558,9 +560,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
         
         if (self.currentPlaybackProvider.playing) {
-            [self startAudioUnit];
+            [self startAudioQueue];
         } else {
-            [self stopAudioUnit];
+            [self stopAudioQueue];
         }
 		
 		if (self.currentTrackContainer != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey]) {
@@ -638,7 +640,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		return 0; // Audio discontinuity!
 	}
     
-    if (outputAudioUnit == NULL) {
+    if (audioProcessingGraph == NULL) {
         NSError *error = nil;
         if (![self setupCoreAudioWithAudioFormat:audioFormat error:&error]) {
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -664,9 +666,15 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
          
 -(void)applyVolumeToAudioUnit:(double)vol {
     
-    if (outputAudioUnit == NULL)
+    if (audioProcessingGraph == NULL)
         return;
-    
+	
+	AudioUnit outputAudioUnit;
+	OSErr status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputAudioUnit);
+	if (status != noErr) {
+        return;
+    }
+
     AudioUnitSetParameter(outputAudioUnit,
                           kHALOutputParam_Volume,
                           kAudioUnitScope_Output,
@@ -675,29 +683,31 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
                           0);
 }
 
--(void)startAudioUnit {
-    if (outputAudioUnit == NULL)
+-(void)startAudioQueue {
+    if (audioProcessingGraph == NULL)
         return;
     
-    AudioOutputUnitStart(outputAudioUnit);
+    AUGraphStart(audioProcessingGraph);
 }
 
--(void)stopAudioUnit {
-    if (outputAudioUnit == NULL)
+-(void)stopAudioQueue {
+    if (audioProcessingGraph == NULL)
         return;
     
-    AudioOutputUnitStop(outputAudioUnit);
+    AUGraphStop(audioProcessingGraph);
 }
 
 -(void)teardownCoreAudio {
-    if (outputAudioUnit == NULL)
+    if (audioProcessingGraph == NULL)
         return;
     
-    [self stopAudioUnit];
-    AudioUnitUninitialize(outputAudioUnit);
-    CloseComponent(outputAudioUnit);
-    
-    outputAudioUnit = NULL;
+    [self stopAudioQueue];
+	
+    AUGraphStop(audioProcessingGraph);
+	AUGraphUninitialize(audioProcessingGraph);
+	DisposeAUGraph(audioProcessingGraph);
+	
+	audioProcessingGraph = NULL;
 }
 
 static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDescription, int code) {
@@ -715,78 +725,88 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 
 -(BOOL)setupCoreAudioWithAudioFormat:(const sp_audioformat *)audioFormat error:(NSError **)err {
     
-    if (outputAudioUnit != NULL)
+    if (audioProcessingGraph != NULL)
         [self teardownCoreAudio];
     
     // A description of the output device we're looking for.
-    ComponentDescription desc;
-    desc.componentType = kAudioUnitType_Output;
-    desc.componentSubType = kAudioUnitSubType_DefaultOutput;
-    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-    desc.componentFlags = 0;
-    desc.componentFlagsMask = 0;
-    
-    // Find a component that meets the description's specifications
-    Component comp = FindNextComponent(NULL, &desc);
-    
-    if (comp == NULL) {
-        fillWithError(err, @"Could not find a component that matches our specifications", -1);
+    AudioComponentDescription outputDescription;
+    outputDescription.componentType = kAudioUnitType_Output;
+    outputDescription.componentSubType = kAudioUnitSubType_DefaultOutput;
+    outputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    outputDescription.componentFlags = 0;
+    outputDescription.componentFlagsMask = 0;
+	
+    // Tell Core Audio about libspotify's audio format
+    AudioStreamBasicDescription libSpotifyInputFormat;
+    libSpotifyInputFormat.mSampleRate = (float)audioFormat->sample_rate;
+    libSpotifyInputFormat.mFormatID = kAudioFormatLinearPCM;
+    libSpotifyInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
+    libSpotifyInputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
+    libSpotifyInputFormat.mFramesPerPacket = 1;
+    libSpotifyInputFormat.mBytesPerFrame = libSpotifyInputFormat.mBytesPerPacket;
+    libSpotifyInputFormat.mChannelsPerFrame = audioFormat->channels;
+    libSpotifyInputFormat.mBitsPerChannel = 16;
+    libSpotifyInputFormat.mReserved = 0;
+	
+	// Create an AUGraph
+	OSErr status = NewAUGraph(&audioProcessingGraph);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't init graph", status);
         return NO;
     }
 
-    // Gain access to the services provided by the component, i.e. find our
-    // output device
-    OSErr status = OpenAComponent(comp, &outputAudioUnit);
-    if (status != noErr) {
-        fillWithError(err, @"Couldn't find a device that matched our criteria", status);
+	// Add audio output...
+	status = AUGraphAddNode(audioProcessingGraph, (const AudioComponentDescription *)&outputDescription, &outputNode);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't add output node", status);
         return NO;
     }
-    
-    // Tell Core Audio about libspotify's audio format
-    AudioStreamBasicDescription outputFormat;
-    outputFormat.mSampleRate = (float)audioFormat->sample_rate;
-    outputFormat.mFormatID = kAudioFormatLinearPCM;
-    outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
-    outputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
-    outputFormat.mFramesPerPacket = 1;
-    outputFormat.mBytesPerFrame = outputFormat.mBytesPerPacket;
-    outputFormat.mChannelsPerFrame = audioFormat->channels;
-    outputFormat.mBitsPerChannel = 16;
-    outputFormat.mReserved = 0;
-    
-    status = AudioUnitSetProperty(outputAudioUnit,
-                                  kAudioUnitProperty_StreamFormat,
-                                  kAudioUnitScope_Input,
-                                  0,
-                                  &outputFormat,
-                                  sizeof(outputFormat));
-    if (status != noErr) {
-        fillWithError(err, @"Couldn't set output format", status);
+	
+	// Set render callback
+	AURenderCallbackStruct rcbs;
+	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
+	rcbs.inputProcRefCon = (__bridge void *)(self);
+	
+	status = AUGraphSetNodeInputCallback(audioProcessingGraph, outputNode, 0, &rcbs);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't add render callback", status);
         return NO;
     }
-    
-    AURenderCallbackStruct callback;
-    callback.inputProc = VivaAudioUnitRenderDelegateCallback;
-    callback.inputProcRefCon = (__bridge void *)(self);
-    
-    status = AudioUnitSetProperty(outputAudioUnit,
-                                  kAudioUnitProperty_SetRenderCallback,
-                                  kAudioUnitScope_Input,
-                                  0,
-                                  &callback,
-                                  sizeof(callback));
-    if (status != noErr) {
-        fillWithError(err, @"Couldn't set render callback", status);
+	
+	// Open the graph. AudioUnits are open but not initialized (no resource allocation occurs here)
+	AUGraphOpen(audioProcessingGraph);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't open graph", status);
         return NO;
     }
-    
-    status = AudioUnitInitialize(outputAudioUnit);
-    if (status != noErr) {
-        fillWithError(err, @"Couldn't initialize audio unit", status);
+	
+	// Set stream format from libspotify format
+	AudioUnit outputUnit;
+	status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputUnit);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't get output unit", status);
         return NO;
     }
+	
+	status = AudioUnitSetProperty(outputUnit,
+								  kAudioUnitProperty_StreamFormat,
+								  kAudioUnitScope_Input,
+								  0,
+								  &libSpotifyInputFormat,
+								  sizeof(libSpotifyInputFormat));
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't set input format", status);
+        return NO;
+    }
+	
+	// Init Queue
+	status = AUGraphInitialize(audioProcessingGraph);
+	if (status != noErr) {
+		fillWithError(err, @"Couldn't initialize graph", status);
+        return NO;
+	}
     
-    [self startAudioUnit];
+    [self startAudioQueue];
     [self applyVolumeToAudioUnit:self.volume];
     
     return YES;
