@@ -15,6 +15,36 @@
 #import "VivaTrackExtensions.h"
 #import <AudioToolbox/AudioToolbox.h>
 
+@implementation EQBands
+
+-(id)copyWithZone:(NSZone *)zone {
+	EQBands *newBands = [EQBands new];
+	newBands.band1 = self.band1;
+	newBands.band2 = self.band2;
+	newBands.band3 = self.band3;
+	newBands.band4 = self.band4;
+	newBands.band5 = self.band5;
+	newBands.band6 = self.band6;
+	newBands.band7 = self.band7;
+	newBands.band8 = self.band8;
+	newBands.band9 = self.band9;
+	newBands.band10 = self.band10;
+	return newBands;
+}
+
+@synthesize band1;
+@synthesize band2;
+@synthesize band3;
+@synthesize band4;
+@synthesize band5;
+@synthesize band6;
+@synthesize band7;
+@synthesize band8;
+@synthesize band9;
+@synthesize band10;
+
+@end
+
 @interface VivaPlaybackManager  ()
 
 @property (strong, readwrite) SPCircularBuffer *audioBuffer;
@@ -110,6 +140,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
 		self.localFileDecoder.playbackDelegate = self;
+		self.eqBands = [EQBands new];
         
 		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
         
@@ -765,12 +796,12 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
     eqDescription.componentFlagsMask = 0;
 
 	// A description for the libspotify -> standard PCM device
-	AudioComponentDescription convertorDescription;
-	convertorDescription.componentType = kAudioUnitType_FormatConverter;
-	convertorDescription.componentSubType = kAudioUnitSubType_AUConverter;
-	convertorDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-	convertorDescription.componentFlags = 0;
-    convertorDescription.componentFlagsMask = 0;	
+	AudioComponentDescription converterDescription;
+	converterDescription.componentType = kAudioUnitType_FormatConverter;
+	converterDescription.componentSubType = kAudioUnitSubType_AUConverter;
+	converterDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+	converterDescription.componentFlags = 0;
+	converterDescription.componentFlagsMask = 0;	
     
     // Tell Core Audio about libspotify's audio format
     AudioStreamBasicDescription libSpotifyInputFormat;
@@ -806,6 +837,13 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
         return NO;
     }
 	
+	// Get output unit so we can change volume etc
+	status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputUnit);
+	if (status != noErr) {
+        fillWithError(err, @"Couldn't get output unit", status);
+        return NO;
+    }
+	
 	// Create EQ!
 	AUNode eqNode;
 	status = AUGraphAddNode(audioProcessingGraph, &eqDescription, &eqNode);
@@ -834,9 +872,9 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
         return NO;
     }
 	
-	// Create PCM Convertor
-	AUNode convertorNode;
-	status = AUGraphAddNode(audioProcessingGraph, &convertorDescription, &convertorNode);
+	// Create PCM converter
+	AUNode converterNode;
+	status = AUGraphAddNode(audioProcessingGraph, &converterDescription, &converterNode);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't add converter node", status);
         return NO;
@@ -844,7 +882,7 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 	
 	// Set stream format from libspotify format
 	AudioUnit converterUnit;
-	status = AUGraphNodeInfo(audioProcessingGraph, convertorNode, NULL, &converterUnit);
+	status = AUGraphNodeInfo(audioProcessingGraph, converterNode, NULL, &converterUnit);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't get converter unit", status);
         return NO;
@@ -866,7 +904,7 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
 	rcbs.inputProcRefCon = (__bridge void *)(self);
 	
-	status = AUGraphSetNodeInputCallback(audioProcessingGraph, convertorNode, 0, &rcbs);
+	status = AUGraphSetNodeInputCallback(audioProcessingGraph, converterNode, 0, &rcbs);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't add render callback", status);
         return NO;
@@ -874,7 +912,7 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 	
 	// Connect converter to EQ
 	// Connect EQ node to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, convertorNode, 0, eqNode, 0);
+	status = AUGraphConnectNodeInput(audioProcessingGraph, converterNode, 0, eqNode, 0);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't connect converter->eq", status);
         return NO;

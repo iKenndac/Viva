@@ -19,18 +19,20 @@ static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;
 static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
 static NSString * const kVivaTrackContainerKey = @"trackContainer";
 
-struct EQBands {
-	double band1;
-	double band2;
-	double band3;
-	double band4;
-	double band5;
-	double band6;
-	double band7;
-	double band8;
-	double band9;
-	double band10;
-};
+@interface EQBands : NSObject <NSCopying>
+
+@property (nonatomic, readwrite) double band1;
+@property (nonatomic, readwrite) double band2;
+@property (nonatomic, readwrite) double band3;
+@property (nonatomic, readwrite) double band4;
+@property (nonatomic, readwrite) double band5;
+@property (nonatomic, readwrite) double band6;
+@property (nonatomic, readwrite) double band7;
+@property (nonatomic, readwrite) double band8;
+@property (nonatomic, readwrite) double band9;
+@property (nonatomic, readwrite) double band10;
+
+@end
 
 @class VivaPlaybackManager;
 
@@ -78,6 +80,6 @@ struct EQBands {
 
 // EQ
 
-@property (readwrite, nonatomic) struct EQBands eqBands;
+@property (readwrite, nonatomic, strong) EQBands *eqBands;
 
 @end

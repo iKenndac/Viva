@@ -36,6 +36,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
         // Initialization code here.
 		[self addObserver:self forKeyPath:@"currentEQSettings" options:0 context:nil];
 		self.draggingIndex = -1;
+		self.currentEQSettings = [EQBands new];
     }
     
     return self;
@@ -319,7 +320,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 -(void)setDB:(double)db atIndex:(NSUInteger)index {
 	
-	struct EQBands newBands = self.currentEQSettings;
+	EQBands *newBands = [self.currentEQSettings copy];
 	
 	switch (index) {
 		case 0:
