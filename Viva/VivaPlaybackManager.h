@@ -19,6 +19,19 @@ static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;
 static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
 static NSString * const kVivaTrackContainerKey = @"trackContainer";
 
+struct EQBands {
+	double band1;
+	double band2;
+	double band3;
+	double band4;
+	double band5;
+	double band6;
+	double band7;
+	double band8;
+	double band9;
+	double band10;
+};
+
 @class VivaPlaybackManager;
 
 @protocol VivaPlaybackManagerDelegate <NSObject>
@@ -62,5 +75,9 @@ static NSString * const kVivaTrackContainerKey = @"trackContainer";
 
 -(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
 -(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
+
+// EQ
+
+@property (readwrite, nonatomic) struct EQBands eqBands;
 
 @end

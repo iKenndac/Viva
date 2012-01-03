@@ -48,6 +48,7 @@
 -(void)startAudioQueue;
 -(void)stopAudioQueue;
 -(void)applyVolumeToAudioUnit:(double)vol;
+-(void)applyBandsToAudioUnit;
 
 static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
                                                     AudioUnitRenderActionFlags *ioActionFlags,
@@ -149,6 +150,11 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
                forKeyPath:@"shufflePlayback"
                   options:0
                   context:nil];
+		
+		[self addObserver:self
+               forKeyPath:@"eqBands"
+                  options:0
+                  context:nil];
 
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -183,6 +189,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 @synthesize leftLevels;
 @synthesize rightLevels;
+
+@synthesize eqBands;
 
 +(NSSet *)keyPathsForValuesAffectingCurrentTrack {
 	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
@@ -558,7 +566,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
+	if ([keyPath isEqualToString:@"eqBands"]) {
+		[self applyBandsToAudioUnit];
+	} else if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
         
         if (self.currentPlaybackProvider.playing) {
             [self startAudioQueue];
@@ -664,6 +674,19 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 #pragma mark -
 #pragma mark Core Audio Setup
+
+-(void)applyBandsToAudioUnit {
+	AudioUnitSetParameter(eqUnit, 0, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band1, 0);
+	AudioUnitSetParameter(eqUnit, 1, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band2, 0);
+	AudioUnitSetParameter(eqUnit, 2, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band3, 0);
+	AudioUnitSetParameter(eqUnit, 3, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band4, 0);
+	AudioUnitSetParameter(eqUnit, 4, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band5, 0);
+	AudioUnitSetParameter(eqUnit, 5, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band6, 0);
+	AudioUnitSetParameter(eqUnit, 6, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band7, 0);
+	AudioUnitSetParameter(eqUnit, 7, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band8, 0);
+	AudioUnitSetParameter(eqUnit, 8, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band9, 0);
+	AudioUnitSetParameter(eqUnit, 9, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band10, 0);
+}
          
 -(void)applyVolumeToAudioUnit:(double)vol {
     
@@ -866,11 +889,12 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 	
 	AUGraphUpdate(audioProcessingGraph, NULL);
 	
-	CAShow(audioProcessingGraph);
+	//CAShow(audioProcessingGraph);
     
     [self startAudioQueue];
     [self applyVolumeToAudioUnit:self.volume];
-    
+    [self applyBandsToAudioUnit];
+	
     return YES;
 }
 
@@ -1013,6 +1037,7 @@ static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManag
 
 -(void)dealloc {
 
+	[self removeObserver:self forKeyPath:@"eqBands"];
     [self removeObserver:self forKeyPath:@"currentPlaybackProvider.playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
