@@ -34,23 +34,31 @@
     return self;
 }
 
+-(void)awakeFromNib {
+	[self.eqView addObserver:self forKeyPath:@"currentEQSettings" options:0 context:nil];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
 	struct EQBands bands;
-	bands.band1 = self.band1;
-	bands.band2 = self.band2;
-	bands.band3 = self.band3;
-	bands.band4 = self.band4;
-	bands.band5 = self.band5;
-	bands.band6 = self.band6;
-	bands.band7 = self.band7;
-	bands.band8 = self.band8;
-	bands.band9 = self.band9;
-	bands.band10 = self.band10;
 	
-	self.eqView.currentEQSettings = bands;
-	
-	[[(VivaAppDelegate *)[NSApp delegate] playbackManager] setEqBands:bands];
+	if (object != self.eqView) {
+		bands.band1 = self.band1;
+		bands.band2 = self.band2;
+		bands.band3 = self.band3;
+		bands.band4 = self.band4;
+		bands.band5 = self.band5;
+		bands.band6 = self.band6;
+		bands.band7 = self.band7;
+		bands.band8 = self.band8;
+		bands.band9 = self.band9;
+		bands.band10 = self.band10;
+		
+		self.eqView.currentEQSettings = bands;
+	} else {
+		bands = self.eqView.currentEQSettings;
+		[[(VivaAppDelegate *)[NSApp delegate] playbackManager] setEqBands:bands];
+	}	
 }
 
 @synthesize band1;

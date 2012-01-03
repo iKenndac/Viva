@@ -19,8 +19,11 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 -(NSRect)rectForKnobAtIndex:(NSUInteger)index;
 -(double)dbAtIndex:(NSUInteger)index;
+-(void)setDB:(double)db atIndex:(NSUInteger)index;
 -(NSRect)drawableBounds;
--(void)drawKnobInRect:(NSRect)knobRect;
+-(void)drawKnobInRect:(NSRect)knobRect pushed:(BOOL)pushed;
+
+@property (readwrite, nonatomic) NSInteger draggingIndex;
 
 @end
 
@@ -32,6 +35,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
     if (self) {
         // Initialization code here.
 		[self addObserver:self forKeyPath:@"currentEQSettings" options:0 context:nil];
+		self.draggingIndex = -1;
     }
     
     return self;
@@ -50,18 +54,64 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 }
 
 @synthesize currentEQSettings;
+@synthesize draggingIndex;
 
-- (void)drawRect:(NSRect)dirtyRect
-{
+#pragma mark -
+#pragma mark Mouse
+
+-(void)mouseDown:(NSEvent *)theEvent {
+	
+	NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+	
+	for (NSUInteger currentIndex = 0; currentIndex < kEQBandCount; currentIndex++) {
+		if (NSPointInRect(mousePoint, [self rectForKnobAtIndex:currentIndex])) {
+			self.draggingIndex = currentIndex;
+			break;
+		}
+	}
+	
+	if (self.draggingIndex == -1)
+		return;
+	
+	[self setNeedsDisplay:YES];
+	
+}
+
+-(void)mouseDragged:(NSEvent *)theEvent {
+	
+	if (self.draggingIndex == -1) return;
+	
+	NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+	
+	CGFloat dbHeight = ([self drawableBounds].size.height / kEQDBRange);
+	CGFloat unmodifiedDB = ((mousePoint.y - NSMinY([self drawableBounds])) / dbHeight);
+	unmodifiedDB = MIN(kEQDBRange, MAX(0, unmodifiedDB));
+	
+	[self setDB:unmodifiedDB - (kEQDBRange / 2) atIndex:self.draggingIndex];
+	[self setNeedsDisplay:YES];
+}
+
+-(void)mouseUp:(NSEvent *)theEvent {
+	
+	if (self.draggingIndex == -1) return;
+	
+	self.draggingIndex = -1;
+	[self setNeedsDisplay:YES];
+}
+
+-(BOOL)mouseDownCanMoveWindow {
+	return NO;
+}
+
+#pragma mark -
+#pragma mark Drawing
+
+-(void)drawRect:(NSRect)dirtyRect {
 	
 	// Useful numbers
-	NSUInteger columns = kEQBandCount + 1;
-	CGFloat columnWidth = ([self drawableBounds].size.width / columns);
 	CGFloat dbHeight = ([self drawableBounds].size.height / kEQDBRange); 
 	
-	
 	// Background
-	
 	NSGradient *backgroundGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.209 alpha:1.000]
 															   endingColor:[NSColor colorWithCalibratedWhite:0.071 alpha:1.000]];
 	
@@ -151,7 +201,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 	
 	for (NSValue *value in rects) {
 		[[NSGraphicsContext currentContext] saveGraphicsState];
-		[self drawKnobInRect:[value rectValue]];
+		[self drawKnobInRect:[value rectValue] pushed:[rects indexOfObject:value] == self.draggingIndex];
 		[[NSGraphicsContext currentContext] restoreGraphicsState];
 	}
 	
@@ -182,7 +232,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 }
 
--(void)drawKnobInRect:(NSRect)knobRect {
+-(void)drawKnobInRect:(NSRect)knobRect pushed:(BOOL)pushed {
 	
 	NSShadow *knobShadow = [[NSShadow alloc] init];
 	knobShadow.shadowColor = [[NSColor blackColor] colorWithAlphaComponent:1.0];
@@ -190,9 +240,15 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 	knobShadow.shadowOffset = NSMakeSize(0.0, 0.0);
 	//[knobShadow set];
 	
-	NSGradient *knobGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.625 alpha:1.000]
-															 endingColor:[NSColor colorWithCalibratedWhite:0.902 alpha:1.000]];
+	NSGradient *knobGradient = nil;
 	
+	if (!pushed)
+		knobGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.625 alpha:1.000]
+													 endingColor:[NSColor colorWithCalibratedWhite:0.902 alpha:1.000]];
+	else
+		knobGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.902 alpha:1.000]
+													 endingColor:[NSColor colorWithCalibratedWhite:0.625 alpha:1.000]];
+		
 	NSBezierPath *shadowCircle = [NSBezierPath bezierPathWithOvalInRect:knobRect];
 	[[NSColor colorWithCalibratedWhite:0.0 alpha:0.4] set];
 	[shadowCircle fill];
@@ -219,6 +275,8 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 						-(kEQKnobPlaneLength / 2),
 						-(kEQKnobPlaneLength / 2));
 }
+
+#pragma mark -
 
 -(double)dbAtIndex:(NSUInteger)index {
 	
@@ -257,8 +315,48 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 			return 0.0;
 			break;
 	}
+}
+
+-(void)setDB:(double)db atIndex:(NSUInteger)index {
 	
+	struct EQBands newBands = self.currentEQSettings;
 	
+	switch (index) {
+		case 0:
+			newBands.band1 = db;
+			break;
+		case 1:
+			newBands.band2 = db;
+			break;
+		case 2:
+			newBands.band3 = db;
+			break;
+		case 3:
+			newBands.band4 = db;
+			break;
+		case 4:
+			newBands.band5 = db;
+			break;
+		case 5:
+			newBands.band6 = db;
+			break;
+		case 6:
+			newBands.band7 = db;
+			break;
+		case 7:
+			newBands.band8 = db;
+			break;
+		case 8:
+			newBands.band9 = db;
+			break;
+		case 9:
+			newBands.band10 = db;
+			break;
+		default:
+			break;
+	}
+	
+	self.currentEQSettings = newBands;
 }
 
 @end
