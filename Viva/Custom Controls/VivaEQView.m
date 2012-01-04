@@ -19,12 +19,46 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 @interface VivaEQView ()
 
 -(NSRect)rectForKnobAtIndex:(NSUInteger)index;
--(double)dbAtIndex:(NSUInteger)index;
+-(double)dbAtIndex:(NSUInteger)index forDisplayPurposes:(BOOL)isForDisplay;
 -(void)setDB:(double)db atIndex:(NSUInteger)index;
 -(NSRect)drawableBounds;
 -(void)drawKnobInRect:(NSRect)knobRect pushed:(BOOL)pushed;
 
 @property (readwrite, nonatomic) NSInteger draggingIndex;
+@property (readwrite, nonatomic, strong) EQPreset *animatingFromPreset;
+@property (readwrite, nonatomic, strong) EQPreset *displayPreset;
+@property (readwrite, nonatomic, strong) NSAnimation *currentAnimation;
+
+@end
+
+@interface VivaEQAnimation : NSAnimation
+@property (nonatomic, readwrite, weak) VivaEQView *targetView;
+@end
+
+@implementation VivaEQAnimation
+
+@synthesize targetView;
+
+- (void)setCurrentProgress:(NSAnimationProgress)progress
+{
+    // Call super to update the progress value.
+    [super setCurrentProgress:progress];
+	
+	EQPreset *newDisplayPreset = [self.targetView.animatingFromPreset copy];
+    newDisplayPreset.band1 += (self.targetView.currentEQSettings.band1 - newDisplayPreset.band1) * progress;
+	newDisplayPreset.band2 += (self.targetView.currentEQSettings.band2 - newDisplayPreset.band2) * progress;
+	newDisplayPreset.band3 += (self.targetView.currentEQSettings.band3 - newDisplayPreset.band3) * progress;
+	newDisplayPreset.band4 += (self.targetView.currentEQSettings.band4 - newDisplayPreset.band4) * progress;
+	newDisplayPreset.band5 += (self.targetView.currentEQSettings.band5 - newDisplayPreset.band5) * progress;
+	newDisplayPreset.band6 += (self.targetView.currentEQSettings.band6 - newDisplayPreset.band6) * progress;
+	newDisplayPreset.band7 += (self.targetView.currentEQSettings.band7 - newDisplayPreset.band7) * progress;
+	newDisplayPreset.band8 += (self.targetView.currentEQSettings.band8 - newDisplayPreset.band8) * progress;
+	newDisplayPreset.band9 += (self.targetView.currentEQSettings.band9 - newDisplayPreset.band9) * progress;
+	newDisplayPreset.band10 += (self.targetView.currentEQSettings.band10 - newDisplayPreset.band10) * progress;
+	
+	self.targetView.displayPreset = newDisplayPreset;
+	[self.targetView setNeedsDisplay:YES];
+}
 
 @end
 
@@ -57,6 +91,49 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 @synthesize currentEQSettings;
 @synthesize draggingIndex;
+@synthesize displayPreset;
+@synthesize animatingFromPreset;
+@synthesize currentAnimation;
+
+-(void)setCurrentEQSettings:(EQPreset *)settings animated:(BOOL)animate {
+	
+	self.displayPreset = nil;
+	self.animatingFromPreset = nil;
+	[self.currentAnimation stopAnimation];
+	self.currentAnimation = nil;
+	
+	if (animate) {
+		
+		self.displayPreset = self.currentEQSettings;
+		self.animatingFromPreset = self.currentEQSettings;
+		
+		VivaEQAnimation *animation = [[VivaEQAnimation alloc] initWithDuration:0.25
+																animationCurve:NSAnimationEaseInOut];
+		animation.frameRate = 30.0;
+		animation.animationBlockingMode = NSAnimationNonblocking;
+		animation.delegate = self;
+		animation.targetView = self;
+		[animation startAnimation];
+		
+		self.currentAnimation = animation;
+	}
+	
+	self.currentEQSettings = settings;
+}
+
+-(void)animationDidEnd:(NSAnimation *)animation {
+	self.displayPreset = nil;
+	self.animatingFromPreset = nil;
+	[self setNeedsDisplay:YES];
+	self.currentAnimation = nil;
+}
+
+-(void)animationDidStop:(NSAnimation *)animation {
+	self.displayPreset = nil;
+	self.animatingFromPreset = nil;
+	[self setNeedsDisplay:YES];
+	self.currentAnimation = nil;
+}
 
 #pragma mark -
 #pragma mark Mouse
@@ -271,7 +348,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 	CGFloat dbHeight = ([self drawableBounds].size.height / kEQDBRange); 
 	
 	return NSOffsetRect(NSMakeRect(floor(NSMinX([self drawableBounds]) + ((index + 1) * columnWidth)),
-								   floor(NSMinY([self drawableBounds]) + (dbHeight * ([self dbAtIndex:index] + (kEQDBRange / 2)))),
+								   floor(NSMinY([self drawableBounds]) + (dbHeight * ([self dbAtIndex:index forDisplayPurposes:YES] + (kEQDBRange / 2)))),
 								   kEQKnobPlaneLength,
 								   kEQKnobPlaneLength),
 						-(kEQKnobPlaneLength / 2),
@@ -280,38 +357,42 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 #pragma mark -
 
--(double)dbAtIndex:(NSUInteger)index {
+-(double)dbAtIndex:(NSUInteger)index forDisplayPurposes:(BOOL)isForDisplay {
+	
+	EQPreset *presetToUse = self.currentEQSettings;
+	if (isForDisplay && self.displayPreset != nil)
+		presetToUse = self.displayPreset;
 	
 	switch (index) {
 		case 0:
-			return self.currentEQSettings.band1;
+			return presetToUse.band1;
 			break;
 		case 1:
-			return self.currentEQSettings.band2;
+			return presetToUse.band2;
 			break;
 		case 2:
-			return self.currentEQSettings.band3;
+			return presetToUse.band3;
 			break;
 		case 3:
-			return self.currentEQSettings.band4;
+			return presetToUse.band4;
 			break;
 		case 4:
-			return self.currentEQSettings.band5;
+			return presetToUse.band5;
 			break;
 		case 5:
-			return self.currentEQSettings.band6;
+			return presetToUse.band6;
 			break;
 		case 6:
-			return self.currentEQSettings.band7;
+			return presetToUse.band7;
 			break;
 		case 7:
-			return self.currentEQSettings.band8;
+			return presetToUse.band8;
 			break;
 		case 8:
-			return self.currentEQSettings.band9;
+			return presetToUse.band9;
 			break;
 		case 9:
-			return self.currentEQSettings.band10;
+			return presetToUse.band10;
 			break;
 		default:
 			return 0.0;

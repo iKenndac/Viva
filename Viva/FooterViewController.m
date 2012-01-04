@@ -242,7 +242,7 @@
 #pragma mark Presets
 
 -(IBAction)chooseEqSetting:(id)sender {
-	self.eqView.currentEQSettings = self.eqMenu.selectedItem.representedObject;
+	[self.eqView setCurrentEQSettings:self.eqMenu.selectedItem.representedObject animated:YES];
 }
 
 -(void)resetEqUI {
