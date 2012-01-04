@@ -27,6 +27,7 @@ static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
 
 static NSString * const kUserEQPresetsUserDefaultsKey = @"UserEQPresets";
 static NSString * const kUserUnnamedEQPresetUserDefaultsKey = @"UnnamedEQPreset";
+static NSString * const kCurrentEQPresetNameUserDefaultsKey = @"EQPresetInUse";
 
 // ------ Last.fm ------
 

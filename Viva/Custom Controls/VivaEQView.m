@@ -71,9 +71,9 @@ static CGFloat const kEQHorizontalPadding = 2.0;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+		self.currentEQSettings = [EQPreset new];
 		[self addObserver:self forKeyPath:@"currentEQSettings" options:0 context:nil];
 		self.draggingIndex = -1;
-		self.currentEQSettings = [EQPreset new];
     }
     
     return self;

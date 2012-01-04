@@ -89,7 +89,6 @@
 	} else if ([keyPath isEqualToString:@"eqView.currentEQSettings"]) {
 		
 		self.playbackManager.eqBands = self.eqView.currentEQSettings;
-		[self ensureEqMenuSelectionMatchesCurrentEq];
 		
 	} else if ([keyPath isEqualToString:@"customPresets"]) {
 		

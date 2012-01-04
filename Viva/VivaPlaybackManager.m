@@ -110,8 +110,22 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
 		self.localFileDecoder.playbackDelegate = self;
-		self.eqBands = [EQPreset new];
-        
+		
+		EQPresetController *eqController = [EQPresetController sharedInstance];
+		
+		for (EQPreset *preset in [[[eqController.builtInPresets
+								   arrayByAddingObjectsFromArray:eqController.customPresets]
+								  arrayByAddingObject:eqController.blankPreset]
+								  arrayByAddingObject:eqController.unnamedCustomPreset]) {
+			if ([preset.name isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:kCurrentEQPresetNameUserDefaultsKey]]) {
+				self.eqBands = preset;
+				break;
+			}
+		}
+		
+		if (self.eqBands == nil)
+			self.eqBands = eqController.blankPreset;
+		
 		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
         
         self.loopPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kLoopPlaybackDefaultsKey];
@@ -569,6 +583,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     
 	if ([keyPath isEqualToString:@"eqBands"]) {
 		[self applyBandsToAudioUnit];
+		[[NSUserDefaults standardUserDefaults] setValue:self.eqBands.name
+												 forKey:kCurrentEQPresetNameUserDefaultsKey];
+		
 	} else if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
         
         if (self.currentPlaybackProvider.playing) {
