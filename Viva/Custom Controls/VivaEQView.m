@@ -7,6 +7,7 @@
 //
 
 #import "VivaEQView.h"
+#import "EQPresetController.h"
 
 static NSUInteger const kEQBandCount = 10;
 static NSUInteger const kEQDBRange = 24;
@@ -36,7 +37,7 @@ static CGFloat const kEQHorizontalPadding = 2.0;
         // Initialization code here.
 		[self addObserver:self forKeyPath:@"currentEQSettings" options:0 context:nil];
 		self.draggingIndex = -1;
-		self.currentEQSettings = [EQBands new];
+		self.currentEQSettings = [EQPreset new];
     }
     
     return self;
@@ -189,8 +190,8 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 		
 	}
 	
-	NSGradient *fillerGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedRed:0.160 green:0.351 blue:0.037 alpha:0.9]
-															 endingColor:[NSColor colorWithCalibratedRed:0.668 green:0.888 blue:0.266 alpha:0.9]];
+	NSGradient *fillerGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedRed:0.169 green:0.371 blue:0.038 alpha:0.9]
+															   endingColor:[NSColor colorWithCalibratedRed:0.690 green:0.918 blue:0.268 alpha:0.9]];
 	
 	[fillerGradient drawInRect:self.bounds angle:90.0];
 	
@@ -320,7 +321,18 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 
 -(void)setDB:(double)db atIndex:(NSUInteger)index {
 	
-	EQBands *newBands = [self.currentEQSettings copy];
+	EQPreset *newBands = [[EQPresetController sharedInstance] unnamedCustomPreset];
+	
+	newBands.band1 = self.currentEQSettings.band1;
+	newBands.band2 = self.currentEQSettings.band2;
+	newBands.band3 = self.currentEQSettings.band3;
+	newBands.band4 = self.currentEQSettings.band4;
+	newBands.band5 = self.currentEQSettings.band5;
+	newBands.band6 = self.currentEQSettings.band6;
+	newBands.band7 = self.currentEQSettings.band7;
+	newBands.band8 = self.currentEQSettings.band8;
+	newBands.band9 = self.currentEQSettings.band9;
+	newBands.band10 = self.currentEQSettings.band10;
 	
 	switch (index) {
 		case 0:

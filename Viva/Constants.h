@@ -23,6 +23,11 @@ static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKey
 static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
 static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
 
+// ------ EQ ------
+
+static NSString * const kUserEQPresetsUserDefaultsKey = @"UserEQPresets";
+static NSString * const kUserUnnamedEQPresetUserDefaultsKey = @"UnnamedEQPreset";
+
 // ------ Last.fm ------
 
 static NSString * const kScrobblePlaybackToLastFMUserDefaultsKey = @"ScrobbleToLastFM";

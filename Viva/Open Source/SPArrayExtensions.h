@@ -35,5 +35,6 @@
 @interface NSArray (SPArrayExtensions)
 
 -(id)randomObject;
+-(NSArray *)arrayByRemovingObject:(id)obj;
 
 @end

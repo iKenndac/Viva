@@ -25,6 +25,7 @@
 @property (strong) IBOutlet NSPopover *errorPopover;
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet VivaEQView *eqView;
+@property (weak) IBOutlet NSPopUpButton *eqMenu;
 
 @property (weak, readonly) NSString *currentTrackPositionDisplayString;
 @property (weak, readonly) NSString *currentTrackDurationDisplayString;
@@ -36,6 +37,8 @@
 - (IBAction)nextTrackButtonWasClicked:(id)sender;
 - (IBAction)showVolumePopover:(id)sender;
 - (IBAction)playbackStateControlWasClicked:(id)sender;
+
+-(IBAction)chooseEqSetting:(id)sender;
 
 @property (strong, readwrite) VivaPlaybackManager *playbackManager;
 

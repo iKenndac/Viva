@@ -11,6 +11,6 @@
 
 @interface VivaEQView : NSView
 
-@property (nonatomic, readwrite, strong) EQBands *currentEQSettings;
+@property (nonatomic, readwrite, strong) EQPreset *currentEQSettings;
 
 @end

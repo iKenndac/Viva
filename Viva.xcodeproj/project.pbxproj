@@ -69,6 +69,8 @@
 		506F347813438755002BA308 /* VivaPlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506F347713438755002BA308 /* VivaPlaybackManager.m */; };
 		506F348A1343DCFB002BA308 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 506F34891343DCFB002BA308 /* VivaIcon.icns */; };
 		50746CAE14B345A00026355B /* VivaEQView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50746CAD14B345A00026355B /* VivaEQView.m */; };
+		50746CCE14B456770026355B /* EQPresetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50746CCD14B456770026355B /* EQPresetController.m */; };
+		50746CD014B4601A0026355B /* BuiltInEQPresets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
@@ -384,6 +386,9 @@
 		506F34891343DCFB002BA308 /* VivaIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VivaIcon.icns; sourceTree = "<group>"; };
 		50746CAC14B345A00026355B /* VivaEQView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaEQView.h; path = "Custom Controls/VivaEQView.h"; sourceTree = "<group>"; };
 		50746CAD14B345A00026355B /* VivaEQView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaEQView.m; path = "Custom Controls/VivaEQView.m"; sourceTree = "<group>"; };
+		50746CCC14B456770026355B /* EQPresetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQPresetController.h; sourceTree = "<group>"; };
+		50746CCD14B456770026355B /* EQPresetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQPresetController.m; sourceTree = "<group>"; };
+		50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BuiltInEQPresets.plist; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -596,6 +601,9 @@
 		5008417013510C5600A2967E /* Playback */ = {
 			isa = PBXGroup;
 			children = (
+				50746CCC14B456770026355B /* EQPresetController.h */,
+				50746CCD14B456770026355B /* EQPresetController.m */,
+				50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */,
 				506F347613438755002BA308 /* VivaPlaybackManager.h */,
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
 				50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */,
@@ -1481,6 +1489,7 @@
 				50439AD9148B847D0059B578 /* LibraryViewController.xib in Resources */,
 				50D3D9D2148BAEE200F6C623 /* 350-album.png in Resources */,
 				50D3D9D8148BB96800F6C623 /* 350-artist.png in Resources */,
+				50746CD014B4601A0026355B /* BuiltInEQPresets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1587,6 +1596,7 @@
 				5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */,
 				504F8847148FB9B300271830 /* VivaSourceListRowView.m in Sources */,
 				50746CAE14B345A00026355B /* VivaEQView.m in Sources */,
+				50746CCE14B456770026355B /* EQPresetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

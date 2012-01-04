@@ -15,36 +15,6 @@
 #import "VivaTrackExtensions.h"
 #import <AudioToolbox/AudioToolbox.h>
 
-@implementation EQBands
-
--(id)copyWithZone:(NSZone *)zone {
-	EQBands *newBands = [EQBands new];
-	newBands.band1 = self.band1;
-	newBands.band2 = self.band2;
-	newBands.band3 = self.band3;
-	newBands.band4 = self.band4;
-	newBands.band5 = self.band5;
-	newBands.band6 = self.band6;
-	newBands.band7 = self.band7;
-	newBands.band8 = self.band8;
-	newBands.band9 = self.band9;
-	newBands.band10 = self.band10;
-	return newBands;
-}
-
-@synthesize band1;
-@synthesize band2;
-@synthesize band3;
-@synthesize band4;
-@synthesize band5;
-@synthesize band6;
-@synthesize band7;
-@synthesize band8;
-@synthesize band9;
-@synthesize band10;
-
-@end
-
 @interface VivaPlaybackManager  ()
 
 @property (strong, readwrite) SPCircularBuffer *audioBuffer;
@@ -140,7 +110,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
 		self.localFileDecoder.playbackDelegate = self;
-		self.eqBands = [EQBands new];
+		self.eqBands = [EQPreset new];
         
 		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
         

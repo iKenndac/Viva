@@ -53,4 +53,10 @@
 	
 }
 
+-(NSArray *)arrayByRemovingObject:(id)obj {
+	NSMutableArray *newArray = [self mutableCopy];
+	[newArray removeObject:obj];
+	return [NSArray arrayWithArray:newArray];
+}
+
 @end
