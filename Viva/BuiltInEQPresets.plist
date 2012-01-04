@@ -179,30 +179,6 @@
 		</dict>
 		<dict>
 			<key>band1</key>
-			<real>0</real>
-			<key>band10</key>
-			<real>0</real>
-			<key>band2</key>
-			<real>0</real>
-			<key>band3</key>
-			<real>0</real>
-			<key>band4</key>
-			<real>0</real>
-			<key>band5</key>
-			<real>0</real>
-			<key>band6</key>
-			<real>0</real>
-			<key>band7</key>
-			<real>0</real>
-			<key>band8</key>
-			<real>0</real>
-			<key>band9</key>
-			<real>0</real>
-			<key>name</key>
-			<string>Flat</string>
-		</dict>
-		<dict>
-			<key>band1</key>
 			<real>5</real>
 			<key>band10</key>
 			<real>3</real>

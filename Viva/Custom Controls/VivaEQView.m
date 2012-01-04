@@ -44,17 +44,19 @@ static CGFloat const kEQHorizontalPadding = 2.0;
     // Call super to update the progress value.
     [super setCurrentProgress:progress];
 	
+	double value = [self currentValue];
+	
 	EQPreset *newDisplayPreset = [self.targetView.animatingFromPreset copy];
-    newDisplayPreset.band1 += (self.targetView.currentEQSettings.band1 - newDisplayPreset.band1) * progress;
-	newDisplayPreset.band2 += (self.targetView.currentEQSettings.band2 - newDisplayPreset.band2) * progress;
-	newDisplayPreset.band3 += (self.targetView.currentEQSettings.band3 - newDisplayPreset.band3) * progress;
-	newDisplayPreset.band4 += (self.targetView.currentEQSettings.band4 - newDisplayPreset.band4) * progress;
-	newDisplayPreset.band5 += (self.targetView.currentEQSettings.band5 - newDisplayPreset.band5) * progress;
-	newDisplayPreset.band6 += (self.targetView.currentEQSettings.band6 - newDisplayPreset.band6) * progress;
-	newDisplayPreset.band7 += (self.targetView.currentEQSettings.band7 - newDisplayPreset.band7) * progress;
-	newDisplayPreset.band8 += (self.targetView.currentEQSettings.band8 - newDisplayPreset.band8) * progress;
-	newDisplayPreset.band9 += (self.targetView.currentEQSettings.band9 - newDisplayPreset.band9) * progress;
-	newDisplayPreset.band10 += (self.targetView.currentEQSettings.band10 - newDisplayPreset.band10) * progress;
+    newDisplayPreset.band1 += (self.targetView.currentEQSettings.band1 - newDisplayPreset.band1) * value;
+	newDisplayPreset.band2 += (self.targetView.currentEQSettings.band2 - newDisplayPreset.band2) * value;
+	newDisplayPreset.band3 += (self.targetView.currentEQSettings.band3 - newDisplayPreset.band3) * value;
+	newDisplayPreset.band4 += (self.targetView.currentEQSettings.band4 - newDisplayPreset.band4) * value;
+	newDisplayPreset.band5 += (self.targetView.currentEQSettings.band5 - newDisplayPreset.band5) * value;
+	newDisplayPreset.band6 += (self.targetView.currentEQSettings.band6 - newDisplayPreset.band6) * value;
+	newDisplayPreset.band7 += (self.targetView.currentEQSettings.band7 - newDisplayPreset.band7) * value;
+	newDisplayPreset.band8 += (self.targetView.currentEQSettings.band8 - newDisplayPreset.band8) * value;
+	newDisplayPreset.band9 += (self.targetView.currentEQSettings.band9 - newDisplayPreset.band9) * value;
+	newDisplayPreset.band10 += (self.targetView.currentEQSettings.band10 - newDisplayPreset.band10) * value;
 	
 	self.targetView.displayPreset = newDisplayPreset;
 	[self.targetView setNeedsDisplay:YES];
@@ -107,9 +109,9 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 		self.displayPreset = self.currentEQSettings;
 		self.animatingFromPreset = self.currentEQSettings;
 		
-		VivaEQAnimation *animation = [[VivaEQAnimation alloc] initWithDuration:0.25
+		VivaEQAnimation *animation = [[VivaEQAnimation alloc] initWithDuration:0.3
 																animationCurve:NSAnimationEaseInOut];
-		animation.frameRate = 30.0;
+		animation.frameRate = 60.0;
 		animation.animationBlockingMode = NSAnimationNonblocking;
 		animation.delegate = self;
 		animation.targetView = self;
@@ -279,9 +281,12 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 	[eqPointPath stroke];
 	
 	for (NSValue *value in rects) {
-		[[NSGraphicsContext currentContext] saveGraphicsState];
-		[self drawKnobInRect:[value rectValue] pushed:[rects indexOfObject:value] == self.draggingIndex];
-		[[NSGraphicsContext currentContext] restoreGraphicsState];
+		NSRect knobRect = [value rectValue];
+		if (NSIntersectsRect(dirtyRect, knobRect)) {
+			[[NSGraphicsContext currentContext] saveGraphicsState];
+			[self drawKnobInRect:[value rectValue] pushed:[rects indexOfObject:value] == self.draggingIndex];
+			[[NSGraphicsContext currentContext] restoreGraphicsState];
+		}
 	}
 	
 	// Border
