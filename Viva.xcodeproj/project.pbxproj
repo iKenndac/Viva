@@ -21,14 +21,14 @@
 		500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500B86B01361BC2D005FC734 /* SearchResultsViewController.xib */; };
 		5016F534148E905300AEDED2 /* VivaAlbumTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016F533148E905300AEDED2 /* VivaAlbumTableRowView.m */; };
 		5018CAE01471688400F46F83 /* Scribbler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
-		5018CAE31471689700F46F83 /* Scribbler.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
+		5018CAE31471689700F46F83 /* Scribbler.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CADA1471684400F46F83 /* Scribbler.framework */; };
 		5018CAE814716A6500F46F83 /* VivaGeneralPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAE614716A6500F46F83 /* VivaGeneralPreferencePane.m */; };
 		5018CAE914716A6500F46F83 /* VivaGeneralPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5018CAE714716A6500F46F83 /* VivaGeneralPreferencePane.xib */; };
 		5018CAEF14716ACD00F46F83 /* VivaLastFMPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAED14716ACD00F46F83 /* VivaLastFMPreferencePane.m */; };
 		5018CAF014716ACD00F46F83 /* VivaLastFMPreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5018CAEE14716ACD00F46F83 /* VivaLastFMPreferencePane.xib */; };
 		5018CAF31471784800F46F83 /* LastFMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF21471784800F46F83 /* LastFMController.m */; };
 		5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF514717E0C00F46F83 /* EMKeychain.m */; };
-		5018CB1F1471A82200F46F83 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
+		5018CB1F1471A82200F46F83 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
 		5018CB211471A90100F46F83 /* Viva Update Signing Public Key.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5018CB201471A90100F46F83 /* Viva Update Signing Public Key.pem */; };
 		5018CB221471A9C100F46F83 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
 		501ACA6714367F30000BB8EF /* viva_appkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 501ACA6614367F30000BB8EF /* viva_appkey.c */; };
@@ -71,13 +71,15 @@
 		50746CAE14B345A00026355B /* VivaEQView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50746CAD14B345A00026355B /* VivaEQView.m */; };
 		50746CCE14B456770026355B /* EQPresetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50746CCD14B456770026355B /* EQPresetController.m */; };
 		50746CD014B4601A0026355B /* BuiltInEQPresets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */; };
+		50746D0B14B4B7FC0026355B /* BGHUDAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */; };
+		50746D0E14B4B8260026355B /* BGHUDAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */; };
 		50842E4D133A3B1E00528555 /* meeter-filled-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4A133A3B1E00528555 /* meeter-filled-left.png */; };
 		50842E4E133A3B1E00528555 /* meeter-filled-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4B133A3B1E00528555 /* meeter-filled-middle.png */; };
 		50842E4F133A3B1E00528555 /* meeter-filled-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 50842E4C133A3B1E00528555 /* meeter-filled-right.png */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
-		5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
+		5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
 		5088AB5F140D28EC009C9FF8 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
 		5099D8AA1364B175005C7CDC /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099D8A81364B175005C7CDC /* AlbumViewController.m */; };
 		5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5099D8A91364B175005C7CDC /* AlbumViewController.xib */; };
@@ -263,6 +265,20 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Sparkle;
 		};
+		50746D0814B4B7EA0026355B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 53DF68FD067E5B5A0090B5B0;
+			remoteInfo = BGHUDAppKit;
+		};
+		50746D0C14B4B80A0026355B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 53DF68FC067E5B5A0090B5B0;
+			remoteInfo = BGHUDAppKit;
+		};
 		5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
@@ -280,16 +296,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		50E65EA8132585D000E66AFA /* CopyFiles */ = {
+		50E65EA8132585D000E66AFA /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5018CB1F1471A82200F46F83 /* Sparkle.framework in CopyFiles */,
-				5018CAE31471689700F46F83 /* Scribbler.framework in CopyFiles */,
-				5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in CopyFiles */,
+				50746D0E14B4B8260026355B /* BGHUDAppKit.framework in Copy Frameworks */,
+				5018CB1F1471A82200F46F83 /* Sparkle.framework in Copy Frameworks */,
+				5018CAE31471689700F46F83 /* Scribbler.framework in Copy Frameworks */,
+				5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in Copy Frameworks */,
 			);
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -389,6 +407,7 @@
 		50746CCC14B456770026355B /* EQPresetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQPresetController.h; sourceTree = "<group>"; };
 		50746CCD14B456770026355B /* EQPresetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQPresetController.m; sourceTree = "<group>"; };
 		50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BuiltInEQPresets.plist; sourceTree = "<group>"; };
+		50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BGHUDAppKit.xcodeproj; path = BGHUDAppKit/BGHUDAppKit.xcodeproj; sourceTree = "<group>"; };
 		50842E4A133A3B1E00528555 /* meeter-filled-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-left.png"; sourceTree = "<group>"; };
 		50842E4B133A3B1E00528555 /* meeter-filled-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-middle.png"; sourceTree = "<group>"; };
 		50842E4C133A3B1E00528555 /* meeter-filled-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeter-filled-right.png"; sourceTree = "<group>"; };
@@ -552,6 +571,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50746D0B14B4B7FC0026355B /* BGHUDAppKit.framework in Frameworks */,
 				50439AE7148B94820059B578 /* Quartz.framework in Frameworks */,
 				50FC8A9D1474030800FA43DD /* AudioToolbox.framework in Frameworks */,
 				50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */,
@@ -705,6 +725,7 @@
 				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
 				5018CACE1471684400F46F83 /* Scribbler.xcodeproj */,
 				5018CB041471A80F00F46F83 /* Sparkle.xcodeproj */,
+				50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
@@ -886,6 +907,14 @@
 				506F347513436F08002BA308 /* VivaPlaybackContext.h */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		50746D0214B4B7EA0026355B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		5088AB54140D2863009C9FF8 /* Products */ = {
@@ -1261,13 +1290,14 @@
 				503D62D013257D92007772CA /* Sources */,
 				503D62D113257D92007772CA /* Frameworks */,
 				503D62D213257D92007772CA /* Resources */,
-				50E65EA8132585D000E66AFA /* CopyFiles */,
+				50E65EA8132585D000E66AFA /* Copy Frameworks */,
 				5018CB231471AB9E00F46F83 /* Generate CFBundleVersion */,
 				50412D2D136C40C50027AF78 /* Run Code Signing Script */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				50746D0D14B4B80A0026355B /* PBXTargetDependency */,
 				5018CB1E1471A81900F46F83 /* PBXTargetDependency */,
 				5018CAE21471688E00F46F83 /* PBXTargetDependency */,
 				5088AB5D140D2870009C9FF8 /* PBXTargetDependency */,
@@ -1298,6 +1328,10 @@
 			productRefGroup = 503D62D513257D92007772CA /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 50746D0214B4B7EA0026355B /* Products */;
+					ProjectRef = 50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */;
+				},
 				{
 					ProductGroup = 5088AB54140D2863009C9FF8 /* Products */;
 					ProjectRef = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
@@ -1373,6 +1407,13 @@
 			fileType = wrapper.application;
 			path = finish_installation.app;
 			remoteRef = 5018CB1A1471A80F00F46F83 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = BGHUDAppKit.framework;
+			remoteRef = 50746D0814B4B7EA0026355B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */ = {
@@ -1612,6 +1653,11 @@
 			isa = PBXTargetDependency;
 			name = Sparkle;
 			targetProxy = 5018CB1D1471A81900F46F83 /* PBXContainerItemProxy */;
+		};
+		50746D0D14B4B80A0026355B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BGHUDAppKit;
+			targetProxy = 50746D0C14B4B80A0026355B /* PBXContainerItemProxy */;
 		};
 		5088AB5D140D2870009C9FF8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

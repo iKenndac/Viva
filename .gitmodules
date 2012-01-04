@@ -11,3 +11,6 @@
 [submodule "Sparkle"]
 	path = Sparkle
 	url = https://github.com/andymatuschak/Sparkle.git
+[submodule "BGHUDAppKit"]
+	path = BGHUDAppKit
+	url = git://github.com/binarygod/BGHUDAppKit.git

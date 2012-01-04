@@ -302,7 +302,8 @@ static CGFloat const kEQHorizontalPadding = 2.0;
 							  toPoint:NSMakePoint(NSMaxX(self.bounds) - 1.0, NSMaxY(self.bounds) - 2.5)];
 	
 	// Bottom line
-	[[NSColor blackColor] set];
+	
+	[[[NSColor blackColor] colorWithAlphaComponent:0.4] set];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(1.0, 1.5)
 							  toPoint:NSMakePoint(NSMaxX(self.bounds) - 1.0, 1.5)];
 	
