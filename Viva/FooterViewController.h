@@ -26,6 +26,8 @@
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet VivaEQView *eqView;
 @property (weak) IBOutlet NSPopUpButton *eqMenu;
+@property (weak) IBOutlet NSTextField *eqNameField;
+@property (strong) IBOutlet NSWindow *eqSaveWindow;
 
 @property (weak, readonly) NSString *currentTrackPositionDisplayString;
 @property (weak, readonly) NSString *currentTrackDurationDisplayString;
@@ -39,6 +41,9 @@
 - (IBAction)playbackStateControlWasClicked:(id)sender;
 
 -(IBAction)chooseEqSetting:(id)sender;
+- (IBAction)cancelEQSave:(id)sender;
+- (IBAction)confirmEQSave:(id)sender;
+-(IBAction)saveCurrentEQSettings:(id)sender;
 
 @property (strong, readwrite) VivaPlaybackManager *playbackManager;
 

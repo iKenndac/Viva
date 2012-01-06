@@ -92,6 +92,7 @@
 		
 	} else if ([keyPath isEqualToString:@"customPresets"]) {
 		
+		[self resetEqUI];
 		[self ensureEqMenuSelectionMatchesCurrentEq];
 	
 	} else if ([keyPath isEqualToString:@"playbackManager.loopPlayback"]) {
@@ -149,6 +150,8 @@
 @synthesize errorLabel;
 @synthesize eqView;
 @synthesize eqMenu;
+@synthesize eqNameField;
+@synthesize eqSaveWindow;
 
 @synthesize playbackManager;
 
@@ -241,7 +244,53 @@
 #pragma mark Presets
 
 -(IBAction)chooseEqSetting:(id)sender {
+	
+	if (self.eqMenu.selectedItem.representedObject == nil) {
+		[self ensureEqMenuSelectionMatchesCurrentEq];
+		return;
+	}
+	
 	[self.eqView setCurrentEQSettings:self.eqMenu.selectedItem.representedObject animated:YES];
+}
+
+- (IBAction)cancelEQSave:(id)sender {
+	[NSApp stopModal];
+}
+
+- (IBAction)confirmEQSave:(id)sender {
+	
+	if (self.eqNameField.stringValue.length == 0) {
+		NSBeep();
+		return;
+	}
+	
+	EQPreset *existingPresetToReplace = nil;
+	
+	for (EQPreset *preset in [EQPresetController sharedInstance].customPresets) {
+		if ([preset.name caseInsensitiveCompare:self.eqNameField.stringValue] == NSOrderedSame) {
+			existingPresetToReplace = preset;
+			break;
+		}
+	}
+	
+	if (existingPresetToReplace)
+		[[EQPresetController sharedInstance] removeCustomPreset:existingPresetToReplace];
+	
+	EQPreset *newPreset = [self.eqView.currentEQSettings copy];
+	newPreset.name = self.eqNameField.stringValue;
+	
+	[[EQPresetController sharedInstance] addCustomPreset:newPreset];
+	self.eqView.currentEQSettings = newPreset;
+	
+	[self cancelEQSave:sender];
+	
+}
+
+-(IBAction)saveCurrentEQSettings:(id)sender {
+	self.eqNameField.stringValue = @"";
+	[NSApp runModalForWindow:self.eqSaveWindow];
+	[self.eqSaveWindow close];
+	[self ensureEqMenuSelectionMatchesCurrentEq];
 }
 
 -(void)resetEqUI {
@@ -267,18 +316,21 @@
 	[menu addItem:[self menuItemForPreset:eqController.blankPreset]];
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItem:[self menuItemForPreset:eqController.unnamedCustomPreset]];
-	[menu addItem:[NSMenuItem separatorItem]];
 	
-	for (EQPreset *preset in eqController.builtInPresets) {
-		[menu addItem:[self menuItemForPreset:preset]];
+	NSMenuItem *savePresetItem = [[NSMenuItem alloc] initWithTitle:@"Save…" action:@selector(saveCurrentEQSettings:) keyEquivalent:@""];
+	savePresetItem.target = self;
+	[menu addItem:savePresetItem];
+		
+	if (eqController.customPresets.count > 0) {
+		[menu addItem:[NSMenuItem separatorItem]];
+		
+		for (EQPreset *preset in eqController.customPresets) {
+			[menu addItem:[self menuItemForPreset:preset]];
+		}
 	}
 	
-	if (eqController.customPresets.count == 0)
-		return menu;
-	
 	[menu addItem:[NSMenuItem separatorItem]];
-	
-	for (EQPreset *preset in eqController.customPresets) {
+	for (EQPreset *preset in eqController.builtInPresets) {
 		[menu addItem:[self menuItemForPreset:preset]];
 	}
 	

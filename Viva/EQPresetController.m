@@ -183,7 +183,12 @@ static EQPresetController *sharedInstance;
 
 -(void)addCustomPreset:(EQPreset *)aPreset {
 	if (aPreset == nil) return;
-	self.customPresets = [self.customPresets arrayByAddingObject:aPreset];
+	
+	NSArray *newPresets = [self.customPresets arrayByAddingObject:aPreset];
+	
+	self.customPresets = [newPresets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		return [((EQPreset *)obj1).name caseInsensitiveCompare:((EQPreset *)obj2).name];
+	}];
 	[self commitPresetsToUserDefaults];
 }
 
