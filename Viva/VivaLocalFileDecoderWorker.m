@@ -84,10 +84,15 @@
 				NSUInteger thisChunkLength = (totalLength - currentOffset) < chunkLength ? (totalLength - currentOffset) : chunkLength;
 				NSUInteger frameCount = thisChunkLength / (sizeof(sint16) * outputFormat.channels);
 				
-				while (([self.delegate worker:self
-					 shouldDeliverAudioFrames:audioBuffer.mData + currentOffset
-									  ofCount:frameCount
-									   format:&outputFormat] == 0) && !self.cancelled) {
+				while (!self.isPlaying && !self.cancelled) {
+					// Don't push audio data if we're paused.
+					[NSThread sleepForTimeInterval:0.1];
+				}
+				
+				while (!self.cancelled && ([self.delegate worker:self
+										shouldDeliverAudioFrames:audioBuffer.mData + currentOffset
+														 ofCount:frameCount
+														  format:&outputFormat] == 0)) {
 					[NSThread sleepForTimeInterval:0.3];
 				}
 				
@@ -96,8 +101,13 @@
 			
 			CFRelease(buffer);
 			CFRelease(sample);
+			sample = NULL;
 			sample = [readerOutput copyNextSampleBuffer];
 		}
+		
+		if (sample != NULL)
+			CFRelease(sample);
+		
 		
 		[self performSelectorOnMainThread:@selector(endPlaybackThread) withObject:nil waitUntilDone:NO];
 	}

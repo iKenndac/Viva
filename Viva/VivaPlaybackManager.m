@@ -730,7 +730,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if (audioProcessingGraph == NULL)
         return;
     
-    AUGraphStop(audioProcessingGraph);
+	// Sometimes, because Core Audio is such a young, untested API, AUGraphStop… doesn't.
+	Boolean isRunning = NO;
+	AUGraphIsRunning(audioProcessingGraph, &isRunning);
+	
+	for (NSUInteger i = 0; i < 3 && isRunning; i++) {
+		AUGraphStop(audioProcessingGraph);
+		AUGraphIsRunning(audioProcessingGraph, &isRunning);
+	}
 }
 
 -(void)teardownCoreAudio {
