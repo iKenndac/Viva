@@ -691,7 +691,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 }
 
 #pragma mark -
-#pragma mark Core Audio Setup
+#pragma mark Core Audio
 
 -(void)applyBandsToAudioUnit {
 	AudioUnitSetParameter(eqUnit, 0, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band1, 0);
