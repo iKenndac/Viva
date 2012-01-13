@@ -1,13 +1,13 @@
 [submodule "cocoalibspotify"]
 	path = cocoalibspotify
-	url = git@git.spotify.net:cocoalibspotify.git
-	
+	url = git://github.com/spotify/cocoalibspotify.git
+	branch = experimental/ARC
 [submodule "Scribbler"]
 	path = Scribbler
-	url = git@github.com:iKenndac/Scribbler.git
+	url = git://github.com/iKenndac/Scribbler.git
 [submodule "EMKeychain"]
 	path = EMKeychain
-	url = git@github.com:iKenndac/EMKeychain.git
+	url = git://github.com/iKenndac/EMKeychain.git
 [submodule "Sparkle"]
 	path = Sparkle
 	url = https://github.com/andymatuschak/Sparkle.git
