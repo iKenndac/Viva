@@ -62,7 +62,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{380, 264}, {764, 493}}</string>
 				<int key="NSWTFlags">1954022400</int>
-				<string key="NSWindowTitle">Spotify Viva</string>
+				<string key="NSWindowTitle">Viva</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="590369993">
 					<object class="NSMutableString" key="NSToolbarIdentifier">
@@ -584,6 +584,7 @@
 							<string key="NSFrameSize">{764, 56}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSClassName">SPBackgroundColorView</string>
 						</object>
 					</object>
@@ -609,7 +610,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="181784379">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -739,7 +740,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{390, 133}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="902544334"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
