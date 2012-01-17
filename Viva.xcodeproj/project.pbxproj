@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */; };
 		5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFF13562440000EA08A /* VivaTrackExtensions.m */; };
-		5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004701313563AD5000EA08A /* SPMediaKeyTap.m */; };
-		5004701713563BA6000EA08A /* NSObject+Spotify.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5004701613563BA6000EA08A /* NSObject+Spotify.mm */; };
 		5004701913563C02000EA08A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701813563C01000EA08A /* IOKit.framework */; };
 		5004701B13563C08000EA08A /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701A13563C08000EA08A /* Carbon.framework */; };
 		5004B3C4133E06810098C7B4 /* VivaInternalURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */; };
@@ -156,18 +154,19 @@
 		50A241E014C5920E00949DB7 /* searchbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 50A2418B14C5920E00949DB7 /* searchbox.png */; };
 		50A241E114C5920E00949DB7 /* searchglass.png in Resources */ = {isa = PBXBuildFile; fileRef = 50A2418C14C5920E00949DB7 /* searchglass.png */; };
 		50A241E214C5920E00949DB7 /* VivaIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 50A2418D14C5920E00949DB7 /* VivaIcon.icns */; };
+		50A241E514C5AC1000949DB7 /* SPArrayExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A241E414C5AC1000949DB7 /* SPArrayExtensions.m */; };
+		50A241E814C5AC1E00949DB7 /* NSObject+Spotify.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50A241E714C5AC1E00949DB7 /* NSObject+Spotify.mm */; };
+		50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A241EA14C5AC3900949DB7 /* SPMediaKeyTap.m */; };
 		50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */; };
 		50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */; };
 		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
-		50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */ = {isa = PBXBuildFile; fileRef = 50B19FDB134A443900D428FF /* Viva TODO.taskpaper */; };
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
 		50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */; };
 		50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */; };
 		50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */; };
 		50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */; };
 		50B72AD6143768E90082E027 /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD5143768E90082E027 /* InboxViewController.m */; };
-		50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD91437742F0082E027 /* SPArrayExtensions.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
 		50C56A3613393D890072A754 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3513393D890072A754 /* ImageAndTextCell.m */; };
 		50C56A401339446E0072A754 /* VivaPlaylistExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */; };
@@ -320,10 +319,6 @@
 		50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaSortDescriptorExtensions.m; sourceTree = "<group>"; };
 		50046FFE13562440000EA08A /* VivaTrackExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackExtensions.h; sourceTree = "<group>"; };
 		50046FFF13562440000EA08A /* VivaTrackExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaTrackExtensions.m; sourceTree = "<group>"; };
-		5004701213563AD5000EA08A /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
-		5004701313563AD5000EA08A /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; };
-		5004701513563BA6000EA08A /* NSObject+Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Spotify.h"; sourceTree = "<group>"; };
-		5004701613563BA6000EA08A /* NSObject+Spotify.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Spotify.mm"; sourceTree = "<group>"; };
 		5004701813563C01000EA08A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		5004701A13563C08000EA08A /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaInternalURLManager.h; sourceTree = "<group>"; };
@@ -501,6 +496,12 @@
 		50A2418B14C5920E00949DB7 /* searchbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchbox.png; sourceTree = "<group>"; };
 		50A2418C14C5920E00949DB7 /* searchglass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchglass.png; sourceTree = "<group>"; };
 		50A2418D14C5920E00949DB7 /* VivaIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VivaIcon.icns; sourceTree = "<group>"; };
+		50A241E314C5AC1000949DB7 /* SPArrayExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPArrayExtensions.h; sourceTree = "<group>"; };
+		50A241E414C5AC1000949DB7 /* SPArrayExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPArrayExtensions.m; sourceTree = "<group>"; };
+		50A241E614C5AC1E00949DB7 /* NSObject+Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Spotify.h"; sourceTree = "<group>"; };
+		50A241E714C5AC1E00949DB7 /* NSObject+Spotify.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+Spotify.mm"; sourceTree = "<group>"; };
+		50A241E914C5AC3900949DB7 /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
+		50A241EA14C5AC3900949DB7 /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; };
 		50A857A914715EE300D49377 /* VivaPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPreferencesWindowController.h; sourceTree = "<group>"; };
 		50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPreferencesWindowController.m; sourceTree = "<group>"; };
 		50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearchViewController.h; sourceTree = "<group>"; };
@@ -508,7 +509,6 @@
 		50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSearchViewController.xib; sourceTree = "<group>"; };
 		50AE6A5A13A16AE1006F2B8C /* LiveSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearch.h; sourceTree = "<group>"; };
 		50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearch.m; sourceTree = "<group>"; };
-		50B19FDB134A443900D428FF /* Viva TODO.taskpaper */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva TODO.taskpaper"; sourceTree = SOURCE_ROOT; };
 		50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPFooterTextFieldCell.h; path = "Custom Controls/SPFooterTextFieldCell.h"; sourceTree = "<group>"; };
 		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
 		50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCircularBuffer.h; path = "cocoalibspotify/Playback Helper Classes/SPCircularBuffer.h"; sourceTree = SOURCE_ROOT; };
@@ -520,8 +520,6 @@
 		50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPLinkableItemTableCellView.xib; sourceTree = "<group>"; };
 		50B72AD4143768E90082E027 /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
 		50B72AD5143768E90082E027 /* InboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxViewController.m; sourceTree = "<group>"; };
-		50B72AD81437742F0082E027 /* SPArrayExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPArrayExtensions.h; path = "Viva/Open Source/SPArrayExtensions.h"; sourceTree = SOURCE_ROOT; };
-		50B72AD91437742F0082E027 /* SPArrayExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPArrayExtensions.m; path = "Viva/Open Source/SPArrayExtensions.m"; sourceTree = SOURCE_ROOT; };
 		50C56A3113393AA50072A754 /* SPTableCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPTableCorner.h; path = "Custom Controls/SPTableCorner.h"; sourceTree = "<group>"; };
 		50C56A3213393AA50072A754 /* SPTableCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPTableCorner.m; path = "Custom Controls/SPTableCorner.m"; sourceTree = "<group>"; };
 		50C56A3413393D890072A754 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTextCell.h; path = "Custom Controls/ImageAndTextCell.h"; sourceTree = "<group>"; };
@@ -598,17 +596,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5004701113563AD4000EA08A /* Closed Source */ = {
-			isa = PBXGroup;
-			children = (
-				5004701513563BA6000EA08A /* NSObject+Spotify.h */,
-				5004701613563BA6000EA08A /* NSObject+Spotify.mm */,
-				5004701213563AD5000EA08A /* SPMediaKeyTap.h */,
-				5004701313563AD5000EA08A /* SPMediaKeyTap.m */,
-			);
-			path = "Closed Source";
-			sourceTree = "<group>";
-		};
 		500841661350AF9200A2967E /* Playback Contexts */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,7 +765,6 @@
 		503D62DE13257D92007772CA /* Viva */ = {
 			isa = PBXGroup;
 			children = (
-				50B19FDB134A443900D428FF /* Viva TODO.taskpaper */,
 				50E3F773133FD74500FF4618 /* Constants.h */,
 				503EABFC133D81AF00C4607E /* UI */,
 				501C909B13AF72170060A20B /* Controllers */,
@@ -788,7 +774,6 @@
 				503D630413257F28007772CA /* MainMenu.xib */,
 				503D62DF13257D92007772CA /* Supporting Files */,
 				50B72AD71437741E0082E027 /* Open Source */,
-				5004701113563AD4000EA08A /* Closed Source */,
 			);
 			path = Viva;
 			sourceTree = "<group>";
@@ -830,6 +815,8 @@
 				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
 				505A929213574F6600136BBF /* VivaTrackInContainerReference.h */,
 				505A929313574F6600136BBF /* VivaTrackInContainerReference.m */,
+				50A241E914C5AC3900949DB7 /* SPMediaKeyTap.h */,
+				50A241EA14C5AC3900949DB7 /* SPMediaKeyTap.m */,
 				50D3D9D3148BB88800F6C623 /* Image View Proxies */,
 			);
 			name = Model;
@@ -1177,8 +1164,6 @@
 			children = (
 				5018CAF414717E0C00F46F83 /* EMKeychain.h */,
 				5018CAF514717E0C00F46F83 /* EMKeychain.m */,
-				50B72AD81437742F0082E027 /* SPArrayExtensions.h */,
-				50B72AD91437742F0082E027 /* SPArrayExtensions.m */,
 			);
 			name = "Open Source";
 			path = "Closed Source";
@@ -1187,6 +1172,10 @@
 		50C56A3D133944480072A754 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				50A241E614C5AC1E00949DB7 /* NSObject+Spotify.h */,
+				50A241E714C5AC1E00949DB7 /* NSObject+Spotify.mm */,
+				50A241E314C5AC1000949DB7 /* SPArrayExtensions.h */,
+				50A241E414C5AC1000949DB7 /* SPArrayExtensions.m */,
 				50C56A3E1339446E0072A754 /* VivaPlaylistExtensions.h */,
 				50C56A3F1339446E0072A754 /* VivaPlaylistExtensions.m */,
 				50046FFB1356231B000EA08A /* VivaSortDescriptorExtensions.h */,
@@ -1446,7 +1435,6 @@
 				509AAEEC133916190009B6EE /* FooterViewController.xib in Resources */,
 				50E3F76B133FC3B700FF4618 /* LoginWindow.xib in Resources */,
 				50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */,
-				50B19FDC134A443900D428FF /* Viva TODO.taskpaper in Resources */,
 				500B86B21361BC2D005FC734 /* SearchResultsViewController.xib in Resources */,
 				5099D8AB1364B175005C7CDC /* AlbumViewController.xib in Resources */,
 				5099D8C21364C002005C7CDC /* ArtistViewController.xib in Resources */,
@@ -1608,8 +1596,6 @@
 				5008416A1350AFB900A2967E /* VivaPlaybackContextViewController.m in Sources */,
 				50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */,
 				5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */,
-				5004701413563AD5000EA08A /* SPMediaKeyTap.m in Sources */,
-				5004701713563BA6000EA08A /* NSObject+Spotify.mm in Sources */,
 				505A929413574F6600136BBF /* VivaTrackInContainerReference.m in Sources */,
 				505A92A21357943A00136BBF /* SPWithAlternateImageCell.m in Sources */,
 				50D1C1941359E1D200437CCB /* VivaImageExtensions.m in Sources */,
@@ -1627,7 +1613,6 @@
 				50881239140264E30094E748 /* VisualiserWindowController.m in Sources */,
 				50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */,
 				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
-				50B72ADA1437742F0082E027 /* SPArrayExtensions.m in Sources */,
 				50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */,
 				50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */,
 				50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */,
@@ -1650,6 +1635,9 @@
 				504F8847148FB9B300271830 /* VivaSourceListRowView.m in Sources */,
 				50746CAE14B345A00026355B /* VivaEQView.m in Sources */,
 				50746CCE14B456770026355B /* EQPresetController.m in Sources */,
+				50A241E514C5AC1000949DB7 /* SPArrayExtensions.m in Sources */,
+				50A241E814C5AC1E00949DB7 /* NSObject+Spotify.mm in Sources */,
+				50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
