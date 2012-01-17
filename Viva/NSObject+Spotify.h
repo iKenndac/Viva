@@ -1,4 +1,5 @@
-// Copyright (c) 2009 Spotify AB
+
+//  For license information, see LICENSE.markdown
 
 #import <Foundation/Foundation.h>
 

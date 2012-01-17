@@ -3,7 +3,7 @@
 //  Viva
 //
 //  Created by Daniel Kennett on 4/14/11.
-//  Copyright 2011 Spotify. All rights reserved.
+//  For license information, see LICENSE.markdown
 //
 
 #import <Foundation/Foundation.h>

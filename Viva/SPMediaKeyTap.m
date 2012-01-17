@@ -1,4 +1,5 @@
-// Copyright (c) 2010 Spotify AB
+
+//  For license information, see LICENSE.markdown
 #import "SPMediaKeyTap.h"
 #import "NSObject+Spotify.h"
 #import "Constants.h"

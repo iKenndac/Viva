@@ -3,7 +3,7 @@
 //  Viva
 //
 //  Created by Daniel Kennett on 16/11/2011.
-//  Copyright (c) 2011 Spotify. All rights reserved.
+//  For license information, see LICENSE.markdown
 //
 
 #import "VivaLocalFileDecoderWorker.h"

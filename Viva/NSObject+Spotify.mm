@@ -1,4 +1,5 @@
-// Copyright (c) 2009 Spotify AB
+
+//  For license information, see LICENSE.markdown
 #import "NSObject+Spotify.h"
 #import <execinfo.h>
 

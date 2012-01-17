@@ -3,7 +3,7 @@
 //  Viva
 //
 //  Created by Daniel Kennett on 3/7/11.
-//  Copyright 2011 Spotify. All rights reserved.
+//  For license information, see LICENSE.markdown
 //
 
 #import "VivaAppDelegate.h"
@@ -74,7 +74,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
             muValue = [NSString stringWithUTF8String:argv[argIndex + 1]];
     }
     
-	#error Please put your appkey.c file in the root of the Viva project and remove this error
+	//#error Please put your appkey.c file in the root of the Viva project and remove this error
     #import "../appkey.c"
     
     NSString *userAgent = kVivaLibSpotifyUserAgentName;
