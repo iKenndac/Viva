@@ -74,7 +74,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
             muValue = [NSString stringWithUTF8String:argv[argIndex + 1]];
     }
     
-    #import "viva_appkey.c"
+    #import "../appkey.c"
     
     NSString *userAgent = kVivaLibSpotifyUserAgentName;
     if (muValue)
