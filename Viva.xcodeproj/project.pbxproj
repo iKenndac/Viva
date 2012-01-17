@@ -1285,6 +1285,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 503D62F213257D92007772CA /* Build configuration list for PBXNativeTarget "Viva" */;
 			buildPhases = (
+				50A2422E14C5B37500949DB7 /* Download Graphics If Needed */,
 				503D62D013257D92007772CA /* Sources */,
 				503D62D113257D92007772CA /* Frameworks */,
 				503D62D213257D92007772CA /* Resources */,
@@ -1566,6 +1567,20 @@
 			shellPath = /usr/bin/python;
 			shellScript = "import os\nimport shutil\nimport sys\nimport fnmatch\nimport commands\nimport base64\n\nenviron = dict(os.environ)\nbuilt_product_dir = environ.get('BUILT_PRODUCTS_DIR')\nproject_dir = environ.get('PROJECT_DIR')\ntop_srcdir = project_dir\n\nif not (os.path.exists(os.path.join(top_srcdir, \"Signing\"))):\n    print \"Signing directory missing - skipping code signing\"\n    sys.exit(0)\n\n#Code signing\n\nkeychain_file = os.path.join(top_srcdir, \"Signing\", \"VivaSigning.keychain\")\nsigningrules_file = os.path.join(top_srcdir, \"Signing\", \"ResourceRules.plist\")\napplication_dir = os.path.join(built_product_dir, \"Viva.app\")\nkeychain_password = base64.decodestring(\"Vml2YUlzQXdlc29tZQ==\") #Plaintext passwords make me nervous.\n\nunlock_command = 'security unlock-keychain -p ' + keychain_password + ' \"' + keychain_file + '\"'\nunlock_result = commands.getstatusoutput(unlock_command)\n\nif (unlock_result[0] != 0):\n    print \"Could not unlock keychain for code signing.\"\n    sys.exit(1)\n\nsign_command = 'codesign -f --keychain \"' + keychain_file + '\" -s \"Spotify Viva Self-Signed\" --resource-rules \"' + signingrules_file + '\" \"' + application_dir + '\"'\nsign_result = commands.getstatusoutput(sign_command)\n\nif (sign_result[0] != 0):\n    print \"Could not sign: \" + sign_result[1]\n    sys.exit(1)\n\nlock_command = 'security lock-keychain \"' + keychain_file + '\"'\nlock_result = commands.getstatusoutput(lock_command)\n\nif (lock_result[0] != 0):\n    print \"Could not relock keychain.\"";
 			showEnvVarsInLog = 0;
+		};
+		50A2422E14C5B37500949DB7 /* Download Graphics If Needed */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download Graphics If Needed";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/python;
+			shellScript = "import urllib\nimport zipfile\nimport os\nimport sys\nimport commands\n\ngraphicsFileName = \"Graphics.zip\"\ngraphicsRemoteLocation = \"https://github.com/downloads/iKenndac/Viva/\"\nprojectDir = os.environ.get('PROJECT_DIR')\ngraphicsDirectoryDir = os.path.join(projectDir, \"Graphics\")\ngraphicsZipDir = os.path.join(projectDir, graphicsFileName)\n\nif (os.path.exists(graphicsDirectoryDir)):\n    print \"Graphics are present, no download needed.\"\n    sys.exit(0)\n\nprint \"Graphics not present, downloading...\"\n\ntry:\n    urllib.urlretrieve(graphicsRemoteLocation + graphicsFileName, graphicsZipDir)\nexcept OSError:\n    print \"Could not download \" + graphicsRemoteLocation + graphicsFileName + \".\"\n    sys.exit(1)\n\nunzipCommand = 'unzip -q \"' + graphicsZipDir + '\"' + ' -d \"' + projectDir + '\"'\nunzipResult = commands.getstatusoutput(unzipCommand)\n\nif (unzipResult[0] != 0):\n    print \"Could not untar \" + graphicsFileName + \".\"\n    sys.exit(1)\n\ncommands.getstatusoutput('rm -rf \"' + projectDir + '/__MACOSX\"') \n\ntry:\n    os.remove(graphicsZipDir)\nexcept OSError:\n    print \"Could not remove downloaded file.\"\n\nprint \"Complete.\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
