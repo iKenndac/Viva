@@ -14,6 +14,10 @@ Viva is NOT intended to be a replacement Spotify desktop client. It's missing ma
 
 The target audience of Viva is developers - please keep that in mind. In addition, Viva **requires** a Spotify Premium account - this requirement will never change. If you wish to build Viva from source, you also need a libspotify developer key, which can be requested from here: http://developer.spotify.com/en/libspotify/overview/
 
+## Downloading ##
+
+If you'd like to download Viva without building, you'll find periodic snapshot builds in the Downloads section of the repository's home on GitHub. You don't need an appkey to use these, but you still need a Spotify Premium account.
+
 ## Building ##
 
 1. Clone Viva.
