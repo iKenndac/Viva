@@ -20,7 +20,7 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 	NSUInteger sample_rate;
 	NSUInteger channels;
 	NSUInteger bits_per_sample;
-	sp_audioformat output_format;
+	AudioStreamBasicDescription output_format;
 }
 
 @synthesize delegate;
@@ -73,12 +73,9 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 			[self performSelectorOnMainThread:@selector(endPlaybackThread) withObject:nil waitUntilDone:NO];
 			return;
 		}
-		
-		// Have metadata
-		if (startTime > 0.0) {
-			// Seek
+
+		if (startTime > 0.0)
 			FLAC__stream_decoder_seek_absolute(decoder, (FLAC__int64)sample_rate * startTime);
-		}
 
 		success = FLAC__stream_decoder_process_until_end_of_stream(decoder);
 		fprintf(stderr, "decoding: %s\n", success ? "succeeded" : "FAILED");
@@ -101,30 +98,12 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 	
 	if (self.cancelled) return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 	
-	AudioStreamBasicDescription flacInputFormat;
-    flacInputFormat.mSampleRate = self->sample_rate;
-    flacInputFormat.mFormatID = kAudioFormatLinearPCM;
-    flacInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
-    flacInputFormat.mBytesPerPacket = (UInt32)(self->channels * (self->bits_per_sample / 8));
-    flacInputFormat.mFramesPerPacket = 1;
-    flacInputFormat.mBytesPerFrame = flacInputFormat.mBytesPerPacket;
-    flacInputFormat.mChannelsPerFrame = (UInt32)self->channels;
-    flacInputFormat.mBitsPerChannel = (UInt32)self->bits_per_sample;
-    flacInputFormat.mReserved = 0;
-	
-	NSUInteger sample_size = self->bits_per_sample / 8;
 	NSUInteger total_sample_count = frame->header.blocksize * self->channels;
-	
-	int16_t interleaved_data[total_sample_count];
+	uint32_t interleaved_data[total_sample_count];	
 	
 	for(size_t i = 0; i < frame->header.blocksize; i++) {
-		
-		// TODO: Losing audio information here (decoder give us 32-bit samples)
-		int16_t leftSample = (int16_t)buffer[0][i];
-		int16_t rightSample = (int16_t)buffer[1][i];
-		
-		interleaved_data[i * 2] = leftSample;
-		interleaved_data[(i * 2) + 1] = rightSample; 
+		interleaved_data[i * 2] = buffer[0][i];
+		interleaved_data[(i * 2) + 1] = buffer[1][i]; 
 	}
 	
 	while (!self.isPlaying && !self.cancelled) {
@@ -135,7 +114,7 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 	while (!self.cancelled && ([self.delegate worker:self
 							shouldDeliverAudioFrames:(const void *)&interleaved_data
 											 ofCount:frame->header.blocksize
-											  format:flacInputFormat] == 0)) {
+											  format:self->output_format] == 0)) {
 		[NSThread sleepForTimeInterval:0.1];
 	}
 	
@@ -146,22 +125,28 @@ static void FLAC_metadata_callback(const FLAC__StreamDecoder *decoder, const FLA
 	
 	VivaFLACDecoderWorker *self = (__bridge VivaFLACDecoderWorker *)client_data;
 	
-	/* print some stats */
 	if(metadata->type == FLAC__METADATA_TYPE_STREAMINFO) {
-		/* save for later */
+		
 		self->total_samples = metadata->data.stream_info.total_samples;
 		self->sample_rate = metadata->data.stream_info.sample_rate;
 		self->channels = metadata->data.stream_info.channels;
 		self->bits_per_sample = metadata->data.stream_info.bits_per_sample;
 		
-		self->output_format.channels = (int)self->channels;
-		self->output_format.sample_rate = (int)self->sample_rate;
-		self->output_format.sample_type = SP_SAMPLETYPE_INT16_NATIVE_ENDIAN;
+		// The FLAC decoder gives us 32-bit samples even if the audio contained therein is
+		// less than 32-bit.
 		
-		fprintf(stderr, "sample rate    : %lu Hz\n", self->sample_rate);
-		fprintf(stderr, "channels       : %lu\n", self->channels);
-		fprintf(stderr, "bits per sample: %lu\n", self->bits_per_sample);
-		fprintf(stderr, "total samples  : %llu\n", self->total_samples);
+		AudioStreamBasicDescription flacFormat;
+		flacFormat.mSampleRate = self->sample_rate;
+		flacFormat.mFormatID = kAudioFormatLinearPCM;
+		flacFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian;
+		flacFormat.mBytesPerPacket = (UInt32)(self->channels * sizeof(uint32_t));
+		flacFormat.mFramesPerPacket = 1;
+		flacFormat.mBytesPerFrame = flacFormat.mBytesPerPacket;
+		flacFormat.mChannelsPerFrame = (UInt32)self->channels;
+		flacFormat.mBitsPerChannel = (UInt32)self->bits_per_sample;
+		flacFormat.mReserved = 0;
+		
+		self->output_format = flacFormat;
 	}
 }
 
