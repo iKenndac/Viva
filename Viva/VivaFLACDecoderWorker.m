@@ -7,7 +7,7 @@
 //
 
 #import "VivaFLACDecoderWorker.h"
-#import <flac/stream_decoder.h>
+#import "stream_decoder.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data);

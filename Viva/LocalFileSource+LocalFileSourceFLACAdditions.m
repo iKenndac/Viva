@@ -7,7 +7,7 @@
 //
 
 #import "LocalFileSource+LocalFileSourceFLACAdditions.h"
-#import <flac/stream_decoder.h>
+#import "stream_decoder.h"
 #import "Constants.h"
 #import "LocalFile.h"
 

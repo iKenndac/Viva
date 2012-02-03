@@ -351,6 +351,15 @@
 		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
 		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
 		501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseSidebarConfiguration.plist; sourceTree = "<group>"; };
+		502B090D14DCA90E00A7C89F /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = all.h; path = "Viva-Libs/flac/include/all.h"; sourceTree = "<group>"; };
+		502B090E14DCA90E00A7C89F /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assert.h; path = "Viva-Libs/flac/include/assert.h"; sourceTree = "<group>"; };
+		502B090F14DCA90E00A7C89F /* callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = callback.h; path = "Viva-Libs/flac/include/callback.h"; sourceTree = "<group>"; };
+		502B091014DCA90E00A7C89F /* export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = export.h; path = "Viva-Libs/flac/include/export.h"; sourceTree = "<group>"; };
+		502B091114DCA90E00A7C89F /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = "Viva-Libs/flac/include/format.h"; sourceTree = "<group>"; };
+		502B091214DCA90E00A7C89F /* metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metadata.h; path = "Viva-Libs/flac/include/metadata.h"; sourceTree = "<group>"; };
+		502B091314DCA90E00A7C89F /* ordinals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ordinals.h; path = "Viva-Libs/flac/include/ordinals.h"; sourceTree = "<group>"; };
+		502B091414DCA90E00A7C89F /* stream_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_decoder.h; path = "Viva-Libs/flac/include/stream_decoder.h"; sourceTree = "<group>"; };
+		502B091514DCA90E00A7C89F /* stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_encoder.h; path = "Viva-Libs/flac/include/stream_encoder.h"; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -720,6 +729,31 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		502B090B14DCA8F400A7C89F /* flac */ = {
+			isa = PBXGroup;
+			children = (
+				502B090C14DCA8FC00A7C89F /* include */,
+				50EC2B9414DC05E1009C5C69 /* libFLAC.a */,
+			);
+			name = flac;
+			sourceTree = "<group>";
+		};
+		502B090C14DCA8FC00A7C89F /* include */ = {
+			isa = PBXGroup;
+			children = (
+				502B090D14DCA90E00A7C89F /* all.h */,
+				502B090E14DCA90E00A7C89F /* assert.h */,
+				502B090F14DCA90E00A7C89F /* callback.h */,
+				502B091014DCA90E00A7C89F /* export.h */,
+				502B091114DCA90E00A7C89F /* format.h */,
+				502B091214DCA90E00A7C89F /* metadata.h */,
+				502B091314DCA90E00A7C89F /* ordinals.h */,
+				502B091414DCA90E00A7C89F /* stream_decoder.h */,
+				502B091514DCA90E00A7C89F /* stream_encoder.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
@@ -744,7 +778,7 @@
 		503D62D713257D92007772CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				50EC2B9414DC05E1009C5C69 /* libFLAC.a */,
+				502B090B14DCA8F400A7C89F /* flac */,
 				50439AE6148B94820059B578 /* Quartz.framework */,
 				50FC8A9C1474030800FA43DD /* AudioToolbox.framework */,
 				50FC8A881473CD6200FA43DD /* CoreMedia.framework */,
@@ -1733,7 +1767,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/cocoalibspotify/libspotify-9.1.24-Darwin-universal/\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1744,13 +1777,11 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -1758,7 +1789,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/cocoalibspotify/libspotify-9.1.24-Darwin-universal/\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1766,12 +1796,10 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
@@ -1781,14 +1809,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/Viva-Libs";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Viva-Libs/flac\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Viva-Libs\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1800,14 +1826,12 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/Viva-Libs";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Viva-Libs/flac\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Viva-Libs\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

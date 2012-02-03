@@ -44,11 +44,11 @@ static CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 	// weren't the last "media key listening" app to be active
 	EventTypeSpec eventType = { kEventClassApplication, kEventAppFrontSwitched };
     OSStatus err = InstallApplicationEventHandler(NewEventHandlerUPP(appSwitched), 1, &eventType, (__bridge void *)self, &_app_switching_ref);
-	assert(err == noErr);
+	NSAssert(err == noErr, @"Error when adding app swiched handler");
 	
 	eventType.eventKind = kEventAppTerminated;
     err = InstallApplicationEventHandler(NewEventHandlerUPP(appTerminated), 1, &eventType, (__bridge void *)self, &_app_terminating_ref);
-	assert(err == noErr);
+	NSAssert(err == noErr, @"Error when adding app terminated handler");
 }
 -(void)stopWatchingAppSwitching;
 {
@@ -67,10 +67,10 @@ static CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 								  CGEventMaskBit(NX_SYSDEFINED),
 								  tapEventCallback,
 								  (__bridge void *)(self));
-	assert(_eventPort != NULL);
+	NSAssert(_eventPort != NULL, @"Could not create CGEventTap");
 	
     _eventPortSource = CFMachPortCreateRunLoopSource(kCFAllocatorSystemDefault, _eventPort, 0);
-	assert(_eventPortSource != NULL);
+	NSAssert(_eventPort != NULL, @"Could not create CGEventTap");
 	
 	// Let's do this in a separate thread so that a slow Spotify doesn't lag the event tap
 	[NSThread detachNewThreadSelector:@selector(eventTapThread) toTarget:self withObject:nil];
@@ -165,7 +165,6 @@ static CGEventRef tapEventCallback2(CGEventTapProxy proxy, CGEventType type, CGE
 	}
 	@catch (NSException * e) {
 		NSLog(@"Strange CGEventType: %d: %@", type, e);
-		assert(0);
 		return event;
 	}
 
