@@ -14,3 +14,6 @@
 [submodule "BGHUDAppKit"]
 	path = BGHUDAppKit
 	url = git://github.com/binarygod/BGHUDAppKit.git
+[submodule "Viva-Libs"]
+	path = Viva-Libs
+	url = git://github.com/iKenndac/Viva-Libs.git
