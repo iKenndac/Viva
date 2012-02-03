@@ -188,12 +188,13 @@
 		50E3F772133FD32A00FF4618 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F771133FD32A00FF4618 /* MainWindow.xib */; };
 		50E3F779133FD95200FF4618 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E3F778133FD95200FF4618 /* Security.framework */; };
 		50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E819CE133926A3000CE44D /* SPBackgroundColorView.m */; };
+		50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EC2B6714DC0175009C5C69 /* VivaFLACDecoderWorker.m */; };
 		50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FC8A881473CD6200FA43DD /* CoreMedia.framework */; };
 		50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A941473D5A000FA43DD /* LocalFile.m */; };
 		50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A971473D5A000FA43DD /* LocalFileSource.m */; };
 		50FC8A9B1474009A00FA43DD /* VivaLocalFileDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */; };
 		50FC8A9D1474030800FA43DD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FC8A9C1474030800FA43DD /* AudioToolbox.framework */; };
-		50FC8AA014742CB100FA43DD /* VivaLocalFileDecoderWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */; };
+		50FC8AA014742CB100FA43DD /* VivaAVAssetDecoderWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A9F14742CB100FA43DD /* VivaAVAssetDecoderWorker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -558,6 +559,9 @@
 		50E3F778133FD95200FF4618 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		50E819CD133926A3000CE44D /* SPBackgroundColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPBackgroundColorView.h; path = "Custom Controls/SPBackgroundColorView.h"; sourceTree = "<group>"; };
 		50E819CE133926A3000CE44D /* SPBackgroundColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPBackgroundColorView.m; path = "Custom Controls/SPBackgroundColorView.m"; sourceTree = "<group>"; };
+		50EC2B6614DC0175009C5C69 /* VivaFLACDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaFLACDecoderWorker.h; sourceTree = "<group>"; };
+		50EC2B6714DC0175009C5C69 /* VivaFLACDecoderWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaFLACDecoderWorker.m; sourceTree = "<group>"; };
+		50EC2B8714DC0320009C5C69 /* VivaLocalFileDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoderWorker.h; sourceTree = "<group>"; };
 		50FC8A881473CD6200FA43DD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		50FC8A931473D5A000FA43DD /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
 		50FC8A941473D5A000FA43DD /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
@@ -566,8 +570,8 @@
 		50FC8A991474009A00FA43DD /* VivaLocalFileDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoder.h; sourceTree = "<group>"; };
 		50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFileDecoder.m; sourceTree = "<group>"; };
 		50FC8A9C1474030800FA43DD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		50FC8A9E14742CB000FA43DD /* VivaLocalFileDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoderWorker.h; sourceTree = "<group>"; };
-		50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalFileDecoderWorker.m; sourceTree = "<group>"; };
+		50FC8A9E14742CB000FA43DD /* VivaAVAssetDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAVAssetDecoderWorker.h; sourceTree = "<group>"; };
+		50FC8A9F14742CB100FA43DD /* VivaAVAssetDecoderWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaAVAssetDecoderWorker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -621,10 +625,7 @@
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
 				50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */,
 				50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */,
-				50FC8A991474009A00FA43DD /* VivaLocalFileDecoder.h */,
-				50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */,
-				50FC8A9E14742CB000FA43DD /* VivaLocalFileDecoderWorker.h */,
-				50FC8A9F14742CB100FA43DD /* VivaLocalFileDecoderWorker.m */,
+				50EC2B8814DC04A7009C5C69 /* Local Files */,
 			);
 			name = Playback;
 			sourceTree = "<group>";
@@ -1278,6 +1279,20 @@
 			name = "Login Window";
 			sourceTree = "<group>";
 		};
+		50EC2B8814DC04A7009C5C69 /* Local Files */ = {
+			isa = PBXGroup;
+			children = (
+				50FC8A991474009A00FA43DD /* VivaLocalFileDecoder.h */,
+				50FC8A9A1474009A00FA43DD /* VivaLocalFileDecoder.m */,
+				50EC2B8714DC0320009C5C69 /* VivaLocalFileDecoderWorker.h */,
+				50FC8A9E14742CB000FA43DD /* VivaAVAssetDecoderWorker.h */,
+				50FC8A9F14742CB100FA43DD /* VivaAVAssetDecoderWorker.m */,
+				50EC2B6614DC0175009C5C69 /* VivaFLACDecoderWorker.h */,
+				50EC2B6714DC0175009C5C69 /* VivaFLACDecoderWorker.m */,
+			);
+			name = "Local Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1641,7 +1656,7 @@
 				50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */,
 				50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */,
 				50FC8A9B1474009A00FA43DD /* VivaLocalFileDecoder.m in Sources */,
-				50FC8AA014742CB100FA43DD /* VivaLocalFileDecoderWorker.m in Sources */,
+				50FC8AA014742CB100FA43DD /* VivaAVAssetDecoderWorker.m in Sources */,
 				50DC12ED1487ABD300F030FC /* SPNowPlayingCoverView.m in Sources */,
 				50439AD8148B847D0059B578 /* LibraryViewController.m in Sources */,
 				50439AEA148B99A20059B578 /* VivaAlbumIKImageViewProxy.m in Sources */,
@@ -1653,6 +1668,7 @@
 				50A241E514C5AC1000949DB7 /* SPArrayExtensions.m in Sources */,
 				50A241E814C5AC1E00949DB7 /* NSObject+Spotify.mm in Sources */,
 				50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */,
+				50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

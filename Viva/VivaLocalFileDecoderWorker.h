@@ -2,30 +2,30 @@
 //  VivaLocalFileDecoderWorker.h
 //  Viva
 //
-//  Created by Daniel Kennett on 16/11/2011.
+//  Created by Daniel Kennett on 03/02/2012.
 //  For license information, see LICENSE.markdown
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "LocalFile.h"
 
-@class VivaLocalFileDecoderWorker;
+@protocol VivaLocalFileDecoderWorker;
 
 @protocol VivaLocalFileDecoderWorkerDelegate <NSObject>
 
--(NSUInteger)worker:(VivaLocalFileDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat;
--(void)workerDidCompleteAudioPlayback:(VivaLocalFileDecoderWorker *)worker;
+-(NSUInteger)worker:(id <VivaLocalFileDecoderWorker>)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat;
+-(void)workerDidCompleteAudioPlayback:(id <VivaLocalFileDecoderWorker>)worker;
 
 @end
 
-@interface VivaLocalFileDecoderWorker : NSObject
+@protocol VivaLocalFileDecoderWorker <NSObject>
 
 @property (nonatomic) __weak id <VivaLocalFileDecoderWorkerDelegate> delegate;
 @property (readwrite) BOOL cancelled;
 @property (readwrite, getter = isPlaying) BOOL playing;
-
--(void)decodeAsset:(AVAsset *)asset fromPosition:(NSTimeInterval)startTime;
+-(void)decodeLocalFile:(LocalFile *)file fromPosition:(NSTimeInterval)startTime;
 
 
 @end
+

@@ -6,15 +6,18 @@
 //  For license information, see LICENSE.markdown
 //
 
-#import "VivaLocalFileDecoderWorker.h"
+#import "VivaAVAssetDecoderWorker.h"
+#import <AVFoundation/AVFoundation.h>
 
-@implementation VivaLocalFileDecoderWorker
+@implementation VivaAVAssetDecoderWorker
 
 @synthesize delegate;
 @synthesize cancelled;
 @synthesize playing;
 
--(void)decodeAsset:(AVAsset *)asset fromPosition:(NSTimeInterval)startTime {
+-(void)decodeLocalFile:(LocalFile *)file fromPosition:(NSTimeInterval)startTime {
+	
+	AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:file.path]];
 	
 	[self performSelectorInBackground:@selector(decodeAssetOnThreadWithProperties:)
 						   withObject:[NSDictionary dictionaryWithObjectsAndKeys:

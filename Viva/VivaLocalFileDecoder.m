@@ -10,13 +10,14 @@
 #import <AVFoundation/AVFoundation.h>
 #import "LocalFilesController.h"
 #import "VivaTrackExtensions.h"
+#import "VivaAVAssetDecoderWorker.h"
 
 @interface VivaLocalFileDecoder ()
 
 @property (readwrite) BOOL cancelled;
 
-@property (readwrite, strong) VivaLocalFileDecoderWorker *currentWorker;
-@property (readwrite, strong) AVAsset *currentAsset;
+@property (readwrite, strong) id <VivaLocalFileDecoderWorker> currentWorker;
+@property (readwrite, strong) LocalFile *currentFile;
 
 @end
 
@@ -48,7 +49,7 @@
 @synthesize playbackDelegate;
 @synthesize cancelled;
 @synthesize currentWorker;
-@synthesize currentAsset;
+@synthesize currentFile;
 @synthesize playing;
 
 -(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error {
@@ -68,10 +69,10 @@
 	
 	[self unloadPlayback];
 	
-	self.currentAsset = [AVAsset assetWithURL:[NSURL fileURLWithPath:localFile.path]];
-	self.currentWorker = [[VivaLocalFileDecoderWorker alloc] init];
+	self.currentFile = localFile;
+	self.currentWorker = [[VivaAVAssetDecoderWorker alloc] init];
 	self.currentWorker.delegate = self;
-	[self.currentWorker decodeAsset:self.currentAsset fromPosition:0.0];
+	[self.currentWorker decodeLocalFile:self.currentFile fromPosition:0.0];
 	self.currentWorker.playing = self.isPlaying;
 	
 	return YES;
@@ -80,13 +81,13 @@
 -(void)seekPlaybackToOffset:(NSTimeInterval)offset {
 	
 	[self unloadPlayback];
-	self.currentWorker = [[VivaLocalFileDecoderWorker alloc] init];
+	self.currentWorker = [[VivaAVAssetDecoderWorker alloc] init];
 	self.currentWorker.delegate = self;
 	
 	// Fake audio delivery to get player to clear buffers.
 	[self.playbackDelegate session:self shouldDeliverAudioFrames:NULL ofCount:0 format:NULL];
 	
-	[self.currentWorker decodeAsset:self.currentAsset fromPosition:offset];
+	[self.currentWorker decodeLocalFile:self.currentFile fromPosition:offset];
 	self.currentWorker.playing = self.isPlaying;
 }
 
@@ -101,7 +102,7 @@
 #pragma mark -
 #pragma mark Delegates
 
--(NSUInteger)worker:(VivaLocalFileDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
+-(NSUInteger)worker:(VivaAVAssetDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	if (worker == self.currentWorker) {
 		return [self.playbackDelegate session:nil
 					 shouldDeliverAudioFrames:audioFrames
@@ -111,7 +112,7 @@
 	return 0;
 }
 
--(void)workerDidCompleteAudioPlayback:(VivaLocalFileDecoderWorker *)worker {
+-(void)workerDidCompleteAudioPlayback:(VivaAVAssetDecoderWorker *)worker {
 	if (worker == self.currentWorker) {
 		[self unloadPlayback];
 		[self.playbackDelegate sessionDidEndPlayback:self];
