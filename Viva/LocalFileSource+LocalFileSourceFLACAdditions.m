@@ -124,15 +124,14 @@ static void FLAC_LocalFileSource_metadata_callback(const FLAC__StreamDecoder *de
 			NSString *commentString = [NSString stringWithUTF8String:(const char *)comment.entry];
 			NSRange delimeterRange = [commentString rangeOfString:@"="];
 			
-			if (delimeterRange.location != NSNotFound) {
-				
-				NSString *commentKey = [commentString substringToIndex:delimeterRange.location];
-				NSString *commentValue = [commentString substringFromIndex:delimeterRange.location + delimeterRange.length];
-				
-				if (commentKey.length > 0 && commentValue.length > 0) {
-					[metadataDict setValue:commentValue forKey:commentKey];
-				}
-			}
+			if (delimeterRange.location == NSNotFound)
+				continue;
+			
+			NSString *commentKey = [commentString substringToIndex:delimeterRange.location];
+			NSString *commentValue = [commentString substringFromIndex:delimeterRange.location + delimeterRange.length];
+			
+			if (commentKey.length > 0 && commentValue.length > 0)
+				[metadataDict setValue:commentValue forKey:commentKey];
 		}
 	}
 }

@@ -11,6 +11,7 @@
 #import "LocalFilesController.h"
 #import "VivaTrackExtensions.h"
 #import "VivaAVAssetDecoderWorker.h"
+#import "VivaFLACDecoderWorker.h"
 
 @interface VivaLocalFileDecoder ()
 
@@ -69,8 +70,13 @@
 	
 	[self unloadPlayback];
 	
+	Class decoderClass = [VivaAVAssetDecoderWorker class];
+	if ([[localFile.path pathExtension] caseInsensitiveCompare:@"flac"] == NSOrderedSame) {
+		decoderClass = [VivaFLACDecoderWorker class];
+	}
+	
 	self.currentFile = localFile;
-	self.currentWorker = [[VivaAVAssetDecoderWorker alloc] init];
+	self.currentWorker = [[decoderClass alloc] init];
 	self.currentWorker.delegate = self;
 	[self.currentWorker decodeLocalFile:self.currentFile fromPosition:0.0];
 	self.currentWorker.playing = self.isPlaying;
@@ -80,8 +86,10 @@
 
 -(void)seekPlaybackToOffset:(NSTimeInterval)offset {
 	
+	Class replacementWorkerClass = [self.currentWorker class];
+	
 	[self unloadPlayback];
-	self.currentWorker = [[VivaAVAssetDecoderWorker alloc] init];
+	self.currentWorker = [[replacementWorkerClass alloc] init];
 	self.currentWorker.delegate = self;
 	
 	// Fake audio delivery to get player to clear buffers.
