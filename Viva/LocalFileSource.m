@@ -10,6 +10,7 @@
 #import "LocalFile.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreServices/CoreServices.h>
+#import "LocalFileSource+LocalFileSourceFLACAdditions.h"
 
 @interface LocalFileSource ()
 
@@ -17,6 +18,7 @@
 @property (readwrite) BOOL fileSystemActivityOccurredDuringScan;
 
 -(LocalFile *)parseMediaFileAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context;
+-(LocalFile *)parseMediaFileWithAVFoundationAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context;
 -(void)threadSafePerformFreshScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context;
 -(void)threadSafePerformUpdateScanOfDirectory:(NSString *)path withContext:(NSManagedObjectContext *)context;
 
@@ -36,7 +38,7 @@ static NSArray *allowedFileExtensions;
 
 +(void)initialize {
 	if (allowedFileExtensions == nil)
-		allowedFileExtensions = [NSArray arrayWithObjects:@"mp3", @"m4a", nil];
+		allowedFileExtensions = [NSArray arrayWithObjects:@"mp3", @"m4a", @"flac", nil];
 }
 
 @dynamic path;
@@ -468,6 +470,15 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 #pragma mark Scan helpers
 
 -(LocalFile *)parseMediaFileAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context {
+	
+	if ([[path pathExtension] caseInsensitiveCompare:@"flac"] == NSOrderedSame) {
+		return [self parseMediaFileWithFLACAtPath:path intoContext:context];
+	} else {
+		return [self parseMediaFileWithAVFoundationAtPath:path intoContext:context];
+	}
+}
+
+-(LocalFile *)parseMediaFileWithAVFoundationAtPath:(NSString *)path intoContext:(NSManagedObjectContext *)context {
 	
 	AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:path]];
 	

@@ -190,6 +190,7 @@
 		50E819CF133926A3000CE44D /* SPBackgroundColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50E819CE133926A3000CE44D /* SPBackgroundColorView.m */; };
 		50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EC2B6714DC0175009C5C69 /* VivaFLACDecoderWorker.m */; };
 		50EC2B9514DC05E1009C5C69 /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50EC2B9414DC05E1009C5C69 /* libFLAC.a */; };
+		50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EC2B9714DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m */; };
 		50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FC8A881473CD6200FA43DD /* CoreMedia.framework */; };
 		50FC8A951473D5A000FA43DD /* LocalFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A941473D5A000FA43DD /* LocalFile.m */; };
 		50FC8A981473D5A000FA43DD /* LocalFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FC8A971473D5A000FA43DD /* LocalFileSource.m */; };
@@ -564,6 +565,8 @@
 		50EC2B6714DC0175009C5C69 /* VivaFLACDecoderWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaFLACDecoderWorker.m; sourceTree = "<group>"; };
 		50EC2B8714DC0320009C5C69 /* VivaLocalFileDecoderWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalFileDecoderWorker.h; sourceTree = "<group>"; };
 		50EC2B9414DC05E1009C5C69 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = "Viva-Libs/flac/libFLAC.a"; sourceTree = "<group>"; };
+		50EC2B9614DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LocalFileSource+LocalFileSourceFLACAdditions.h"; sourceTree = "<group>"; };
+		50EC2B9714DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LocalFileSource+LocalFileSourceFLACAdditions.m"; sourceTree = "<group>"; };
 		50FC8A881473CD6200FA43DD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		50FC8A931473D5A000FA43DD /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
 		50FC8A941473D5A000FA43DD /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
@@ -856,6 +859,8 @@
 				50FC8A941473D5A000FA43DD /* LocalFile.m */,
 				50FC8A961473D5A000FA43DD /* LocalFileSource.h */,
 				50FC8A971473D5A000FA43DD /* LocalFileSource.m */,
+				50EC2B9614DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.h */,
+				50EC2B9714DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m */,
 			);
 			name = MOC;
 			sourceTree = "<group>";
@@ -1673,6 +1678,7 @@
 				50A241E814C5AC1E00949DB7 /* NSObject+Spotify.mm in Sources */,
 				50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */,
 				50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */,
+				50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1773,13 +1779,14 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
-				HEADER_SEARCH_PATHS = "Viva-Libs";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Viva-Libs";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Viva-Libs/flac\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Viva-Libs\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1791,13 +1798,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = $CONFIGURATION_BUILD_DIR/CocoaLibSpotify.framework/Versions/Frameworks;
 				GCC_PREFIX_HEADER = "Viva/Viva-Prefix.pch";
-				HEADER_SEARCH_PATHS = "Viva-Libs";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Viva-Libs";
 				INFOPLIST_FILE = "Viva/Viva-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Viva-Libs/flac\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Viva-Libs\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

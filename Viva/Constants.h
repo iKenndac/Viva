@@ -66,3 +66,11 @@ static NSString * const kVivaMainViewHistoryUserDefaultsKey = @"History";
 
 static NSString * const kTrackShouldBePlayedNotification = @"kTrackShouldBePlayedNotification";
 static NSString * const kPlaybackInitialTrackContainerKey = @"kPlaybackInitialTrackContainerKey";
+
+// ------ FLAC Keys ------
+
+static NSString * const kFLACMetadataAlbumKey = @"ALBUM";
+static NSString * const kFLACMetadataArtistKey = @"ARTIST";
+static NSString * const kFLACMetadataTitleKey = @"TITLE";
+static NSString * const kFLACMetadataStreamInfoSampleRateKey = @"StreamInfoSampleRate";
+
