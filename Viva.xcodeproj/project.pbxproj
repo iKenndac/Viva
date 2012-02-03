@@ -567,6 +567,7 @@
 		50EC2B9414DC05E1009C5C69 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = "Viva-Libs/flac/libFLAC.a"; sourceTree = "<group>"; };
 		50EC2B9614DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LocalFileSource+LocalFileSourceFLACAdditions.h"; sourceTree = "<group>"; };
 		50EC2B9714DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LocalFileSource+LocalFileSourceFLACAdditions.m"; sourceTree = "<group>"; };
+		50F9F65A14DC407B004D8D01 /* VivaAdvancedPlaybackDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaAdvancedPlaybackDelegate.h; sourceTree = "<group>"; };
 		50FC8A881473CD6200FA43DD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		50FC8A931473D5A000FA43DD /* LocalFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFile.h; sourceTree = "<group>"; };
 		50FC8A941473D5A000FA43DD /* LocalFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFile.m; sourceTree = "<group>"; };
@@ -879,6 +880,7 @@
 			isa = PBXGroup;
 			children = (
 				506F347513436F08002BA308 /* VivaPlaybackContext.h */,
+				50F9F65A14DC407B004D8D01 /* VivaAdvancedPlaybackDelegate.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";

@@ -101,14 +101,21 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 	
 	if (self.cancelled) return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 	
-	//const FLAC__uint32 total_size = (FLAC__uint32)(self->total_samples * self->channels * (self->bits_per_sample/8));
+	AudioStreamBasicDescription flacInputFormat;
+    flacInputFormat.mSampleRate = self->sample_rate;
+    flacInputFormat.mFormatID = kAudioFormatLinearPCM;
+    flacInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
+    flacInputFormat.mBytesPerPacket = (UInt32)(self->channels * (self->bits_per_sample / 8));
+    flacInputFormat.mFramesPerPacket = 1;
+    flacInputFormat.mBytesPerFrame = flacInputFormat.mBytesPerPacket;
+    flacInputFormat.mChannelsPerFrame = (UInt32)self->channels;
+    flacInputFormat.mBitsPerChannel = (UInt32)self->bits_per_sample;
+    flacInputFormat.mReserved = 0;
 	
-	if(self->channels != 2 || self->bits_per_sample != 16) {
-		fprintf(stderr, "ERROR: this example only supports 16bit stereo streams\n");
-		return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
-	}
+	NSUInteger sample_size = self->bits_per_sample / 8;
+	NSUInteger total_sample_count = frame->header.blocksize * self->channels;
 	
-	int16_t interleaved_data[frame->header.blocksize * self->channels];
+	int16_t interleaved_data[total_sample_count];
 	
 	for(size_t i = 0; i < frame->header.blocksize; i++) {
 		
@@ -128,7 +135,7 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 	while (!self.cancelled && ([self.delegate worker:self
 							shouldDeliverAudioFrames:(const void *)&interleaved_data
 											 ofCount:frame->header.blocksize
-											  format:(const sp_audioformat *)&self->output_format] == 0)) {
+											  format:flacInputFormat] == 0)) {
 		[NSThread sleepForTimeInterval:0.1];
 	}
 	

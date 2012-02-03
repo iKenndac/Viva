@@ -49,15 +49,21 @@
 		
 		CMAudioFormatDescriptionRef format = (__bridge CMAudioFormatDescriptionRef)[[track formatDescriptions] objectAtIndex:0];
 		const AudioStreamBasicDescription *audioFormat = CMAudioFormatDescriptionGetStreamBasicDescription(format);
-		
-		sp_audioformat outputFormat;
-		outputFormat.channels = (int)audioFormat->mChannelsPerFrame;
-		outputFormat.sample_type = SP_SAMPLETYPE_INT16_NATIVE_ENDIAN;
-		outputFormat.sample_rate = (int)audioFormat->mSampleRate;
-		
-		[reader setTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(startTime, outputFormat.sample_rate), kCMTimePositiveInfinity)];
+
+		[reader setTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(startTime, audioFormat->mSampleRate), kCMTimePositiveInfinity)];
 		[reader addOutput:readerOutput];
 		[reader startReading];
+		
+		AudioStreamBasicDescription outputAudioFormat;
+		outputAudioFormat.mSampleRate = audioFormat->mSampleRate;
+		outputAudioFormat.mFormatID = kAudioFormatLinearPCM;
+		outputAudioFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
+		outputAudioFormat.mBytesPerPacket = 2 /*channels*/ * sizeof(sint16);
+		outputAudioFormat.mFramesPerPacket = 1;
+		outputAudioFormat.mBytesPerFrame = outputAudioFormat.mBytesPerPacket;
+		outputAudioFormat.mChannelsPerFrame = 2;
+		outputAudioFormat.mBitsPerChannel = 16;
+		outputAudioFormat.mReserved = 0;
 		
 		CMSampleBufferRef sample = [readerOutput copyNextSampleBuffer];
 		
@@ -85,7 +91,7 @@
 			while ((currentOffset < totalLength) && !self.cancelled) {
 				
 				NSUInteger thisChunkLength = (totalLength - currentOffset) < chunkLength ? (totalLength - currentOffset) : chunkLength;
-				NSUInteger frameCount = thisChunkLength / (sizeof(sint16) * outputFormat.channels);
+				NSUInteger frameCount = thisChunkLength / outputAudioFormat.mBytesPerPacket;
 				
 				while (!self.isPlaying && !self.cancelled) {
 					// Don't push audio data if we're paused.
@@ -95,7 +101,7 @@
 				while (!self.cancelled && ([self.delegate worker:self
 										shouldDeliverAudioFrames:audioBuffer.mData + currentOffset
 														 ofCount:frameCount
-														  format:&outputFormat] == 0)) {
+														  format:outputAudioFormat] == 0)) {
 					[NSThread sleepForTimeInterval:0.3];
 				}
 				

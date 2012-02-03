@@ -12,6 +12,7 @@
 #import "VivaTrackExtensions.h"
 #import "VivaAVAssetDecoderWorker.h"
 #import "VivaFLACDecoderWorker.h"
+#import "VivaAdvancedPlaybackDelegate.h"
 
 @interface VivaLocalFileDecoder ()
 
@@ -110,12 +111,15 @@
 #pragma mark -
 #pragma mark Delegates
 
--(NSUInteger)worker:(VivaAVAssetDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
+-(NSUInteger)worker:(VivaAVAssetDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(AudioStreamBasicDescription)audioFormat {
 	if (worker == self.currentWorker) {
-		return [self.playbackDelegate session:nil
-					 shouldDeliverAudioFrames:audioFrames
-									  ofCount:frameCount
-									   format:audioFormat];
+		
+		id <VivaAdvancedPlaybackDelegate> advancedPlaybackDelegate = (id <VivaAdvancedPlaybackDelegate>)self.playbackDelegate;
+		
+		return [advancedPlaybackDelegate session:nil
+						shouldDeliverAudioFrames:audioFrames
+										 ofCount:frameCount
+						  audioStreamDescription:audioFormat];
 	}
 	return 0;
 }

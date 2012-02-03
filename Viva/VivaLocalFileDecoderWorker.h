@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "LocalFile.h"
+#import <CoreAudio/CoreAudio.h>
 
 @protocol VivaLocalFileDecoderWorker;
 
 @protocol VivaLocalFileDecoderWorkerDelegate <NSObject>
 
--(NSUInteger)worker:(id <VivaLocalFileDecoderWorker>)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat;
+-(NSUInteger)worker:(id <VivaLocalFileDecoderWorker>)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(AudioStreamBasicDescription)audioFormat;
 -(void)workerDidCompleteAudioPlayback:(id <VivaLocalFileDecoderWorker>)worker;
 
 @end
