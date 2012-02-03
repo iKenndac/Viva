@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VivaLocalFileDecoderWorker.h"
 
-@interface VivaFLACDecoderWorker : NSObject
+@interface VivaFLACDecoderWorker : NSObject <VivaLocalFileDecoderWorker>
 
 @end
