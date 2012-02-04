@@ -88,6 +88,10 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	FFTSetupD fft_weights;
 	double *leftChannelMagnitudes;
 	double *rightChannelMagnitudes;
+	
+	AudioStreamBasicDescription currentAudioInputDescription;
+	// Data from libSpotify only
+	AudioStreamBasicDescription libSpotifyInputFormat;
 }
 
 - (id)initWithPlaybackSession:(SPSession *)aSession {
@@ -104,6 +108,12 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		incrementTrackPositionInvocation = [NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature];
 		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
 		[incrementTrackPositionInvocation setTarget:self];
+
+		libSpotifyInputFormat.mFormatID = kAudioFormatLinearPCM;
+		libSpotifyInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
+		libSpotifyInputFormat.mFramesPerPacket = 1;
+		libSpotifyInputFormat.mBitsPerChannel = 16;
+		libSpotifyInputFormat.mReserved = 0;
 		
 		self.volume = 1.0;
 		
@@ -684,17 +694,13 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		return 0; // Audio discontinuity!
 	}
 	
-	// Data from libSpotify only. Convert the libSpotify audio format struct to a AudioStreamBasicDescription and pass through
-	AudioStreamBasicDescription libSpotifyInputFormat;
-    libSpotifyInputFormat.mSampleRate = (float)audioFormat->sample_rate;
-    libSpotifyInputFormat.mFormatID = kAudioFormatLinearPCM;
-    libSpotifyInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
-    libSpotifyInputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
-    libSpotifyInputFormat.mFramesPerPacket = 1;
-    libSpotifyInputFormat.mBytesPerFrame = libSpotifyInputFormat.mBytesPerPacket;
-    libSpotifyInputFormat.mChannelsPerFrame = audioFormat->channels;
-    libSpotifyInputFormat.mBitsPerChannel = 16;
-    libSpotifyInputFormat.mReserved = 0;
+	if (audioFormat->sample_rate != (float)libSpotifyInputFormat.mSampleRate || audioFormat->channels != libSpotifyInputFormat.mChannelsPerFrame) {
+		// Update the libSpotify audio description to match the current data
+		libSpotifyInputFormat.mSampleRate = (float)audioFormat->sample_rate;
+		libSpotifyInputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
+		libSpotifyInputFormat.mBytesPerFrame = libSpotifyInputFormat.mBytesPerPacket;
+		libSpotifyInputFormat.mChannelsPerFrame = audioFormat->channels;
+	}
 	
 	return [self session:session shouldDeliverAudioFrames:audioFrames ofCount:frameCount audioStreamDescription:libSpotifyInputFormat];
 }
@@ -706,6 +712,17 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		return 0; // Audio discontinuity!
 	}
     
+	if (audioFormat.mBitsPerChannel != currentAudioInputDescription.mBitsPerChannel ||
+		audioFormat.mBytesPerFrame != currentAudioInputDescription.mBytesPerFrame ||
+		audioFormat.mChannelsPerFrame != currentAudioInputDescription.mChannelsPerFrame ||
+		audioFormat.mFormatFlags != currentAudioInputDescription.mFormatFlags ||
+		audioFormat.mFormatID != currentAudioInputDescription.mFormatID ||
+		audioFormat.mSampleRate != currentAudioInputDescription.mSampleRate) {
+		// New format. Panic!!
+		[self.audioBuffer clear];
+		[self teardownCoreAudio];
+	}
+	
     if (audioProcessingGraph == NULL) {
         NSError *error = nil;
         if (![self setupCoreAudioWithInputFormat:audioFormat error:&error]) {
@@ -947,6 +964,8 @@ static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDesc
 	
 	//CAShow(audioProcessingGraph);
     
+	currentAudioInputDescription = inputFormat;
+	
     [self startAudioQueue];
     [self applyVolumeToAudioUnit:self.volume];
     [self applyBandsToAudioUnit];
