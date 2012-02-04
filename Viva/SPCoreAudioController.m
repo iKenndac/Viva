@@ -12,6 +12,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "SPCircularBuffer.h"
 #import "Constants.h"
+#import "SPSession+AudioStatistics.h"
 
 @interface SPCoreAudioController ()
 
@@ -182,6 +183,20 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
             return 0;
         }
+		
+		// While we're at it, update the statistics if the audio is coming from an SPSession.
+		if ([aSession isKindOfClass:[SPSession class]]) {
+			
+			NSDictionary *stats = [NSDictionary dictionaryWithObjectsAndKeys:
+								   @"libSpotify OGG", kDecoderStatsNameKey,
+								   [NSNumber numberWithDouble:audioDescription.mSampleRate], kDecoderStatsSampleRateKey,
+								   [NSNumber numberWithInt:audioDescription.mBitsPerChannel], kDecoderStatsBitsPerChannelKey, 
+								   nil];
+			
+			[(SPSession *)aSession performSelectorOnMainThread:@selector(setDecoderStatistics:)
+													withObject:stats
+												 waitUntilDone:NO];
+		}
     }
 	
 	AudioStreamBasicDescription currentAudioInputDescription = self.inputAudioDescription;
@@ -195,6 +210,22 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		// New format. Panic!! I mean, calmly tell Core Audio that a new audio format is incoming.
 		[self clearAudioBuffers];
 		[self applyAudioStreamDescriptionToInputUnit:audioDescription];
+		
+		// While we're at it, update the statistics if the audio is coming from an SPSession.
+		if ([aSession isKindOfClass:[SPSession class]]) {
+			
+			NSDictionary *stats = [NSDictionary dictionaryWithObjectsAndKeys:
+								   @"libSpotify OGG", kDecoderStatsNameKey,
+								   [NSNumber numberWithDouble:audioDescription.mSampleRate], kDecoderStatsSampleRateKey,
+								   [NSNumber numberWithInt:audioDescription.mBitsPerChannel], kDecoderStatsBitsPerChannelKey, 
+								   nil];
+			
+			[(SPSession *)aSession performSelectorOnMainThread:@selector(setDecoderStatistics:)
+													withObject:stats
+												 waitUntilDone:NO];
+		}
+
+
 	}
 	
 	NSUInteger dataLength = frameCount * audioDescription.mBytesPerPacket;
@@ -260,6 +291,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
     } else {
 		self.inputAudioDescription = newInputDescription;
+		[self clearAudioBuffers];
 		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:(newInputDescription.mBytesPerFrame * newInputDescription.mSampleRate) * kTargetBufferLength];
 	}
 }

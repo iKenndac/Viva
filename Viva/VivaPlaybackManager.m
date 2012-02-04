@@ -180,7 +180,6 @@
 	[self.currentPlaybackProvider unloadPlayback];
 	[self resetShuffledPool];
 	[self.audioController clearAudioBuffers];
-	self.audioController.audioOutputEnabled = NO;
     
 	if (![[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
         id <VivaPlaybackContext> context = nil;
@@ -248,6 +247,9 @@
 		
 		self.currentTrackContainer = newTrack;
 		self.audioController.audioOutputEnabled = YES;
+	} else {
+		self.audioController.audioOutputEnabled = NO;
+		[self.audioController clearAudioBuffers];
 	}
 	
     return isPlaying;
@@ -318,7 +320,6 @@
 		[self.currentPlaybackProvider setPlaying:NO];
 		[self.currentPlaybackProvider unloadPlayback];
 		[self.audioController clearAudioBuffers];
-		self.audioController.audioOutputEnabled = NO;
 	}
 	
 	id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
@@ -331,8 +332,8 @@
 		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self.audioController clearAudioBuffers];
 		self.audioController.audioOutputEnabled = NO;
+		[self.audioController clearAudioBuffers];
 		self.currentTrackPosition = 0;
         if (error)
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -399,7 +400,6 @@
 		[self.currentPlaybackProvider setPlaying:NO];
 		[self.currentPlaybackProvider unloadPlayback];
 		[self.audioController clearAudioBuffers];
-		self.audioController.audioOutputEnabled = NO;
 	}
 	
 	id <VivaTrackContainer> previousContainer = [self previousTrackContainerInCurrentContext];
@@ -412,8 +412,8 @@
 		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self.audioController clearAudioBuffers];
 		self.audioController.audioOutputEnabled = NO;
+		[self.audioController clearAudioBuffers];
 		self.currentTrackPosition = 0;
         if (error)
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -609,9 +609,6 @@
 	[self removeObserver:self forKeyPath:@"playbackContext"];
     [self removeObserver:self forKeyPath:@"loopPlayback"];
     [self removeObserver:self forKeyPath:@"shufflePlayback"];
-	
-	[self.audioController clearAudioBuffers];
-	self.audioController.audioOutputEnabled = NO;
 }
 
 @end
