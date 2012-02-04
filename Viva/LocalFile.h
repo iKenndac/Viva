@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @class LocalFileSource;
 
@@ -19,5 +20,7 @@
 @property (nonatomic, retain) NSString * path;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) LocalFileSource *source;
+
+@property (nonatomic, readonly, strong) SPTrack *track;
 
 @end
