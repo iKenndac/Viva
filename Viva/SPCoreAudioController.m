@@ -174,10 +174,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		audioDescription.mFormatFlags != currentAudioInputDescription.mFormatFlags ||
 		audioDescription.mFormatID != currentAudioInputDescription.mFormatID ||
 		audioDescription.mSampleRate != currentAudioInputDescription.mSampleRate) {
-		// New format. Panic!!
+		// New format. Panic!! I mean, calmly tell Core Audio that a new audio format is incoming.
 		[self clearAudioBuffers];
 		[self applyAudioStreamDescriptionToInputUnit:audioDescription];
-		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Reset audio format");
 	}
 	
 	NSUInteger dataLength = frameCount * audioDescription.mBytesPerPacket;
@@ -243,6 +242,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
     } else {
 		self.inputAudioDescription = newInputDescription;
+		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:(newInputDescription.mBytesPerFrame * newInputDescription.mSampleRate) * kTargetBufferLength];
 	}
 }
 
@@ -298,9 +298,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if (audioProcessingGraph != NULL)
         [self teardownCoreAudio];
 	
-	[self clearAudioBuffers];
-	self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:(inputFormat.mBytesPerFrame * inputFormat.mSampleRate) * kTargetBufferLength];
-    
     // A description of the output device we're looking for.
     AudioComponentDescription outputDescription;
     outputDescription.componentType = kAudioUnitType_Output;
