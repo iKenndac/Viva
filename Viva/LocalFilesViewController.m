@@ -42,12 +42,6 @@ static void * const kLocalFilesViewControllerInternalKVOContext = @"blah";
 	[self removeObserver:self forKeyPath:@"allTracksArrayController.arrangedObjects"];
 }
 
--(void)awakeFromNib {
-	[super awakeFromNib];
-	[self willChangeValueForKey:@"allTracksArrayController"];
-	[self didChangeValueForKey:@"allTracksArrayController"];
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == kLocalFilesViewControllerInternalKVOContext) {
         [self rebuildTrackContainers];
@@ -61,7 +55,6 @@ static void * const kLocalFilesViewControllerInternalKVOContext = @"blah";
 }
 
 -(void)rebuildTrackContainers {
-	NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"rebuilding");
 	
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.allTracksArrayController.arrangedObjects count]];
 	

@@ -53,8 +53,6 @@ static void FLAC_LocalFileSource_error_callback(const FLAC__StreamDecoder *decod
 	}
 	
 	// Have metadata!
-	NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), metadata);
-	
 	NSString *title = [metadata valueForKey:kFLACMetadataTitleKey];
 	NSString *artist = [metadata valueForKey:kFLACMetadataArtistKey];
 	NSString *album = [metadata valueForKey:kFLACMetadataAlbumKey];
