@@ -20,6 +20,8 @@
 -(void)teardownCoreAudio;
 -(void)startAudioQueue;
 -(void)stopAudioQueue;
+-(void)disableEQAudioUnit;
+-(void)enableEQAudioUnit;
 -(void)applyBandsToEqAudioUnit:(EQPreset *)newBands;
 -(void)applyVolumeToOutputAudioUnit:(double)vol;
 -(void)applyAudioStreamDescriptionToInputUnit:(AudioStreamBasicDescription)newInputDescription;
@@ -53,6 +55,10 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	AudioUnit outputUnit;
 	AudioUnit eqUnit;
 	AudioUnit inputConverterUnit;
+	
+	AUNode outputNode;
+	AUNode inputConverterNode;
+	AUNode eqNode;
     
 	// vDSP
 	FFTSetupD fft_weights;
@@ -85,6 +91,11 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		
 		EQPresetController *eqController = [EQPresetController sharedInstance];
 		
+		[self addObserver:self forKeyPath:@"eqPreset" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"volume" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"audioOutputEnabled" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"eqEnabled" options:0 context:nil];
+		
 		for (EQPreset *preset in [[[eqController.builtInPresets
 									arrayByAddingObjectsFromArray:eqController.customPresets]
 								   arrayByAddingObject:eqController.blankPreset]
@@ -94,10 +105,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 				break;
 			}
 		}
-
-		[self addObserver:self forKeyPath:@"eqPreset" options:0 context:nil];
-		[self addObserver:self forKeyPath:@"volume" options:0 context:nil];
-		[self addObserver:self forKeyPath:@"audioOutputEnabled" options:0 context:nil];
 	}
 	return self;
 }
@@ -107,6 +114,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	[self removeObserver:self forKeyPath:@"eqPreset"];
 	[self removeObserver:self forKeyPath:@"volume"];
 	[self removeObserver:self forKeyPath:@"audioOutputEnabled"];
+	[self removeObserver:self forKeyPath:@"eqEnabled"];
 	
 	[self clearAudioBuffers];
 	self.audioOutputEnabled = NO;
@@ -122,10 +130,20 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     if ([keyPath isEqualToString:@"eqPreset"]) {
         [[NSUserDefaults standardUserDefaults] setValue:self.eqPreset.name
 												 forKey:kCurrentEQPresetNameUserDefaultsKey];
+		
 		[self applyBandsToEqAudioUnit:self.eqPreset];
+		self.eqEnabled = ![self.eqPreset isEqual:[EQPresetController sharedInstance].blankPreset];
+		
     } else if ([keyPath isEqualToString:@"volume"]) {
 		[self applyVolumeToOutputAudioUnit:self.volume];
 		
+	} else if ([keyPath isEqualToString:@"eqEnabled"]) {
+		
+		if (self.eqEnabled)
+			[self enableEQAudioUnit];
+		else
+			[self disableEQAudioUnit];
+
 	} else if ([keyPath isEqualToString:@"audioOutputEnabled"]) {
 		if (self.audioOutputEnabled)
 			[self startAudioQueue];
@@ -246,6 +264,112 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	}
 }
 
+-(void)enableEQAudioUnit {
+	
+	if (audioProcessingGraph == NULL || eqUnit != NULL) return;
+	
+	// A description for the EQ Device
+	AudioComponentDescription eqDescription;
+	eqDescription.componentType = kAudioUnitType_Effect;
+	eqDescription.componentSubType = kAudioUnitSubType_GraphicEQ;
+	eqDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+	eqDescription.componentFlags = 0;
+    eqDescription.componentFlagsMask = 0;
+	
+	OSStatus status = AUGraphAddNode(audioProcessingGraph, &eqDescription, &eqNode);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't add EQ node");
+		return;
+    }
+	
+	status = AUGraphNodeInfo(audioProcessingGraph, eqNode, NULL, &eqUnit);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't get EQ unit");
+        return;
+    }
+	
+	// Init the EQ
+	status = AudioUnitInitialize(eqUnit);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't init EQ!");
+        return;
+    }
+	
+	// Set EQ to 10-band
+	status = AudioUnitSetParameter(eqUnit, 10000, kAudioUnitScope_Global, 0, 0.0, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't set EQ parameter");
+        return;
+    }
+	
+	// Disconnect Converter from output
+	AUGraphDisconnectNodeInput(audioProcessingGraph, outputNode, 0);
+	
+	// Connect converter to EQ
+	status = AUGraphConnectNodeInput(audioProcessingGraph, inputConverterNode, 0, eqNode, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't connect converter to eq");
+        return;
+    }
+	
+	// Connect EQ node to output
+	status = AUGraphConnectNodeInput(audioProcessingGraph, eqNode, 0, outputNode, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't connect eq to output");
+        return;
+    }
+	
+	status = AUGraphUpdate(audioProcessingGraph, NULL);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't update graph");
+        return;
+    }
+	
+    [self applyBandsToEqAudioUnit:self.eqPreset];
+}
+
+-(void)disableEQAudioUnit {
+	
+	if (audioProcessingGraph == NULL || eqUnit == NULL) return;
+
+	// Disconnect converter from EQ
+	OSErr status = AUGraphDisconnectNodeInput(audioProcessingGraph, eqNode, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't disconnect EQ input");
+        return;
+    }
+	
+	// Disconnect EQ from output
+	status = AUGraphDisconnectNodeInput(audioProcessingGraph, outputNode, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't disconnect output input");
+        return;
+    }
+	
+	status = AUGraphRemoveNode(audioProcessingGraph, eqNode);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't remove EQ node");
+        return;
+    }
+	
+	AudioUnitUninitialize(eqUnit);
+	eqUnit = NULL;
+	eqNode = 0;
+	
+	// Connect converter to output
+	status = AUGraphConnectNodeInput(audioProcessingGraph, inputConverterNode, 0, outputNode, 0);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't connect converter to output");
+        return;
+    }
+	
+	status = AUGraphUpdate(audioProcessingGraph, NULL);
+	if (status != noErr) {
+        NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Couldn't update graph");
+        return;
+    }
+}
+
 #pragma mark -
 #pragma mark Queue Control
 
@@ -306,14 +430,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     outputDescription.componentFlags = 0;
     outputDescription.componentFlagsMask = 0;
 	
-	// A description for the EQ Device
-	AudioComponentDescription eqDescription;
-	eqDescription.componentType = kAudioUnitType_Effect;
-	eqDescription.componentSubType = kAudioUnitSubType_GraphicEQ;
-	eqDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-	eqDescription.componentFlags = 0;
-    eqDescription.componentFlagsMask = 0;
-	
 	// A description for the libspotify -> standard PCM device
 	AudioComponentDescription converterDescription;
 	converterDescription.componentType = kAudioUnitType_FormatConverter;
@@ -337,7 +453,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     }
 	
 	// Add audio output...
-	AUNode outputNode;
 	status = AUGraphAddNode(audioProcessingGraph, &outputDescription, &outputNode);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't add output node", status);
@@ -351,43 +466,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         return NO;
     }
 	
-	// Create EQ!
-	AUNode eqNode;
-	status = AUGraphAddNode(audioProcessingGraph, &eqDescription, &eqNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add eq node", status);
-        return NO;
-    }
-	
-	status = AUGraphNodeInfo(audioProcessingGraph, eqNode, NULL, &eqUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get eq unit", status);
-        return NO;
-    }
-	
-	// Set EQ to 10-band
-	AudioUnitSetParameter(eqUnit, 10000, kAudioUnitScope_Global, 0, 0.0, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't set eq node parameter", status);
-        return NO;
-    }
-	
-	// Connect EQ node to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, eqNode, 0, outputNode, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't connect nodes", status);
-        return NO;
-    }
-	
 	// Create PCM converter
-	AUNode converterNode;
-	status = AUGraphAddNode(audioProcessingGraph, &converterDescription, &converterNode);
+	status = AUGraphAddNode(audioProcessingGraph, &converterDescription, &inputConverterNode);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't add converter node", status);
         return NO;
     }
 	
-	status = AUGraphNodeInfo(audioProcessingGraph, converterNode, NULL, &inputConverterUnit);
+	status = AUGraphNodeInfo(audioProcessingGraph, inputConverterNode, NULL, &inputConverterUnit);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't get input unit", status);
         return NO;
@@ -398,17 +484,16 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
 	rcbs.inputProcRefCon = (__bridge void *)(self);
 	
-	status = AUGraphSetNodeInputCallback(audioProcessingGraph, converterNode, 0, &rcbs);
+	status = AUGraphSetNodeInputCallback(audioProcessingGraph, inputConverterNode, 0, &rcbs);
 	if (status != noErr) {
         fillWithError(err, @"Couldn't add render callback", status);
         return NO;
     }
 	
-	// Connect converter to EQ
-	// Connect EQ node to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, converterNode, 0, eqNode, 0);
+	// Connect converter to output
+	status = AUGraphConnectNodeInput(audioProcessingGraph, inputConverterNode, 0, outputNode, 0);
 	if (status != noErr) {
-        fillWithError(err, @"Couldn't connect converter->eq", status);
+        fillWithError(err, @"Couldn't connect converter to output", status);
         return NO;
     }
 	
@@ -421,12 +506,13 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	
 	AUGraphUpdate(audioProcessingGraph, NULL);
 	
-	//CAShow(audioProcessingGraph);
-	
+	// Apply properties and let's get going!
     [self startAudioQueue];
 	[self applyAudioStreamDescriptionToInputUnit:inputFormat];
     [self applyVolumeToOutputAudioUnit:self.volume];
-    [self applyBandsToEqAudioUnit:self.eqPreset];
+	
+	if (self.eqEnabled)
+		[self enableEQAudioUnit];
 	
     return YES;
 }
