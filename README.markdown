@@ -20,8 +20,8 @@ If you'd like to download Viva without building, you'll find periodic snapshot b
 
 ## Building ##
 
-1. Clone Viva.
-2. Run `git submodule update --init` in the Viva directory. If I get tickets about it not building and you haven't run this, you lose 5 internet points.
+1. Clone Viva using `git clone --recursive git://github.com/iKenndac/Viva.git` to make sure you get all the submodules too.
+2. If you got excited and cloned the repo before reading this, run `git submodule update --init` in the Viva directory to grab the submodules. If I get tickets about it not building and you haven't got the submodules checked out, you lose 5 internet points!
 3. Supply an appkey.c file (see above).
 4. Build away!
 
