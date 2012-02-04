@@ -17,8 +17,8 @@
 @interface VivaTrackInContainerReference ()
 
 @property (copy, readwrite) NSString *uniqueId;
-@property (assign, readwrite) __weak SPTrack *track;
-@property (assign, readwrite) __weak SPPlaylist *container;
+@property (readwrite, weak) SPTrack *track;
+@property (readwrite, weak) SPPlaylist *container;
 
 @end
 
@@ -44,7 +44,7 @@
 
 
 -(id)copyWithZone:(NSZone *)zone {
-    return [[[self class] alloc] initWithTrack:track inContainer:container existingId:uniqueId];
+    return [[[self class] alloc] initWithTrack:self.track inContainer:self.container existingId:self.uniqueId];
 }
 
 @synthesize track;

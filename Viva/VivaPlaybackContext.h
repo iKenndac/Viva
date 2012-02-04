@@ -11,7 +11,7 @@
 
 @protocol VivaTrackContainer <NSObject>
 
-@property (readonly) __weak SPTrack *track;
+@property (readonly, weak) SPTrack *track;
 
 @end
 

@@ -55,6 +55,8 @@
 		50746CD014B4601A0026355B /* BuiltInEQPresets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */; };
 		50746D0B14B4B7FC0026355B /* BGHUDAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */; };
 		50746D0E14B4B8260026355B /* BGHUDAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */; };
+		50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */; };
+		50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
@@ -402,6 +404,9 @@
 		50746CCD14B456770026355B /* EQPresetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQPresetController.m; sourceTree = "<group>"; };
 		50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BuiltInEQPresets.plist; sourceTree = "<group>"; };
 		50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BGHUDAppKit.xcodeproj; path = BGHUDAppKit/BGHUDAppKit.xcodeproj; sourceTree = "<group>"; };
+		50788FB714DD470C0029E2D9 /* LocalFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFilesViewController.h; sourceTree = "<group>"; };
+		50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFilesViewController.m; sourceTree = "<group>"; };
+		50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalFilesViewController.xib; sourceTree = "<group>"; };
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -622,6 +627,7 @@
 				500841671350AFB900A2967E /* VivaPlaybackContextViewController.h */,
 				500841681350AFB900A2967E /* VivaPlaybackContextViewController.m */,
 				500B86A613616A05005FC734 /* Generic Sortable Track List */,
+				50788FB614DD46320029E2D9 /* Local Files View */,
 				50C7B3DC132E39700055EDE0 /* Playlist View */,
 				50CCCD4E13DF1BC100DDB85C /* Starred View */,
 				50B72AD3143768B60082E027 /* Inbox View */,
@@ -925,6 +931,16 @@
 				50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		50788FB614DD46320029E2D9 /* Local Files View */ = {
+			isa = PBXGroup;
+			children = (
+				50788FB714DD470C0029E2D9 /* LocalFilesViewController.h */,
+				50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */,
+				50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */,
+			);
+			name = "Local Files View";
 			sourceTree = "<group>";
 		};
 		5088AB54140D2863009C9FF8 /* Products */ = {
@@ -1593,6 +1609,7 @@
 				50A241E014C5920E00949DB7 /* searchbox.png in Resources */,
 				50A241E114C5920E00949DB7 /* searchglass.png in Resources */,
 				50A241E214C5920E00949DB7 /* VivaIcon.icns in Resources */,
+				50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1715,6 +1732,7 @@
 				50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */,
 				50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */,
 				50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */,
+				50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
