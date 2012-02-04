@@ -16,12 +16,12 @@
     if (self) {
         // Initialization code here.
 		[NSApp addObserver:self
-				forKeyPath:@"delegate.playbackManager.leftLevels"
+				forKeyPath:@"delegate.playbackManager.audioController.leftLevels"
 				   options:NSKeyValueObservingOptionNew
 				   context:nil];
 		
 		[NSApp addObserver:self
-				forKeyPath:@"delegate.playbackManager.rightLevels"
+				forKeyPath:@"delegate.playbackManager.audioController.rightLevels"
 				   options:NSKeyValueObservingOptionNew
 				   context:nil];
 	}
@@ -84,7 +84,7 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"delegate.playbackManager.leftLevels"]) {
+    if ([keyPath isEqualToString:@"delegate.playbackManager.audioController.leftLevels"]) {
         
 		if ([change valueForKey:NSKeyValueChangeNewKey] == [NSNull null])
 			return;
@@ -110,7 +110,7 @@
 			self.leftValue16 = [levels objectAtIndex:15];
 		}
 		
-    } else if ([keyPath isEqualToString:@"delegate.playbackManager.rightLevels"]) {
+    } else if ([keyPath isEqualToString:@"delegate.playbackManager.audioController.rightLevels"]) {
         
 		if ([change valueForKey:NSKeyValueChangeNewKey] == [NSNull null])
 			return;
@@ -144,8 +144,8 @@
 -(void)dealloc {
 
 	
-	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.leftLevels"];
-	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.rightLevels"];
+	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.audioController.leftLevels"];
+	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.audioController.rightLevels"];
 	
 }
 

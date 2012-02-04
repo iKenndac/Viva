@@ -15,6 +15,7 @@
 #import <AudioUnit/AudioUnit.h>
 #import "EQPresetController.h"
 #import "VivaAdvancedPlaybackDelegate.h"
+#import "SPCoreAudioController.h"
 
 @class VivaPlaybackManager;
 
@@ -30,38 +31,31 @@
 
 @end
 
-@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate, VivaAdvancedPlaybackDelegate>
+@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate, VivaAdvancedPlaybackDelegate, SPCoreAudioControllerDelegate>
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
 
-@property (readonly, strong) id <VivaPlaybackContext> playbackContext;
-@property (readwrite) NSTimeInterval currentTrackPosition;
-@property (readonly, strong) SPTrack *currentTrack;
-@property (readonly, strong) id <VivaTrackContainer> currentTrackContainer;
-@property (readonly, strong) SPSession *session;
-@property (readonly, strong) id <SPSessionPlaybackProvider> currentPlaybackProvider;
-@property (readwrite) double volume;
-@property (readwrite) BOOL loopPlayback;
-@property (readwrite) BOOL shufflePlayback;
+@property (readonly, strong, nonatomic) SPCoreAudioController *audioController;
+@property (readonly, strong, nonatomic) id <VivaPlaybackContext> playbackContext;
+@property (readwrite, nonatomic) NSTimeInterval currentTrackPosition;
+@property (readonly, strong, nonatomic) SPTrack *currentTrack;
+@property (readonly, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
+@property (readonly, strong, nonatomic) SPSession *session;
+@property (readonly, strong, nonatomic) id <SPSessionPlaybackProvider> currentPlaybackProvider;
+@property (readwrite, nonatomic) BOOL loopPlayback;
+@property (readwrite, nonatomic) BOOL shufflePlayback;
 
 -(NSString *)playPauseToggleMenuText;
 
-@property (readonly) BOOL canSkipToNextTrack;
-@property (readonly) BOOL canSkipToPreviousTrack;
+@property (readonly, nonatomic) BOOL canSkipToNextTrack;
+@property (readonly, nonatomic) BOOL canSkipToPreviousTrack;
 
-@property (readwrite, assign) __unsafe_unretained id <VivaPlaybackManagerDataSource> dataSource;
+@property (readwrite, assign, nonatomic) __unsafe_unretained id <VivaPlaybackManagerDataSource> dataSource;
 @property (readwrite, nonatomic, assign) __unsafe_unretained id <VivaPlaybackManagerDelegate> delegate;
-
-@property (readonly, strong) NSArray *leftLevels;
-@property (readonly, strong) NSArray *rightLevels;
 
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition;
 
 -(void)skipToNextTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
 -(void)skipToPreviousTrackInCurrentContext:(BOOL)clearExistingAudioBuffers;
-
-// EQ
-
-@property (readwrite, nonatomic, strong) EQPreset *eqBands;
 
 @end

@@ -34,7 +34,7 @@
 		[EQPresetController sharedInstance];
 		
 		[self addObserver:self 
-			   forKeyPath:@"playbackManager.eqBands" options:0
+			   forKeyPath:@"playbackManager.audioController.eqPreset" options:0
 				  context:nil];
 		
 		[self addObserver:self
@@ -78,17 +78,17 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"playbackManager.eqBands"]) {
+	if ([keyPath isEqualToString:@"playbackManager.audioController.eqPreset"]) {
 		
 		[self removeObserver:self forKeyPath:@"eqView.currentEQSettings"];
-		self.eqView.currentEQSettings = self.playbackManager.eqBands;
+		self.eqView.currentEQSettings = self.playbackManager.audioController.eqPreset;
 		[self addObserver:self forKeyPath:@"eqView.currentEQSettings" options:0 context:nil];
 		
 		[self ensureEqMenuSelectionMatchesCurrentEq];
 		
 	} else if ([keyPath isEqualToString:@"eqView.currentEQSettings"]) {
 		
-		self.playbackManager.eqBands = self.eqView.currentEQSettings;
+		self.playbackManager.audioController.eqPreset = self.eqView.currentEQSettings;
 		
 	} else if ([keyPath isEqualToString:@"customPresets"]) {
 		
@@ -404,7 +404,7 @@
 - (void)dealloc {
 	
 	[[EQPresetController sharedInstance] removeObserver:self forKeyPath:@"customPresets"];
-    [self removeObserver:self forKeyPath:@"playbackManager.eqBands"];
+    [self removeObserver:self forKeyPath:@"playbackManager.audioController.eqPreset"];
 	[self removeObserver:self forKeyPath:@"eqView.currentEQSettings"];
     [self removeObserver:self forKeyPath:@"playbackManager.currentTrack.starred"];
     [self removeObserver:self forKeyPath:@"playbackManager.currentPlaybackProvider.playing"];

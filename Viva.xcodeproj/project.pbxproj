@@ -58,6 +58,7 @@
 		50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */; };
 		50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */; };
 		50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */; };
+		50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
@@ -411,6 +412,8 @@
 		50788FD014DD911A0029E2D9 /* VivaPlaybackProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackProvider.h; sourceTree = "<group>"; };
 		50788FD114DD97590029E2D9 /* SPSession+AudioStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPSession+AudioStatistics.h"; sourceTree = "<group>"; };
 		50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPSession+AudioStatistics.m"; sourceTree = "<group>"; };
+		50788FD414DDA67B0029E2D9 /* SPCoreAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCoreAudioController.h; sourceTree = "<group>"; };
+		50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCoreAudioController.m; sourceTree = "<group>"; };
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -651,6 +654,8 @@
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
 				50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */,
 				50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */,
+				50788FD414DDA67B0029E2D9 /* SPCoreAudioController.h */,
+				50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */,
 				50EC2B8814DC04A7009C5C69 /* Local Files */,
 			);
 			name = Playback;
@@ -1741,6 +1746,7 @@
 				50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */,
 				50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */,
 				50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */,
+				50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

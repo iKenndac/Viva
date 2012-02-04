@@ -50,6 +50,7 @@
 }
 
 @synthesize playbackDelegate;
+@synthesize audioDeliveryDelegate;
 @synthesize cancelled;
 @synthesize currentWorker;
 @synthesize currentFile;
@@ -106,7 +107,9 @@
 	self.currentWorker.delegate = self;
 	
 	// Fake audio delivery to get player to clear buffers.
-	[self.playbackDelegate session:self shouldDeliverAudioFrames:NULL ofCount:0 format:NULL];
+	AudioStreamBasicDescription blank;
+	memset(&blank, 0, sizeof(blank));
+	[self.audioDeliveryDelegate session:self shouldDeliverAudioFrames:NULL ofCount:0 streamDescription:blank];
 	
 	[self.currentWorker decodeLocalFile:self.currentFile fromPosition:offset];
 	self.currentWorker.playing = self.isPlaying;
@@ -126,12 +129,10 @@
 -(NSUInteger)worker:(VivaAVAssetDecoderWorker *)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(AudioStreamBasicDescription)audioFormat {
 	if (worker == self.currentWorker) {
 		
-		id <VivaAdvancedPlaybackDelegate> advancedPlaybackDelegate = (id <VivaAdvancedPlaybackDelegate>)self.playbackDelegate;
-		
-		return [advancedPlaybackDelegate session:nil
-						shouldDeliverAudioFrames:audioFrames
-										 ofCount:frameCount
-						  audioStreamDescription:audioFormat];
+		return [self.audioDeliveryDelegate session:self
+						  shouldDeliverAudioFrames:audioFrames
+										   ofCount:frameCount
+								 streamDescription:audioFormat];
 	}
 	return 0;
 }

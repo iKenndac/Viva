@@ -224,11 +224,11 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 }
 
 -(IBAction)performVolumeUpAction:(id)sender {
-	self.playbackManager.volume = MIN(1.0, self.playbackManager.volume + kVolumeStepSize);
+	self.playbackManager.audioController.volume = MIN(1.0, self.playbackManager.audioController.volume + kVolumeStepSize);
 }
 
 -(IBAction)performVolumeDownAction:(id)sender {
-	self.playbackManager.volume = MAX(0.0, self.playbackManager.volume - kVolumeStepSize);
+	self.playbackManager.audioController.volume = MAX(0.0, self.playbackManager.audioController.volume - kVolumeStepSize);
 }
 
 #pragma mark -

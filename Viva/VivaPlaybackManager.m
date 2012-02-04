@@ -18,12 +18,13 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (strong, readwrite) SPCircularBuffer *audioBuffer;
-@property (strong, readwrite) id <VivaPlaybackContext> playbackContext;
-@property (readwrite, strong) id <VivaTrackContainer> currentTrackContainer;
-@property (readwrite, strong) SPSession *session;
-@property (readwrite, strong) VivaLocalFileDecoder *localFileDecoder;
-@property (readwrite, strong) id <SPSessionPlaybackProvider> currentPlaybackProvider;
+@property (readwrite, strong, nonatomic) SPCoreAudioController *audioController;
+@property (strong, readwrite, nonatomic) id <VivaPlaybackContext> playbackContext;
+@property (readwrite, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
+@property (readwrite, strong, nonatomic) SPSession *session;
+@property (readwrite, strong, nonatomic) VivaLocalFileDecoder *localFileDecoder;
+@property (readwrite, strong, nonatomic) id <SPSessionPlaybackProvider> currentPlaybackProvider;
+
 
 -(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error;
 
@@ -43,33 +44,7 @@
 
 -(void)scrobbleTrackStopped:(SPTrack *)track atPosition:(NSTimeInterval)position;
 
-// Core Audio
--(BOOL)setupCoreAudioWithInputFormat:(AudioStreamBasicDescription)inputFormat error:(NSError **)err;
--(NSInteger)session:(id <SPSessionPlaybackProvider>)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount audioStreamDescription:(AudioStreamBasicDescription)audioFormat;
--(void)teardownCoreAudio;
--(void)startAudioQueue;
--(void)stopAudioQueue;
--(void)applyVolumeToAudioUnit:(double)vol;
--(void)applyBandsToAudioUnit;
-
-static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
-                                                    AudioUnitRenderActionFlags *ioActionFlags,
-                                                    const AudioTimeStamp *inTimeStamp,
-                                                    UInt32 inBusNumber,
-                                                    UInt32 inNumberFrames,
-                                                    AudioBufferList *ioData);
-
-//vDSP 
-
-static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManager *manager, short *waveformArray, vDSP_Length sampleCount, double *leftDestination, double *rightDestination);
-@property (readwrite, strong) NSArray *leftLevels;
-@property (readwrite, strong) NSArray *rightLevels;
-
 @end
-
-#define kMaximumBytesInBuffer 44100 * 2 * 2 * 0.5 // 0.5 Second @ 44.1kHz, 16bit per channel, stereo
-
-static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 @implementation VivaPlaybackManager {
 	
@@ -81,16 +56,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     NSMutableArray *shufflePastHistory;
     NSMutableArray *shuffleFutureHistory;
     
-    AUGraph audioProcessingGraph;
-	AudioUnit outputUnit;
-	AudioUnit eqUnit;
-    
-	// vDSP
-	FFTSetupD fft_weights;
-	double *leftChannelMagnitudes;
-	double *rightChannelMagnitudes;
-	
-	AudioStreamBasicDescription currentAudioInputDescription;
 	// Data from libSpotify only
 	AudioStreamBasicDescription libSpotifyInputFormat;
 }
@@ -104,42 +69,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         shufflePastHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
         shuffleFutureHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
 		
-		SEL incrementTrackPositionSelector = @selector(incrementTrackPositionWithFrameCount:);
-		incrementTrackPositionMethodSignature = [VivaPlaybackManager instanceMethodSignatureForSelector:incrementTrackPositionSelector];
-		incrementTrackPositionInvocation = [NSInvocation invocationWithMethodSignature:incrementTrackPositionMethodSignature];
-		[incrementTrackPositionInvocation setSelector:incrementTrackPositionSelector];
-		[incrementTrackPositionInvocation setTarget:self];
-
-		libSpotifyInputFormat.mFormatID = kAudioFormatLinearPCM;
-		libSpotifyInputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked | kAudioFormatFlagsNativeEndian;
-		libSpotifyInputFormat.mFramesPerPacket = 1;
-		libSpotifyInputFormat.mBitsPerChannel = 16;
-		libSpotifyInputFormat.mReserved = 0;
-		
-		self.volume = 1.0;
+		self.audioController = [[SPCoreAudioController alloc] init];
+		self.audioController.delegate = self;
 		
 		self.session = aSession;
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
 		self.localFileDecoder.playbackDelegate = self;
 		
-		EQPresetController *eqController = [EQPresetController sharedInstance];
-		
-		for (EQPreset *preset in [[[eqController.builtInPresets
-								   arrayByAddingObjectsFromArray:eqController.customPresets]
-								  arrayByAddingObject:eqController.blankPreset]
-								  arrayByAddingObject:eqController.unnamedCustomPreset]) {
-			if ([preset.name isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:kCurrentEQPresetNameUserDefaultsKey]]) {
-				self.eqBands = preset;
-				break;
-			}
-		}
-		
-		if (self.eqBands == nil)
-			self.eqBands = eqController.blankPreset;
-		
-		self.audioBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:kMaximumBytesInBuffer];
-        
         self.loopPlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kLoopPlaybackDefaultsKey];
         self.shufflePlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kShufflePlaybackDefaultsKey];
         		
@@ -162,12 +99,7 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 			   forKeyPath:@"playbackContext"
 				  options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
 				  context:nil];
-        
-        [self addObserver:self
-               forKeyPath:@"volume"
-                  options:0
-                  context:nil];
-        
+		
         [self addObserver:self
                forKeyPath:@"loopPlayback"
                   options:0
@@ -177,47 +109,28 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
                forKeyPath:@"shufflePlayback"
                   options:0
                   context:nil];
-		
-		[self addObserver:self
-               forKeyPath:@"eqBands"
-                  options:0
-                  context:nil];
 
 		// Playback
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playTrackFromUserAction:)
 													 name:kTrackShouldBePlayedNotification
 												   object:nil];
-
-		/* Setup FFT weights (twiddle factors) */
-		fft_weights = vDSP_create_fftsetupD(fftMagnitudeExponent, kFFTRadix2);
-		
-        leftChannelMagnitudes = (double *)malloc(exp2(fftMagnitudeExponent) * sizeof(double));
-        rightChannelMagnitudes = (double *)malloc(exp2(fftMagnitudeExponent) * sizeof(double));
-
-		
     }
     
     return self;
 }
 
-@synthesize audioBuffer;
+@synthesize audioController;
 @synthesize playbackContext;
 @synthesize currentTrackContainer;
 @synthesize session;
 @synthesize currentPlaybackProvider;
 @synthesize currentTrackPosition;
-@synthesize volume;
 @synthesize loopPlayback;
 @synthesize shufflePlayback;
 @synthesize dataSource;
 @synthesize localFileDecoder;
 @synthesize delegate;
-
-@synthesize leftLevels;
-@synthesize rightLevels;
-
-@synthesize eqBands;
 
 +(NSSet *)keyPathsForValuesAffectingCurrentTrack {
 	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
@@ -265,9 +178,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	self.currentPlaybackProvider.playing = NO;
     self.currentTrackContainer = nil;
 	[self.currentPlaybackProvider unloadPlayback];
-	[self teardownCoreAudio];
 	[self resetShuffledPool];
-	[self.audioBuffer clear];
+	[self.audioController clearAudioBuffers];
+	self.audioController.audioOutputEnabled = NO;
     
 	if (![[aNotification object] conformsToProtocol:@protocol(VivaPlaybackContext)]) {
         id <VivaPlaybackContext> context = nil;
@@ -295,7 +208,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
             }
         }
     }
-        
     
     NSError *error = nil;
     if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
@@ -316,7 +228,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 -(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error {
 	
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
-    self.currentTrackPosition = 0.0;    
+    self.currentTrackPosition = 0.0;
+	
+	self.currentPlaybackProvider.audioDeliveryDelegate = nil;
     
 	if (newTrack.track.localFile != nil) {
 		self.currentPlaybackProvider = self.localFileDecoder;
@@ -324,13 +238,17 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.currentPlaybackProvider = self.session;
 	}
 	
+	self.currentPlaybackProvider.audioDeliveryDelegate = self.audioController;
+	
 	BOOL isPlaying = [self.currentPlaybackProvider playTrack:newTrack.track error:error];
     
-    if (isPlaying && self.shufflePlayback) {
-        [self addTrackContainerToShufflePool:currentTrackContainer];
-    }
-    
-    if (isPlaying) self.currentTrackContainer = newTrack;
+	if (isPlaying) {
+		if (self.shufflePlayback)
+			[self addTrackContainerToShufflePool:currentTrackContainer];
+		
+		self.currentTrackContainer = newTrack;
+		self.audioController.audioOutputEnabled = YES;
+	}
 	
     return isPlaying;
 }
@@ -399,9 +317,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (clearExistingAudioBuffers) {
 		[self.currentPlaybackProvider setPlaying:NO];
 		[self.currentPlaybackProvider unloadPlayback];
-		[self teardownCoreAudio];
-		
-		[self.audioBuffer clear];
+		[self.audioController clearAudioBuffers];
+		self.audioController.audioOutputEnabled = NO;
 	}
 	
 	id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
@@ -414,7 +331,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self teardownCoreAudio];
+		[self.audioController clearAudioBuffers];
+		self.audioController.audioOutputEnabled = NO;
 		self.currentTrackPosition = 0;
         if (error)
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -480,9 +398,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	if (clearExistingAudioBuffers) {
 		[self.currentPlaybackProvider setPlaying:NO];
 		[self.currentPlaybackProvider unloadPlayback];
-		[self teardownCoreAudio];
-		
-		[self.audioBuffer clear];
+		[self.audioController clearAudioBuffers];
+		self.audioController.audioOutputEnabled = NO;
 	}
 	
 	id <VivaTrackContainer> previousContainer = [self previousTrackContainerInCurrentContext];
@@ -495,7 +412,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		self.currentPlaybackProvider.playing = wasPlaying;
 	} else {
 		self.currentTrackContainer = nil;
-		[self teardownCoreAudio];
+		[self.audioController clearAudioBuffers];
+		self.audioController.audioOutputEnabled = NO;
 		self.currentTrackPosition = 0;
         if (error)
             NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
@@ -605,20 +523,18 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 	[self skipToNextTrackInCurrentContext:NO];
 }
 
+#pragma mark -
+#pragma mark Delegates and KVO
+
+-(void)coreAudioController:(SPCoreAudioController *)controller didOutputAudioOfDuration:(NSTimeInterval)audioDuration {
+	self.currentTrackPosition += audioDuration;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"eqBands"]) {
-		[self applyBandsToAudioUnit];
-		[[NSUserDefaults standardUserDefaults] setValue:self.eqBands.name
-												 forKey:kCurrentEQPresetNameUserDefaultsKey];
-		
-	} else if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
+	if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
         
-        if (self.currentPlaybackProvider.playing) {
-            [self startAudioQueue];
-        } else {
-            [self stopAudioQueue];
-        }
+		self.audioController.audioOutputEnabled = self.currentPlaybackProvider.playing;
 		
 		if (self.currentTrackContainer != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey]) {
 			if (self.currentPlaybackProvider.playing)
@@ -667,9 +583,6 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 			}
 		}
         
-    } else if ([keyPath isEqualToString:@"volume"]) {
-        [self applyVolumeToAudioUnit:self.volume];
-        
     } else if ([keyPath isEqualToString:@"loopPlayback"]) {
         [[NSUserDefaults standardUserDefaults] setBool:self.loopPlayback forKey:kLoopPlaybackDefaultsKey];
         
@@ -686,462 +599,19 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
     }
 }
 
-#pragma mark Audio Processing
-
--(NSInteger)session:(id <SPSessionPlaybackProvider>)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
-	
-	// This should only be called by CocoaLibSpotify - other decoders should use
-	// -session:shouldDeliverAudioFrames:ofCount:audioStreamDescription: instead.
-	
-	if (frameCount == 0) {
-		[self.audioBuffer clear];
-		return 0; // Audio discontinuity!
-	}
-	
-	if (audioFormat->sample_rate != (float)libSpotifyInputFormat.mSampleRate || audioFormat->channels != libSpotifyInputFormat.mChannelsPerFrame) {
-		// Update the libSpotify audio description to match the current data
-		libSpotifyInputFormat.mSampleRate = (float)audioFormat->sample_rate;
-		libSpotifyInputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
-		libSpotifyInputFormat.mBytesPerFrame = libSpotifyInputFormat.mBytesPerPacket;
-		libSpotifyInputFormat.mChannelsPerFrame = audioFormat->channels;
-		
-		if ([aSession isKindOfClass:[SPSession class]]) {
-			((SPSession *)aSession).decoderStatistics = [NSDictionary dictionaryWithObjectsAndKeys:
-														 @"libspotify OGG", kDecoderStatsNameKey,
-														 [NSNumber numberWithDouble:libSpotifyInputFormat.mSampleRate], kDecoderStatsSampleRateKey,
-														 [NSNumber numberWithInt:libSpotifyInputFormat.mBitsPerChannel], kDecoderStatsBitsPerChannelKey, 
-														 nil];
-		}
-	}
-	
-	return [self session:session shouldDeliverAudioFrames:audioFrames ofCount:frameCount audioStreamDescription:libSpotifyInputFormat];
-}
-
--(NSInteger)session:(id <SPSessionPlaybackProvider>)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount audioStreamDescription:(AudioStreamBasicDescription)audioFormat {
-		
-	if (frameCount == 0) {
-		[self.audioBuffer clear];
-		return 0; // Audio discontinuity!
-	}
-    
-	if (audioFormat.mBitsPerChannel != currentAudioInputDescription.mBitsPerChannel ||
-		audioFormat.mBytesPerFrame != currentAudioInputDescription.mBytesPerFrame ||
-		audioFormat.mChannelsPerFrame != currentAudioInputDescription.mChannelsPerFrame ||
-		audioFormat.mFormatFlags != currentAudioInputDescription.mFormatFlags ||
-		audioFormat.mFormatID != currentAudioInputDescription.mFormatID ||
-		audioFormat.mSampleRate != currentAudioInputDescription.mSampleRate) {
-		// New format. Panic!!
-		[self.audioBuffer clear];
-		[self teardownCoreAudio];
-	}
-	
-    if (audioProcessingGraph == NULL) {
-        NSError *error = nil;
-        if (![self setupCoreAudioWithInputFormat:audioFormat error:&error]) {
-            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
-            return 0;
-        }
-    }
-	
-	NSUInteger dataLength = frameCount * audioFormat.mBytesPerPacket;
-	
-	if ((self.audioBuffer.maximumLength - self.audioBuffer.length) < dataLength) {
-		// Only allow whole deliveries in, since libSpotify wants us to consume whole frames, whereas
-		// the buffer works in bytes, meaning we could consume a fraction of a frame.
-		return 0;
-	}
-	
-	[self.audioBuffer attemptAppendData:audioFrames ofLength:dataLength];
-	return frameCount;	
-}
-
-#pragma mark -
-#pragma mark Core Audio
-
--(void)applyBandsToAudioUnit {
-	AudioUnitSetParameter(eqUnit, 0, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band1, 0);
-	AudioUnitSetParameter(eqUnit, 1, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band2, 0);
-	AudioUnitSetParameter(eqUnit, 2, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band3, 0);
-	AudioUnitSetParameter(eqUnit, 3, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band4, 0);
-	AudioUnitSetParameter(eqUnit, 4, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band5, 0);
-	AudioUnitSetParameter(eqUnit, 5, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band6, 0);
-	AudioUnitSetParameter(eqUnit, 6, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band7, 0);
-	AudioUnitSetParameter(eqUnit, 7, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band8, 0);
-	AudioUnitSetParameter(eqUnit, 8, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band9, 0);
-	AudioUnitSetParameter(eqUnit, 9, kAudioUnitScope_Global, 0, (Float32)self.eqBands.band10, 0);
-}
-         
--(void)applyVolumeToAudioUnit:(double)vol {
-    
-    if (audioProcessingGraph == NULL || outputUnit == NULL)
-        return;
-	
-    AudioUnitSetParameter(outputUnit,
-                          kHALOutputParam_Volume,
-                          kAudioUnitScope_Output,
-                          0,
-                          (vol * vol * vol),
-                          0);
-}
-
--(void)startAudioQueue {
-    if (audioProcessingGraph == NULL)
-        return;
-    
-    AUGraphStart(audioProcessingGraph);
-}
-
--(void)stopAudioQueue {
-    if (audioProcessingGraph == NULL)
-        return;
-    
-	// Sometimes, because Core Audio is such a young, untested API, AUGraphStop… doesn't.
-	Boolean isRunning = NO;
-	AUGraphIsRunning(audioProcessingGraph, &isRunning);
-	
-	for (NSUInteger i = 0; i < 3 && isRunning; i++) {
-		AUGraphStop(audioProcessingGraph);
-		AUGraphIsRunning(audioProcessingGraph, &isRunning);
-	}
-}
-
--(void)teardownCoreAudio {
-    if (audioProcessingGraph == NULL)
-        return;
-    
-    [self stopAudioQueue];
-	
-    AUGraphStop(audioProcessingGraph);
-	AUGraphUninitialize(audioProcessingGraph);
-	DisposeAUGraph(audioProcessingGraph);
-	
-	audioProcessingGraph = NULL;
-	outputUnit = NULL;
-	eqUnit = NULL;
-}
-
-static inline void fillWithError(NSError **mayBeAnError, NSString *localizedDescription, int code) {
-    
-    if (mayBeAnError == NULL)
-        return;
-    
-    *mayBeAnError = [NSError errorWithDomain:@"com.vivaplaybackmanager.coreaudio"
-                                        code:code
-                                    userInfo:localizedDescription ? [NSDictionary dictionaryWithObject:localizedDescription
-                                                                                                forKey:NSLocalizedDescriptionKey]
-                                            : nil];
-    
-}
-
--(BOOL)setupCoreAudioWithInputFormat:(AudioStreamBasicDescription)inputFormat error:(NSError **)err {
-    
-    if (audioProcessingGraph != NULL)
-        [self teardownCoreAudio];
-    
-    // A description of the output device we're looking for.
-    AudioComponentDescription outputDescription;
-    outputDescription.componentType = kAudioUnitType_Output;
-    outputDescription.componentSubType = kAudioUnitSubType_DefaultOutput;
-    outputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-    outputDescription.componentFlags = 0;
-    outputDescription.componentFlagsMask = 0;
-	
-	// A description for the EQ Device
-	AudioComponentDescription eqDescription;
-	eqDescription.componentType = kAudioUnitType_Effect;
-	eqDescription.componentSubType = kAudioUnitSubType_GraphicEQ;
-	eqDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-	eqDescription.componentFlags = 0;
-    eqDescription.componentFlagsMask = 0;
-
-	// A description for the libspotify -> standard PCM device
-	AudioComponentDescription converterDescription;
-	converterDescription.componentType = kAudioUnitType_FormatConverter;
-	converterDescription.componentSubType = kAudioUnitSubType_AUConverter;
-	converterDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
-	converterDescription.componentFlags = 0;
-	converterDescription.componentFlagsMask = 0;	
-    
-	// Create an AUGraph
-	OSErr status = NewAUGraph(&audioProcessingGraph);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't init graph", status);
-        return NO;
-    }
-	
-	// Open the graph. AudioUnits are open but not initialized (no resource allocation occurs here)
-	AUGraphOpen(audioProcessingGraph);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't open graph", status);
-        return NO;
-    }
-
-	// Add audio output...
-	AUNode outputNode;
-	status = AUGraphAddNode(audioProcessingGraph, &outputDescription, &outputNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add output node", status);
-        return NO;
-    }
-	
-	// Get output unit so we can change volume etc
-	status = AUGraphNodeInfo(audioProcessingGraph, outputNode, NULL, &outputUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get output unit", status);
-        return NO;
-    }
-	
-	// Create EQ!
-	AUNode eqNode;
-	status = AUGraphAddNode(audioProcessingGraph, &eqDescription, &eqNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add eq node", status);
-        return NO;
-    }
-	
-	status = AUGraphNodeInfo(audioProcessingGraph, eqNode, NULL, &eqUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get eq unit", status);
-        return NO;
-    }
-	
-	// Set EQ to 10-band
-	AudioUnitSetParameter(eqUnit, 10000, kAudioUnitScope_Global, 0, 0.0, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't set eq node parameter", status);
-        return NO;
-    }
-	
-	// Connect EQ node to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, eqNode, 0, outputNode, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't connect nodes", status);
-        return NO;
-    }
-	
-	// Create PCM converter
-	AUNode converterNode;
-	status = AUGraphAddNode(audioProcessingGraph, &converterDescription, &converterNode);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add converter node", status);
-        return NO;
-    }
-	
-	// Set stream format from libspotify format
-	AudioUnit converterUnit;
-	status = AUGraphNodeInfo(audioProcessingGraph, converterNode, NULL, &converterUnit);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't get converter unit", status);
-        return NO;
-    }
-	
-	status = AudioUnitSetProperty(converterUnit,
-								  kAudioUnitProperty_StreamFormat,
-								  kAudioUnitScope_Input,
-								  0,
-								  &inputFormat,
-								  sizeof(inputFormat));
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't set input format", status);
-        return NO;
-    }
-
-	// Set render callback
-	AURenderCallbackStruct rcbs;
-	rcbs.inputProc = VivaAudioUnitRenderDelegateCallback;
-	rcbs.inputProcRefCon = (__bridge void *)(self);
-	
-	status = AUGraphSetNodeInputCallback(audioProcessingGraph, converterNode, 0, &rcbs);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't add render callback", status);
-        return NO;
-    }
-	
-	// Connect converter to EQ
-	// Connect EQ node to output
-	status = AUGraphConnectNodeInput(audioProcessingGraph, converterNode, 0, eqNode, 0);
-	if (status != noErr) {
-        fillWithError(err, @"Couldn't connect converter->eq", status);
-        return NO;
-    }
-	
-	// Init Queue
-	status = AUGraphInitialize(audioProcessingGraph);
-	if (status != noErr) {
-		fillWithError(err, @"Couldn't initialize graph", status);
-        return NO;
-	}
-	
-	AUGraphUpdate(audioProcessingGraph, NULL);
-	
-	//CAShow(audioProcessingGraph);
-    
-	currentAudioInputDescription = inputFormat;
-	
-    [self startAudioQueue];
-    [self applyVolumeToAudioUnit:self.volume];
-    [self applyBandsToAudioUnit];
-	
-    return YES;
-}
-
-static UInt32 framesSinceLastTimeUpdate = 0;
-static UInt32 framesSinceLastFFTUpdate = 0;
-
-static OSStatus VivaAudioUnitRenderDelegateCallback(void *inRefCon,
-                                                    AudioUnitRenderActionFlags *ioActionFlags,
-                                                    const AudioTimeStamp *inTimeStamp,
-                                                    UInt32 inBusNumber,
-                                                    UInt32 inNumberFrames,
-                                                    AudioBufferList *ioData) {
-	
-    VivaPlaybackManager *self = (__bridge VivaPlaybackManager *)inRefCon;
-	
-	AudioBuffer *buffer = &(ioData->mBuffers[0]);
-	UInt32 bytesRequired = buffer->mDataByteSize;
-
-	NSUInteger availableData = [self->audioBuffer length];
-	if (availableData < bytesRequired) {
-		buffer->mDataByteSize = 0;
-		*ioActionFlags |= kAudioUnitRenderAction_OutputIsSilence;
-		return noErr;
-    }
-    
-    buffer->mDataByteSize = (UInt32)[self->audioBuffer readDataOfLength:bytesRequired intoAllocatedBuffer:&buffer->mData];
-    
-	framesSinceLastTimeUpdate += inNumberFrames;
-    framesSinceLastFFTUpdate += inNumberFrames;
-	
-	if (framesSinceLastTimeUpdate >= 8820) {
-        // Update 5 times per second
-		[self->incrementTrackPositionInvocation setArgument:&framesSinceLastTimeUpdate atIndex:2];
-		[self->incrementTrackPositionInvocation performSelectorOnMainThread:@selector(invoke)
-                                                                 withObject:nil
-                                                              waitUntilDone:NO];
-		framesSinceLastTimeUpdate = 0;
-	}
-    
-    if (framesSinceLastFFTUpdate >= 2205) {
-        short *frames = buffer->mData;
-        performAcceleratedFastFourierTransformWithWaveform(self, frames, inNumberFrames, self->leftChannelMagnitudes, self->rightChannelMagnitudes);
-        
-        [self performSelectorOnMainThread:@selector(updateLevels)
-                               withObject:nil
-                            waitUntilDone:NO];
-        
-		framesSinceLastFFTUpdate = 0;
-    }
-    
-    return noErr;
-}
-
--(void)incrementTrackPositionWithFrameCount:(UInt32)framesToAppend {
-    self.currentTrackPosition = self.currentTrackPosition + (double)framesToAppend/44100.0;
-}
-
--(void)updateLevels {
-    
-	NSMutableArray *leftArray = [[NSMutableArray alloc] initWithCapacity:exp2(fftMagnitudeExponent)];
-	NSMutableArray *rightArray = [[NSMutableArray alloc] initWithCapacity:exp2(fftMagnitudeExponent)];
-	
-	for (int currentLevel = 0; currentLevel < exp2(fftMagnitudeExponent); currentLevel++) {
-        
-        double left = leftChannelMagnitudes[currentLevel] / 10.0;
-        double right = rightChannelMagnitudes[currentLevel] / 10.0;
-        left = cbrt(MIN(1.0, MAX(0.0, left)));
-        right = cbrt(MIN(1.0, MAX(0.0, right)));
-        
-        [leftArray addObject:[NSNumber numberWithDouble:left]];
-        [rightArray addObject:[NSNumber numberWithDouble:right]];
-    }
-	
-	self.leftLevels = leftArray;
-    self.rightLevels = rightArray;
-	
-
-}
-
-#pragma mark -
-#pragma mark Fourier Transforms
-
-static double *leftInputRealBuffer = NULL;
-static double *leftInputImagBuffer = NULL;
-static double *rightInputRealBuffer = NULL;
-static double *rightInputImagBuffer = NULL;
-
-static vDSP_Length fftSetupForSampleCount = 0;
-
-static void performAcceleratedFastFourierTransformWithWaveform(VivaPlaybackManager *manager, short *frames, vDSP_Length frameCount, double *leftDestination, double *rightDestination) {
-	if (leftDestination == NULL || rightDestination == NULL || frames == NULL || frameCount == 0)
-		return;
-
-    FFTSetupD fft_weights = manager->fft_weights;
-    
-    if (frameCount != fftSetupForSampleCount) {
-        /* Allocate memory to store split-complex input and output data */
-        
-        if (leftInputRealBuffer != NULL) free(leftInputRealBuffer);
-        if (leftInputImagBuffer != NULL) free(leftInputImagBuffer);
-        
-        leftInputRealBuffer = (double *)malloc(frameCount * sizeof(double));
-        leftInputImagBuffer = (double *)malloc(frameCount * sizeof(double));
-        
-        if (rightInputRealBuffer != NULL) free(rightInputRealBuffer);
-        if (rightInputImagBuffer != NULL) free(rightInputImagBuffer);
-        
-        rightInputRealBuffer = (double *)malloc(frameCount * sizeof(double));
-        rightInputImagBuffer = (double *)malloc(frameCount * sizeof(double));
-        
-        fftSetupForSampleCount = frameCount;
-    }
-    
-    memset(leftInputRealBuffer, 0, frameCount * sizeof(double));
-    memset(rightInputRealBuffer, 0, frameCount * sizeof(double));
-    memset(leftInputImagBuffer, 0, frameCount * sizeof(double));
-    memset(rightInputImagBuffer, 0, frameCount * sizeof(double));
-    
-    DSPDoubleSplitComplex leftInput = {leftInputRealBuffer, leftInputImagBuffer};
-    DSPDoubleSplitComplex rightInput = {rightInputRealBuffer, rightInputImagBuffer};
-    
-    // Left
-    for (int i = 0; i < frameCount; i++) {
-        leftInput.realp[i] = ((double)frames[i * 2]) / INT16_MAX;
-        rightInput.realp[i] = ((double)frames[(i * 2) + 1]) / INT16_MAX;
-    }
-    
-    /* 1D in-place complex FFT */
-    vDSP_fft_zipD(fft_weights, &leftInput, 1, fftMagnitudeExponent, FFT_FORWARD);
-    // Get magnitudes
-    vDSP_zvmagsD(&leftInput, 1, leftDestination, 1, exp2(fftMagnitudeExponent));
-    
-    /* 1D in-place complex FFT */
-    vDSP_fft_zipD(fft_weights, &rightInput, 1, fftMagnitudeExponent, FFT_FORWARD);
-    // Get magnitudes
-    vDSP_zvmagsD(&rightInput, 1, rightDestination, 1, exp2(fftMagnitudeExponent));   
-}
-
 #pragma mark -
 
 -(void)dealloc {
 
-	[self removeObserver:self forKeyPath:@"eqBands"];
     [self removeObserver:self forKeyPath:@"currentPlaybackProvider.playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];
-    [self removeObserver:self forKeyPath:@"volume"];
     [self removeObserver:self forKeyPath:@"loopPlayback"];
     [self removeObserver:self forKeyPath:@"shufflePlayback"];
 	
-	[self.audioBuffer clear];
-	[self teardownCoreAudio];
-	
-	// vDSP
-	vDSP_destroy_fftsetupD(fft_weights);
-	free(leftChannelMagnitudes);
-	free(rightChannelMagnitudes);
-	
-
+	[self.audioController clearAudioBuffers];
+	self.audioController.audioOutputEnabled = NO;
 }
 
 @end
