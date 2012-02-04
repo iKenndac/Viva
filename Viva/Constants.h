@@ -20,8 +20,13 @@ static NSTimeInterval const kNextTrackCacheThreshold = 5.0;
 static NSTimeInterval const kSeekABitInterval = 1.0;
 static double const kVolumeStepSize = 0.1;
 static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKeyUsingBundleIdentifiersDefaultsKey";
+static NSString * const kShowPlaybackStatisticsUserDefaultsKey = @"ShowPlaybackStats";
 static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
 static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
+
+static NSString * const kDecoderStatsNameKey = @"DecoderName";
+static NSString * const kDecoderStatsSampleRateKey = @"DecoderSampleRate";
+static NSString * const kDecoderStatsBitsPerChannelKey = @"DecoderBitsPerChannel";
 
 static NSString * const kVivaPlaybackManagerErrorDomain = @"com.spotify.viva.playback";
 static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;

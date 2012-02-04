@@ -15,6 +15,10 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 static void FLAC_metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
 
+@interface VivaFLACDecoderWorker ()
+@property (readwrite, strong) NSDictionary *decoderStatistics;
+@end
+
 @implementation VivaFLACDecoderWorker {
 	FLAC__uint64 total_samples;
 	NSUInteger sample_rate;
@@ -27,6 +31,7 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 @synthesize delegate;
 @synthesize cancelled;
 @synthesize playing;
+@synthesize decoderStatistics;
 
 -(void)decodeLocalFile:(LocalFile *)file fromPosition:(NSTimeInterval)startTime {
 	
@@ -147,6 +152,12 @@ static void FLAC_metadata_callback(const FLAC__StreamDecoder *decoder, const FLA
 		flacFormat.mReserved = 0;
 		
 		self->output_format = flacFormat;
+		
+		self.decoderStatistics = [NSDictionary dictionaryWithObjectsAndKeys:
+								  @"FLAC", kDecoderStatsNameKey,
+								  [NSNumber numberWithDouble:flacFormat.mSampleRate], kDecoderStatsSampleRateKey,
+								  [NSNumber numberWithInt:flacFormat.mBitsPerChannel], kDecoderStatsBitsPerChannelKey, 
+								  nil];
 	}
 }
 

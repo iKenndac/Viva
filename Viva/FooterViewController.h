@@ -28,6 +28,7 @@
 @property (weak) IBOutlet NSPopUpButton *eqMenu;
 @property (weak) IBOutlet NSTextField *eqNameField;
 @property (strong) IBOutlet NSWindow *eqSaveWindow;
+@property (strong) IBOutlet NSPopover *statsPopover;
 
 @property (weak, readonly) NSString *currentTrackPositionDisplayString;
 @property (weak, readonly) NSString *currentTrackDurationDisplayString;
@@ -38,6 +39,7 @@
 - (IBAction)previousTrackButtonWasClicked:(id)sender;
 - (IBAction)nextTrackButtonWasClicked:(id)sender;
 - (IBAction)showVolumePopover:(id)sender;
+- (IBAction)showStatsPopover:(id)sender;
 - (IBAction)playbackStateControlWasClicked:(id)sender;
 
 -(IBAction)chooseEqSetting:(id)sender;

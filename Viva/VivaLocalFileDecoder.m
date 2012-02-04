@@ -55,6 +55,14 @@
 @synthesize currentFile;
 @synthesize playing;
 
++(NSSet *)keyPathsForValuesAffectingDecoderStatistics {
+	return [NSSet setWithObject:@"currentWorker.decoderStatistics"];
+}
+
+-(NSDictionary *)decoderStatistics {
+	return self.currentWorker.decoderStatistics;
+}
+
 -(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error {
 	// No-op for now.
 	return NO;

@@ -25,6 +25,8 @@
 @property (nonatomic) __weak id <VivaLocalFileDecoderWorkerDelegate> delegate;
 @property (readwrite) BOOL cancelled;
 @property (readwrite, getter = isPlaying) BOOL playing;
+@property (readonly, strong) NSDictionary *decoderStatistics;
+
 -(void)decodeLocalFile:(LocalFile *)file fromPosition:(NSTimeInterval)startTime;
 
 

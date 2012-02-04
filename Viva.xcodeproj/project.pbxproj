@@ -57,6 +57,7 @@
 		50746D0E14B4B8260026355B /* BGHUDAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 50746D0914B4B7EA0026355B /* BGHUDAppKit.framework */; };
 		50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */; };
 		50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */; };
+		50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
@@ -407,6 +408,9 @@
 		50788FB714DD470C0029E2D9 /* LocalFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalFilesViewController.h; sourceTree = "<group>"; };
 		50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalFilesViewController.m; sourceTree = "<group>"; };
 		50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalFilesViewController.xib; sourceTree = "<group>"; };
+		50788FD014DD911A0029E2D9 /* VivaPlaybackProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackProvider.h; sourceTree = "<group>"; };
+		50788FD114DD97590029E2D9 /* SPSession+AudioStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPSession+AudioStatistics.h"; sourceTree = "<group>"; };
+		50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPSession+AudioStatistics.m"; sourceTree = "<group>"; };
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -921,6 +925,7 @@
 			children = (
 				506F347513436F08002BA308 /* VivaPlaybackContext.h */,
 				50F9F65A14DC407B004D8D01 /* VivaAdvancedPlaybackDelegate.h */,
+				50788FD014DD911A0029E2D9 /* VivaPlaybackProvider.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -1248,6 +1253,8 @@
 				50D1C1931359E1D200437CCB /* VivaImageExtensions.m */,
 				5099D8BA1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.h */,
 				5099D8BB1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m */,
+				50788FD114DD97590029E2D9 /* SPSession+AudioStatistics.h */,
+				50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1733,6 +1740,7 @@
 				50EC2B6814DC0175009C5C69 /* VivaFLACDecoderWorker.m in Sources */,
 				50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */,
 				50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */,
+				50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

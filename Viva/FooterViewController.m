@@ -152,6 +152,7 @@
 @synthesize eqMenu;
 @synthesize eqNameField;
 @synthesize eqSaveWindow;
+@synthesize statsPopover;
 
 @synthesize playbackManager;
 
@@ -229,6 +230,11 @@
 - (IBAction)showVolumePopover:(id)sender {
 	NSView *aView = (NSView *)sender;
 	[self.volumePopover showRelativeToRect:aView.bounds ofView:aView preferredEdge:NSMinYEdge];
+}
+
+- (IBAction)showStatsPopover:(id)sender {
+	NSView *aView = (NSView *)sender;
+	[self.statsPopover showRelativeToRect:aView.bounds ofView:aView preferredEdge:NSMinYEdge];
 }
 
 - (IBAction)playbackStateControlWasClicked:(id)sender {

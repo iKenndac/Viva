@@ -13,6 +13,7 @@
 #import "LocalFilesController.h"
 #import "VivaLocalFileDecoder.h"
 #import "VivaTrackExtensions.h"
+#import "SPSession+AudioStatistics.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 @interface VivaPlaybackManager  ()
@@ -689,6 +690,9 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 
 -(NSInteger)session:(id <SPSessionPlaybackProvider>)aSession shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(const sp_audioformat *)audioFormat {
 	
+	// This should only be called by CocoaLibSpotify - other decoders should use
+	// -session:shouldDeliverAudioFrames:ofCount:audioStreamDescription: instead.
+	
 	if (frameCount == 0) {
 		[self.audioBuffer clear];
 		return 0; // Audio discontinuity!
@@ -700,6 +704,14 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 		libSpotifyInputFormat.mBytesPerPacket = audioFormat->channels * sizeof(sint16);
 		libSpotifyInputFormat.mBytesPerFrame = libSpotifyInputFormat.mBytesPerPacket;
 		libSpotifyInputFormat.mChannelsPerFrame = audioFormat->channels;
+		
+		if ([aSession isKindOfClass:[SPSession class]]) {
+			((SPSession *)aSession).decoderStatistics = [NSDictionary dictionaryWithObjectsAndKeys:
+														 @"libspotify OGG", kDecoderStatsNameKey,
+														 [NSNumber numberWithDouble:libSpotifyInputFormat.mSampleRate], kDecoderStatsSampleRateKey,
+														 [NSNumber numberWithInt:libSpotifyInputFormat.mBitsPerChannel], kDecoderStatsBitsPerChannelKey, 
+														 nil];
+		}
 	}
 	
 	return [self session:session shouldDeliverAudioFrames:audioFrames ofCount:frameCount audioStreamDescription:libSpotifyInputFormat];

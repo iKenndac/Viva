@@ -8,12 +8,18 @@
 
 #import "VivaAVAssetDecoderWorker.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Constants.h"
+
+@interface VivaAVAssetDecoderWorker ()
+@property (readwrite, strong) NSDictionary *decoderStatistics;
+@end
 
 @implementation VivaAVAssetDecoderWorker
 
 @synthesize delegate;
 @synthesize cancelled;
 @synthesize playing;
+@synthesize decoderStatistics;
 
 -(void)decodeLocalFile:(LocalFile *)file fromPosition:(NSTimeInterval)startTime {
 	
@@ -53,6 +59,12 @@
 		[reader setTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(startTime, audioFormat->mSampleRate), kCMTimePositiveInfinity)];
 		[reader addOutput:readerOutput];
 		[reader startReading];
+		
+		self.decoderStatistics = [NSDictionary dictionaryWithObjectsAndKeys:
+								  @"AVFoundation", kDecoderStatsNameKey,
+								  [NSNumber numberWithDouble:audioFormat->mSampleRate], kDecoderStatsSampleRateKey,
+								  [NSNumber numberWithInt:16], kDecoderStatsBitsPerChannelKey, 
+								  nil];
 		
 		AudioStreamBasicDescription outputAudioFormat;
 		outputAudioFormat.mSampleRate = audioFormat->mSampleRate;
