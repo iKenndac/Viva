@@ -98,6 +98,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	}
 	
     [SPSession sharedSession].delegate = self;
+	[[SPSession sharedSession] setPreferredBitrate:SP_BITRATE_320k];
     
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
