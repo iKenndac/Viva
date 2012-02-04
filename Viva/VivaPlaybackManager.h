@@ -14,11 +14,7 @@
 #import <CoreAudio/CoreAudio.h>
 #import <AudioUnit/AudioUnit.h>
 #import "EQPresetController.h"
-
-static NSString * const kVivaPlaybackManagerErrorDomain = @"com.spotify.viva.playback";
-static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;
-static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
-static NSString * const kVivaTrackContainerKey = @"trackContainer";
+#import "VivaAdvancedPlaybackDelegate.h"
 
 @class VivaPlaybackManager;
 
@@ -34,7 +30,7 @@ static NSString * const kVivaTrackContainerKey = @"trackContainer";
 
 @end
 
-@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate>
+@interface VivaPlaybackManager : NSObject <SPSessionPlaybackDelegate, VivaAdvancedPlaybackDelegate>
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
 

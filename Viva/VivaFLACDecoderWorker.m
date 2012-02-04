@@ -9,11 +9,11 @@
 #import "VivaFLACDecoderWorker.h"
 #import "stream_decoder.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "Constants.h"
 
 static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data);
 static void FLAC_metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
-
 
 @implementation VivaFLACDecoderWorker {
 	FLAC__uint64 total_samples;
@@ -21,6 +21,7 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 	NSUInteger channels;
 	NSUInteger bits_per_sample;
 	AudioStreamBasicDescription output_format;
+	NSError *decodingError;
 }
 
 @synthesize delegate;
@@ -77,10 +78,9 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 		if (startTime > 0.0)
 			FLAC__stream_decoder_seek_absolute(decoder, (FLAC__int64)sample_rate * startTime);
 
-		success = FLAC__stream_decoder_process_until_end_of_stream(decoder);
-		fprintf(stderr, "decoding: %s\n", success ? "succeeded" : "FAILED");
-		fprintf(stderr, "   state: %s\n", FLAC__StreamDecoderStateString[FLAC__stream_decoder_get_state(decoder)]);
-
+		// We don't care if the decoding failed since aborting the decode manually counts as a failure.
+		FLAC__stream_decoder_process_until_end_of_stream(decoder);
+		
 		FLAC__stream_decoder_delete(decoder);
 		decoder = NULL;
 		
@@ -89,7 +89,7 @@ static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__Stream
 }
 
 -(void)endPlaybackThread {
-	[self.delegate workerDidCompleteAudioPlayback:self];
+	[self.delegate workerDidCompleteAudioPlayback:self withError:self->decodingError];
 }
 
 static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 * const buffer[], void *client_data) {
@@ -151,7 +151,13 @@ static void FLAC_metadata_callback(const FLAC__StreamDecoder *decoder, const FLA
 }
 
 static void FLAC_error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data) {
-	fprintf(stderr, "Got error callback: %s\n", FLAC__StreamDecoderErrorStatusString[status]);
+	
+	VivaFLACDecoderWorker *self = (__bridge VivaFLACDecoderWorker *)client_data;
+	
+	self->decodingError = [NSError errorWithDomain:@"com.spotify.Viva.FLACDecoder"
+											  code:kVivaTrackDecodingFailedErrorCode
+										  userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:FLAC__StreamDecoderErrorStatusString[status]]
+																			   forKey:NSLocalizedDescriptionKey]];
 }
 
 

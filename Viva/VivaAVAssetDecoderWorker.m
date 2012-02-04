@@ -123,7 +123,7 @@
 }
 
 -(void)endPlaybackThread {
-	[self.delegate workerDidCompleteAudioPlayback:self];
+	[self.delegate workerDidCompleteAudioPlayback:self withError:nil];
 }
 
 

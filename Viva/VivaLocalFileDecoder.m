@@ -13,6 +13,7 @@
 #import "VivaAVAssetDecoderWorker.h"
 #import "VivaFLACDecoderWorker.h"
 #import "VivaAdvancedPlaybackDelegate.h"
+#import "Constants.h"
 
 @interface VivaLocalFileDecoder ()
 
@@ -65,7 +66,10 @@
 	
 	if (localFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:localFile.path]) {
 		if (error)
-			*error = [NSError errorWithDomain:@"com.spotify.Viva.LocalFileDecoder" code:67 userInfo:nil];
+			*error = [NSError errorWithDomain:@"com.spotify.Viva.LocalFileDecoder"
+										 code:kVivaTrackDecodingFailedErrorCode
+									 userInfo:[NSDictionary dictionaryWithObject:@"Local file not found."
+																		  forKey:NSLocalizedDescriptionKey]];
 		return NO;
 	}
 	
@@ -124,10 +128,12 @@
 	return 0;
 }
 
--(void)workerDidCompleteAudioPlayback:(VivaAVAssetDecoderWorker *)worker {
+-(void)workerDidCompleteAudioPlayback:(VivaAVAssetDecoderWorker *)worker withError:(NSError *)anError {
 	if (worker == self.currentWorker) {
 		[self unloadPlayback];
-		[self.playbackDelegate sessionDidEndPlayback:self];
+		
+		id <VivaAdvancedPlaybackDelegate> advancedPlaybackDelegate = (id <VivaAdvancedPlaybackDelegate>)self.playbackDelegate;
+		[advancedPlaybackDelegate sessionDidEndPlayback:self withError:anError];
 		
 		if (worker == self.currentWorker || self.currentWorker == nil)
 			self.playing = NO;

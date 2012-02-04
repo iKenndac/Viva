@@ -562,21 +562,35 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
 #pragma mark -
 #pragma mark Playback Callbacks
 
--(void)sessionDidLosePlayToken:(SPSession *)aSession {
+-(void)sessionDidLosePlayToken:(id <SPSessionPlaybackProvider>)aSession {
 	[self.delegate playbackManager:self
 		 didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
 													   code:kVivaTrackTokenLostErrorCode
 												   userInfo:nil]];
 }
 
--(void)sessionDidEndPlayback:(SPSession *)aSession {
+-(void)sessionDidEndPlayback:(id <SPSessionPlaybackProvider>)aSession withError:(NSError *)anError {
+	
+	if (anError) {
+		NSMutableDictionary *errorMutableDict = [NSMutableDictionary dictionaryWithDictionary:anError.userInfo];
+		[errorMutableDict setValue:self.currentTrackContainer forKey:kVivaTrackContainerKey];
+		
+		[self.delegate playbackManager:self didEncounterPlaybackError:[NSError errorWithDomain:anError.domain
+																						  code:anError.code
+																					  userInfo:errorMutableDict]];
+	}
+	
+	[self sessionDidEndPlayback:aSession];
+}
+
+-(void)sessionDidEndPlayback:(id <SPSessionPlaybackProvider>)aSession {
 	// Not routing this through to the main thread causes odd locks and crashes.
 	[self performSelectorOnMainThread:@selector(sessionDidEndPlaybackOnMainThread:)
 						   withObject:aSession
 						waitUntilDone:YES];
 }
 
--(void)sessionDidEndPlaybackOnMainThread:(SPSession *)aSession {
+-(void)sessionDidEndPlaybackOnMainThread:(id <SPSessionPlaybackProvider>)aSession {
 	[self skipToNextTrackInCurrentContext:NO];
 }
 

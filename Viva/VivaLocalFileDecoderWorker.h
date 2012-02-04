@@ -16,7 +16,7 @@
 @protocol VivaLocalFileDecoderWorkerDelegate <NSObject>
 
 -(NSUInteger)worker:(id <VivaLocalFileDecoderWorker>)worker shouldDeliverAudioFrames:(const void *)audioFrames ofCount:(NSInteger)frameCount format:(AudioStreamBasicDescription)audioFormat;
--(void)workerDidCompleteAudioPlayback:(id <VivaLocalFileDecoderWorker>)worker;
+-(void)workerDidCompleteAudioPlayback:(id <VivaLocalFileDecoderWorker>)worker withError:(NSError *)anError;
 
 @end
 

@@ -23,6 +23,12 @@ static NSString * const kMediaKeyUsingBundleIdentifiersDefaultsKey = @"kMediaKey
 static NSString * const kLoopPlaybackDefaultsKey = @"LoopPlayback";
 static NSString * const kShufflePlaybackDefaultsKey = @"ShufflePlayback";
 
+static NSString * const kVivaPlaybackManagerErrorDomain = @"com.spotify.viva.playback";
+static NSUInteger const kVivaTrackFailedToPlayErrorCode = 100;
+static NSUInteger const kVivaTrackDecodingFailedErrorCode = 101;
+static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
+static NSString * const kVivaTrackContainerKey = @"trackContainer";
+
 // ------ EQ ------
 
 static NSString * const kUserEQPresetsUserDefaultsKey = @"UserEQPresets";
