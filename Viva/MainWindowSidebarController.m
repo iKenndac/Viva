@@ -18,6 +18,8 @@
 @property (readwrite, copy, nonatomic) NSArray *groups;
 
 -(NSDictionary *)unifiedDictionaryForItem:(id)item;
+-(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder;
+-(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex;
 
 @end
 
@@ -149,6 +151,54 @@
 	}
 	
 	return nil;
+}
+
+-(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex {
+	
+	NSInteger currentIndex = 0;
+	
+	for (id group in self.groups) {
+		if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
+			currentIndex++;
+		}
+		
+		for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
+			if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+				// Here be playlists!
+				return playlistOrFolderIndex - currentIndex;
+			} else {
+				currentIndex++;
+			}
+		}
+	}
+	
+	return NSNotFound;
+}
+
+-(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder {
+	
+	NSInteger currentIndex = 0;
+	
+	for (id group in self.groups) {
+		if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
+			currentIndex++;
+		}
+		
+		for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
+			if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+				// Here be playlists!
+				NSUInteger indexOfPlaylist = [[SPSession sharedSession].userPlaylists.playlists indexOfObject:playlistOrFolder];
+				if (indexOfPlaylist != NSNotFound)
+					return currentIndex + indexOfPlaylist;
+				else
+					return NSNotFound;
+			} else {
+				currentIndex++;
+			}
+		}
+	}
+	
+	return NSNotFound;
 }
 
 #pragma mark -
@@ -301,8 +351,8 @@
 			SPPlaylistFolder *parent = [outlineView parentForItem:item];
 			
 			[outlineView setDropItem:[outlineView parentForItem:item] 
-					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item]: 
-			 [[[[SPSession sharedSession] userPlaylists] playlists] indexOfObject:item]];
+					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item] : 
+			 [self indexOfRootPlaylistInOutlineView:item]];
 			return NSDragOperationMove;
 		}
 	}
@@ -331,7 +381,7 @@
 			
 			[outlineView setDropItem:[outlineView parentForItem:item] 
 					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item]: 
-			 [[[[SPSession sharedSession] userPlaylists] playlists] indexOfObject:item]];
+			 [self indexOfRootPlaylistInOutlineView:item]];
 			return NSDragOperationMove;
 		}
 	}
@@ -373,10 +423,16 @@
 		id parent = parentId == 0 ? userPlaylists :
 		[[SPSession sharedSession] playlistFolderForFolderId:parentId
 												 inContainer:userPlaylists];
+		
+		NSInteger destinationIndex = index;
+		if (item == nil) {
+			destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
+		}
+		
 		NSError *error = nil;
 		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
 															  ofParent:parent
-															   toIndex:index < 0 ? 0 : index
+															   toIndex:destinationIndex < 0 ? 0 : destinationIndex
 														   ofNewParent:item
 																 error:&error];
 		if (!greatSuccess) {
@@ -400,10 +456,16 @@
 		id parent = parentId == 0 ? userPlaylists :
 		[[SPSession sharedSession] playlistFolderForFolderId:parentId
 												 inContainer:userPlaylists];
+		
+		NSInteger destinationIndex = index;
+		if (item == nil) {
+			destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
+		}
+		
 		NSError *error = nil;
 		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
 															  ofParent:parent
-															   toIndex:index < 0 ? 0 : index
+															   toIndex:destinationIndex < 0 ? 0 : destinationIndex
 														   ofNewParent:item
 																 error:&error];
 		if (!greatSuccess) {
@@ -417,11 +479,6 @@
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
-	
-	return NO;
-	// TODO: Dropping playlists is broken because of index handling. Until it's fixed, disable dragging of them.
-	
-	/*
 	
 	id item = [items objectAtIndex:0];
 	
@@ -457,8 +514,6 @@
 	}
 	
 	return YES;
-	 
-	 */
 }
 
 
