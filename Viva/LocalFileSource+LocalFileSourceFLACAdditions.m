@@ -53,9 +53,9 @@ static void FLAC_LocalFileSource_error_callback(const FLAC__StreamDecoder *decod
 	}
 	
 	// Have metadata!
-	NSString *title = [metadata valueForKey:kFLACMetadataTitleKey];
-	NSString *artist = [metadata valueForKey:kFLACMetadataArtistKey];
-	NSString *album = [metadata valueForKey:kFLACMetadataAlbumKey];
+	NSString *title = [metadata valueForKey:[kFLACMetadataTitleKey lowercaseString]];
+	NSString *artist = [metadata valueForKey:[kFLACMetadataArtistKey lowercaseString]];
+	NSString *album = [metadata valueForKey:[kFLACMetadataAlbumKey lowercaseString]];
 	
 	if (title.length == 0) {
 		title = [[path lastPathComponent] stringByDeletingPathExtension];
@@ -125,7 +125,7 @@ static void FLAC_LocalFileSource_metadata_callback(const FLAC__StreamDecoder *de
 			if (delimeterRange.location == NSNotFound)
 				continue;
 			
-			NSString *commentKey = [commentString substringToIndex:delimeterRange.location];
+			NSString *commentKey = [[commentString substringToIndex:delimeterRange.location] lowercaseString];
 			NSString *commentValue = [commentString substringFromIndex:delimeterRange.location + delimeterRange.length];
 			
 			if (commentKey.length > 0 && commentValue.length > 0)
