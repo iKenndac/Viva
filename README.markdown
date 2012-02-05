@@ -6,7 +6,13 @@ Viva is not an official Spotify project. I work at Spotify, and the company has 
 
 Viva is a Spotify client for Mac OS X Lion. Both building and running require Mac OS X 10.7. Viva is built entirely on Spotify's libspotify C library.
 
-This client's purpose in life is to be a showcase of the Spotify platform as well as a playground for experimenting with ideas and new APIs. It's very rough around the edges, and even whole views (such as the Local Files view) are blank.
+This client's purpose in life is to be a showcase of the Spotify platform as well as a playground for experimenting with ideas and new APIs. It's very rough around the edges, and even whole views are blank.
+
+Some features:
+
+- Nice playback experience (gapless playback, EQ).
+- Support for playing "local files" (MP3, M4A, Apple Lossless, FLAC).
+- Last.fm scrobbling.
 
 ## What Viva Is NOT ##
 
@@ -31,11 +37,15 @@ Viva has been made in my hackday and spare time, which has resulting in the code
 
 Core Data over multiple threads: `LocalFileSource.m`.
 
-Core Audio Graphs, including a Graphic EQ: `VivaPlaybackManager.m`, in the "Core Audio" section.
+Core Audio Graphs, including a Graphic EQ: `SPCoreAudioController.m`.
 
 Using AVFoundation to get media file metadata: `LocalFileSource.m`, `-parseMediaFileAtPath:intoContext:`.
 
 Using AVFoundation to convert audio files to PCM data for manual playback through Core Audio: `VivaLocalFileDecoderWorker.m`.
 
 Using FSEvents to watch a directory tree for changes: `LocalFileSource.m`.
+
+Using libFLAC to get FLAC metadata: `LocalFileSource+LocalFileSourceFLACAdditions.m`.
+
+Using libFLAC to decode FLAC files for playback: `VivaFLACDecoderWorker.m`.
 
