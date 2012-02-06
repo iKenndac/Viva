@@ -483,6 +483,8 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 	AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:path]];
 	
 	NSArray *metaData = [asset commonMetadata];
+	NSArray *iTunesMetaData = [asset metadataForFormat:AVMetadataFormatiTunesMetadata];
+	NSArray *id3MetaData = [asset metadataForFormat:AVMetadataFormatID3Metadata];
 	
 	AVMetadataItem *titleItem = [[AVMetadataItem metadataItemsFromArray:metaData withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon] lastObject];
 	AVMetadataItem *artistItem = [[AVMetadataItem metadataItemsFromArray:metaData withKey:AVMetadataCommonKeyArtist keySpace:AVMetadataKeySpaceCommon] lastObject];
@@ -492,6 +494,38 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 	NSString *artist = [artistItem stringValue];
 	NSString *album = [albumItem stringValue];
 	NSTimeInterval duration = CMTimeGetSeconds([asset duration]);
+	
+	AVMetadataItem *trackNumberItem = [[AVMetadataItem metadataItemsFromArray:iTunesMetaData withKey:AVMetadataiTunesMetadataKeyTrackNumber keySpace:AVMetadataKeySpaceiTunes] lastObject];
+	NSNumber *trackNumber = nil;
+	
+	if (trackNumberItem != nil) {
+		// This is an MP4 atom
+		NSData *data = [trackNumberItem dataValue];
+		
+		if (data.length == 8) {
+			UInt16 *values = (UInt16 *)[[trackNumberItem dataValue] bytes];
+			UInt16 track = EndianU16_BtoN(values[1]);
+			//UInt16 trackOf = EndianU16_BtoN(values[2]);
+			trackNumber = [NSNumber numberWithUnsignedInt:track];
+		}
+	}
+	
+	// TODO: Try ID3 value for track number
+	
+	AVMetadataItem *discNumberItem = [[AVMetadataItem metadataItemsFromArray:iTunesMetaData withKey:AVMetadataiTunesMetadataKeyDiscNumber keySpace:AVMetadataKeySpaceiTunes] lastObject];
+	NSNumber *discNumber = nil;
+	
+	if (discNumberItem != nil) {
+		// This is an MP4 atom
+		NSData *data = [discNumberItem dataValue];
+		
+		if (data.length == 8) {
+			UInt16 *values = (UInt16 *)[[discNumberItem dataValue] bytes];
+			UInt16 disc = EndianU16_BtoN(values[1]);
+			//UInt16 discOf = EndianU16_BtoN(values[2]);
+			discNumber = [NSNumber numberWithUnsignedInt:disc];
+		}
+	}
 	
 	if (title.length == 0) {
 		title = [[path lastPathComponent] stringByDeletingPathExtension];
@@ -505,6 +539,8 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 	file.album = album;
 	file.path = path;
 	file.duration = [NSNumber numberWithDouble:duration];
+	file.trackNumber = trackNumber;
+	file.discNumber = discNumber;
 	
 	return file;
 }
