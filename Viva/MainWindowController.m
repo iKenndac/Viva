@@ -297,6 +297,22 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 }
 
 #pragma mark -
+#pragma mark Playlists
+
+-(IBAction)newPlaylist:(id)sender {
+	[[[SPSession sharedSession] userPlaylists] createPlaylistWithName:@"New Playlist"];
+}
+
+-(IBAction)newPlaylistFolder:(id)sender {
+	NSError *error = nil;
+	[[[SPSession sharedSession] userPlaylists] createFolderWithName:@"New Folder"
+															  error:&error];
+	if (error) {
+		[self presentError:error];
+	}
+}
+
+#pragma mark -
 #pragma mark Playback
 
 -(BOOL)playbackManager:(VivaPlaybackManager *)manager requiresContextForContextlessPlayRequest:(id <VivaPlaybackContext> *)context {

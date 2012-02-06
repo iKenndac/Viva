@@ -341,49 +341,53 @@
 	}
 	
 	NSData *playlistSourceData = [[info draggingPasteboard] dataForType:kSpotifyPlaylistMoveSourceDragIdentifier];
-	
-	if (playlistSourceData != nil) {
-		
-		if ([item isKindOfClass:[SPPlaylistFolder class]] || item == nil) {
-			return NSDragOperationMove;
-		} else {
-			
-			SPPlaylistFolder *parent = [outlineView parentForItem:item];
-			
-			[outlineView setDropItem:[outlineView parentForItem:item] 
-					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item] : 
-			 [self indexOfRootPlaylistInOutlineView:item]];
-			return NSDragOperationMove;
-		}
-	}
-	
 	NSData *folderSourceData = [[info draggingPasteboard] dataForType:kSpotifyFolderMoveSourceDragIdentifier];
 	
-	if (folderSourceData != nil) {
+	BOOL isFolder = (playlistSourceData == nil && folderSourceData != nil);
+	
+	NSDictionary *sourceFolderInfo = nil;
+	sp_uint64 folderId = 0;
+	SPPlaylistContainer *userPlaylists = nil;
+	SPPlaylistFolder *sourceFolder = nil;
+	
+	if (isFolder) {
+		sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
+		folderId = [[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue];
+		userPlaylists = [[SPSession sharedSession] userPlaylists];
+		sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
+																 inContainer:userPlaylists];
+	}
+
+	if (item == nil) {
+		NSInteger indexOfFirstPlaylist = [self indexOfRootPlaylistInOutlineView:[[SPSession sharedSession].userPlaylists.playlists objectAtIndex:0]];
+		NSInteger indexOfLastPlaylist = [self indexOfRootPlaylistInOutlineView:[SPSession sharedSession].userPlaylists.playlists.lastObject];
 		
-		NSDictionary *sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
-		sp_uint64 folderId = [[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue];
-		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
-		SPPlaylistFolder *sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
-																				   inContainer:userPlaylists];
+		[outlineView setDropItem:nil
+				  dropChildIndex:index < indexOfFirstPlaylist ? indexOfFirstPlaylist : index > indexOfLastPlaylist ? indexOfLastPlaylist + 1 : index];
 		
-		if ([item isKindOfClass:[SPPlaylistFolder class]] || item == nil) {
-			if ([[item parentFolders] containsObject:sourceFolder] || item == sourceFolder)
-				return NSDragOperationNone;
-			
-			return NSDragOperationMove;
-		} else {
-			
-			SPPlaylistFolder *parent = [outlineView parentForItem:item];
-			
-			if ([[parent parentFolders] containsObject:sourceFolder] || parent == sourceFolder)
-				return NSDragOperationNone;
-			
-			[outlineView setDropItem:[outlineView parentForItem:item] 
-					  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item]: 
-			 [self indexOfRootPlaylistInOutlineView:item]];
-			return NSDragOperationMove;
-		}
+		return NSDragOperationMove;
+		
+	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
+		
+		if (isFolder && ([[item parentFolders] containsObject:sourceFolder] || item == sourceFolder))
+			return NSDragOperationNone;
+		// ^ Can't put a folder into itself
+		
+		return NSDragOperationMove;
+		
+	} else if ([item isKindOfClass:[SPPlaylist class]]) {
+		
+		SPPlaylistFolder *parent = [outlineView parentForItem:item];
+		
+		if (isFolder && ([[parent parentFolders] containsObject:sourceFolder] || parent == sourceFolder))
+			return NSDragOperationNone;
+		// ^ Can't put a folder into itself
+		
+		[outlineView setDropItem:[outlineView parentForItem:item] 
+				  dropChildIndex:parent != nil ? [[parent playlists] indexOfObject:item] : 
+		 [self indexOfRootPlaylistInOutlineView:item]];
+		
+		return NSDragOperationMove;
 	}
 	
 	return NSDragOperationNone;
@@ -412,70 +416,55 @@
 	}
 	
 	NSData *playlistUrlData = [[info draggingPasteboard] dataForType:kSpotifyPlaylistMoveSourceDragIdentifier];
-	
-	if (playlistUrlData != nil) {
-		
-		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
-		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
-		SPPlaylist *source = [[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
-		sp_uint64 parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
-		
-		id parent = parentId == 0 ? userPlaylists :
-		[[SPSession sharedSession] playlistFolderForFolderId:parentId
-												 inContainer:userPlaylists];
-		
-		NSInteger destinationIndex = index;
-		if (item == nil) {
-			destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
-		}
-		
-		NSError *error = nil;
-		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
-															  ofParent:parent
-															   toIndex:destinationIndex < 0 ? 0 : destinationIndex
-														   ofNewParent:item
-																 error:&error];
-		if (!greatSuccess) {
-			[self.sidebar.window.windowController presentError:error];
-			return NO;
-		}
-		return YES;
-	}
-	
-	
 	NSData *folderSourceData = [[info draggingPasteboard] dataForType:kSpotifyFolderMoveSourceDragIdentifier];
 	
-	if (folderSourceData != nil) {
-		
+	BOOL isFolder = (playlistUrlData == nil && folderSourceData != nil);
+	
+	// Common
+	SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
+	sp_uint64 parentId = 0;
+	id source = nil;
+	
+	if (isFolder) {
 		NSDictionary *sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
-		SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
-		SPPlaylistFolder *source = [[SPSession sharedSession] playlistFolderForFolderId:[[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue]
-																			inContainer:userPlaylists];
-		sp_uint64 parentId = [[sourceFolderInfo valueForKey:kPlaylistParentId] unsignedLongLongValue];
-		
-		id parent = parentId == 0 ? userPlaylists :
-		[[SPSession sharedSession] playlistFolderForFolderId:parentId
-												 inContainer:userPlaylists];
-		
-		NSInteger destinationIndex = index;
-		if (item == nil) {
-			destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
-		}
-		
-		NSError *error = nil;
-		BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:[[parent playlists] indexOfObject:source]
-															  ofParent:parent
-															   toIndex:destinationIndex < 0 ? 0 : destinationIndex
-														   ofNewParent:item
-																 error:&error];
-		if (!greatSuccess) {
-			[self.sidebar.window.windowController presentError:error];
-			return NO;
-		}
-		return YES;
+		source = [[SPSession sharedSession] playlistFolderForFolderId:[[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue]
+														  inContainer:userPlaylists];
+		parentId = [[sourceFolderInfo valueForKey:kPlaylistParentId] unsignedLongLongValue];
+	} else {
+		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
+		source = [[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
+		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 	
-	return NO;
+	id parent = parentId == 0 ? userPlaylists :
+	[[SPSession sharedSession] playlistFolderForFolderId:parentId
+											 inContainer:userPlaylists];
+	
+	NSInteger destinationIndex = index;
+	if (item == nil) {
+		destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
+	}
+	
+	if (destinationIndex < 0)
+		destinationIndex = 0;
+	else if (destinationIndex >= [[parent playlists] count])
+		destinationIndex = [[parent playlists] count] - 1;
+	
+	NSInteger sourceIndex = [[parent playlists] indexOfObject:source];
+	if (sourceIndex == destinationIndex)
+		return YES;
+	
+	NSError *error = nil;	
+	BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:sourceIndex
+														  ofParent:parent
+														   toIndex:destinationIndex
+													   ofNewParent:item
+															 error:&error];
+	if (!greatSuccess) {
+		[self.sidebar.window.windowController presentError:error];
+		return NO;
+	}
+	return YES;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
