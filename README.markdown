@@ -41,7 +41,7 @@ Core Audio Graphs, including a Graphic EQ: `SPCoreAudioController.m`.
 
 Using AVFoundation to get media file metadata: `LocalFileSource.m`, `-parseMediaFileAtPath:intoContext:`.
 
-Using AVFoundation to convert audio files to PCM data for manual playback through Core Audio: `VivaLocalFileDecoderWorker.m`.
+Using AVFoundation to convert audio files to PCM data for manual playback through Core Audio: `VivaAVAssetDecoderWorker.m`.
 
 Using FSEvents to watch a directory tree for changes: `LocalFileSource.m`.
 

@@ -64,6 +64,9 @@ static void FLAC_LocalFileSource_error_callback(const FLAC__StreamDecoder *decod
 	FLAC__uint64 total_samples = FLAC__stream_decoder_get_total_samples(decoder);
 	NSTimeInterval duration = total_samples / [[metadata valueForKey:kFLACMetadataStreamInfoSampleRateKey] doubleValue];
 	
+	// Track and disc numbers. So far in FLAC files I've seen TRACKNUMBER=1, TRACKNUMBER = 1/24, etc, so let's
+	// try to be a bit smart about parsing it.
+	
 	NSString *trackNumberString = [metadata valueForKey:[kFLACMetadataTrackNumberKey lowercaseString]];
 	NSRange trackNumberDividerRange = [trackNumberString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/-"]];
 	
