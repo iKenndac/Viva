@@ -510,7 +510,18 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		}
 	}
 	
-	// TODO: Try ID3 value for track number
+	if (trackNumber == nil) {
+		// No atom metadata, maybe ID3
+		trackNumberItem = [[AVMetadataItem metadataItemsFromArray:id3MetaData withKey:AVMetadataID3MetadataKeyTrackNumber keySpace:AVMetadataKeySpaceID3] lastObject];
+		NSString *trackNumberString = [trackNumberItem stringValue];
+		NSRange trackNumberDividerRange = [trackNumberString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/-"]];
+		
+		if (trackNumberDividerRange.location == NSNotFound) {
+			trackNumber = [NSNumber numberWithInteger:[trackNumberString integerValue]];
+		} else {
+			trackNumber = [NSNumber numberWithInteger:[[trackNumberString substringToIndex:trackNumberDividerRange.location] integerValue]];
+		}
+	}
 	
 	AVMetadataItem *discNumberItem = [[AVMetadataItem metadataItemsFromArray:iTunesMetaData withKey:AVMetadataiTunesMetadataKeyDiscNumber keySpace:AVMetadataKeySpaceiTunes] lastObject];
 	NSNumber *discNumber = nil;
@@ -524,6 +535,19 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 			UInt16 disc = EndianU16_BtoN(values[1]);
 			//UInt16 discOf = EndianU16_BtoN(values[2]);
 			discNumber = [NSNumber numberWithUnsignedInt:disc];
+		}
+	}
+	
+	if (discNumber == nil) {
+		// No atom metadata, maybe ID3
+		discNumberItem = [[AVMetadataItem metadataItemsFromArray:id3MetaData withKey:AVMetadataID3MetadataKeyPartOfASet keySpace:AVMetadataKeySpaceID3] lastObject];
+		NSString *discNumberString = [discNumberItem stringValue];
+		NSRange discNumberDividerRange = [discNumberString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/-"]];
+		
+		if (discNumberDividerRange.location == NSNotFound) {
+			discNumber = [NSNumber numberWithInteger:[discNumberString integerValue]];
+		} else {
+			discNumber = [NSNumber numberWithInteger:[[discNumberString substringToIndex:discNumberDividerRange.location] integerValue]];
 		}
 	}
 	
