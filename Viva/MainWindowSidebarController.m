@@ -17,7 +17,7 @@
 
 @property (readwrite, copy, nonatomic) NSArray *groups;
 
--(NSDictionary *)unifiedDictionaryForItem:(id)item;
+-(NSMutableDictionary *)unifiedDictionaryForItem:(id)item;
 -(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder;
 -(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex;
 
@@ -81,7 +81,7 @@
 	} else if ([keyPath isEqualToString:@"selectedURL"]) {
 		
 		for (id group in self.groups) {
-			for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
+			for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
 					
 				NSDictionary *dict = [self unifiedDictionaryForItem:currentItem];
 				if ([[dict valueForKey:SPSidebarURLKey] isEqual:self.selectedURL]) {
@@ -90,7 +90,7 @@
 					return;
 				}
 							
-				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+				if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 					id playlist = [[SPSession sharedSession] playlistForURL:self.selectedURL];
 					if (playlist != nil) {
 						NSInteger row = [self.sidebar rowForItem:playlist];
@@ -120,11 +120,11 @@
 	self.sidebar = nil;
 }
 
--(NSDictionary *)unifiedDictionaryForItem:(id)item {
+-(NSMutableDictionary *)unifiedDictionaryForItem:(id)item {
 	
 	if ([item isKindOfClass:[SPPlaylist class]]) {
 		SPPlaylist *playlist = item;
-		return [NSDictionary dictionaryWithObjectsAndKeys:
+		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				playlist.name, SPSidebarTitleKey,
 				[NSImage imageNamed:@"sidebar-playlist"], SPSidebarImageKey,
 				playlist.spotifyURL, SPSidebarURLKey, 
@@ -132,21 +132,21 @@
 		
 	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
 		SPPlaylistFolder *folder = item;
-		return [NSDictionary dictionaryWithObjectsAndKeys:
+		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				folder.name, SPSidebarTitleKey,
 				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
 				nil];
 		
-	} else if ([item valueForKey:SPGroupIdentifierKey]) {
-		return [NSDictionary dictionaryWithObjectsAndKeys:
-				[item valueForKey:SPGroupTitleKey], SPSidebarTitleKey,
+	} else if ([item valueForKey:kSPSidebarGroupIdentifierKey]) {
+		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
+				[item valueForKey:kSPSidebarGroupTitleKey], SPSidebarTitleKey,
 				nil];
 		
-	} else if ([item valueForKey:SPItemTitleKey]) {
-		return [NSDictionary dictionaryWithObjectsAndKeys:
-				[item valueForKey:SPItemTitleKey], SPSidebarTitleKey,
-				[NSImage imageNamed:[item valueForKey:SPItemImageKeyKey]], SPSidebarImageKey,
-				[NSURL URLWithString:[item valueForKey:SPItemSpotifyURLKey]], SPSidebarURLKey, 
+	} else if ([item valueForKey:kSPSidebarItemTitleKey]) {
+		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
+				[item valueForKey:kSPSidebarItemTitleKey], SPSidebarTitleKey,
+				[NSImage imageNamed:[item valueForKey:kSPSidebarItemImageKeyKey]], SPSidebarImageKey,
+				[NSURL URLWithString:[item valueForKey:kSPSidebarItemSpotifyURLKey]], SPSidebarURLKey, 
 				nil];
 	}
 	
@@ -158,12 +158,12 @@
 	NSInteger currentIndex = 0;
 	
 	for (id group in self.groups) {
-		if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
+		if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue]) {
 			currentIndex++;
 		}
 		
-		for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
-			if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+		for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
+			if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 				// Here be playlists!
 				return playlistOrFolderIndex - currentIndex;
 			} else {
@@ -180,12 +180,12 @@
 	NSInteger currentIndex = 0;
 	
 	for (id group in self.groups) {
-		if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
+		if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue]) {
 			currentIndex++;
 		}
 		
-		for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
-			if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+		for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
+			if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 				// Here be playlists!
 				NSUInteger indexOfPlaylist = [[SPSession sharedSession].userPlaylists.playlists indexOfObject:playlistOrFolder];
 				if (indexOfPlaylist != NSNotFound)
@@ -206,10 +206,16 @@
 -(NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
 	
 	NSTableCellView *view = nil;
-	if ([item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue])
+	if ([item isKindOfClass:[NSDictionary class]] && [[item valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue])
 		view = [outlineView makeViewWithIdentifier:@"SectionHeaderCell" owner:self];
 	else
 		view = [outlineView makeViewWithIdentifier:@"ImageAndTextCell" owner:self];
+	
+	if ([item isKindOfClass:[SPPlaylist class]] || [item isKindOfClass:[SPPlaylistFolder class]]) {
+		view.textField.editable = YES;
+	} else {
+		view.textField.editable = NO;
+	}
 	
 	return view;
 }
@@ -248,11 +254,11 @@
 		NSInteger itemCount = 0;
 		
 		for (id group in self.groups) {
-			if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue])
+			if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue])
 				itemCount++;
 			
-			for (id item in [group valueForKey:SPGroupItemsKey]) {
-				if ([[item valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle])
+			for (id item in [group valueForKey:kSPSidebarGroupItemsKey]) {
+				if ([[item valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle])
 					itemCount += [SPSession sharedSession].userPlaylists.playlists.count;
 				else
 					itemCount++;
@@ -289,15 +295,15 @@
 		
 		for (id group in self.groups) {
 			
-			if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue] && currentIndex == index) {
+			if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue] && currentIndex == index) {
 				return group;
-			} else if ([[group valueForKey:SPGroupTitleIsShownKey] boolValue]) {
+			} else if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue]) {
 				currentIndex++;
 			}
 			
-			for (id currentItem in [group valueForKey:SPGroupItemsKey]) {
+			for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
 				
-				if ([[currentItem valueForKey:SPItemTitleKey] isEqualToString:SPItemUserPlaylistsPlaceholderTitle]) {
+				if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 					
 					NSInteger playlistCount = [SPSession sharedSession].userPlaylists.playlists.count;
 					NSInteger relativeIndex = index - currentIndex;
@@ -320,6 +326,12 @@
 	}
 	
 	return nil;
+}
+
+#pragma mark -
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+	return YES;
 }
 
 #pragma mark -

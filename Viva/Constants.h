@@ -85,3 +85,19 @@ static NSString * const kFLACMetadataArtistKey = @"ARTIST";
 static NSString * const kFLACMetadataTitleKey = @"TITLE";
 static NSString * const kFLACMetadataStreamInfoSampleRateKey = @"StreamInfoSampleRate";
 
+// ------ Sidebar ------
+
+static NSString * const kSPSidebarGroupTitleKey = @"SPGroupTitle";
+static NSString * const kSPSidebarGroupTitleIsShownKey = @"SPGroupTitleIsShown";
+static NSString * const kSPSidebarGroupIdentifierKey = @"SPGroupIdentifier";
+static NSString * const kSPSidebarGroupItemsKey = @"SPGroupItems";
+
+static NSString * const kSPSidebarItemTitleKey = @"SPItemTitle";
+static NSString * const kSPSidebarItemImageKeyKey = @"SPItemImageKey";
+static NSString * const kSPSidebarItemSpotifyURLKey = @"SPItemSpotifyURL";
+
+static NSString * const kSPSidebarItemUserPlaylistsPlaceholderTitle = @"SPUserPlaylistsPlaceholder";
+
+static NSString * const SPSidebarTitleKey = @"title";
+static NSString * const SPSidebarImageKey = @"image";
+static NSString * const SPSidebarURLKey = @"url";

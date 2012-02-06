@@ -30,6 +30,7 @@
 		5018CB221471A9C100F46F83 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
 		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
 		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
+		5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -355,6 +356,8 @@
 		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
 		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
 		501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseSidebarConfiguration.plist; sourceTree = "<group>"; };
+		5025B81914E01A2B00A375B7 /* VivaSidebarTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaSidebarTableCellView.h; path = "Custom Controls/VivaSidebarTableCellView.h"; sourceTree = "<group>"; };
+		5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaSidebarTableCellView.m; path = "Custom Controls/VivaSidebarTableCellView.m"; sourceTree = "<group>"; };
 		502B090D14DCA90E00A7C89F /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = all.h; path = "Viva-Libs/flac/include/all.h"; sourceTree = "<group>"; };
 		502B090E14DCA90E00A7C89F /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assert.h; path = "Viva-Libs/flac/include/assert.h"; sourceTree = "<group>"; };
 		502B090F14DCA90E00A7C89F /* callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = callback.h; path = "Viva-Libs/flac/include/callback.h"; sourceTree = "<group>"; };
@@ -1034,6 +1037,8 @@
 				50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */,
 				50DC12EB1487ABD300F030FC /* SPNowPlayingCoverView.h */,
 				50DC12EC1487ABD300F030FC /* SPNowPlayingCoverView.m */,
+				5025B81914E01A2B00A375B7 /* VivaSidebarTableCellView.h */,
+				5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1747,6 +1752,7 @@
 				50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */,
 				50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */,
 				50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */,
+				5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
