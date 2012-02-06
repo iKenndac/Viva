@@ -31,6 +31,7 @@
 		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
 		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
 		5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */; };
+		502C538C14E035E500231CA7 /* SPTrack+LocalFileExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 502C538B14E035E500231CA7 /* SPTrack+LocalFileExtensions.m */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -367,6 +368,8 @@
 		502B091314DCA90E00A7C89F /* ordinals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ordinals.h; path = "Viva-Libs/flac/include/ordinals.h"; sourceTree = "<group>"; };
 		502B091414DCA90E00A7C89F /* stream_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_decoder.h; path = "Viva-Libs/flac/include/stream_decoder.h"; sourceTree = "<group>"; };
 		502B091514DCA90E00A7C89F /* stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stream_encoder.h; path = "Viva-Libs/flac/include/stream_encoder.h"; sourceTree = "<group>"; };
+		502C538A14E035E500231CA7 /* SPTrack+LocalFileExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPTrack+LocalFileExtensions.h"; sourceTree = "<group>"; };
+		502C538B14E035E500231CA7 /* SPTrack+LocalFileExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPTrack+LocalFileExtensions.m"; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -1265,6 +1268,8 @@
 				5099D8BB1364BBC5005C7CDC /* VivaAlbumBrowseExtensions.m */,
 				50788FD114DD97590029E2D9 /* SPSession+AudioStatistics.h */,
 				50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */,
+				502C538A14E035E500231CA7 /* SPTrack+LocalFileExtensions.h */,
+				502C538B14E035E500231CA7 /* SPTrack+LocalFileExtensions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1753,6 +1758,7 @@
 				50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */,
 				50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */,
 				5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */,
+				502C538C14E035E500231CA7 /* SPTrack+LocalFileExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

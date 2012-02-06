@@ -83,6 +83,8 @@ static NSString * const kPlaybackInitialTrackContainerKey = @"kPlaybackInitialTr
 static NSString * const kFLACMetadataAlbumKey = @"ALBUM";
 static NSString * const kFLACMetadataArtistKey = @"ARTIST";
 static NSString * const kFLACMetadataTitleKey = @"TITLE";
+static NSString * const kFLACMetadataTrackNumberKey = @"TRACKNUMBER";
+static NSString * const kFLACMetadataDiscNumberKey = @"DISCNUMBER";
 static NSString * const kFLACMetadataStreamInfoSampleRateKey = @"StreamInfoSampleRate";
 
 // ------ Sidebar ------

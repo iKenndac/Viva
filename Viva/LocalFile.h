@@ -19,6 +19,8 @@
 @property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSString * path;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * trackNumber;
+@property (nonatomic, retain) NSNumber * discNumber;
 @property (nonatomic, retain) LocalFileSource *source;
 
 @property (nonatomic, readonly, strong) SPTrack *track;

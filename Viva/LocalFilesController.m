@@ -51,13 +51,26 @@ static LocalFilesController *sharedInstance;
         NSURL *storeURL = [libraryURL URLByAppendingPathComponent:@"LocalFiles"];
         self.storeCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
         
+		NSError *error = nil;
         if (![self.storeCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                  configuration:nil
                                                            URL:storeURL
                                                        options:nil
-                                                         error:nil]) {
-            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"No store");
-            return nil;
+                                                         error:&error]) {
+            NSLog(@"[%@ %@]: No store: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+			// Error opening store, either because it's corrupt or we updated the model. 
+			// It's not important enough to migrate, so just delete it.
+			[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			
+			if (![self.storeCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+													 configuration:nil
+															   URL:storeURL
+														   options:nil
+															 error:&error]) {
+				
+				NSLog(@"[%@ %@]: Failed again, giving up: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+				return nil;
+			}
         }
         
         // Context

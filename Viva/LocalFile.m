@@ -8,6 +8,7 @@
 
 #import "LocalFile.h"
 #import "LocalFileSource.h"
+#import "SPTrack+LocalFileExtensions.h"
 
 static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContext";
 
@@ -28,6 +29,8 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 		[self addObserver:self forKeyPath:@"album" options:0 context:kLocalFileInternalKVOContext];
 		[self addObserver:self forKeyPath:@"artist" options:0 context:kLocalFileInternalKVOContext];
 		[self addObserver:self forKeyPath:@"title" options:0 context:kLocalFileInternalKVOContext];
+		[self addObserver:self forKeyPath:@"discNumber" options:0 context:kLocalFileInternalKVOContext];
+		[self addObserver:self forKeyPath:@"trackNumber" options:0 context:kLocalFileInternalKVOContext];
 	}
 	
 	return self;
@@ -37,6 +40,8 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	[self removeObserver:self forKeyPath:@"album"];
 	[self removeObserver:self forKeyPath:@"artist"];
 	[self removeObserver:self forKeyPath:@"title"];
+	[self removeObserver:self forKeyPath:@"discNumber"];
+	[self removeObserver:self forKeyPath:@"trackNumber"];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -53,13 +58,15 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 @dynamic path;
 @dynamic title;
 @dynamic source;
+@synthesize trackNumber;
+@synthesize discNumber;
 
 -(NSString *)description {
 	return [NSString stringWithFormat:@"%@: %@", [super description], self.path];
 }
 
 +(NSSet *)keyPathsForValuesAffectingPath {
-	return [NSSet setWithObjects:@"album", @"artist", @"title", @"duration", nil];
+	return [NSSet setWithObjects:@"album", @"artist", @"title", @"duration", @"discNumber", @"trackNumber", nil];
 }
 
 -(SPTrack *)track {
@@ -73,6 +80,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 									encodedArtist, encodedAlbum, encodedTitle, self.duration.integerValue];
 		
 		cachedTrack = [SPTrack trackForTrackURL:[NSURL URLWithString:localUrlString] inSession:[SPSession sharedSession]];
+		cachedTrack.localFile = self;
 	}
 	
 	return cachedTrack;

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C73" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="878" systemVersion="11D50" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="LocalFile" representedClassName="LocalFile" syncable="YES">
         <attribute name="album" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trackNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="source" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LocalFileSource" inverseName="localFiles" inverseEntity="LocalFileSource" syncable="YES"/>
     </entity>
     <entity name="LocalFileSource" representedClassName="LocalFileSource" syncable="YES">
@@ -18,7 +20,7 @@
     <fetchRequest name="LocalFilesUnderPath" entity="LocalFile" predicateString="path BEGINSWITH $TARGET_PATH"/>
     <fetchRequest name="SourceWithPath" entity="LocalFileSource" predicateString="path == $TARGET_PATH"/>
     <elements>
-        <element name="LocalFile" positionX="-29" positionY="153" width="128" height="135"/>
+        <element name="LocalFile" positionX="-29" positionY="153" width="128" height="165"/>
         <element name="LocalFileSource" positionX="153" positionY="213" width="128" height="75"/>
     </elements>
 </model>

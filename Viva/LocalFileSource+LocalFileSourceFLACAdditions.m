@@ -64,6 +64,28 @@ static void FLAC_LocalFileSource_error_callback(const FLAC__StreamDecoder *decod
 	FLAC__uint64 total_samples = FLAC__stream_decoder_get_total_samples(decoder);
 	NSTimeInterval duration = total_samples / [[metadata valueForKey:kFLACMetadataStreamInfoSampleRateKey] doubleValue];
 	
+	NSString *trackNumberString = [metadata valueForKey:[kFLACMetadataTrackNumberKey lowercaseString]];
+	NSRange trackNumberDividerRange = [trackNumberString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/-"]];
+	
+	NSNumber *trackNumber = nil;
+	
+	if (trackNumberDividerRange.location == NSNotFound) {
+		trackNumber = [NSNumber numberWithInteger:[trackNumberString integerValue]];
+	} else {
+		trackNumber = [NSNumber numberWithInteger:[[trackNumberString substringToIndex:trackNumberDividerRange.location] integerValue]];
+	}
+	
+	NSString *discNumberString = [metadata valueForKey:[kFLACMetadataDiscNumberKey lowercaseString]];
+	NSRange discNumberDividerRange = [discNumberString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"/-"]];
+	
+	NSNumber *discNumber = nil;
+	
+	if (discNumberDividerRange.location == NSNotFound) {
+		discNumber = [NSNumber numberWithInteger:[discNumberString integerValue]];
+	} else {
+		discNumber = [NSNumber numberWithInteger:[[discNumberString substringToIndex:discNumberDividerRange.location] integerValue]];
+	}
+	
 	LocalFile *file = [[LocalFile alloc] initWithEntity:[NSEntityDescription entityForName:@"LocalFile" inManagedObjectContext:context]
 						 insertIntoManagedObjectContext:context];
 	
@@ -71,6 +93,8 @@ static void FLAC_LocalFileSource_error_callback(const FLAC__StreamDecoder *decod
 	file.artist = artist;
 	file.album = album;
 	file.path = path;
+	file.trackNumber = trackNumber;
+	file.discNumber = discNumber;
 	file.duration = [NSNumber numberWithDouble:duration];
 	
 	FLAC__stream_decoder_delete(decoder);
