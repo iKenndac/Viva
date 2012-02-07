@@ -16,7 +16,7 @@ Some features:
 
 ## What Viva Is NOT ##
 
-Viva is NOT intended to be a replacement Spotify desktop client. It's missing many features (such as playlist management) which make it generally unsuitable for sole use. While this will be improved over time, it's not a priority. Issues filed against Viva along the lines of "It doesn't do [feature in desktop client]" will likely be closed.
+Viva is NOT intended to be a replacement Spotify desktop client. It's missing many features which make it generally unsuitable for sole use. While this will be improved over time, it's not a priority. Issues filed against Viva along the lines of "It doesn't do [feature in desktop client]" will likely be closed.
 
 The target audience of Viva is developers - please keep that in mind. In addition, Viva **requires** a Spotify Premium account - this requirement will never change. If you wish to build Viva from source, you also need a libspotify developer key, which can be requested from here: http://developer.spotify.com/en/libspotify/overview/
 
