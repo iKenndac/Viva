@@ -11,17 +11,19 @@
 			<string key="NS.object.0">1938</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSCustomObject</string>
+			<string>NSScroller</string>
+			<string>NSArrayController</string>
+			<string>NSTableHeaderView</string>
+			<string>NSMenu</string>
 			<string>NSTextFieldCell</string>
 			<string>NSScrollView</string>
-			<string>IBNSLayoutConstraint</string>
-			<string>NSArrayController</string>
-			<string>NSCustomView</string>
-			<string>NSTableHeaderView</string>
-			<string>NSTableColumn</string>
+			<string>NSMenuItem</string>
 			<string>NSImageCell</string>
-			<string>NSScroller</string>
 			<string>NSTableView</string>
+			<string>IBNSLayoutConstraint</string>
+			<string>NSCustomObject</string>
+			<string>NSCustomView</string>
+			<string>NSTableColumn</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -98,7 +100,7 @@
 										<string key="NSFrameSize">{646, 493}</string>
 										<reference key="NSSuperview" ref="395501028"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="993177858"/>
+										<reference key="NSNextKeyView" ref="583861199"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="693653183">
 											<reference key="NSNextResponder" ref="583861199"/>
@@ -309,7 +311,6 @@
 								<string key="NSFrame">{{0, 421}, {388, 15}}</string>
 								<reference key="NSSuperview" ref="1018395265"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="1018395265"/>
 								<string key="NSAction">_doScroller:</string>
@@ -333,7 +334,7 @@
 						<string key="NSFrameSize">{646, 510}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="583861199"/>
+						<reference key="NSNextKeyView" ref="395501028"/>
 						<int key="NSsFlags">133680</int>
 						<reference key="NSVScroller" ref="993177858"/>
 						<reference key="NSHScroller" ref="550279905"/>
@@ -347,6 +348,25 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1018395265"/>
 				<string key="NSClassName">NSView</string>
+			</object>
+			<object class="NSMenu" id="668823873">
+				<string key="NSTitle"/>
+				<array class="NSMutableArray" key="NSMenuItems">
+					<object class="NSMenuItem" id="522179244">
+						<reference key="NSMenu" ref="668823873"/>
+						<string key="NSTitle">Copy Spotify URI</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<object class="NSCustomResource" key="NSOnImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuCheckmark</string>
+						</object>
+						<object class="NSCustomResource" key="NSMixedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">NSMenuMixedState</string>
+						</object>
+					</object>
+				</array>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -382,6 +402,22 @@
 						<reference key="destination" ref="283417545"/>
 					</object>
 					<int key="connectionID">93</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">copySpotifyURI:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="522179244"/>
+					</object>
+					<int key="connectionID">103</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">menu</string>
+						<reference key="source" ref="1018395265"/>
+						<reference key="destination" ref="668823873"/>
+					</object>
+					<int key="connectionID">102</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -755,6 +791,19 @@
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Track Container Array Controller</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100</int>
+						<reference key="object" ref="668823873"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="522179244"/>
+						</array>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">101</int>
+						<reference key="object" ref="522179244"/>
+						<reference key="parent" ref="668823873"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -768,6 +817,8 @@
 					<reference ref="391403014"/>
 				</array>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="101.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="36.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="37.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -800,7 +851,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">99</int>
+			<int key="maxID">103</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -895,6 +946,10 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NSMenuCheckmark">{11, 11}</string>
+			<string key="NSMenuMixedState">{10, 3}</string>
+		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 	</data>
 </archive>
