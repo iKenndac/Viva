@@ -42,6 +42,11 @@ static void * const kLocalFilesViewControllerInternalKVOContext = @"blah";
 	[self removeObserver:self forKeyPath:@"allTracksArrayController.arrangedObjects"];
 }
 
+-(void)awakeFromNib {
+	[super awakeFromNib];
+	[(id)self tableView:self.trackTable didClickTableColumn:[self.trackTable tableColumnWithIdentifier:@"artist"]];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == kLocalFilesViewControllerInternalKVOContext) {
         [self rebuildTrackContainers];
