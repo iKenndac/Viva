@@ -410,6 +410,8 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         return;
     
     AUGraphStart(audioProcessingGraph);
+	if (outputUnit != NULL)
+		AudioOutputUnitStart(outputUnit);
 }
 
 -(void)stopAudioQueue {
@@ -417,13 +419,21 @@ static NSUInteger const fftMagnitudeExponent = 4; // Must be power of two
         return;
     
 	// Sometimes, because Core Audio is such a young, untested API, AUGraphStop… doesn't.
+	// There's probably some dumb thing I'm doing wrong here.
 	Boolean isRunning = NO;
 	AUGraphIsRunning(audioProcessingGraph, &isRunning);
 	
-	for (NSUInteger i = 0; i < 3 && isRunning; i++) {
+	for (NSUInteger i = 0; i < 10 && isRunning; i++) {
 		AUGraphStop(audioProcessingGraph);
 		AUGraphIsRunning(audioProcessingGraph, &isRunning);
 	}
+	
+	if (isRunning)
+		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), @"Failed to stop audio graph!");
+	
+	// Forcefully stop the output audio unit too.
+	if (outputUnit != NULL)
+		AudioOutputUnitStop(outputUnit);
 }
 
 -(void)clearAudioBuffers {
