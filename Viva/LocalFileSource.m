@@ -530,7 +530,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		// This is an MP4 atom
 		NSData *data = [discNumberItem dataValue];
 		
-		if (data.length == 8) {
+		if (data.length == 6) {
 			UInt16 *values = (UInt16 *)[[discNumberItem dataValue] bytes];
 			UInt16 disc = EndianU16_BtoN(values[1]);
 			//UInt16 discOf = EndianU16_BtoN(values[2]);
