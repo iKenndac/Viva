@@ -8,13 +8,24 @@
 
 #import "SPTrack+LocalFileExtensions.h"
 #import <objc/runtime.h>
+#import "LocalFilesController.h"
 
 @implementation SPTrack (LocalFileExtensions)
 
 static const void *localFileKey = @"localFile";
 
 -(LocalFile *)localFile {
-	return objc_getAssociatedObject(self, localFileKey);
+	LocalFile *file = objc_getAssociatedObject(self, localFileKey);
+	
+	if (file)
+		return file;
+	
+	if (self.spotifyURL.spotifyLinkType != SP_LINKTYPE_LOCALTRACK)
+		return nil;
+	
+	file = [[LocalFilesController sharedInstance] localFileForTrack:self];
+	self.localFile = file;
+	return file;
 }
 
 -(void)setLocalFile:(LocalFile *)localFile {
