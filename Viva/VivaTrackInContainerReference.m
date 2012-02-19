@@ -18,7 +18,7 @@
 
 @property (copy, readwrite) NSString *uniqueId;
 @property (readwrite, weak) SPTrack *track;
-@property (readwrite, weak) SPPlaylist *container;
+@property (readwrite, weak) id container;
 
 @end
 

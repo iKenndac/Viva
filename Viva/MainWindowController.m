@@ -18,7 +18,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 @interface MainWindowController ()
 
-@property (nonatomic, strong, readwrite) NSViewController *currentViewController;
+@property (nonatomic, strong, readwrite) NSViewController <VivaViewController> *currentViewController;
 @property (nonatomic, strong, readwrite) FooterViewController *footerViewController;
 @property (nonatomic, strong, readwrite) VivaURLNavigationController *navigationController;
 
