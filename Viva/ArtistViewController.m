@@ -37,9 +37,9 @@
 		self.albumProxyCache = [[NSMutableDictionary alloc] init];
 		
 		SPSession *appSession = [[NSApp delegate] session];
-		self.artistBrowse = [[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL]
-																 inSession:appSession
-															   type:SP_ARTISTBROWSE_NO_TRACKS];
+		self.artistBrowse = [[SPArtistBrowse alloc] initWithArtist:[SPArtist artistWithArtistURL:aURL inSession:appSession]
+														 inSession:appSession
+															  type:SP_ARTISTBROWSE_NO_TRACKS];
 	}
 	return self;
 }
