@@ -15,12 +15,12 @@
 -(IBAction)nameFieldWasEdited:(id)sender {
 	
 	NSDictionary *itemDescriptor = [self objectValue];
-	id obj = [[SPSession sharedSession] objectRepresentationForSpotifyURL:[itemDescriptor valueForKey:SPSidebarURLKey]
-																 linkType:NULL];
-	
-	if ([obj isKindOfClass:[SPPlaylist class]]) {
-		[(SPPlaylist *)obj setName:self.textField.stringValue];
-	}
+	[[SPSession sharedSession] objectRepresentationForSpotifyURL:[itemDescriptor valueForKey:SPSidebarURLKey]
+														callback:^(sp_linktype linkType, id objectRepresentation) {
+															if ([objectRepresentation isKindOfClass:[SPPlaylist class]]) {
+																[(SPPlaylist *)objectRepresentation setName:self.textField.stringValue];
+															}
+														}];
 }
 
 @end

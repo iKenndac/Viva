@@ -41,7 +41,7 @@
  @param error An NSError pointer that will be filled with any error that occurs.
  @return Returns `YES` if loading started successfully, or `NO` if the track cannot be played.
  */
--(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error;
+-(void)preloadTrackForPlayback:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block;
 
 /** Start playing the given track.
  
@@ -49,7 +49,7 @@
  @param error An NSError pointer that will be filled with any error that occurs.
  @return Returns `YES` if playback started successfully, or `NO` if the track cannot be played.
  */
--(BOOL)playTrack:(SPTrack *)aTrack error:(NSError **)error;
+-(void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block;
 
 /** Seek the current playback position to the given time. 
  

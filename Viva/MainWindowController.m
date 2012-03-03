@@ -300,16 +300,17 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 #pragma mark Playlists
 
 -(IBAction)newPlaylist:(id)sender {
-	[[[SPSession sharedSession] userPlaylists] createPlaylistWithName:@"New Playlist"];
+	[[[SPSession sharedSession] userPlaylists] createPlaylistWithName:@"New Playlist" callback:nil];
 }
 
 -(IBAction)newPlaylistFolder:(id)sender {
-	NSError *error = nil;
 	[[[SPSession sharedSession] userPlaylists] createFolderWithName:@"New Folder"
-															  error:&error];
-	if (error) {
-		[self presentError:error];
-	}
+														   callback:^(SPPlaylistFolder *folder, NSError *error) {
+															   if (error) {
+																   [self presentError:error];
+															   }
+														   }];
+	
 }
 
 #pragma mark -

@@ -30,6 +30,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @property (strong, readwrite) VivaPlaybackManager *playbackManager; 
 @property (strong, readwrite) SPMediaKeyTap *mediaKeyHandler;
 @property (strong, readwrite) NSURL *urlToHandleOnLogin;
+@property (readwrite, nonatomic, strong) id itemToActionLater;
 
 @end
 
@@ -40,6 +41,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @synthesize dockMenu;
 @synthesize mediaKeyHandler;
 @synthesize urlToHandleOnLogin;
+@synthesize itemToActionLater;
 
 -(SPSession *)session {
 	return [SPSession sharedSession];
@@ -76,8 +78,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
             muValue = [NSString stringWithUTF8String:argv[argIndex + 1]];
     }
     
-	#error Please put your appkey.c file in the root of the Viva project and remove this error
-    #import "../appkey.c"
+	//#error Please put your appkey.c file in the root of the Viva project and remove this error
+	#import "../appkey.c"
     
     NSString *userAgent = kVivaLibSpotifyUserAgentName;
     if (muValue)
@@ -250,18 +252,20 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	if (![[VivaInternalURLManager sharedInstance] canHandleURL:url]) {
 		
 		if ([url spotifyLinkType] == SP_LINKTYPE_TRACK) {
-			SPTrack *track = [[SPSession sharedSession] trackForURL:url];
 			
-			if (track.album.isLoaded) {
-				SPAlbum *album = track.album;
-				[mainWindowController navigateToURL:album.spotifyURL withContext:track];
-			} else {
-				[track addObserver:self
-						forKeyPath:@"album.loaded"
-						   options:0
-						   context:(__bridge void *)kSPPerformActionOnNotificationKVOContext];
-			}
-			return;
+			[[SPSession sharedSession] trackForURL:url callback:^(SPTrack *track) {
+				if (track.album.isLoaded) {
+					SPAlbum *album = track.album;
+					[mainWindowController navigateToURL:album.spotifyURL withContext:track];
+				} else {
+					[track addObserver:self
+							forKeyPath:@"album.loaded"
+							   options:0
+							   context:(__bridge void *)kSPPerformActionOnNotificationKVOContext];
+					
+					self.itemToActionLater = track;
+				}
+			}];
 		}
 	}
 	mainWindowController.navigationController.thePresent = url;
@@ -275,6 +279,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 			[track removeObserver:self forKeyPath:@"album.loaded"];
 			SPAlbum *album = track.album;
 			[mainWindowController navigateToURL:album.spotifyURL withContext:track];
+			self.itemToActionLater = nil;
 		}
 		
     } else {

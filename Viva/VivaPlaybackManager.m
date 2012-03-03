@@ -26,7 +26,7 @@
 @property (readwrite, strong, nonatomic) id <SPSessionPlaybackProvider> currentPlaybackProvider;
 
 
--(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error;
+-(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack callback:(SPErrorableOperationCallback)block;
 
 -(id <VivaTrackContainer>)nextTrackContainerInCurrentContext;
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext;
@@ -208,23 +208,20 @@
         }
     }
     
-    NSError *error = nil;
-    if (container && [self playTrackContainerInCurrentContext:container error:&error]) {
-        self.currentPlaybackProvider.playing = YES;
-    } else {
-		
-		NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
-		[errorDict setValue:container forKey:kVivaTrackContainerKey];
-		if (error) [errorDict setValue:error forKey:NSUnderlyingErrorKey];
-		
-		[self.delegate playbackManager:self
-			 didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
-														   code:kVivaTrackFailedToPlayErrorCode
-													   userInfo:errorDict]];
+	if (container == nil) {
+		[self bailOutOfAudioPlaybackWithError:nil fromTrackContainer:nil informDelegate:YES];
+		return;
 	}
+	
+    [self playTrackContainerInCurrentContext:container callback:^(NSError *error) {
+		if (error)
+			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:container informDelegate:YES];
+		else
+			self.currentPlaybackProvider.playing = YES;
+	}];
 }
 
--(BOOL)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack error:(NSError **)error {
+-(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack callback:(SPErrorableOperationCallback)block {
 	
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
     self.currentTrackPosition = 0.0;
@@ -239,20 +236,21 @@
 	
 	self.currentPlaybackProvider.audioDeliveryDelegate = self.audioController;
 	
-	BOOL isPlaying = [self.currentPlaybackProvider playTrack:newTrack.track error:error];
-    
-	if (isPlaying) {
-		if (self.shufflePlayback)
-			[self addTrackContainerToShufflePool:currentTrackContainer];
+	[self.currentPlaybackProvider playTrack:newTrack.track callback:^(NSError *error) {
 		
-		self.currentTrackContainer = newTrack;
-		self.audioController.audioOutputEnabled = YES;
-	} else {
-		self.audioController.audioOutputEnabled = NO;
-		[self.audioController clearAudioBuffers];
-	}
-	
-    return isPlaying;
+		if (error == nil) {
+			if (self.shufflePlayback)
+				[self addTrackContainerToShufflePool:currentTrackContainer];
+			
+			self.currentTrackContainer = newTrack;
+			self.audioController.audioOutputEnabled = YES;
+		} else {
+			self.audioController.audioOutputEnabled = NO;
+			[self.audioController clearAudioBuffers];
+		}
+		
+		if (block) block(error);
+	}];
 }
 	
 -(void)seekToTrackPosition:(NSTimeInterval)newPosition {
@@ -327,17 +325,17 @@
     if (self.shufflePlayback && self.currentTrackContainer != nil)
         [self addTrackContainerToPastShuffleHistory:self.currentTrackContainer];
     
-    NSError *error = nil;
-	if (nextContainer != nil && [self playTrackContainerInCurrentContext:nextContainer error:&error]) {
-		self.currentPlaybackProvider.playing = wasPlaying;
-	} else {
-		self.currentTrackContainer = nil;
-		self.audioController.audioOutputEnabled = NO;
-		[self.audioController clearAudioBuffers];
-		self.currentTrackPosition = 0;
-        if (error)
-            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+	if (nextContainer == nil) {
+		[self bailOutOfAudioPlaybackWithError:nil fromTrackContainer:nil informDelegate:NO];
+		return;
 	}
+	
+	[self playTrackContainerInCurrentContext:nextContainer callback:^(NSError *error) {
+		if (error)
+			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:nextContainer informDelegate:NO];
+		else
+			self.currentPlaybackProvider.playing = wasPlaying;
+	}];
 }
 
 -(id <VivaTrackContainer>)previousTrackContainerInCurrentContext {
@@ -407,17 +405,38 @@
     if (self.shufflePlayback && self.currentTrackContainer != nil)
         [self addTrackContainerToFutureShuffleHistory:self.currentTrackContainer];
 
-    NSError *error = nil;
-	if (previousContainer != nil && [self playTrackContainerInCurrentContext:previousContainer error:&error]) {
-		self.currentPlaybackProvider.playing = wasPlaying;
-	} else {
-		self.currentTrackContainer = nil;
-		self.audioController.audioOutputEnabled = NO;
-		[self.audioController clearAudioBuffers];
-		self.currentTrackPosition = 0;
-        if (error)
-            NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+	if (previousContainer == nil) {
+		[self bailOutOfAudioPlaybackWithError:nil fromTrackContainer:nil informDelegate:NO];
+		return;
 	}
+	
+	[self playTrackContainerInCurrentContext:previousContainer callback:^(NSError *error) {
+		if (error)
+			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:previousContainer informDelegate:NO];
+		else
+			self.currentPlaybackProvider.playing = wasPlaying;
+	}];
+}
+
+-(void)bailOutOfAudioPlaybackWithError:(NSError *)error fromTrackContainer:(id <VivaTrackContainer>)container informDelegate:(BOOL)informDelegate {
+	self.currentTrackContainer = nil;
+	self.audioController.audioOutputEnabled = NO;
+	[self.audioController clearAudioBuffers];
+	self.currentTrackPosition = 0;
+	
+	if (error)
+		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+	
+	if (informDelegate) {
+		NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
+		[errorDict setValue:container forKey:kVivaTrackContainerKey];
+		if (error) [errorDict setValue:error forKey:NSUnderlyingErrorKey];
+		
+		[self.delegate playbackManager:self didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
+																						  code:kVivaTrackFailedToPlayErrorCode
+																					  userInfo:errorDict]];
+	}
+	
 }
 
 #pragma mark -
@@ -576,7 +595,7 @@
 		if (!hasPreCachedNextTrack && self.currentTrack.duration - self.currentTrackPosition <= kNextTrackCacheThreshold) {
 			id <VivaTrackContainer> nextContainer = [self nextTrackContainerInCurrentContext];
 			if (nextContainer != nil) {
-				[self.currentPlaybackProvider preloadTrackForPlayback:nextContainer.track error:nil];
+				[self.currentPlaybackProvider preloadTrackForPlayback:nextContainer.track callback:nil];
 				@synchronized(self) {
 					hasPreCachedNextTrack = YES;
 				}

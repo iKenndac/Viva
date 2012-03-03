@@ -29,9 +29,12 @@
 				  context:nil];
 		
 		SPSession *appSession = [[NSApp delegate] session];
-		self.albumBrowse = [[SPAlbumBrowse alloc] initWithAlbum:[SPAlbum albumWithAlbumURL:aURL
-																								inSession:appSession]
-															  inSession:appSession];
+		
+		[SPAlbumBrowse browseAlbumAtURL:aURL
+							  inSession:appSession
+							   callback:^(SPAlbumBrowse *newAlbumBrowse) {
+								   self.albumBrowse = newAlbumBrowse;
+							   }];
 	}
 	return self;
 }

@@ -64,22 +64,21 @@
 	return self.currentWorker.decoderStatistics;
 }
 
--(BOOL)preloadTrackForPlayback:(SPTrack *)aTrack error:(NSError **)error {
+-(void)preloadTrackForPlayback:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {
 	// No-op for now.
-	return NO;
+	return;
 }
 
--(BOOL)playTrack:(SPTrack *)aTrack error:(NSError **)error {
+-(void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {
 	
 	LocalFile *localFile = aTrack.localFile;
 	
 	if (localFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:localFile.path]) {
-		if (error)
-			*error = [NSError errorWithDomain:@"com.spotify.Viva.LocalFileDecoder"
-										 code:kVivaTrackDecodingFailedErrorCode
-									 userInfo:[NSDictionary dictionaryWithObject:@"Local file not found."
-																		  forKey:NSLocalizedDescriptionKey]];
-		return NO;
+		if (block) block([NSError errorWithDomain:@"com.spotify.Viva.LocalFileDecoder"
+											 code:kVivaTrackDecodingFailedErrorCode
+										 userInfo:[NSDictionary dictionaryWithObject:@"Local file not found."
+																			  forKey:NSLocalizedDescriptionKey]]);
+		return;
 	}
 	
 	[self unloadPlayback];
@@ -95,7 +94,7 @@
 	[self.currentWorker decodeLocalFile:self.currentFile fromPosition:0.0];
 	self.currentWorker.playing = self.isPlaying;
 	
-	return YES;
+	if (block) block(nil);
 }
 
 -(void)seekPlaybackToOffset:(NSTimeInterval)offset {

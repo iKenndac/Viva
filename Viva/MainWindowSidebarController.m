@@ -91,12 +91,17 @@
 				}
 							
 				if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
-					id playlist = [[SPSession sharedSession] playlistForURL:self.selectedURL];
-					if (playlist != nil) {
-						NSInteger row = [self.sidebar rowForItem:playlist];
-						[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-						return;
-					}
+					
+					[[SPSession sharedSession] playlistForURL:self.selectedURL
+													 callback:^(SPPlaylist *playlist) {
+														 if (playlist != nil) {
+															 NSInteger row = [self.sidebar rowForItem:playlist];
+															 [self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+															 return;
+														 } else {
+															 [self.sidebar selectRowIndexes:nil byExtendingSelection:NO];
+														 }
+													 }];
 				}
 			}
 		}
@@ -415,8 +420,18 @@
 		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
 		
 		for (NSURL *url in trackURLs) {
-			SPTrack *track = nil;
-			track = [SPTrack trackForTrackURL:url inSession:[SPSession sharedSession]];
+			__block SPTrack *track = nil;
+			
+			dispatch_sync([SPSession libSpotifyQueue], ^{
+				
+				sp_link *link = [url createSpotifyLink];
+				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {
+					sp_track *tr = sp_link_as_track(link);
+					track = [SPTrack trackForTrackStruct:tr inSession:[SPSession sharedSession]];
+					sp_link_release(link);
+				}
+			});
+			
 			if (track != nil) {
 				[tracksToAdd addObject:track];
 			}
@@ -444,7 +459,7 @@
 		parentId = [[sourceFolderInfo valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	} else {
 		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
-		source = [[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
+		source = nil;//[[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
 		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 	
@@ -466,16 +481,14 @@
 	if (sourceIndex == destinationIndex)
 		return YES;
 	
-	NSError *error = nil;	
-	BOOL greatSuccess = [userPlaylists movePlaylistOrFolderAtIndex:sourceIndex
-														  ofParent:parent
-														   toIndex:destinationIndex
-													   ofNewParent:item
-															 error:&error];
-	if (!greatSuccess) {
-		[self.sidebar.window.windowController presentError:error];
-		return NO;
-	}
+	[userPlaylists movePlaylistOrFolderAtIndex:sourceIndex
+									  ofParent:parent
+									   toIndex:destinationIndex
+								   ofNewParent:item
+									  callback:^(NSError *error) {
+										  if (error)
+											  [self.sidebar.window.windowController presentError:error];
+									  }];
 	return YES;
 }
 

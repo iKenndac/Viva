@@ -37,8 +37,11 @@
 		
 		self.playlistProxy = [[SPPlaylistDelegateProxy alloc] initWithProxyReceiver:self];
 		
-		self.playlist = [[SPSession sharedSession] playlistForURL:aURL];
-		self.playlist.delegate = self.playlistProxy;
+		[[SPSession sharedSession] playlistForURL:aURL callback:^(SPPlaylist *createdPlaylist) {
+			self.playlist = createdPlaylist;
+			self.playlist.delegate = self.playlistProxy;
+		}];
+		
 	}
 	return self;
 }
@@ -211,7 +214,17 @@
 		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
 		
 		for (NSURL *trackURL in trackURLs) {
-			SPTrack *track = [SPTrack trackForTrackURL:trackURL inSession:self.playlist.session];
+			__block SPTrack *track = nil;
+			
+			dispatch_sync([SPSession libSpotifyQueue], ^{
+				
+				sp_link *link = [trackURL createSpotifyLink];
+				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {
+					sp_track *tr = sp_link_as_track(link);
+					track = [SPTrack trackForTrackStruct:tr inSession:[SPSession sharedSession]];
+					sp_link_release(link);
+				}
+			});
 			if (track != nil) {
 				[tracksToAdd addObject:track];
 			}

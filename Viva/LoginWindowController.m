@@ -111,9 +111,9 @@
 }
 
 -(void)attemptAutoLogin {
-    NSError *err = nil;
-    if ([[SPSession sharedSession] attemptLoginWithStoredCredentials:&err])
-        self.isLoggingIn = YES;
+    [[SPSession sharedSession] attemptLoginWithStoredCredentials:^(NSError *error) {
+		if (error == nil) self.isLoggingIn = YES;
+	}];
 }
 
 -(void)reset {

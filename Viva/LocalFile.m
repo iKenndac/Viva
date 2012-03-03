@@ -46,7 +46,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == kLocalFileInternalKVOContext) {
-        cachedTrack = nil;
+		[self updateCachedTrack];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -69,20 +69,34 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	return [NSSet setWithObjects:@"album", @"artist", @"title", @"duration", @"discNumber", @"trackNumber", nil];
 }
 
+-(void)updateCachedTrack {
+	NSString *encodedArtist = [self urlEncodedStringForString:self.artist == nil ? @"" : self.artist];
+	NSString *encodedTitle = [self urlEncodedStringForString:self.title == nil ? @"" : self.title];
+	NSString *encodedAlbum = [self urlEncodedStringForString:self.album == nil ? @"" : self.album];
+	
+	NSString *localUrlString = [NSString stringWithFormat:@"spotify:local:%@:%@:%@:%u",
+								encodedArtist, encodedAlbum, encodedTitle, self.duration.integerValue];
+	
+	__block SPTrack *newTrack = nil;
+	
+	dispatch_sync([SPSession libSpotifyQueue], ^{
+		sp_link *link = sp_link_create_from_string([localUrlString UTF8String]);
+		if (link != NULL) {
+			sp_track *track = sp_link_as_track(link);
+			newTrack = [SPTrack trackForTrackStruct:track inSession:[SPSession sharedSession]];
+			sp_link_release(link);
+		}
+	});
+	
+	cachedTrack = newTrack;
+	cachedTrack.localFile = self;
+}
+
 -(SPTrack *)track {
 	
-	if (cachedTrack == nil) {
-		NSString *encodedArtist = [self urlEncodedStringForString:self.artist == nil ? @"" : self.artist];
-		NSString *encodedTitle = [self urlEncodedStringForString:self.title == nil ? @"" : self.title];
-		NSString *encodedAlbum = [self urlEncodedStringForString:self.album == nil ? @"" : self.album];
-		
-		NSString *localUrlString = [NSString stringWithFormat:@"spotify:local:%@:%@:%@:%u",
-									encodedArtist, encodedAlbum, encodedTitle, self.duration.integerValue];
-		
-		cachedTrack = [SPTrack trackForTrackURL:[NSURL URLWithString:localUrlString] inSession:[SPSession sharedSession]];
-		cachedTrack.localFile = self;
-	}
-	
+	if (cachedTrack == nil)
+		[self updateCachedTrack];
+
 	return cachedTrack;
 }
 

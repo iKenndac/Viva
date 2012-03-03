@@ -1,7 +1,7 @@
 [submodule "cocoalibspotify"]
 	path = cocoalibspotify
 	url = git://github.com/spotify/cocoalibspotify.git
-	branch = experimental/ARC
+	branch = experimental/ARC-threaded
 [submodule "Scribbler"]
 	path = Scribbler
 	url = git://github.com/iKenndac/Scribbler.git
