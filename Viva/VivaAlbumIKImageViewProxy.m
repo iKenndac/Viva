@@ -78,7 +78,7 @@
 	if (self.mode == kSubtitleModeArtistName)
 		return self.album.artist.name;
 	else
-		return [NSString stringWithFormat:@"%d", self.album.year];
+		return [NSString stringWithFormat:@"%lu", self.album.year];
 }
 
 @end

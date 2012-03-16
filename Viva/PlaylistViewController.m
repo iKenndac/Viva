@@ -216,7 +216,7 @@
 		for (NSURL *trackURL in trackURLs) {
 			__block SPTrack *track = nil;
 			
-			dispatch_sync([SPSession libSpotifyQueue], ^{
+			SPDispatchSyncIfNeeded(^{
 				
 				sp_link *link = [trackURL createSpotifyLink];
 				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {

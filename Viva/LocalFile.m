@@ -74,12 +74,12 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	NSString *encodedTitle = [self urlEncodedStringForString:self.title == nil ? @"" : self.title];
 	NSString *encodedAlbum = [self urlEncodedStringForString:self.album == nil ? @"" : self.album];
 	
-	NSString *localUrlString = [NSString stringWithFormat:@"spotify:local:%@:%@:%@:%u",
+	NSString *localUrlString = [NSString stringWithFormat:@"spotify:local:%@:%@:%@:%ld",
 								encodedArtist, encodedAlbum, encodedTitle, self.duration.integerValue];
 	
 	__block SPTrack *newTrack = nil;
 	
-	dispatch_sync([SPSession libSpotifyQueue], ^{
+	SPDispatchSyncIfNeeded(^{
 		sp_link *link = sp_link_create_from_string([localUrlString UTF8String]);
 		if (link != NULL) {
 			sp_track *track = sp_link_as_track(link);

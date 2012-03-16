@@ -73,7 +73,7 @@
 }
 
 -(NSString *)description {
-	return [NSString stringWithFormat:@"%@: %@: %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f",
+	return [NSString stringWithFormat:@"%@: %@: %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f, %1.2f",
 			[super description], self.name, self.band1, self.band2, self.band3, self.band4, self.band5, 
 			self.band6, self.band7, self.band8, self.band9, self.band10];
 }
