@@ -103,3 +103,4 @@ static NSString * const kSPSidebarItemUserPlaylistsPlaceholderTitle = @"SPUserPl
 static NSString * const SPSidebarTitleKey = @"title";
 static NSString * const SPSidebarImageKey = @"image";
 static NSString * const SPSidebarURLKey = @"url";
+static NSString * const SPSidebarOriginalItemKey = @"originalItem";

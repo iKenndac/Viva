@@ -17,7 +17,7 @@
 
 @property (readwrite, copy, nonatomic) NSArray *groups;
 
--(NSMutableDictionary *)unifiedDictionaryForItem:(id)item;
+-(NSDictionary *)unifiedDictionaryForItem:(id)item;
 -(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder;
 -(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex;
 
@@ -125,30 +125,30 @@
 	self.sidebar = nil;
 }
 
--(NSMutableDictionary *)unifiedDictionaryForItem:(id)item {
+-(NSDictionary *)unifiedDictionaryForItem:(id)item {
 	
 	if ([item isKindOfClass:[SPPlaylist class]]) {
 		SPPlaylist *playlist = item;
-		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
-				playlist.name, SPSidebarTitleKey,
+		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSImage imageNamed:@"sidebar-playlist"], SPSidebarImageKey,
-				playlist.spotifyURL, SPSidebarURLKey, 
+				playlist, SPSidebarOriginalItemKey,
+				playlist.spotifyURL, SPSidebarURLKey,
 				nil];
 		
 	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
 		SPPlaylistFolder *folder = item;
-		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
-				folder.name, SPSidebarTitleKey,
+		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
+				folder, SPSidebarOriginalItemKey,
 				nil];
 		
 	} else if ([item valueForKey:kSPSidebarGroupIdentifierKey]) {
-		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[item valueForKey:kSPSidebarGroupTitleKey], SPSidebarTitleKey,
 				nil];
 		
 	} else if ([item valueForKey:kSPSidebarItemTitleKey]) {
-		return [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		return [NSDictionary dictionaryWithObjectsAndKeys:
 				[item valueForKey:kSPSidebarItemTitleKey], SPSidebarTitleKey,
 				[NSImage imageNamed:[item valueForKey:kSPSidebarItemImageKeyKey]], SPSidebarImageKey,
 				[NSURL URLWithString:[item valueForKey:kSPSidebarItemSpotifyURLKey]], SPSidebarURLKey, 
@@ -286,7 +286,7 @@
 	return NO; //[item isKindOfClass:[NSDictionary class]] && [[item valueForKey:SPGroupTitleIsShownKey] boolValue];
 }
 
-- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+-(id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
 	return [self unifiedDictionaryForItem:item];
 }
 
