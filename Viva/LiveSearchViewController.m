@@ -11,6 +11,8 @@
 #import "LiveSearch.h"
 #import "VivaURLNavigationController.h"
 #import "MainWindowController.h"
+#import "Constants.h"
+#import "VivaLocalSPImage.h"
 
 @implementation LiveSearchViewController
 @synthesize tableView;
@@ -71,7 +73,7 @@
     NSDictionary *result = [self tableView:self.tableView 
                  objectValueForTableColumn:[self.tableView.tableColumns objectAtIndex:[self.tableView columnWithIdentifier:@"DataColumn"]] 
                                        row:self.tableView.selectedRow];
-
+	
 	if ([result valueForKey:@"url"]) {
         ((VivaURLNavigationController *)[(MainWindowController *)self.view.window.parentWindow.windowController navigationController]).thePresent = [result valueForKey:@"url"];
         [self.popover performClose:nil];
@@ -154,56 +156,49 @@
 	
 	if (rowIndex == 0 && search.topHit != nil) {
 		
-		if ([search.topHit isKindOfClass:[SPTrack class]]) {
-			[objectValue setValue:((SPTrack *)search.topHit).album.cover forKey:@"cover"];
-			[objectValue setValue:((SPTrack *)search.topHit).name forKey:@"name"];
-			
-		} else if ([search.topHit isKindOfClass:[SPArtist class]]) {
-			[objectValue setValue:[NSImage imageNamed:NSImageNameUser] forKey:@"cover.image"];
-			[objectValue setValue:((SPArtist *)search.topHit).name forKey:@"name"];
-			
-		} else if ([search.topHit isKindOfClass:[SPAlbum class]]) {
-			[objectValue setValue:((SPAlbum *)search.topHit).cover forKey:@"cover"];
-			[objectValue setValue:((SPAlbum *)search.topHit).name forKey:@"name"];
-		} 
+		if ([search.topHit isKindOfClass:[SPArtist class]]) {
+			[objectValue setValue:[[VivaLocalSPImage alloc] initWithImage:[NSImage imageNamed:NSImageNameUser]]
+						   forKey:@"cover"];
+		}
         
-        [objectValue setValue:[search.topHit spotifyURL] forKey:@"url"];
+		[objectValue setValue:[search.topHit spotifyURL] forKey:@"url"];
+		[objectValue setValue:search.topHit forKey:SPSidebarOriginalItemKey];
 		
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows) {
 		
 		if (search.topTracks.count == 0) {
-			[objectValue setValue:@"No Matches" forKey:@"name"];
+			[objectValue setValue:@"No Matches" forKey:SPSidebarTitleKey];
 		} else {
             SPTrack *track = [search.topTracks objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier];
-			[objectValue setValue:track.album.cover forKey:@"cover"];
-			[objectValue setValue:track.name forKey:@"name"];
-            [objectValue setValue:track.spotifyURL forKey:@"url"];
+			[objectValue setValue:track.spotifyURL forKey:@"url"];
+			[objectValue setValue:track forKey:SPSidebarOriginalItemKey];
 		}
 		
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + 1 && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + 1) {
 		
 		if (search.topArtists.count == 0) {
-			[objectValue setValue:@"No Matches" forKey:@"name"];
+			[objectValue setValue:@"No Matches" forKey:SPSidebarTitleKey];
 		} else {
             SPArtist *artist = [search.topArtists objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - 1];
-			[objectValue setValue:[NSImage imageNamed:@"NSUser"] forKey:@"cover.image"];
-			[objectValue setValue:artist.name forKey:@"name"];
-            [objectValue setValue:artist.spotifyURL forKey:@"url"];
+			[objectValue setValue:[[VivaLocalSPImage alloc] initWithImage:[NSImage imageNamed:NSImageNameUser]]
+						   forKey:@"cover"];
+			[objectValue setValue:artist.spotifyURL forKey:@"url"];
+			[objectValue setValue:artist forKey:SPSidebarOriginalItemKey];
 		}
 	} else if (rowIndex >= numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + 2 && rowIndex < numberOfTopHitRows + groupOffsetModifier + numberOfTrackRows + numberOfArtistRows + numberOfAlbumRows + 2) {
 		
 		if (search.topAlbums.count == 0) {
-			[objectValue setValue:@"No Matches" forKey:@"name"];
+			[objectValue setValue:@"No Matches" forKey:SPSidebarTitleKey];
 		} else {
             SPAlbum *album = [search.topAlbums objectAtIndex:rowIndex - numberOfTopHitRows - groupOffsetModifier - numberOfTrackRows - numberOfArtistRows - 2];
-			[objectValue setValue:album.cover forKey:@"cover"];
-			[objectValue setValue:album.name forKey:@"name"];
-            [objectValue setValue:album.spotifyURL forKey:@"url"];
+			[objectValue setValue:album.spotifyURL forKey:@"url"];
+			[objectValue setValue:album forKey:SPSidebarOriginalItemKey];
 		}
 	} else {
-		[objectValue setValue:@"Show All…" forKey:@"name"];
-		[objectValue setValue:[NSImage imageNamed:@"livesearch-showAll"] forKey:@"cover.image"];
-        [objectValue setValue:search.latestSearch.spotifyURL forKey:@"url"];
+		[objectValue setValue:@"Show All…" forKey:SPSidebarTitleKey];
+		[objectValue setValue:[[VivaLocalSPImage alloc] initWithImage:[NSImage imageNamed:@"livesearch-showAll"]]
+					   forKey:@"cover"];
+		[objectValue setValue:search.latestSearch.spotifyURL forKey:@"url"];
 	}
 	
 	return objectValue;
