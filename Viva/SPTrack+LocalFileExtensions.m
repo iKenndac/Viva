@@ -17,7 +17,7 @@ static const void *localFileKey = @"localFile";
 -(LocalFile *)localFile {
 	LocalFile *file = objc_getAssociatedObject(self, localFileKey);
 	
-	if (file)
+	if (file && file.path.length > 0)
 		return file;
 	
 	if (self.spotifyURL.spotifyLinkType != SP_LINKTYPE_LOCALTRACK)
