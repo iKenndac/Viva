@@ -459,6 +459,7 @@
 	} else {
 		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
 		source = nil;//[[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
+#warning This method sucks.
 		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 	
@@ -480,14 +481,13 @@
 	if (sourceIndex == destinationIndex)
 		return YES;
 	
-	[userPlaylists movePlaylistOrFolderAtIndex:sourceIndex
-									  ofParent:parent
-									   toIndex:destinationIndex
-								   ofNewParent:item
-									  callback:^(NSError *error) {
-										  if (error)
-											  [self.sidebar.window.windowController presentError:error];
-									  }];
+	[userPlaylists moveItem:source
+					toIndex:destinationIndex
+				ofNewParent:item
+				   callback:^(NSError *error) {
+					   if (error)
+						   [self.sidebar.window.windowController presentError:error];
+				   }];
 	return YES;
 }
 
