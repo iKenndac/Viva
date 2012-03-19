@@ -10,8 +10,6 @@
 
 @interface VivaSidebarTableCellView : NSTableCellView
 
--(IBAction)nameFieldWasEdited:(id)sender;
-
 @property (nonatomic, readwrite, strong) id originalItem;
 @property (nonatomic, readonly, copy) NSString *title;
 

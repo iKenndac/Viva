@@ -263,7 +263,12 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		
 		id playlist = [self.sourceList itemAtRow:self.sourceList.selectedRow];
 		
-		if (![[playlist representedObject] isKindOfClass:[SPPlaylistFolder class]] && [[[playlist representedObject] tracks] count] > 0) {
+		if (![playlist isKindOfClass:[SPPlaylist class]] && ![playlist isKindOfClass:[SPPlaylistFolder class]]) {
+			NSBeep();
+			return;
+		}
+		
+		if (![playlist isKindOfClass:[SPPlaylistFolder class]] && [[playlist items] count] > 0) {
 			
 			[[NSAlert alertWithMessageText:@"Are you sure you want to delete this playlist?"
 							 defaultButton:@"Delete"
@@ -285,14 +290,8 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	
 	if (returnCode == NSAlertDefaultReturn) {
-		SPPlaylist *playlist = [(__bridge id)contextInfo representedObject];
-		SPPlaylistFolder *parent = [[self.sourceList parentForItem:(__bridge id)contextInfo] representedObject];
-		
-		if (parent != nil) {
-			[parent.playlists removeObject:playlist];
-		} else {
-			[[[[SPSession sharedSession] userPlaylists] playlists] removeObject:playlist];
-		}
+		id playlist = (__bridge id)contextInfo;
+		[[SPSession sharedSession].userPlaylists removeItem:playlist callback:nil];
 	}
 }
 

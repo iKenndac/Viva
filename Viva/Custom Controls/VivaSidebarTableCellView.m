@@ -59,15 +59,9 @@
 	return aTitle;
 }
 
--(IBAction)nameFieldWasEdited:(id)sender {
-	
-	NSDictionary *itemDescriptor = [self objectValue];
-	[[SPSession sharedSession] objectRepresentationForSpotifyURL:[itemDescriptor valueForKey:SPSidebarURLKey]
-														callback:^(sp_linktype linkType, id objectRepresentation) {
-															if ([objectRepresentation isKindOfClass:[SPPlaylist class]]) {
-																[(SPPlaylist *)objectRepresentation setName:self.textField.stringValue];
-															}
-														}];
+-(void)setTitle:(NSString *)title {
+	if ([self.originalItem isKindOfClass:[SPPlaylist class]])
+		[(SPPlaylist *)self.originalItem setName:title];
 }
 
 -(void)dealloc {

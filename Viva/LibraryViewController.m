@@ -141,12 +141,12 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	NSMutableSet *albumSet = [NSMutableSet setWithCapacity:newAlbums.count];
 	
 	for (SPAlbum *anAlbum in newAlbums) {
-		if (![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"])
+		if (anAlbum != (id)[NSNull null] && ![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"])
 			[albumSet addObject:anAlbum];
 	}
 	
 	for (SPArtist *anArtist in newArtists) {
-		if (![anArtist.spotifyURL.absoluteString isEqualToString:@"spotify:artist:0000000000000000000000"])
+		if (anArtist != (id)[NSNull null] && ![anArtist.spotifyURL.absoluteString isEqualToString:@"spotify:artist:0000000000000000000000"])
 			[artistSet addObject:anArtist];
 	}
 	
