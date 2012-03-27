@@ -37,4 +37,6 @@
 -(sp_image *)spImage { return NULL; }
 -(NSURL *)spotifyURL { return nil; }
 
+@synthesize image;
+
 @end

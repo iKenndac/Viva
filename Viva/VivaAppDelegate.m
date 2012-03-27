@@ -79,7 +79,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
     }
     
 	//#error Please put your appkey.c file in the root of the Viva project and remove this error
-	#import "../appkey.c"
+    #import "../appkey.c"
     
     NSString *userAgent = kVivaLibSpotifyUserAgentName;
     if (muValue)
