@@ -63,7 +63,7 @@
 				  context:nil];
         
         [self addObserver:self 
-			   forKeyPath:@"playbackManager.currentPlaybackProvider.playing"
+			   forKeyPath:@"playbackManager.playing"
 				  options:0
 				  context:nil];
         
@@ -121,9 +121,9 @@
 			[self.playbackProgressSlider setDoubleValue:[[self playbackManager] currentTrackPosition]];
 		}
         
-    } else if ([keyPath isEqualToString:@"playbackManager.currentPlaybackProvider.playing"]) {
+    } else if ([keyPath isEqualToString:@"playbackManager.playing"]) {
 
-        if (((VivaPlaybackManager *)[self playbackManager]).currentPlaybackProvider.playing) {
+        if (((VivaPlaybackManager *)[self playbackManager]).playing) {
             [self.playPauseButton setImage:[NSImage imageNamed:@"pause"]];
             [self.playPauseButton setAlternateImage:[NSImage imageNamed:@"pause-pushed"]];
         } else {
@@ -211,7 +211,7 @@
                                                           userInfo:nil];
         
     } else {
-        self.playbackManager.currentPlaybackProvider.playing = !self.playbackManager.currentPlaybackProvider.playing;
+        self.playbackManager.playing = !self.playbackManager.playing;
     }
 }
 
@@ -407,7 +407,7 @@
     [self removeObserver:self forKeyPath:@"playbackManager.audioController.eqPreset"];
 	[self removeObserver:self forKeyPath:@"eqView.currentEQSettings"];
     [self removeObserver:self forKeyPath:@"playbackManager.currentTrack.starred"];
-    [self removeObserver:self forKeyPath:@"playbackManager.currentPlaybackProvider.playing"];
+    [self removeObserver:self forKeyPath:@"playbackManager.playing"];
 	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackManager.shufflePlayback"];
 	[self removeObserver:self forKeyPath:@"playbackManager.loopPlayback"];

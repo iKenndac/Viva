@@ -44,6 +44,8 @@
 @property (readwrite, nonatomic) BOOL loopPlayback;
 @property (readwrite, nonatomic) BOOL shufflePlayback;
 
+@property (readwrite, nonatomic, getter = isPlaying) BOOL playing;
+
 -(NSString *)playPauseToggleMenuText;
 
 @property (readonly, nonatomic) BOOL canSkipToNextTrack;

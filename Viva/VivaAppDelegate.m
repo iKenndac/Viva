@@ -182,7 +182,6 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	}
 }
 
-
 // For Applescript, Dock menu, etc
 -(IBAction)performNextTrackAction:(id)sender {
 	if (self.playbackManager.currentTrack != nil) {
@@ -221,7 +220,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
                                                           userInfo:nil];
         
     } else {
-        self.playbackManager.currentPlaybackProvider.playing = !self.playbackManager.currentPlaybackProvider.playing;
+        self.playbackManager.playing = !self.playbackManager.playing;
     }
 }
 

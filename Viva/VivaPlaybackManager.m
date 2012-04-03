@@ -58,6 +58,8 @@
     
 	// Data from libSpotify only
 	AudioStreamBasicDescription libSpotifyInputFormat;
+	
+	BOOL _playing;
 }
 
 - (id)initWithPlaybackSession:(SPSession *)aSession {
@@ -81,7 +83,7 @@
         self.shufflePlayback = [[NSUserDefaults standardUserDefaults] boolForKey:kShufflePlaybackDefaultsKey];
         		
         [self addObserver:self
-               forKeyPath:@"currentPlaybackProvider.playing"
+               forKeyPath:@"playing"
                   options:0
                   context:nil];
 		
@@ -132,6 +134,16 @@
 @synthesize localFileDecoder;
 @synthesize delegate;
 
+-(void)setPlaying:(BOOL)playing {
+	_playing = playing;
+	self.currentPlaybackProvider.playing = playing;
+	self.audioController.audioOutputEnabled = _playing;
+}
+
+-(BOOL)isPlaying {
+	return _playing && self.currentPlaybackProvider.playing;
+}
+
 +(NSSet *)keyPathsForValuesAffectingCurrentTrack {
 	return [NSSet setWithObjects:@"currentTrackContainer.track", nil];
 }
@@ -159,11 +171,11 @@
 }
 
 +(NSSet *)keyPathsForValuesAffectingPlayPauseToggleMenuText {
-	return [NSSet setWithObject:@"currentPlaybackProvider.playing"];
+	return [NSSet setWithObject:@"playing"];
 }
 
 -(NSString *)playPauseToggleMenuText {
-	return self.currentPlaybackProvider.isPlaying ? @"Pause" : @"Play";
+	return self.isPlaying ? @"Pause" : @"Play";
 }
 
 #pragma mark -
@@ -175,7 +187,7 @@
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
 	// User double-clicked, so reset everything and start again.
-	self.currentPlaybackProvider.playing = NO;
+	self.playing = NO;
     self.currentTrackContainer = nil;
 	[self.currentPlaybackProvider unloadPlayback];
 	[self resetShuffledPool];
@@ -217,7 +229,7 @@
 		if (error)
 			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:container informDelegate:YES];
 		else
-			self.currentPlaybackProvider.playing = YES;
+			self.playing = YES;
 	}];
 }
 
@@ -243,9 +255,9 @@
 				[self addTrackContainerToShufflePool:currentTrackContainer];
 			
 			self.currentTrackContainer = newTrack;
-			self.audioController.audioOutputEnabled = YES;
+			self.playing = YES;
 		} else {
-			self.audioController.audioOutputEnabled = NO;
+			self.playing = NO;
 			[self.audioController clearAudioBuffers];
 		}
 		
@@ -312,10 +324,10 @@
 	if (self.currentTrackContainer != nil)
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
-	BOOL wasPlaying = self.currentPlaybackProvider.playing;
+	BOOL wasPlaying = _playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.currentPlaybackProvider setPlaying:NO];
+		self.currentPlaybackProvider.playing = NO;
 		[self.currentPlaybackProvider unloadPlayback];
 		[self.audioController clearAudioBuffers];
 	}
@@ -334,7 +346,7 @@
 		if (error)
 			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:nextContainer informDelegate:NO];
 		else
-			self.currentPlaybackProvider.playing = wasPlaying;
+			self.playing = wasPlaying;
 	}];
 }
 
@@ -392,10 +404,10 @@
 	if (self.currentTrackContainer != nil)
 		[self scrobbleTrackStopped:self.currentTrackContainer.track atPosition:self.currentTrackPosition];
 	
-	BOOL wasPlaying = self.currentPlaybackProvider.playing;
+	BOOL wasPlaying = _playing;
 	
 	if (clearExistingAudioBuffers) {
-		[self.currentPlaybackProvider setPlaying:NO];
+		self.currentPlaybackProvider.playing = NO;
 		[self.currentPlaybackProvider unloadPlayback];
 		[self.audioController clearAudioBuffers];
 	}
@@ -414,12 +426,14 @@
 		if (error)
 			[self bailOutOfAudioPlaybackWithError:error fromTrackContainer:previousContainer informDelegate:NO];
 		else
-			self.currentPlaybackProvider.playing = wasPlaying;
+			self.playing = wasPlaying;
 	}];
 }
 
 -(void)bailOutOfAudioPlaybackWithError:(NSError *)error fromTrackContainer:(id <VivaTrackContainer>)container informDelegate:(BOOL)informDelegate {
+	
 	self.currentTrackContainer = nil;
+	self.playing = NO;
 	self.audioController.audioOutputEnabled = NO;
 	[self.audioController clearAudioBuffers];
 	self.currentTrackPosition = 0;
@@ -515,6 +529,8 @@
 		 didEncounterPlaybackError:[NSError errorWithDomain:kVivaPlaybackManagerErrorDomain
 													   code:kVivaTrackTokenLostErrorCode
 												   userInfo:nil]];
+	
+	self.playing = NO;
 }
 
 -(void)sessionDidEndPlayback:(id <SPSessionPlaybackProvider>)aSession withError:(NSError *)anError {
@@ -551,12 +567,10 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-	if ([keyPath isEqualToString:@"currentPlaybackProvider.playing"]) {
-        
-		self.audioController.audioOutputEnabled = self.currentPlaybackProvider.playing;
+	if ([keyPath isEqualToString:@"playing"]) {
 		
 		if (self.currentTrackContainer != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey]) {
-			if (self.currentPlaybackProvider.playing)
+			if (self.playing)
 				[[LastFMController sharedInstance] notifyPlaybackDidStart:self.currentTrackContainer.track];
 			else
 				[[LastFMController sharedInstance] notifyPlaybackDidPause:self.currentTrackContainer.track];
@@ -622,7 +636,7 @@
 
 -(void)dealloc {
 
-    [self removeObserver:self forKeyPath:@"currentPlaybackProvider.playing"];
+    [self removeObserver:self forKeyPath:@"playing"];
 	[self removeObserver:self forKeyPath:@"currentTrackContainer"];
 	[self removeObserver:self forKeyPath:@"currentTrackPosition"];
 	[self removeObserver:self forKeyPath:@"playbackContext"];
