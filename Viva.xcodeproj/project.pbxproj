@@ -29,6 +29,7 @@
 		5018CB1F1471A82200F46F83 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
 		5018CB211471A90100F46F83 /* Viva Update Signing Public Key.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5018CB201471A90100F46F83 /* Viva Update Signing Public Key.pem */; };
 		5018CB221471A9C100F46F83 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018CB131471A80F00F46F83 /* Sparkle.framework */; };
+		501BC1DB152B199700F9C523 /* EQCoreAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501BC1DA152B199700F9C523 /* EQCoreAudioController.m */; };
 		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
 		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
 		5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */; };
@@ -61,7 +62,6 @@
 		50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FB814DD470C0029E2D9 /* LocalFilesViewController.m */; };
 		50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50788FB914DD470C0029E2D9 /* LocalFilesViewController.xib */; };
 		50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */; };
-		50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
 		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
@@ -169,7 +169,6 @@
 		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
-		50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */; };
 		50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */; };
 		50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B4AA0A14372D42007EE67F /* SPLinkableItemTableCellView.m */; };
 		50B4AA0D14373E30007EE67F /* SPLinkableItemTableCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B4AA0C14373E30007EE67F /* SPLinkableItemTableCellView.xib */; };
@@ -358,6 +357,8 @@
 		5018CAF514717E0C00F46F83 /* EMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EMKeychain.m; path = EMKeychain/EMKeychain.m; sourceTree = SOURCE_ROOT; };
 		5018CB041471A80F00F46F83 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5018CB201471A90100F46F83 /* Viva Update Signing Public Key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva Update Signing Public Key.pem"; sourceTree = "<group>"; };
+		501BC1D9152B199700F9C523 /* EQCoreAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQCoreAudioController.h; sourceTree = "<group>"; };
+		501BC1DA152B199700F9C523 /* EQCoreAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQCoreAudioController.m; sourceTree = "<group>"; };
 		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
 		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
 		501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseSidebarConfiguration.plist; sourceTree = "<group>"; };
@@ -422,8 +423,6 @@
 		50788FD014DD911A0029E2D9 /* VivaPlaybackProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaPlaybackProvider.h; sourceTree = "<group>"; };
 		50788FD114DD97590029E2D9 /* SPSession+AudioStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPSession+AudioStatistics.h"; sourceTree = "<group>"; };
 		50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPSession+AudioStatistics.m"; sourceTree = "<group>"; };
-		50788FD414DDA67B0029E2D9 /* SPCoreAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCoreAudioController.h; sourceTree = "<group>"; };
-		50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCoreAudioController.m; sourceTree = "<group>"; };
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -545,8 +544,6 @@
 		50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearch.m; sourceTree = "<group>"; };
 		50B19FDD134A447300D428FF /* SPFooterTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPFooterTextFieldCell.h; path = "Custom Controls/SPFooterTextFieldCell.h"; sourceTree = "<group>"; };
 		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
-		50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPCircularBuffer.h; path = "cocoalibspotify/Playback Helper Classes/SPCircularBuffer.h"; sourceTree = SOURCE_ROOT; };
-		50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPCircularBuffer.m; path = "cocoalibspotify/Playback Helper Classes/SPCircularBuffer.m"; sourceTree = SOURCE_ROOT; };
 		50B4774F1462CE4200B04A51 /* SPPlaylistDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPlaylistDelegateProxy.h; sourceTree = "<group>"; };
 		50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPlaylistDelegateProxy.m; sourceTree = "<group>"; };
 		50B4AA0914372D42007EE67F /* SPLinkableItemTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLinkableItemTableCellView.h; sourceTree = "<group>"; };
@@ -664,10 +661,8 @@
 				50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */,
 				506F347613438755002BA308 /* VivaPlaybackManager.h */,
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
-				50B4774C1462C8B300B04A51 /* SPCircularBuffer.h */,
-				50B4774D1462C8B300B04A51 /* SPCircularBuffer.m */,
-				50788FD414DDA67B0029E2D9 /* SPCoreAudioController.h */,
-				50788FD514DDA67B0029E2D9 /* SPCoreAudioController.m */,
+				501BC1D9152B199700F9C523 /* EQCoreAudioController.h */,
+				501BC1DA152B199700F9C523 /* EQCoreAudioController.m */,
 				50EC2B8814DC04A7009C5C69 /* Local Files */,
 			);
 			name = Playback;
@@ -1737,7 +1732,6 @@
 				50881239140264E30094E748 /* VisualiserWindowController.m in Sources */,
 				50B4AA0B14372D42007EE67F /* SPLinkableItemTableCellView.m in Sources */,
 				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
-				50B4774E1462C8B300B04A51 /* SPCircularBuffer.m in Sources */,
 				50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */,
 				50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */,
 				5018CAE814716A6500F46F83 /* VivaGeneralPreferencePane.m in Sources */,
@@ -1766,11 +1760,11 @@
 				50EC2B9814DC2601009C5C69 /* LocalFileSource+LocalFileSourceFLACAdditions.m in Sources */,
 				50788FBA14DD470C0029E2D9 /* LocalFilesViewController.m in Sources */,
 				50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */,
-				50788FD614DDA67C0029E2D9 /* SPCoreAudioController.m in Sources */,
 				5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */,
 				502C538C14E035E500231CA7 /* SPTrack+LocalFileExtensions.m in Sources */,
 				501231C615148CEE00683225 /* VivaSearchTableCellView.m in Sources */,
 				50B658601514976B00DC3CB7 /* VivaLocalSPImage.m in Sources */,
+				501BC1DB152B199700F9C523 /* EQCoreAudioController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

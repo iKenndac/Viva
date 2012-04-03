@@ -9,13 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "VivaPlaybackContext.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
-#import "SPCircularBuffer.h"
 #import <Accelerate/Accelerate.h>
 #import <CoreAudio/CoreAudio.h>
 #import <AudioUnit/AudioUnit.h>
 #import "EQPresetController.h"
 #import "VivaAdvancedPlaybackDelegate.h"
-#import "SPCoreAudioController.h"
+#import "EQCoreAudioController.h"
 
 @class VivaPlaybackManager;
 
@@ -35,7 +34,7 @@
 
 -(id)initWithPlaybackSession:(SPSession *)aSession;
 
-@property (readonly, strong, nonatomic) SPCoreAudioController *audioController;
+@property (readonly, strong, nonatomic) EQCoreAudioController *audioController;
 @property (readonly, strong, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, nonatomic) NSTimeInterval currentTrackPosition;
 @property (readonly, strong, nonatomic) SPTrack *currentTrack;

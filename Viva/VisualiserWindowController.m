@@ -14,6 +14,7 @@
 {
     self = [super initWithWindow:window];
     if (self) {
+		/*
         // Initialization code here.
 		[NSApp addObserver:self
 				forKeyPath:@"delegate.playbackManager.audioController.leftLevels"
@@ -24,6 +25,7 @@
 				forKeyPath:@"delegate.playbackManager.audioController.rightLevels"
 				   options:NSKeyValueObservingOptionNew
 				   context:nil];
+		 */
 	}
     
     return self;
@@ -143,10 +145,10 @@
 
 -(void)dealloc {
 
-	
+	/*Ä
 	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.audioController.leftLevels"];
 	[NSApp removeObserver:self forKeyPath:@"delegate.playbackManager.audioController.rightLevels"];
-	
+	*/
 }
 
 @end

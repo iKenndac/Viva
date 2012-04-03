@@ -18,7 +18,7 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (readwrite, strong, nonatomic) SPCoreAudioController *audioController;
+@property (readwrite, strong, nonatomic) EQCoreAudioController *audioController;
 @property (strong, readwrite, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong, nonatomic) SPSession *session;
@@ -69,7 +69,7 @@
         shufflePastHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
         shuffleFutureHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
 		
-		self.audioController = [[SPCoreAudioController alloc] init];
+		self.audioController = [[EQCoreAudioController alloc] init];
 		self.audioController.delegate = self;
 		
 		self.session = aSession;

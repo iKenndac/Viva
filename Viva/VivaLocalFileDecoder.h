@@ -29,7 +29,7 @@
  The playback delegate is responsible for pushing raw audio data provided by the session
  to the system's audio output. See the SimplePlayback sample project for an example of how to do this.
  */
-@property (nonatomic, weak) id <SPSessionPlaybackDelegate> playbackDelegate;
+@property (nonatomic, assign) __unsafe_unretained id <SPSessionPlaybackDelegate> playbackDelegate;
 
 /** Preloads playback assets for the given track.
  
