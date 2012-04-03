@@ -56,17 +56,17 @@
 	
 	[self.window center];
 	
-	NSString *userName = [[SPSession sharedSession] storedCredentialsUserName];
+	[[SPSession sharedSession] fetchStoredCredentialsUserName:^(NSString *storedUserName) {
+		if ([storedUserName length] > 0)
+			[userNameField setStringValue:storedUserName];
+		
+		if ([storedUserName length] > 0) {
+			[self performSelector:@selector(attemptAutoLogin)
+					   withObject:nil
+					   afterDelay:0.0];
+		}
+	}];
     
-	if ([userName length] > 0)
-		[userNameField setStringValue:userName];
-	
-	if ([userName length] > 0) {
-		[self performSelector:@selector(attemptAutoLogin)
-				   withObject:nil
-				   afterDelay:0.0];
-	}
-	
 	[self addObserver:self
 		   forKeyPath:@"isLoggingIn"
 			  options:NSKeyValueObservingOptionInitial
