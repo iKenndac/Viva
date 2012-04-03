@@ -356,8 +356,8 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	if ([searchQuery isEqualToString:self.liveSearch.latestSearch.searchQuery] || [searchQuery length] == 0)
 		return;
 	
-	SPSearch *newSearch = [SPSearch searchWithSearchQuery:searchQuery
-												inSession:[SPSession sharedSession]];
+	SPSearch *newSearch = [SPSearch liveSearchWithSearchQuery:searchQuery
+													inSession:[SPSession sharedSession]];
 	
 	if (self.liveSearch == nil) {
 		self.liveSearch = [[LiveSearch alloc] initWithInitialSearch:newSearch];

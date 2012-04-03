@@ -779,10 +779,10 @@
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
-				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
 				5018CACE1471684400F46F83 /* Scribbler.xcodeproj */,
 				5018CB041471A80F00F46F83 /* Sparkle.xcodeproj */,
 				50746D0114B4B7EA0026355B /* BGHUDAppKit.xcodeproj */,
+				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
 				503D62D513257D92007772CA /* Products */,
