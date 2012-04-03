@@ -66,7 +66,7 @@
 
 -(void)preloadTrackForPlayback:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {
 	// No-op for now.
-	return;
+	if (block) block(nil);
 }
 
 -(void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {

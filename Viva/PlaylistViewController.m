@@ -203,7 +203,7 @@
 									 atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToMove count])]];
 			
 		} else {
-			[self.playlist moveItemsAtIndexes:trackIndexesToMove toIndex:row error:nil];
+			[self.playlist moveItemsAtIndexes:trackIndexesToMove toIndex:row callback:nil];
 		}
 		
 		return YES;

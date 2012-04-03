@@ -339,7 +339,9 @@
 	return YES;
 }
 
-#pragma mark -
+#pragma mark - Drag & Drop
+
+// What follows is likely the worst code you've ever seen. I'm *really* sorry. --Dan
 
 - (NSDragOperation)outlineView:(NSOutlineView *)outlineView 
 				  validateDrop:(id < NSDraggingInfo >)info 
@@ -365,14 +367,18 @@
 	NSDictionary *sourceFolderInfo = nil;
 	sp_uint64 folderId = 0;
 	SPPlaylistContainer *userPlaylists = nil;
-	SPPlaylistFolder *sourceFolder = nil;
+	__block SPPlaylistFolder *sourceFolder = nil;
 	
 	if (isFolder) {
 		sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
 		folderId = [[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue];
 		userPlaylists = [[SPSession sharedSession] userPlaylists];
-		sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
-																 inContainer:userPlaylists];
+		
+		SPDispatchSyncIfNeeded(^{
+			sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
+																	 inContainer:userPlaylists];
+
+		});
 	}
 
 	if (item == nil) {
@@ -416,28 +422,33 @@
 	
 	if (urlData != nil) {
 		
-		NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
-		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
+		dispatch_async([SPSession libSpotifyQueue], ^{
 		
-		for (NSURL *url in trackURLs) {
-			__block SPTrack *track = nil;
+			NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
+			NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
 			
-			SPDispatchSyncIfNeeded(^{
+			for (NSURL *url in trackURLs) {
+				
+				SPTrack *track = nil;
 				sp_link *link = [url createSpotifyLink];
+				
 				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {
 					sp_track *tr = sp_link_as_track(link);
 					track = [SPTrack trackForTrackStruct:tr inSession:[SPSession sharedSession]];
 					sp_link_release(link);
 				}
-			});
-			
-			if (track != nil) {
-				[tracksToAdd addObject:track];
+				
+				if (track != nil) {
+					[tracksToAdd addObject:track];
+				}
 			}
-		}
+					   
+			dispatch_async(dispatch_get_main_queue(), ^{
+				SPPlaylist *targetPlaylist = item;
+				[targetPlaylist.items addObjectsFromArray:tracksToAdd];
+			});		   
+		});
 		
-		SPPlaylist *targetPlaylist = item;
-		[targetPlaylist.items addObjectsFromArray:tracksToAdd];
 		return YES;
 	}
 	
@@ -445,49 +456,78 @@
 	NSData *folderSourceData = [[info draggingPasteboard] dataForType:kSpotifyFolderMoveSourceDragIdentifier];
 	
 	BOOL isFolder = (playlistUrlData == nil && folderSourceData != nil);
-	
-	// Common
 	SPPlaylistContainer *userPlaylists = [[SPSession sharedSession] userPlaylists];
 	sp_uint64 parentId = 0;
 	id source = nil;
 	
 	if (isFolder) {
 		NSDictionary *sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
-		source = [[SPSession sharedSession] playlistFolderForFolderId:[[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue]
-														  inContainer:userPlaylists];
+		source = [sourceFolderInfo valueForKey:kFolderId];
 		parentId = [[sourceFolderInfo valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	} else {
 		NSDictionary *sourcePlaylistData = [NSKeyedUnarchiver unarchiveObjectWithData:playlistUrlData];
-		source = nil;//[[SPSession sharedSession] playlistForURL:[sourcePlaylistData valueForKey:kPlaylistURL]];
-#warning This method sucks.
+		source = [sourcePlaylistData valueForKey:kPlaylistURL];
 		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 	
-	id parent = parentId == 0 ? userPlaylists :
-	[[SPSession sharedSession] playlistFolderForFolderId:parentId
-											 inContainer:userPlaylists];
-	
-	NSInteger destinationIndex = index;
-	if (item == nil) {
-		destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
-	}
-	
-	if (destinationIndex < 0)
-		destinationIndex = 0;
-	else if (destinationIndex >= [[parent playlists] count])
-		destinationIndex = [[parent playlists] count] - 1;
-	
-	NSInteger sourceIndex = [[parent playlists] indexOfObject:source];
-	if (sourceIndex == destinationIndex)
-		return YES;
-	
-	[userPlaylists moveItem:source
-					toIndex:destinationIndex
-				ofNewParent:item
-				   callback:^(NSError *error) {
-					   if (error)
-						   [self.sidebar.window.windowController presentError:error];
-				   }];
+	dispatch_async([SPSession libSpotifyQueue], ^{
+		
+		id parent = parentId == 0 ? userPlaylists :
+		[[SPSession sharedSession] playlistFolderForFolderId:parentId
+												 inContainer:userPlaylists];
+		
+		NSInteger destinationIndex = index;
+		if (item == nil) {
+			destinationIndex = [self realIndexOfRootPlaylistAtIndexInOutlineView:index];
+		}
+		
+		if (destinationIndex < 0)
+			destinationIndex = 0;
+		else if (destinationIndex > [[parent playlists] count])
+			destinationIndex = [[parent playlists] count];
+		
+		NSInteger sourceIndex = [[parent playlists] indexOfObject:source];
+		if (sourceIndex == destinationIndex)
+			return;
+		
+		if (isFolder) {
+			
+			dispatch_async([SPSession libSpotifyQueue], ^{
+				
+				SPPlaylistFolder *folder = [[SPSession sharedSession] playlistFolderForFolderId:[(NSNumber *)source unsignedLongLongValue]
+																					inContainer:userPlaylists];
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[userPlaylists moveItem:folder
+									toIndex:destinationIndex
+								ofNewParent:item
+								   callback:^(NSError *error) {
+									   if (error)
+										   [self.sidebar.window.windowController presentError:error];
+								   }];
+				});
+				
+			});
+			
+		} else {
+			
+			[[SPSession sharedSession] playlistForURL:(NSURL *)source
+											 callback:^(SPPlaylist *playlist) {
+												 [userPlaylists moveItem:playlist
+																 toIndex:destinationIndex
+															 ofNewParent:item
+																callback:^(NSError *error) {
+																	if (error)
+																		[self.sidebar.window.windowController presentError:error];
+																}];
+											 }];
+			
+		}
+
+		
+		
+	});
+		
 	return YES;
 }
 
