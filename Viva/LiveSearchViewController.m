@@ -62,7 +62,7 @@
 -(void)keyDown:(NSEvent *)theEvent {
 	
 	if ([[theEvent characters] isEqualToString:@" "]) {
-		[[[NSApp delegate] session] setPlaying:![[[NSApp delegate] session] isPlaying]];
+		[[[NSApp delegate] playbackManager] setPlaying:![[[NSApp delegate] playbackManager] isPlaying]];
 	} else {
 		[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
 	}
