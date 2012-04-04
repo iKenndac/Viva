@@ -133,7 +133,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 		[SPSession sharedSession].connectionState == SP_CONNECTION_STATE_UNDEFINED) 
 		return NSTerminateNow;
 	
-	[[SPSession sharedSession] logout];
+	[[SPSession sharedSession] beginLogout:nil];
 	return NSTerminateLater;
 }
 
@@ -141,11 +141,14 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 #pragma mark -
 
 -(void)logOut {
-	[[SPSession sharedSession] logout];
-    [[SPSession sharedSession] forgetStoredCredentials];
+	
 	[mainWindowController close];
-	[loginWindowController reset];
-	[loginWindowController showWindow:nil];
+	
+	[[SPSession sharedSession] beginLogout:^{
+		[[SPSession sharedSession] forgetStoredCredentials];
+		[loginWindowController reset];
+		[loginWindowController showWindow:nil];
+	}];
 }
 
 #pragma mark -
