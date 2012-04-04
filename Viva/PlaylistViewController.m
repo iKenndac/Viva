@@ -73,7 +73,7 @@
 	NSMutableArray *trackArray = [NSMutableArray arrayWithCapacity:[self.playlist.items count]];
 	
 	for (SPPlaylistItem *anItem in self.playlist.items) {
-		if ([[anItem itemClass] isKindOfClass:[SPTrack class]])
+		if ([anItem itemClass] == [SPTrack class])
 			[trackArray addObject:anItem.item];
 	}
 	return [NSArray arrayWithArray:trackArray];
@@ -110,22 +110,23 @@
 	return [NSSet setWithObject:@"trackContainers"];
 }
 
--(void)playlist:(SPPlaylist *)aPlaylist willRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)outgoingIndexes {
-	
+
+-(void)playlist:(SPPlaylist *)aPlaylist willRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)outgoingIndexes {
+
 	[self willChangeValueForKey:@"trackContainers"];
 	[self.trackContainers removeObjectsAtIndexes:outgoingIndexes];
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPPlaylist *)aPlaylist didRemoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore; {}
+-(void)playlist:(SPPlaylist *)aPlaylist didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)theseIndexesArentValidAnymore; {}
 
--(void)playlist:(SPPlaylist *)aPlaylist willAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)theseIndexesArentYetValid {
+-(void)playlist:(SPPlaylist *)aPlaylist willAddItems:(NSArray *)items atIndexes:(NSIndexSet *)theseIndexesArentYetValid {
 	
-	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[tracks count]];
+	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[items count]];
 	
-	for (SPTrack *newTrack in tracks) {
-		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:newTrack
-																		   inContainer:self.playlist]];
+	for (SPPlaylistItem *newItem in items) {
+		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:newItem.itemClass == [SPTrack class] ? newItem.item : nil
+																		  inContainer:self.playlist]];
 	}
 	
 	[self willChangeValueForKey:@"trackContainers"];
@@ -133,9 +134,9 @@
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPPlaylist *)aPlaylist didAddTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)newIndexes {}
+-(void)playlist:(SPPlaylist *)aPlaylist didAddItems:(NSArray *)items atIndexes:(NSIndexSet *)newIndexes; {}
 
--(void)playlist:(SPPlaylist *)aPlaylist willMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
+-(void)playlist:(SPPlaylist *)aPlaylist willMoveItems:(NSArray *)items atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes {
 	
 	[self willChangeValueForKey:@"trackContainers"];
 	NSArray *transientContainers = [self.trackContainers objectsAtIndexes:oldIndexes];
@@ -144,7 +145,7 @@
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
--(void)playlist:(SPPlaylist *)aPlaylist didMoveTracks:(NSArray *)tracks atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes; {}
+-(void)playlist:(SPPlaylist *)aPlaylist didMoveItems:(NSArray *)items atIndexes:(NSIndexSet *)oldIndexes toIndexes:(NSIndexSet *)newIndexes; {}
 
 #pragma mark -
 
