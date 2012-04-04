@@ -61,9 +61,7 @@
 			[userNameField setStringValue:storedUserName];
 		
 		if ([storedUserName length] > 0) {
-			[self performSelector:@selector(attemptAutoLogin)
-					   withObject:nil
-					   afterDelay:0.0];
+			[self attemptAutoLogin];
 		}
 	}];
     
