@@ -72,29 +72,6 @@
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-	NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-	
-	if ([tableColumn.identifier isEqualToString:@"playIndicator"]) {
-		
-		id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:row];
-		NSImageView *imageView = [cellView.subviews objectAtIndex:0];
-		
-		if (container == self.playingTrackContainer) {
-			if (self.playingTrackContainerIsCurrentlyPlaying) {
-				imageView.image = [NSImage imageNamed:@"playing-indicator"];
-			} else {
-				imageView.image = [NSImage imageNamed:@"paused-indicator"];
-			}
-		} else {
-			imageView.image = nil;
-		}
-		
-	}
-	
-	return cellView;
-}
-
 @synthesize backgroundColorView;
 @synthesize albumBrowse;
 

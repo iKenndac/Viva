@@ -186,32 +186,26 @@
 	}
 }
 
-- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 	
-	if ([[aTableColumn identifier] isEqualToString:@"playIndicator"]) {
-		if (rowIndex < [[self.trackContainerArrayController arrangedObjects] count]) {
-			id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:rowIndex];
-			if (container == self.playingTrackContainer) {
-				if (self.playingTrackContainerIsCurrentlyPlaying) {
-					[aCell setImage:[NSImage imageNamed:@"playing-indicator"]];
-					[aCell setAlternateImage:[NSImage imageNamed:@"playing-indicator-highlighted"]];
-				} else {
-					[aCell setImage:[NSImage imageNamed:@"paused-indicator"]];
-					[aCell setAlternateImage:[NSImage imageNamed:@"paused-indicator-highlighted"]];
-				}
+	if ([tableColumn.identifier isEqualToString:@"playIndicator"]) {
+		
+		id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:row];
+		NSImageView *imageView = [cellView.subviews objectAtIndex:0];
+		
+		if (container == self.playingTrackContainer) {
+			if (self.playingTrackContainerIsCurrentlyPlaying) {
+				imageView.image = [NSImage imageNamed:@"playing-indicator"];
 			} else {
-				[aCell setImage:nil];
-				[aCell setAlternateImage:nil];
+				imageView.image = [NSImage imageNamed:@"paused-indicator"];
 			}
+		} else {
+			imageView.image = nil;
 		}
-	} else {
-        
-        if (rowIndex < [[self.trackContainerArrayController arrangedObjects] count]) {
-			id <VivaTrackContainer> container = [[self.trackContainerArrayController arrangedObjects] objectAtIndex:rowIndex];
-			[aCell setEnabled:(container.track.availability == SP_TRACK_AVAILABILITY_AVAILABLE ||
-							   container.track.isLocal)];
-        }
-    }
+	}
+	
+	return cellView;
 }
 
 -(NSImage *)tableView:(NSTableView *)tableView dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset {
