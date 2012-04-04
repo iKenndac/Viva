@@ -239,7 +239,8 @@
     self.currentTrackPosition = 0.0;
 	
 	self.currentPlaybackProvider.audioDeliveryDelegate = nil;
-    
+    self.currentPlaybackProvider.playing = NO;
+	
 	if (newTrack.track.localFile != nil) {
 		self.currentPlaybackProvider = self.localFileDecoder;
 	} else {
