@@ -209,8 +209,14 @@
 		if (NSPointInRect(upPoint, rect)) {
 			id value = [self.cachedRects objectForKey:rectValue];
 			NSURL *url = [value valueForKey:kVivaLinkViewItemKey];
-			if (url != nil)
+			if (url != nil) {
 				[[NSApp delegate] handleURL:url];
+				
+				// Nasty-ish hack since the view is immediately hidden
+				self.currentMousePoint = NSMakePoint(-1.0, -1.0);
+				[self setNeedsDisplay:YES];
+				
+			}
 			break;
 		}
 	}

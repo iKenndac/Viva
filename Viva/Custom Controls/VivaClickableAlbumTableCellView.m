@@ -16,7 +16,7 @@
 	self = [super initWithFrame:frameRect];
 	
 	if (self) {
-		[self addObserver:self forKeyPath:@"objectValue" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"objectValue.track.album.loaded" options:0 context:nil];
 	}
 	
 	return self;
@@ -26,7 +26,7 @@
 	self = [super initWithCoder:aDecoder];
 	
 	if (self) {
-		[self addObserver:self forKeyPath:@"objectValue" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"objectValue.track.album.loaded" options:0 context:nil];
 	}
 	
 	return self;
@@ -36,7 +36,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"objectValue"]) {
+    if ([keyPath isEqualToString:@"objectValue.track.album.loaded"]) {
         
 		SPTrack *track = (SPTrack *)[self.objectValue track];
 		
@@ -57,7 +57,7 @@
 }
 
 -(void)dealloc {
-	[self removeObserver:self forKeyPath:@"objectValue"];
+	[self removeObserver:self forKeyPath:@"objectValue.track.album.loaded"];
 }
 
 
