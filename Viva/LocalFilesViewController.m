@@ -64,7 +64,8 @@ static void * const kLocalFilesViewControllerInternalKVOContext = @"blah";
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.allTracksArrayController.arrangedObjects count]];
 	
 	for (SPTrack *anItem in self.allTracksArrayController.arrangedObjects) {
-		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:anItem inContainer:nil]];
+		if (anItem != (id)[NSNull null])
+			[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:anItem inContainer:nil]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }

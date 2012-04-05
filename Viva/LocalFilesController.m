@@ -159,6 +159,8 @@ static LocalFilesController *sharedInstance;
 
 -(LocalFile *)localFileForTrack:(SPTrack *)track {
 	
+	NSAssert(dispatch_get_current_queue() == dispatch_get_main_queue(), @"Not on correct queue!");
+	
 	if (track == nil) return nil;
 	
 	NSString *targetTitle = track.name;

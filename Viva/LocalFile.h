@@ -23,6 +23,6 @@
 @property (nonatomic, retain) NSNumber * discNumber;
 @property (nonatomic, retain) LocalFileSource *source;
 
-@property (nonatomic, readonly, strong) SPTrack *track;
+@property (nonatomic, strong) SPTrack *track;
 
 @end

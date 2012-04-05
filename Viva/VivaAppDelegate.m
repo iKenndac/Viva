@@ -273,7 +273,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	mainWindowController.navigationController.thePresent = url;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
 	if (context == (__bridge void *)kSPPerformActionOnNotificationKVOContext) {
 		if ([keyPath isEqualToString:@"album.loaded"]) {

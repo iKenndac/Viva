@@ -18,9 +18,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 
 @end
 
-@implementation LocalFile {
-	SPTrack *cachedTrack;
-}
+@implementation LocalFile
 
 -(id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
 	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
@@ -60,6 +58,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 @dynamic source;
 @synthesize trackNumber;
 @synthesize discNumber;
+@dynamic track;
 
 -(NSString *)description {
 	return [NSString stringWithFormat:@"%@: %@", [super description], self.path];
@@ -70,6 +69,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 }
 
 -(void)updateCachedTrack {
+
 	NSString *encodedArtist = [self urlEncodedStringForString:self.artist == nil ? @"" : self.artist];
 	NSString *encodedTitle = [self urlEncodedStringForString:self.title == nil ? @"" : self.title];
 	NSString *encodedAlbum = [self urlEncodedStringForString:self.album == nil ? @"" : self.album];
@@ -77,27 +77,20 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	NSString *localUrlString = [NSString stringWithFormat:@"spotify:local:%@:%@:%@:%ld",
 								encodedArtist, encodedAlbum, encodedTitle, self.duration.integerValue];
 	
-	__block SPTrack *newTrack = nil;
+	NSURL *url = [NSURL URLWithString:localUrlString];
 	
-	SPDispatchSyncIfNeeded(^{
-		sp_link *link = sp_link_create_from_string([localUrlString UTF8String]);
-		if (link != NULL) {
-			sp_track *track = sp_link_as_track(link);
-			newTrack = [SPTrack trackForTrackStruct:track inSession:[SPSession sharedSession]];
-			sp_link_release(link);
-		}
-	});
+	if ([self.track.spotifyURL isEqual:url]) 
+		return;
 	
-	cachedTrack = newTrack;
-	cachedTrack.localFile = self;
-}
-
--(SPTrack *)track {
-	
-	if (cachedTrack == nil)
-		[self updateCachedTrack];
-
-	return cachedTrack;
+	[SPTrack trackForTrackURL:url
+					inSession:[SPSession sharedSession]
+					 callback:^(SPTrack *aTrack) {
+						 if (self.managedObjectContext == nil || self.isDeleted)
+							 return;
+							 
+						 aTrack.localFile = self;
+						 self.track = aTrack;
+					 }];
 }
 
 -(NSString *)urlEncodedStringForString:(NSString *)plainOldString {
