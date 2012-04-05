@@ -85,7 +85,7 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	[SPTrack trackForTrackURL:url
 					inSession:[SPSession sharedSession]
 					 callback:^(SPTrack *aTrack) {
-						 if (self.managedObjectContext == nil || self.isDeleted)
+						 if (self.managedObjectContext == nil || self.isDeleted || self.isFault)
 							 return;
 							 
 						 aTrack.localFile = self;
