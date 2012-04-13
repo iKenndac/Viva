@@ -15,6 +15,12 @@
 #import "VivaTrackInContainerReference.h"
 #import "VivaAppDelegate.h"
 
+@interface VivaSortableTrackListController ()
+
+@property (nonatomic, readwrite, strong) id waitingContext;
+
+@end
+
 @implementation VivaSortableTrackListController
 
 -(void)awakeFromNib {
@@ -41,6 +47,11 @@
 	
 	[self addObserver:self
 		   forKeyPath:@"playingTrackContainer"
+			  options:0
+			  context:nil];
+	
+	[self addObserver:self
+		   forKeyPath:@"trackContainerArrayController.arrangedObjects"
 			  options:0
 			  context:nil];
 }
@@ -78,6 +89,14 @@
 -(void)viewControllerDidActivateWithContext:(id)context {
 	if ([context isKindOfClass:[SPTrack class]]) {
 		
+		// At this point, the parent item may not have loaded its tracks yet. If not, wait until they've been loaded and 
+		// then apply the context.
+		
+		if ([self.trackContainerArrayController.arrangedObjects count] == 0) {
+			self.waitingContext = context;
+			return;
+		}
+		
 		for (id <VivaTrackContainer> container in self.trackContainerArrayController.arrangedObjects) {
 			
 			if ([container.track isEqual:context]) {
@@ -101,7 +120,19 @@
             if (!NSContainsRect([self.trackTable visibleRect], rowRect))
                 [self.trackTable scrollRowToVisible:rowIndex];
         }
+		
+	} else if ([keyPath isEqualToString:@"trackContainerArrayController.arrangedObjects"]) {
+		
+		for (id <VivaTrackContainer> container in self.trackContainerArrayController.arrangedObjects) {
 			
+			if ([container.track isEqual:self.waitingContext]) {
+				[self.trackTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[self.trackContainerArrayController.arrangedObjects indexOfObject:container]] 
+							 byExtendingSelection:NO];
+				[self.trackTable becomeFirstResponder];
+				self.waitingContext = nil;
+			}
+		}
+		
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -131,6 +162,7 @@
 @synthesize trackContainers;
 @synthesize trackContainerArrayController;
 @synthesize trackTable;
+@synthesize waitingContext;
 
 -(IBAction)playTrack:(id)sender {
 	if ([self.trackTable clickedRow] > -1) {
@@ -236,6 +268,7 @@
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"playingTrackContainerIsCurrentlyPlaying"];
 	[self removeObserver:self forKeyPath:@"playingTrackContainer"];
+	[self removeObserver:self forKeyPath:@"trackContainerArrayController.arrangedObjects"];
 }
 
 @end
