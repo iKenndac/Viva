@@ -26,7 +26,7 @@
         // Initialization code here.
 		
 		[self addObserver:self
-			   forKeyPath:@"latestSearch.searchInProgress"
+			   forKeyPath:@"latestSearch.loaded"
 				  options:0
 				  context:nil];
 		
@@ -45,9 +45,9 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	
-	if ([keyPath isEqualToString:@"latestSearch.searchInProgress"]) {
+	if ([keyPath isEqualToString:@"latestSearch.loaded"]) {
 		
-		if (self.latestSearch.searchInProgress)
+		if (!self.latestSearch.isLoaded)
 			return;
 		
 		self.topAlbums = [self.latestSearch.albums subarrayWithRange:NSMakeRange(0, self.latestSearch.albums.count > kLiveSearchMaximumResultsPerCategoryCount ? kLiveSearchMaximumResultsPerCategoryCount : self.latestSearch.albums.count)];
@@ -103,7 +103,7 @@
 	
 	
 	[self removeObserver:self
-			  forKeyPath:@"latestSearch.searchInProgress"];
+			  forKeyPath:@"latestSearch.loaded"];
 	
 	[self clear];
 }

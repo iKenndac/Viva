@@ -51,7 +51,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 - (void)dealloc
 {
 	[self removeObserver:self forKeyPath:@"currentViewController"];
-	[self removeObserver:self forKeyPath:@"liveSearch.latestSearch.searchInProgress"];
+	[self removeObserver:self forKeyPath:@"liveSearch.latestSearch.loaded"];
 	[self.sidebarController removeObserver:self forKeyPath:@"selectedURL"];
 	[self removeObserver:self forKeyPath:@"navigationController.thePresent"];
 	
@@ -72,7 +72,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			  context:nil];
 	
 	[self addObserver:self
-		   forKeyPath:@"liveSearch.latestSearch.searchInProgress"
+		   forKeyPath:@"liveSearch.latestSearch.loaded"
 			  options:0
 			  context:(__bridge void *)kVivaWindowControllerLiveSearchObservationContext];
 	
@@ -100,7 +100,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
    
 	if (context == (__bridge void *)kVivaWindowControllerLiveSearchObservationContext) {
-		if (!self.liveSearch.latestSearch.searchInProgress && !self.searchPopover.isShown && self.searchField.stringValue.length > 0) {
+		if (self.liveSearch.latestSearch.isLoaded && !self.searchPopover.isShown && self.searchField.stringValue.length > 0) {
 			
             self.searchPopover = [[NSPopover alloc] init];
             

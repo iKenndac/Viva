@@ -22,7 +22,7 @@
 -(id)init {
 	if ((self = [super initWithNibName:@"LiveSearchViewController" bundle:nil])) {
 		[self addObserver:self
-			   forKeyPath:@"representedObject.latestSearch.searchInProgress"
+			   forKeyPath:@"representedObject.latestSearch.loaded"
 				  options:0
 				  context:nil];
 	}
@@ -39,7 +39,7 @@
 	if ([keyPath hasPrefix:@"representedObject."]) {
 		
 		LiveSearch *search = self.representedObject;
-		if (search.latestSearch.searchInProgress)
+		if (!search.latestSearch.isLoaded)
 			return;
 		
 		[self.tableView reloadData];
@@ -209,7 +209,7 @@
 	self.popover = nil;
 	
 	[self removeObserver:self
-			  forKeyPath:@"representedObject.latestSearch.searchInProgress"];
+			  forKeyPath:@"representedObject.latestSearch.loaded"];
 	
 }
 
