@@ -30,7 +30,6 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @property (strong, readwrite) VivaPlaybackManager *playbackManager; 
 @property (strong, readwrite) SPMediaKeyTap *mediaKeyHandler;
 @property (strong, readwrite) NSURL *urlToHandleOnLogin;
-@property (readwrite, nonatomic, strong) id itemToActionLater;
 
 @end
 
@@ -41,7 +40,6 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 @synthesize dockMenu;
 @synthesize mediaKeyHandler;
 @synthesize urlToHandleOnLogin;
-@synthesize itemToActionLater;
 
 -(SPSession *)session {
 	return [SPSession sharedSession];
@@ -256,37 +254,22 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 		if ([url spotifyLinkType] == SP_LINKTYPE_TRACK) {
 			
 			[[SPSession sharedSession] trackForURL:url callback:^(SPTrack *track) {
-				if (track.album.isLoaded) {
-					SPAlbum *album = track.album;
-					[mainWindowController navigateToURL:album.spotifyURL withContext:track];
-				} else {
-					[track addObserver:self
-							forKeyPath:@"album.loaded"
-							   options:0
-							   context:(__bridge void *)kSPPerformActionOnNotificationKVOContext];
+				
+				
+				[SPAsyncLoading waitUntilLoaded:track timeout:5.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
 					
-					self.itemToActionLater = track;
-				}
+					if (loadedItems.count > 0)
+						[SPAsyncLoading waitUntilLoaded:track.album timeout:5.0 then:^(NSArray *loadedAlbums, NSArray *notLoadedAlbums) {
+							
+							if (loadedAlbums.count > 0)
+								[mainWindowController navigateToURL:track.album.spotifyURL withContext:track];
+							
+						}];
+				}];
 			}];
 		}
 	}
 	mainWindowController.navigationController.thePresent = url;
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-	if (context == (__bridge void *)kSPPerformActionOnNotificationKVOContext) {
-		if ([keyPath isEqualToString:@"album.loaded"]) {
-			SPTrack *track = object;
-			[track removeObserver:self forKeyPath:@"album.loaded"];
-			SPAlbum *album = track.album;
-			[mainWindowController navigateToURL:album.spotifyURL withContext:track];
-			self.itemToActionLater = nil;
-		}
-		
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark -
