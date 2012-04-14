@@ -25,7 +25,6 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 @property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbumsAndArtists;
--(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder;
 -(NSArray *)tracksFromPlaylistItems:(NSArray *)items;
 
 @end
@@ -98,86 +97,53 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 
 -(void)rebuildAlbumsAndArtists {
 	
-	BOOL hasScheduledRebuild = NO;
-	
-	SPPlaylist *starred = [[SPSession sharedSession] starredPlaylist];
-	SPPlaylist *inbox = [[SPSession sharedSession] inboxPlaylist];
-	
-	if (!starred.isLoaded || !inbox.isLoaded) {
-		[self performSelector:_cmd withObject:nil afterDelay:0.2];
-		hasScheduledRebuild = YES;
-	}
-	
-	NSMutableArray *playlistPool = [NSMutableArray arrayWithObjects:starred, inbox, nil];
-	
-	if (![SPSession sharedSession].userPlaylists.isLoaded) {
-		[self performSelector:_cmd withObject:nil afterDelay:0.2];
-		hasScheduledRebuild = YES;
-	}
-	
-	for (id playlistOrFolder in [SPSession sharedSession].userPlaylists.playlists) {
-		if ([playlistOrFolder isKindOfClass:[SPPlaylist class]]) {
-			[playlistPool addObject:(SPPlaylist *)playlistOrFolder];
-		} else {
-			[playlistPool addObjectsFromArray:[self playlistsInFolder:(SPPlaylistFolder *)playlistOrFolder]];
-		}
-	}
-	
-	if (!hasScheduledRebuild) {
-		for (SPPlaylist *aPlaylist in playlistPool) {
-			if (!aPlaylist.isLoaded) {
-				[self performSelector:_cmd withObject:nil afterDelay:0.2];
-				hasScheduledRebuild = YES;
-				break;
-			}
-		}
-	}
-	
-	NSMutableArray *trackPool = [NSMutableArray arrayWithArray:[self tracksFromPlaylistItems:[playlistPool valueForKeyPath:@"@unionOfArrays.items"]]];
-	NSArray *newAlbums = [trackPool valueForKey:@"album"];
-	NSArray *newArtists = [trackPool valueForKeyPath:@"@unionOfArrays.artists"];
-	
-	NSMutableSet *artistSet = [NSMutableSet setWithCapacity:newArtists.count];
-	NSMutableSet *albumSet = [NSMutableSet setWithCapacity:newAlbums.count];
-	
-	for (SPAlbum *anAlbum in newAlbums) {
-		if (anAlbum != (id)[NSNull null] && ![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"])
-			[albumSet addObject:anAlbum];
-	}
-	
-	for (SPArtist *anArtist in newArtists) {
-		if (anArtist != (id)[NSNull null] && ![anArtist.spotifyURL.absoluteString isEqualToString:@"spotify:artist:0000000000000000000000"])
-			[artistSet addObject:anArtist];
-	}
-	
-	self.albums = [[albumSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPAlbum *obj1, SPAlbum *obj2) {
-		return [obj1.name caseInsensitiveCompare:obj2.name];
+	[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession] then:^(NSArray *loadedSession) {
+		
+		[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession].userPlaylists then:^(NSArray *userPl) {
+			
+			SPPlaylist *starred = [[SPSession sharedSession] starredPlaylist];
+			SPPlaylist *inbox = [[SPSession sharedSession] inboxPlaylist];
+			NSMutableArray *playlistPool = [NSMutableArray arrayWithObjects:starred, inbox, nil];
+			[playlistPool addObjectsFromArray:[SPSession sharedSession].userPlaylists.flattenedPlaylists];
+			
+			[SPAsyncLoading waitUntilLoaded:playlistPool timeout:10.0 then:^(NSArray *loadedPlaylists, NSArray *notLoadedPlaylists) {
+				
+				NSMutableArray *trackPool = [NSMutableArray arrayWithArray:[self tracksFromPlaylistItems:[loadedPlaylists valueForKeyPath:@"@unionOfArrays.items"]]];
+				
+				[SPAsyncLoading waitUntilLoaded:trackPool timeout:10.0 then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+					
+					NSArray *newAlbums = [loadedTracks valueForKey:@"album"];
+					NSArray *newArtists = [loadedTracks valueForKeyPath:@"@unionOfArrays.artists"];
+					
+					NSMutableSet *artistSet = [NSMutableSet setWithCapacity:newArtists.count];
+					NSMutableSet *albumSet = [NSMutableSet setWithCapacity:newAlbums.count];
+					
+					for (SPAlbum *anAlbum in newAlbums) {
+						if (anAlbum != (id)[NSNull null] && ![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"])
+							[albumSet addObject:anAlbum];
+					}
+					
+					for (SPArtist *anArtist in newArtists) {
+						if (anArtist != (id)[NSNull null] && ![anArtist.spotifyURL.absoluteString isEqualToString:@"spotify:artist:0000000000000000000000"])
+							[artistSet addObject:anArtist];
+					}
+					
+					self.albums = [[albumSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPAlbum *obj1, SPAlbum *obj2) {
+						return [obj1.name caseInsensitiveCompare:obj2.name];
+					}];
+					
+					self.artists = [[artistSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPArtist *obj1, SPArtist *obj2) {
+						return [obj1.name caseInsensitiveCompare:obj2.name];
+					}];
+					
+					self.canAnimateImageBrowser = YES;
+					[self.imageBrowser setAnimates:YES];
+					[self.imageBrowser reloadData];
+				}];
+			}];
+		}];
 	}];
 	
-	self.artists = [[artistSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPArtist *obj1, SPArtist *obj2) {
-		return [obj1.name caseInsensitiveCompare:obj2.name];
-	}];
-
-	[self.imageBrowser reloadData];
-	
-	if (!hasScheduledRebuild) {
-		self.canAnimateImageBrowser = YES;
-		[self.imageBrowser setAnimates:YES];
-	}
-}
-
--(NSArray *)playlistsInFolder:(SPPlaylistFolder *)aFolder {
-	
-	NSMutableArray *playlists = [NSMutableArray arrayWithCapacity:[[aFolder playlists] count]];
-	
-	for (id playlistOrFolder in aFolder.playlists) {
-		if ([playlistOrFolder isKindOfClass:[SPPlaylist class]]) {
-			[playlists addObject:playlistOrFolder];
-		} else {
-			[playlists addObjectsFromArray:[self playlistsInFolder:playlistOrFolder]];
-		}
-	}
-	return [NSArray arrayWithArray:playlists];
 }
 
 -(NSArray *)tracksFromPlaylistItems:(NSArray *)items {
