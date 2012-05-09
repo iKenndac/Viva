@@ -86,10 +86,11 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	NSError *error = nil;
 	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:g_appkey length:g_appkey_size]
 											   userAgent:userAgent
+										   loadingPolicy:SPAsyncLoadingImmediate
 												   error:&error];
 	
 	if (error != nil) {
-		NSRunAlertPanel(@"Initializing CocoaLibSpotify failed!", 
+		NSRunAlertPanel(@"Initializing CocoaLibSpotify failed!",
 						[NSString stringWithFormat:@"%@", error], 
 						@"Quit",
 						@"",

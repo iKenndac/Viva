@@ -187,7 +187,7 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	if (!self.showArtists) {
 		
 		SPAlbum *album = [self.albums objectAtIndex:index];
-		[album.cover beginLoading];
+		[album.cover startLoading];
 		
 		proxy = [self.albumProxyCache valueForKey:album.spotifyURL.absoluteString];
 		if (proxy == nil) {

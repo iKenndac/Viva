@@ -189,7 +189,7 @@
 	else
 		album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
 	
-	[album.cover beginLoading];
+	[album.cover startLoading];
 	
 	proxy = [self.albumProxyCache valueForKey:album.spotifyURL.absoluteString];
 	if (proxy == nil) {
