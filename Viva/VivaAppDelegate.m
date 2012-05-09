@@ -47,6 +47,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification {
 	
+	[GrowlApplicationBridge setGrowlDelegate:self];
+	
 	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
 													   andSelector:@selector(handleURLEvent:withReplyEvent:)
 													 forEventClass:kInternetEventClass
@@ -149,6 +151,26 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 		[loginWindowController showWindow:nil];
 	}];
 }
+
+#pragma mark - GrowlApplicationBridgeDelegate Methods
+
+-(NSDictionary *)registrationDictionaryForGrowl {
+    return [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSArray arrayWithObject:kGrowlNotificationNameNewTrack], [NSArray arrayWithObject:kGrowlNotificationNameNewTrack], nil]
+                                       forKeys:[NSArray arrayWithObjects:GROWL_NOTIFICATIONS_ALL, GROWL_NOTIFICATIONS_DEFAULT, nil ]];
+}
+
+-(NSString *)applicationNameForGrowl {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+}
+
+- (void)growlNotificationWasClicked:(id)clickContext {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:clickContext]];
+}
+
+-(void)growlIsReady {
+    NSLog(@"Growl is ready");
+}
+
 
 #pragma mark -
 

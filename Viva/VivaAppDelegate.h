@@ -12,8 +12,9 @@
 #import "MainWindowController.h"
 #import "VivaPlaybackManager.h"
 #import "SPMediaKeyTap.h"
+#import <Growl/Growl.h>
 
-@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate> {
+@interface VivaAppDelegate : NSObject <NSApplicationDelegate, SPSessionDelegate, GrowlApplicationBridgeDelegate> {
 @private
     NSWindow *__unsafe_unretained window;
 	LoginWindowController *loginWindowController;

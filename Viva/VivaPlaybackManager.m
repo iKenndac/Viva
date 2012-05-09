@@ -15,6 +15,7 @@
 #import "VivaTrackExtensions.h"
 #import "SPSession+AudioStatistics.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <Growl/Growl.h>
 
 @interface VivaPlaybackManager  ()
 
@@ -257,6 +258,9 @@
 			
 			self.currentTrackContainer = newTrack;
 			self.playing = YES;
+			
+			[self reportTrackToGrowl:self.currentTrack];
+			
 		} else {
 			self.playing = NO;
 			[self.audioController clearAudioBuffers];
@@ -520,6 +524,30 @@
 -(void)scrobbleTrackStopped:(SPTrack *)track atPosition:(NSTimeInterval)position {
 	if (track != nil && [[NSUserDefaults standardUserDefaults] boolForKey:kScrobblePlaybackToLastFMUserDefaultsKey])
 		[[LastFMController sharedInstance] notifyTrackPlaybackDidEnd:track atPosition:position];	
+}
+
+-(void)reportTrackToGrowl:(SPTrack *)track {
+	
+	void (^postNotification)(NSArray *) = ^(NSArray *imageOrAlbum) {
+		
+		[GrowlApplicationBridge notifyWithTitle:track.name
+									description:[NSString stringWithFormat:@"%@\n%@", track.consolidatedArtists, track.album.name]
+							   notificationName:kGrowlNotificationNameNewTrack
+									   iconData:[track.album.cover.image TIFFRepresentation]
+									   priority:0
+									   isSticky:NO
+								   clickContext:nil];
+	};
+
+	[SPAsyncLoading waitUntilLoaded:track then:^(NSArray *trackArray) {
+		[SPAsyncLoading waitUntilLoaded:[track.artists arrayByAddingObject:track.album] then:^(NSArray *albumAndArtists) {
+			
+			if (track.album.cover == nil)
+				postNotification([NSArray arrayWithObject:track.album]);
+			else
+				[SPAsyncLoading waitUntilLoaded:track.album.cover then:postNotification];
+		}];
+	}];
 }
 
 #pragma mark -

@@ -34,6 +34,10 @@ static NSUInteger const kVivaTrackDecodingFailedErrorCode = 101;
 static NSUInteger const kVivaTrackTokenLostErrorCode = 200;
 static NSString * const kVivaTrackContainerKey = @"trackContainer";
 
+// ------ Growl ------
+
+static NSString * const kGrowlNotificationNameNewTrack = @"newTrack";
+
 // ------ EQ ------
 
 static NSString * const kUserEQPresetsUserDefaultsKey = @"UserEQPresets";
