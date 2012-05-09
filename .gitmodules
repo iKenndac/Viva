@@ -2,18 +2,9 @@
 	path = cocoalibspotify
 	url = git://github.com/spotify/cocoalibspotify.git
 	branch = experimental/ARC-threaded
-[submodule "Scribbler"]
-	path = Scribbler
-	url = git://github.com/iKenndac/Scribbler.git
 [submodule "EMKeychain"]
 	path = EMKeychain
 	url = git://github.com/iKenndac/EMKeychain.git
-[submodule "Sparkle"]
-	path = Sparkle
-	url = https://github.com/andymatuschak/Sparkle.git
-[submodule "BGHUDAppKit"]
-	path = BGHUDAppKit
-	url = git://github.com/binarygod/BGHUDAppKit.git
 [submodule "Viva-Libs"]
 	path = Viva-Libs
 	url = git://github.com/iKenndac/Viva-Libs.git
