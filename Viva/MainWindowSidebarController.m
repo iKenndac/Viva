@@ -445,8 +445,10 @@
 					   
 			dispatch_async(dispatch_get_main_queue(), ^{
 				SPPlaylist *targetPlaylist = item;
-				[targetPlaylist.items addObjectsFromArray:tracksToAdd];
-			});		   
+				[targetPlaylist addItems:tracksToAdd atIndex:targetPlaylist.items.count callback:^(NSError *error) {
+					if (error) [self.sidebar.window presentError:error];
+				}];
+			});
 		});
 		
 		return YES;

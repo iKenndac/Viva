@@ -101,7 +101,8 @@
 		NSBeep();
 		return;
 	}
-	[self.playlist.items removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
+#warning Implement this
+	//[self.playlist.items removeObjectsAtIndexes:self.trackContainerArrayController.selectionIndexes];
 }
 
 #pragma mark -
@@ -200,8 +201,10 @@
 		if (([NSEvent modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) {
 			// Copy
 			NSArray *tracksToMove = [self.playlist.items objectsAtIndexes:trackIndexesToMove];
-			[self.playlist.items insertObjects:tracksToMove 
-									 atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToMove count])]];
+			__block id sself = self;
+			[self.playlist addItems:tracksToMove atIndex:row callback:^(NSError *error) {
+				if (error) [sself presentError:error];
+			}];
 			
 		} else {
 			[self.playlist moveItemsAtIndexes:trackIndexesToMove toIndex:row callback:nil];
@@ -231,8 +234,11 @@
 			}
 		}
 		
-		[self.playlist.items insertObjects:tracksToAdd 
-								 atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(row, [tracksToAdd count])]];
+		__block id sself = self;
+		[self.playlist addItems:tracksToAdd atIndex:row callback:^(NSError *error) {
+			if (error) [sself presentError:error];
+		}];
+		
 		return YES;
 	}
 	

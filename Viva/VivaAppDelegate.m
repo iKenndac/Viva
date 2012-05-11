@@ -134,7 +134,9 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 		[SPSession sharedSession].connectionState == SP_CONNECTION_STATE_UNDEFINED) 
 		return NSTerminateNow;
 	
-	[[SPSession sharedSession] beginLogout:nil];
+	[[SPSession sharedSession] logout:^{
+		[[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+	}];
 	return NSTerminateLater;
 }
 
@@ -145,7 +147,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	
 	[mainWindowController close];
 	
-	[[SPSession sharedSession] beginLogout:^{
+	[[SPSession sharedSession] logout:^{
 		[[SPSession sharedSession] forgetStoredCredentials];
 		[loginWindowController reset];
 		[loginWindowController showWindow:nil];
@@ -321,13 +323,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	loginWindowController.isLoggingIn = NO;
 }
     
--(void)sessionDidLogOut:(SPSession *)aSession; {
-    if ([NSRunLoop currentRunLoop].currentMode == NSModalPanelRunLoopMode)
-        [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
-    // Only quit when logging out if we're in NSModalPanelRunLoopMode, which is what
-    // returning NSTerminateLater in applicationWillTerminate causes.
-}
-
+-(void)sessionDidLogOut:(SPSession *)aSession; {}
 -(void)session:(SPSession *)aSession didEncounterNetworkError:(NSError *)error; {}
 -(void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage; {}
 -(void)sessionDidChangeMetadata:(SPSession *)aSession; {}
