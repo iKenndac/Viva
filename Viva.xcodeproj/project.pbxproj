@@ -210,13 +210,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		507E2736155D87B1003C6D92 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 504E4934155AA85400E1C0F7;
-			remoteInfo = "CocoaLibSpotify Test Container";
-		};
 		5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
@@ -230,6 +223,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 503D630E13258041007772CA;
 			remoteInfo = CocoaLibSpotify;
+		};
+		50DCFCD1156BC8DB0090723A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 504E4934155AA85400E1C0F7;
+			remoteInfo = CocoaLSTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -905,7 +905,7 @@
 			isa = PBXGroup;
 			children = (
 				5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */,
-				507E2737155D87B1003C6D92 /* CocoaLibSpotify Test Container.app */,
+				50DCFCD2156BC8DB0090723A /* CocoaLibSpotify Test Container.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1383,18 +1383,19 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		507E2737155D87B1003C6D92 /* CocoaLibSpotify Test Container.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "CocoaLibSpotify Test Container.app";
-			remoteRef = 507E2736155D87B1003C6D92 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CocoaLibSpotify.framework;
 			remoteRef = 5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		50DCFCD2156BC8DB0090723A /* CocoaLibSpotify Test Container.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			name = "CocoaLibSpotify Test Container.app";
+			path = CocoaLSTests.app;
+			remoteRef = 50DCFCD1156BC8DB0090723A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1688,7 +1689,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1706,7 +1706,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
