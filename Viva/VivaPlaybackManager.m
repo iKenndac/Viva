@@ -528,7 +528,7 @@
 
 -(void)reportTrackToGrowl:(SPTrack *)track {
 	
-	void (^postNotification)(NSArray *) = ^(NSArray *imageOrAlbum) {
+	void (^postNotification)() = ^(NSArray *imageOrAlbum, NSArray *notLoadedImageOrAlbum) {
 		
 		[GrowlApplicationBridge notifyWithTitle:track.name
 									description:[NSString stringWithFormat:@"%@\n%@", track.consolidatedArtists, track.album.name]
@@ -539,13 +539,13 @@
 								   clickContext:nil];
 	};
 
-	[SPAsyncLoading waitUntilLoaded:track then:^(NSArray *trackArray) {
-		[SPAsyncLoading waitUntilLoaded:[track.artists arrayByAddingObject:track.album] then:^(NSArray *albumAndArtists) {
+	[SPAsyncLoading waitUntilLoaded:track timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *trackArray, NSArray *notLoadedTracks) {
+		[SPAsyncLoading waitUntilLoaded:[track.artists arrayByAddingObject:track.album] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *albumAndArtists, NSArray *notLoadedAlbumAndArtists) {
 			
 			if (track.album.cover == nil)
 				postNotification([NSArray arrayWithObject:track.album]);
 			else
-				[SPAsyncLoading waitUntilLoaded:track.album.cover then:postNotification];
+				[SPAsyncLoading waitUntilLoaded:track.album.cover timeout:kSPAsyncLoadingDefaultTimeout then:postNotification];
 		}];
 	}];
 }

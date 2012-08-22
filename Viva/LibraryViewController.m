@@ -97,9 +97,9 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 
 -(void)rebuildAlbumsAndArtists {
 	
-	[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession] then:^(NSArray *loadedSession) {
+	[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession] timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedSession, NSArray *notloadedSession) {
 		
-		[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession].userPlaylists then:^(NSArray *userPl) {
+		[SPAsyncLoading waitUntilLoaded:[SPSession sharedSession].userPlaylists timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *userPl, NSArray *notLoadedPl) {
 			
 			SPPlaylist *starred = [[SPSession sharedSession] starredPlaylist];
 			SPPlaylist *inbox = [[SPSession sharedSession] inboxPlaylist];

@@ -17,7 +17,6 @@
     
 	NSTextField *__weak userNameField;
 	NSSecureTextField *__weak passwordField;
-	NSButton *__weak rememberMeCheckbox;
 	NSBox *__weak contentBox;
 	NSView *__weak credentialsView;
 	NSView *__weak loggingInView;
@@ -29,7 +28,6 @@
 
 @property (weak) IBOutlet NSTextField *userNameField;
 @property (weak) IBOutlet NSSecureTextField *passwordField;
-@property (weak) IBOutlet NSButton *rememberMeCheckbox;
 @property (weak) IBOutlet NSBox *contentBox;
 @property (weak) IBOutlet NSView *credentialsView;
 @property (weak) IBOutlet NSView *loggingInView;

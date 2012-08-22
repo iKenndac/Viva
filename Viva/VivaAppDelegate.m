@@ -148,7 +148,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	[mainWindowController close];
 	
 	[[SPSession sharedSession] logout:^{
-		[[SPSession sharedSession] forgetStoredCredentials];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setValue:nil forKey:kVivaLastCredentialUserDefaultsKey];
 		[loginWindowController reset];
 		[loginWindowController showWindow:nil];
 	}];
@@ -322,7 +323,13 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	
 	loginWindowController.isLoggingIn = NO;
 }
-    
+
+-(void)session:(SPSession *)aSession didGenerateLoginCredentials:(NSString *)credential forUserName:(NSString *)userName {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setValue:credential forKey:kVivaLastCredentialUserDefaultsKey];
+	[defaults setValue:userName forKey:kVivaLastUserNameUserDefaultsKey];
+}
+
 -(void)sessionDidLogOut:(SPSession *)aSession; {}
 -(void)session:(SPSession *)aSession didEncounterNetworkError:(NSError *)error; {}
 -(void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage; {}

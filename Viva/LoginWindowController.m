@@ -25,7 +25,6 @@
 @synthesize isLoggingIn;
 @synthesize userNameField;
 @synthesize passwordField;
-@synthesize rememberMeCheckbox;
 @synthesize contentBox;
 @synthesize credentialsView;
 @synthesize loggingInView;
@@ -55,16 +54,19 @@
 	[[[self.window contentView] superview] setNeedsDisplay:YES];
 	
 	[self.window center];
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *storedUserName = [defaults valueForKey:kVivaLastUserNameUserDefaultsKey];
+	NSString *storedCredential = [defaults valueForKey:kVivaLastCredentialUserDefaultsKey];
 	
-	[[SPSession sharedSession] fetchStoredCredentialsUserName:^(NSString *storedUserName) {
-		if ([storedUserName length] > 0)
-			[userNameField setStringValue:storedUserName];
-		
-		if ([storedUserName length] > 0) {
-			[self attemptAutoLogin];
-		}
-	}];
-    
+	if ([storedUserName length] > 0)
+		[userNameField setStringValue:storedUserName];
+
+	if ([storedCredential length] > 0) {
+		self.isLoggingIn = YES;
+		[[SPSession sharedSession] attemptLoginWithUserName:storedUserName existingCredential:storedCredential];
+	}
+	
 	[self addObserver:self
 		   forKeyPath:@"isLoggingIn"
 			  options:NSKeyValueObservingOptionInitial
@@ -102,16 +104,9 @@
 	}
     
 	[[SPSession sharedSession] attemptLoginWithUserName:[userNameField stringValue]
-											   password:[passwordField stringValue]
-									rememberCredentials:([rememberMeCheckbox state] == NSOnState)];
+											   password:[passwordField stringValue]];
 	
 	self.isLoggingIn = YES;
-}
-
--(void)attemptAutoLogin {
-    [[SPSession sharedSession] attemptLoginWithStoredCredentials:^(NSError *error) {
-		if (error == nil) self.isLoggingIn = YES;
-	}];
 }
 
 -(void)reset {

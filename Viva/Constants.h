@@ -75,6 +75,7 @@ static NSString * const kVivaLibSpotifyUserAgentName = @"com.spotify.Viva";
 // ------ User Defaults ------
 
 static NSString * const kVivaLastUserNameUserDefaultsKey = @"LastUser";
+static NSString * const kVivaLastCredentialUserDefaultsKey = @"LastCredential";
 static NSString * const kVivaMainViewHistoryUserDefaultsKey = @"History";
 
 // ------ Notifications ------
