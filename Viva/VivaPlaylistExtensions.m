@@ -47,4 +47,8 @@
 	return image;
 }
 
+-(NSArray *)items {
+	return [self.playlists valueForKeyPath:@"@unionOfArrays.items"];
+}
+
 @end

@@ -37,19 +37,27 @@
 					<key>SPItemSpotifyURL</key>
 					<string>spotify:internal:inbox</string>
 				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>SPGroupItems</key>
-			<array>
 				<dict>
 					<key>SPItemTitle</key>
-					<string>Starred</string>
+					<string>Starred Tracks</string>
 					<key>SPItemImageKey</key>
 					<string>sidebar-starred</string>
 					<key>SPItemSpotifyURL</key>
 					<string>spotify:internal:starred</string>
 				</dict>
+				<dict>
+					<key>SPItemTitle</key>
+					<string>Playlists</string>
+					<key>SPItemImageKey</key>
+					<string>sidebar-folder</string>
+					<key>SPItemSpotifyURL</key>
+					<string>spotify:internal:playlists</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>SPGroupItems</key>
+			<array>
 				<dict>
 					<key>SPItemTitle</key>
 					<string>SPUserPlaylistsPlaceholder</string>
@@ -64,7 +72,7 @@
 			<key>SPGroupIdentifier</key>
 			<string>com.spotify.Viva.UserPlaylists</string>
 			<key>SPGroupTitle</key>
-			<string>PLAYLISTS</string>
+			<string>FAVOURITES</string>
 		</dict>
 	</array>
 </dict>

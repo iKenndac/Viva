@@ -175,6 +175,8 @@
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
 		50B19FDF134A447300D428FF /* SPFooterTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */; };
 		50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */; };
+		50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B489A915E6767000902DE0 /* PlaylistsViewController.m */; };
+		50B489AE15E676A000902DE0 /* PlaylistsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B489AD15E676A000902DE0 /* PlaylistsViewController.xib */; };
 		50B658601514976B00DC3CB7 /* VivaLocalSPImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B6585F1514976B00DC3CB7 /* VivaLocalSPImage.m */; };
 		50B72AD6143768E90082E027 /* InboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50B72AD5143768E90082E027 /* InboxViewController.m */; };
 		50C56A3313393AA50072A754 /* SPTableCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 50C56A3213393AA50072A754 /* SPTableCorner.m */; };
@@ -480,6 +482,9 @@
 		50B19FDE134A447300D428FF /* SPFooterTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPFooterTextFieldCell.m; path = "Custom Controls/SPFooterTextFieldCell.m"; sourceTree = "<group>"; };
 		50B4774F1462CE4200B04A51 /* SPPlaylistDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPlaylistDelegateProxy.h; sourceTree = "<group>"; };
 		50B477501462CE4200B04A51 /* SPPlaylistDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPlaylistDelegateProxy.m; sourceTree = "<group>"; };
+		50B489A815E6767000902DE0 /* PlaylistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistsViewController.h; sourceTree = "<group>"; };
+		50B489A915E6767000902DE0 /* PlaylistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsViewController.m; sourceTree = "<group>"; };
+		50B489AD15E676A000902DE0 /* PlaylistsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistsViewController.xib; sourceTree = "<group>"; };
 		50B6585E1514976B00DC3CB7 /* VivaLocalSPImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaLocalSPImage.h; sourceTree = "<group>"; };
 		50B6585F1514976B00DC3CB7 /* VivaLocalSPImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaLocalSPImage.m; sourceTree = "<group>"; };
 		50B72AD4143768E90082E027 /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
@@ -581,6 +586,7 @@
 				50B72AD3143768B60082E027 /* Inbox View */,
 				500B86AD1361704C005FC734 /* Search View */,
 				5099D8A31364B0D0005C7CDC /* Album View */,
+				50B489A715E6764700902DE0 /* Playlists View */,
 			);
 			name = "Playback Contexts";
 			sourceTree = "<group>";
@@ -1178,6 +1184,16 @@
 			name = Preferences;
 			sourceTree = "<group>";
 		};
+		50B489A715E6764700902DE0 /* Playlists View */ = {
+			isa = PBXGroup;
+			children = (
+				50B489A815E6767000902DE0 /* PlaylistsViewController.h */,
+				50B489A915E6767000902DE0 /* PlaylistsViewController.m */,
+				50B489AD15E676A000902DE0 /* PlaylistsViewController.xib */,
+			);
+			name = "Playlists View";
+			sourceTree = "<group>";
+		};
 		50B72AD3143768B60082E027 /* Inbox View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1509,6 +1525,7 @@
 				50A241E114C5920E00949DB7 /* searchglass.png in Resources */,
 				50A241E214C5920E00949DB7 /* VivaIcon.icns in Resources */,
 				50788FBB14DD470C0029E2D9 /* LocalFilesViewController.xib in Resources */,
+				50B489AE15E676A000902DE0 /* PlaylistsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1639,6 +1656,7 @@
 				50ACAE88152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m in Sources */,
 				50936FD3152C695C0099A55C /* VivaLinkTextField.m in Sources */,
 				5009673F152C91340054EDF5 /* VivaClickableArtistTableCellView.m in Sources */,
+				50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

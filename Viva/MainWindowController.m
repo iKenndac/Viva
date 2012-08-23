@@ -147,14 +147,15 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		if (newViewController != nil && newViewController != (id)[NSNull null]) {
 			self.contentBox.contentView = newViewController.view;
 
-			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[view]-0-|"
+			
+			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[view(>=10)]-0-|"
 																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
 																					metrics:nil
 																					  views:@{@"view": newViewController.view}]];
 
 
 
-			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view(>=10)]-0-|"
 																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
 																					metrics:nil
 																					  views:@{@"view": newViewController.view}]];
