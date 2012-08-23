@@ -138,17 +138,29 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		
 		NSViewController *oldViewController = [change valueForKey:NSKeyValueChangeOldKey];
 		NSViewController *newViewController = [change valueForKey:NSKeyValueChangeNewKey];
-		
+
 		if (oldViewController != (id)[NSNull null]) {
 			[[self window] setNextResponder:[oldViewController nextResponder]];
 			[oldViewController setNextResponder:nil];
 		}
-		
+
 		if (newViewController != nil && newViewController != (id)[NSNull null]) {
 			self.contentBox.contentView = newViewController.view;
-			
+
+			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[view]-0-|"
+																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
+																					metrics:nil
+																					  views:@{@"view": newViewController.view}]];
+
+
+
+			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
+																					metrics:nil
+																					  views:@{@"view": newViewController.view}]];
+
 			NSResponder *responder = [[self window] nextResponder];
-			
+
 			if (responder != newViewController) {
 				[[self window] setNextResponder:newViewController];
 				[newViewController setNextResponder:responder];
@@ -157,8 +169,8 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		} else {
 			self.contentBox.contentView = nil;
 		}
-		
-		
+
+
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -170,16 +182,16 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 - (IBAction)showOpenURLSheet:(id)sender {
 	[self.invalidURLWarningLabel setHidden:YES];
-	
+
 	[NSApp beginSheet:self.urlSheet
 	   modalForWindow:self.window
 		modalDelegate:nil
-	   didEndSelector:nil 
+	   didEndSelector:nil
 		  contextInfo:nil];
 }
 
 - (IBAction)openURL:(id)sender {
-	
+
 	NSURL *aURL = [NSURL URLWithString:[self.urlField stringValue]];
 	
 	if (aURL == nil) {

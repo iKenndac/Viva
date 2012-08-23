@@ -17,8 +17,8 @@
 +(NSArray *)trackContainerSortDescriptorsForAlbumAscending:(BOOL)ascending {
 	return [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"track.album.name" ascending:ascending selector:@selector(caseInsensitiveCompare:)],
-			[NSSortDescriptor sortDescriptorWithKey:@"track.discNumber" ascending:YES selector:@selector(compare:)],
-			[NSSortDescriptor sortDescriptorWithKey:@"track.trackNumber" ascending:YES selector:@selector(compare:)],
+			[NSSortDescriptor sortDescriptorWithKey:@"track.resolvedDiscNumber" ascending:YES selector:@selector(compare:)],
+			[NSSortDescriptor sortDescriptorWithKey:@"track.resolvedTrackNumber" ascending:YES selector:@selector(compare:)],
 			nil];
 }
 

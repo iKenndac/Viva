@@ -41,11 +41,9 @@
 
 -(void)awakeFromNib {
 	[super awakeFromNib];
-	self.backgroundColorView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];	
-}
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row {
-	return [[VivaAlbumTableRowView alloc] init];
+	self.leftColumnColorView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];
+	self.backgroundColorView.backgroundColor = [NSColor whiteColor];
+	self.albumCoverView.layer.backgroundColor = [NSColor whiteColor].CGColor;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -72,7 +70,17 @@
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
 
++(NSSet *)keyPathsForValuesAffectingCondensedCopyrights {
+	return [NSSet setWithObjects:@"albumBrowse.copyrights", nil];
+}
+
+-(NSString *)condensedCopyrights {
+	return [self.albumBrowse.copyrights componentsJoinedByString:@", "];
+}
+
 @synthesize backgroundColorView;
+@synthesize leftColumnColorView;
+@synthesize albumCoverView;
 @synthesize albumBrowse;
 
 - (void)dealloc {

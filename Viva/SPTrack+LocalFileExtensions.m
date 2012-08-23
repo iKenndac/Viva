@@ -32,16 +32,24 @@ static const void *localFileKey = @"localFile";
 	objc_setAssociatedObject(self, localFileKey, localFile, OBJC_ASSOCIATION_RETAIN);
 }
 
--(NSUInteger)trackNumber {
++(NSSet *)keyPathsForValuesAffectingResolvedTrackNumber {
+	return [NSSet setWithObjects:@"localFile.trackNumber", @"trackNumber", nil];
+}
+
+-(NSUInteger)resolvedTrackNumber {
 	if (self.localFile == nil)
-		return sp_track_index(self.track);
+		return self.trackNumber;
 	else
 		return [self.localFile.trackNumber unsignedIntegerValue];
 }
 
--(NSUInteger)discNumber {
++(NSSet *)keyPathsForValuesAffectingResolvedDiscNumber {
+	return [NSSet setWithObjects:@"localFile.discNumber", @"discNumber", nil];
+}
+
+-(NSUInteger)resolvedDiscNumber {
 	if (self.localFile == nil)
-		return sp_track_disc(self.track);
+		return self.discNumber;
 	else
 		return [self.localFile.discNumber unsignedIntegerValue];
 }

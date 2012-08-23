@@ -17,6 +17,8 @@
 }
 
 @property (weak) IBOutlet SPBackgroundColorView *backgroundColorView;
+@property (weak) IBOutlet SPBackgroundColorView *leftColumnColorView;
+@property (weak) IBOutlet NSImageView *albumCoverView;
 
 @property (nonatomic, readonly, strong) SPAlbumBrowse *albumBrowse;
 
