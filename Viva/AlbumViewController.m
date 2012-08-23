@@ -9,6 +9,7 @@
 #import "AlbumViewController.h"
 #import "VivaTrackInContainerReference.h"
 #import "VivaAlbumTableRowView.h"
+#import "VivaLinkTextField.h"
 
 @interface AlbumViewController ()
 
@@ -25,6 +26,11 @@
 		
 		[self addObserver:self
 			   forKeyPath:@"albumBrowse.tracks"
+				  options:0
+				  context:nil];
+
+		[self addObserver:self
+			   forKeyPath:@"albumBrowse.album.artist.name"
 				  options:0
 				  context:nil];
 		
@@ -44,6 +50,9 @@
 	self.leftColumnColorView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];
 	self.backgroundColorView.backgroundColor = [NSColor whiteColor];
 	self.albumCoverView.layer.backgroundColor = [NSColor whiteColor].CGColor;
+
+	self.artistView.activeColor = [NSColor darkGrayColor];
+	self.artistView.textFont = [NSFont fontWithName:@"Helvetica" size:12.0];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -53,7 +62,12 @@
 		if (![containerTracks isEqualToArray:self.albumBrowse.tracks]) {
 			[self rebuildTrackContainers];
 		}
-		
+
+	} else if ([keyPath isEqualToString:@"albumBrowse.album.artist.name"]) {
+		NSURL *url = self.albumBrowse.album.artist.spotifyURL;
+		NSString * name = self.albumBrowse.album.artist.name;
+		if (url != nil && name != nil)
+			self.artistView.items = @[@{kVivaLinkViewItemKey : url, kVivaLinkViewItemTitleKey : name}];
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -78,13 +92,16 @@
 	return [self.albumBrowse.copyrights componentsJoinedByString:@", "];
 }
 
+
 @synthesize backgroundColorView;
 @synthesize leftColumnColorView;
 @synthesize albumCoverView;
+@synthesize artistView;
 @synthesize albumBrowse;
 
 - (void)dealloc {
 	[self removeObserver:self forKeyPath:@"albumBrowse.tracks"];
+	[self removeObserver:self forKeyPath:@"albumBrowse.album.artist.name"];
 }
 
 @end

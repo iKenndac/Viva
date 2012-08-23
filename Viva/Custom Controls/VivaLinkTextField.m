@@ -26,6 +26,8 @@
         // Initialization code here.
 		[self addObserver:self forKeyPath:@"items" options:0 context:nil];
 		self.currentMousePoint = NSMakePoint(-1.0, -1.0);
+		self.activeColor = [NSColor blackColor];
+		self.textFont = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
     }
     
     return self;
@@ -38,6 +40,8 @@
         // Initialization code here.
 		[self addObserver:self forKeyPath:@"items" options:0 context:nil];
 		self.currentMousePoint = NSMakePoint(-1.0, -1.0);
+		self.activeColor = [NSColor blackColor];
+		self.textFont = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
     }
     
     return self;
@@ -71,8 +75,8 @@
 -(NSDictionary *)textProperties:(BOOL)underline enabled:(BOOL)enabled {
 	
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:10];
-	[dict setValue:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];
-	[dict setValue:self.backgroundStyle == NSBackgroundStyleDark ? [NSColor whiteColor] : enabled ? [NSColor blackColor] : [NSColor disabledControlTextColor] forKey:NSForegroundColorAttributeName];
+	[dict setValue:self.textFont forKey:NSFontAttributeName];
+	[dict setValue:self.backgroundStyle == NSBackgroundStyleDark ? [NSColor whiteColor] : enabled ? self.activeColor : [NSColor disabledControlTextColor] forKey:NSForegroundColorAttributeName];
 	
 	NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
 	paragraph.lineBreakMode = NSLineBreakByTruncatingTail;

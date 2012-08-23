@@ -10,6 +10,7 @@
 #import "VivaSortableTrackListController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "SPBackgroundColorView.h"
+#import "VivaLinkTextField.h"
 
 @interface AlbumViewController : VivaSortableTrackListController {
 @private
@@ -19,6 +20,7 @@
 @property (weak) IBOutlet SPBackgroundColorView *backgroundColorView;
 @property (weak) IBOutlet SPBackgroundColorView *leftColumnColorView;
 @property (weak) IBOutlet NSImageView *albumCoverView;
+@property (weak) IBOutlet VivaLinkTextField *artistView;
 
 @property (nonatomic, readonly, strong) SPAlbumBrowse *albumBrowse;
 

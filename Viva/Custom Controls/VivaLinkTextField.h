@@ -24,4 +24,8 @@ static NSString * const kVivaLinkViewItemKey = @"item";
 @property (nonatomic, readwrite, assign) __unsafe_unretained id <VivaLinkTextFieldDelegate> delegate;
 @property (readwrite, nonatomic, strong) NSArray *items;
 
+@property (readwrite, nonatomic, strong) NSColor *activeColor;
+@property (readwrite, nonatomic, strong) NSFont *textFont;
+
+
 @end
