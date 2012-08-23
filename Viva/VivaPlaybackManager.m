@@ -536,7 +536,8 @@
 									   iconData:[track.album.cover.image TIFFRepresentation]
 									   priority:0
 									   isSticky:NO
-								   clickContext:nil];
+								   clickContext:nil
+									 identifier:@"com.spotify.Viva.trackChanged"];
 	};
 
 	[SPAsyncLoading waitUntilLoaded:track timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *trackArray, NSArray *notLoadedTracks) {
