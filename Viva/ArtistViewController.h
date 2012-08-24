@@ -11,6 +11,7 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import <Quartz/Quartz.h>
 #import "SPBackgroundColorView.h"
+#import "VivaDraggableItemImageView.h"
 
 @interface ArtistViewController : NSViewController <VivaViewController> {
 @private
@@ -19,6 +20,7 @@
 
 @property (weak) IBOutlet IKImageBrowserView *imageBrowser;
 @property (weak) IBOutlet SPBackgroundColorView *headerView;
+@property (weak) IBOutlet VivaDraggableItemImageView *artistImageView;
 
 @property (nonatomic, readonly, strong) SPArtistBrowse *artistBrowse;
 @property (nonatomic, readonly, strong) NSArray *albums;

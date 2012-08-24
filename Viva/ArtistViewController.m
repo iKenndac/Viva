@@ -33,6 +33,11 @@
 			   forKeyPath:@"artistBrowse.albums"
 				  options:0
 				  context:nil];
+
+		[self addObserver:self
+			   forKeyPath:@"artistBrowse.artist.spotifyURL"
+				  options:0
+				  context:nil];
 		
 		self.albumProxyCache = [[NSMutableDictionary alloc] init];
 		
@@ -66,7 +71,8 @@
 		[self rebuildAlbums];
 		[self.imageBrowser setAnimates:YES];
 		self.canAnimateImageBrowser = YES;
-		
+	} else if ([keyPath isEqualToString:@"artistBrowse.artist.spotifyURL"]) {
+		self.artistImageView.itemURL = self.artistBrowse.artist.spotifyURL;
 	} else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -146,6 +152,7 @@
 @synthesize albums;
 @synthesize relatedAlbums;
 @synthesize headerView;
+@synthesize artistImageView;
 @synthesize albumProxyCache;
 @synthesize canAnimateImageBrowser;
 
@@ -204,6 +211,7 @@
 
 -(void)dealloc {
 	[self removeObserver:self forKeyPath:@"artistBrowse.albums"];
+	[self removeObserver:self forKeyPath:@"artistBrowse.artist.spotifyURL"];
 }
 
 @end

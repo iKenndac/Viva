@@ -171,7 +171,7 @@
 	} else if ([item isKindOfClass:[SPArtist class]]) {
 		SPArtist *artist = item;
 		return [NSDictionary dictionaryWithObjectsAndKeys:
-				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
+				[NSImage imageNamed:@"sidebar-people"], SPSidebarImageKey,
 				artist, SPSidebarOriginalItemKey,
 				artist.spotifyURL, SPSidebarURLKey,
 				nil];
