@@ -143,6 +143,8 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		NSViewController *oldViewController = [change valueForKey:NSKeyValueChangeOldKey];
 		NSViewController *newViewController = [change valueForKey:NSKeyValueChangeNewKey];
 
+		if (oldViewController == newViewController) return;
+
 		if (oldViewController != (id)[NSNull null]) {
 			[[self window] setNextResponder:[oldViewController nextResponder]];
 			[oldViewController setNextResponder:nil];

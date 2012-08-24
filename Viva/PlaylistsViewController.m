@@ -42,7 +42,7 @@
 
 -(void)displayItemAtURL:(NSURL *)url {
 	NSViewController <VivaViewController> *vc = [[VivaInternalURLManager sharedInstance] viewControllerForURL:url];
-	if (vc)
+	if (vc && vc != self)
 		self.contentViewController = vc;
 
 	[[SPSession sharedSession] objectRepresentationForSpotifyURL:url callback:^(sp_linktype linkType, id objectRepresentation) {
@@ -87,7 +87,10 @@
 
 -(void)setContentViewController:(NSViewController<VivaViewController> *)contentViewController {
 
+	if (self.contentViewController == contentViewController) return;
+
 	if (self.contentViewController) {
+		[self.containerViewContainer removeConstraints:self.containerViewContainer.constraints];
 		[self setNextResponder:[self.contentViewController nextResponder]];
 		[self.contentViewController setNextResponder:nil];
 		[self.contentViewController.view removeFromSuperview];
