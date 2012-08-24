@@ -8,13 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SPBackgroundColorView.h"
-#import "VivaSortableTrackListController.h"
 #import "VivaInternalURLManager.h"
 
-@interface PlaylistsViewController : VivaSortableTrackListController <NSOutlineViewDelegate>
+@interface PlaylistsViewController : NSViewController <VivaViewController, NSOutlineViewDelegate>
 
 @property (weak) IBOutlet SPBackgroundColorView *backgroundColorView;
 @property (weak) IBOutlet SPBackgroundColorView *leftColumnColorView;
 @property (strong) IBOutlet NSTreeController *playlistTreeController;
+@property (weak) IBOutlet NSView *containerViewContainer;
+@property (weak) IBOutlet NSOutlineView *playlistsOutlineView;
+
+@property (nonatomic, readwrite, strong) NSViewController <VivaViewController> *contentViewController;
+
+-(IBAction)copySpotifyURI:(id)sender;
 
 @end
