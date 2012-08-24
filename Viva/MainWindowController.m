@@ -127,9 +127,16 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		
 		if (![self.navigationController.thePresent isEqual:self.sidebarController.selectedURL])
 			self.sidebarController.selectedURL = self.navigationController.thePresent;
+
+		NSViewController <VivaViewController> *vc = [[VivaInternalURLManager sharedInstance] wrapperViewControllerForURL:self.navigationController.thePresent];
+		if (vc == nil)
+			vc = [[VivaInternalURLManager sharedInstance] viewControllerForURL:self.navigationController.thePresent];
+
+		[self setCurrentViewController:vc];
+		if ([vc conformsToProtocol:@protocol(VivaWrapperViewController)])
+			[(id <VivaWrapperViewController>)vc displayItemAtURL:self.navigationController.thePresent];
 		
-		[self setCurrentViewController:[[VivaInternalURLManager sharedInstance] viewControllerForURL:self.navigationController.thePresent]];
-		
+
 	} else if ([keyPath isEqualToString:@"currentViewController"]) {
 		// Display the view controller
 		

@@ -10,7 +10,7 @@
 #import "SPBackgroundColorView.h"
 #import "VivaInternalURLManager.h"
 
-@interface PlaylistsViewController : NSViewController <VivaViewController, NSOutlineViewDelegate>
+@interface PlaylistsViewController : NSViewController <VivaViewController, VivaWrapperViewController, NSOutlineViewDelegate>
 
 @property (weak) IBOutlet SPBackgroundColorView *backgroundColorView;
 @property (weak) IBOutlet SPBackgroundColorView *leftColumnColorView;

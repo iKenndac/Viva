@@ -70,7 +70,8 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[LibraryViewController class] forURLScheme:@"spotify:internal:library"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[LocalFilesViewController class] forURLScheme:@"spotify:internal:local-files"];
 	[[VivaInternalURLManager sharedInstance] registerViewControllerClass:[PlaylistsViewController class] forURLScheme:@"spotify:internal:playlists"];
-	
+	[[VivaInternalURLManager sharedInstance] registerHandledURL:[NSURL URLWithString:@"spotify:internal:playlists"] asWrapperForURLScheme:@"spotify:user"];
+
     // Look for -mu arguments in argv
     NSString *muValue = nil;
     

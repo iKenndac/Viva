@@ -40,6 +40,17 @@
 
 }
 
+-(void)displayItemAtURL:(NSURL *)url {
+	NSViewController <VivaViewController> *vc = [[VivaInternalURLManager sharedInstance] viewControllerForURL:url];
+	if (vc)
+		self.contentViewController = vc;
+
+	[[SPSession sharedSession] objectRepresentationForSpotifyURL:url callback:^(sp_linktype linkType, id objectRepresentation) {
+		/*[self.playlistsOutlineView selectRowIndexes:[NSIndexPath indexPathWithIndex:[self.playlistsOutlineView rowForItem:objectRepresentation]]
+							   byExtendingSelection:NO];*/
+	}];
+}
+
 -(void)awakeFromNib {
 	[super awakeFromNib];
 	self.leftColumnColorView.backgroundColor = [NSColor colorWithCalibratedRed:0.907 green:0.903 blue:0.887 alpha:1.000];

@@ -26,6 +26,7 @@ static VivaInternalURLManager *sharedInstance;
         // Initialization code here.
 		prefixToClassLookupTable = [[NSMutableDictionary alloc] init];
 		urlToViewControllerLookupTable = [[NSMutableDictionary alloc] init];
+		urlToWrapperLookupTable = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -36,6 +37,10 @@ static VivaInternalURLManager *sharedInstance;
 	if ([aViewControllerClass instancesRespondToSelector:@selector(initWithObjectFromURL:)]) {
 		[prefixToClassLookupTable setObject:aViewControllerClass forKey:urlSchemePrefix];
 	} 
+}
+
+-(void)registerHandledURL:(NSURL *)wrapperURL asWrapperForURLScheme:(NSString *)urlSchemePrefix {
+	[urlToWrapperLookupTable setValue:wrapperURL forKey:urlSchemePrefix];
 }
 
 -(BOOL)canHandleURL:(NSURL *)aURL {
@@ -70,6 +75,19 @@ static VivaInternalURLManager *sharedInstance;
 												   forKey:aURL];
 				return newController;
 			}
+		}
+	}
+	return nil;
+}
+
+-(NSViewController <VivaViewController, VivaWrapperViewController> *)wrapperViewControllerForURL:(NSURL *)aURL {
+
+	for (NSString *prefix in urlToWrapperLookupTable.allKeys) {
+
+		if ([[aURL absoluteString] hasPrefix:prefix]) {
+			NSViewController *vc = [self viewControllerForURL:[urlToWrapperLookupTable valueForKey:prefix]];
+			if ([vc conformsToProtocol:@protocol(VivaWrapperViewController)])
+				return (NSViewController <VivaViewController, VivaWrapperViewController> *)vc;
 		}
 	}
 	return nil;
