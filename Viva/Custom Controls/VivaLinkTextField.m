@@ -27,7 +27,7 @@
 		[self addObserver:self forKeyPath:@"items" options:0 context:nil];
 		self.currentMousePoint = NSMakePoint(-1.0, -1.0);
 		self.activeColor = [NSColor blackColor];
-		self.textFont = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+		self.textFont = [NSFont systemFontOfSize:12.0];
     }
     
     return self;
@@ -41,7 +41,7 @@
 		[self addObserver:self forKeyPath:@"items" options:0 context:nil];
 		self.currentMousePoint = NSMakePoint(-1.0, -1.0);
 		self.activeColor = [NSColor blackColor];
-		self.textFont = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+		self.textFont = [NSFont systemFontOfSize:12.0];
     }
     
     return self;
@@ -51,7 +51,12 @@
 @synthesize items;
 @synthesize currentMousePoint;
 @synthesize cachedRects;
-@synthesize backgroundStyle;
+@synthesize backgroundStyle = _backgroundStyle;
+
+-(void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
+	_backgroundStyle = backgroundStyle;
+	[self setNeedsDisplay:YES];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
