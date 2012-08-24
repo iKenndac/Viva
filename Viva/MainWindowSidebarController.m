@@ -52,6 +52,23 @@
 			   forKeyPath:@"sidebar"
 				  options:0
 				  context:nil];
+
+		NSArray *urlStrings = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaPinnedItemsUserDefaultsKey];
+
+		dispatch_async([SPSession libSpotifyQueue], ^{
+
+			NSMutableArray *mutableItems = [NSMutableArray arrayWithCapacity:urlStrings.count];
+			for (NSString *itemURLString in urlStrings) {
+
+				id item = [[SPSession sharedSession] objectRepresentationForSpotifyURL:[NSURL URLWithString:itemURLString] linkType:NULL];
+				if (item)
+					[mutableItems addObject:item];
+			}
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.pinnedItems = [NSArray arrayWithArray:mutableItems];
+			});
+		});
     }
     
     return self;
@@ -79,6 +96,13 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"pinnedItems"]) {
 		[self.sidebar reloadData];
+
+		[SPAsyncLoading waitUntilLoaded:self.pinnedItems timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+			NSArray *urls = [self.pinnedItems valueForKey:@"spotifyURL"];
+			if ([urls containsObject:[NSNull null]]) return; //Bail!
+			[[NSUserDefaults standardUserDefaults] setValue:[urls valueForKey:@"absoluteString"] forKey:kVivaPinnedItemsUserDefaultsKey];
+		}];
+		
 	} else if ([keyPath isEqualToString:@"selectedURL"]) {
 		
 		for (id group in self.groups) {
