@@ -11,7 +11,7 @@
 
 @implementation VivaDraggableItemImageView
 
-- (void)mouseDown:(NSEvent *)event
+- (void)mouseDragged:(NSEvent *)event
 {
     
     NSSize size = self.image.size;
@@ -20,7 +20,6 @@
 	location.y -= size.height / 2;
 	//NSPoint location = NSMakePoint((self.bounds.size.width - size.width)/2, (self.bounds.size.height - size.height)/2);
     NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-    if (event.clickCount > 1) return;
 	if (self.itemURL == nil) return;
 
 	[pboard clearContents];
