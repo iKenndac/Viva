@@ -16,4 +16,6 @@
 @property (weak) IBOutlet NSOutlineView *sidebar;
 @property (readwrite, copy, nonatomic) NSURL *selectedURL;
 
+@property (readonly, copy, nonatomic) NSArray *pinnedItems;
+
 @end

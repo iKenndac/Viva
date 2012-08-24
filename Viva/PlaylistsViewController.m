@@ -10,6 +10,7 @@
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import "VivaTrackInContainerReference.h"
 #import "Constants.h"
+#import "VivaAppDelegate.h"
 
 @interface PlaylistsViewController ()
 
@@ -109,6 +110,61 @@
 
 }
 
+-(void)keyDown:(NSEvent *)theEvent {
+
+	if ([theEvent keyCode] == 49) {
+		[[NSApp delegate] performPlayPauseAction:nil];
+	} else {
+		[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	}
+}
+
+-(void)moveLeft:(id)sender {
+	[[NSApp delegate] performPreviousTrackAction:sender];
+}
+
+-(void)moveRight:(id)sender {
+	[[NSApp delegate] performNextTrackAction:sender];
+}
+
+-(void)delete:(id)sender {
+
+	if (self.view.window.firstResponder == self.playlistsOutlineView) {
+
+		id playlist = [[self.playlistsOutlineView itemAtRow:self.playlistsOutlineView.selectedRow] representedObject];
+
+		if (![playlist isKindOfClass:[SPPlaylist class]] && ![playlist isKindOfClass:[SPPlaylistFolder class]]) {
+			NSBeep();
+			return;
+		}
+
+		if (![playlist isKindOfClass:[SPPlaylistFolder class]] && [[playlist items] count] > 0) {
+
+			[[NSAlert alertWithMessageText:@"Are you sure you want to delete this playlist?"
+							 defaultButton:@"Delete"
+						   alternateButton:@"Cancel"
+							   otherButton:@""
+				 informativeTextWithFormat:@"This operation cannot be undone, because I haven't written that code yet."]
+			 beginSheetModalForWindow:[self.view window]
+			 modalDelegate:self
+			 didEndSelector:@selector(confirmPlaylistDeletionSheetDidEnd:returnCode:contextInfo:)
+			 contextInfo:(__bridge void *)playlist];
+		} else {
+			[self confirmPlaylistDeletionSheetDidEnd:nil returnCode:NSAlertDefaultReturn contextInfo:(__bridge void *)playlist];
+		}
+	} else {
+		NSBeep();
+	}
+}
+
+-(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+
+	if (returnCode == NSAlertDefaultReturn) {
+		id playlist = (__bridge id)contextInfo;
+		[[SPSession sharedSession].userPlaylists removeItem:playlist callback:nil];
+	}
+}
+
 -(BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
 	NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), item);
 	return YES;
@@ -165,8 +221,8 @@
 	NSData *trackUrlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
 
 	if (trackUrlData != nil) {
-		if ((![item isKindOfClass:[SPPlaylist class]]) ||
-			([item isKindOfClass:[SPPlaylistFolder class]])) {
+		if ((![[item representedObject] isKindOfClass:[SPPlaylist class]]) ||
+			([[item representedObject] isKindOfClass:[SPPlaylistFolder class]])) {
 			return NSDragOperationNone;
 		} else {
 			return NSDragOperationCopy;
@@ -258,7 +314,7 @@
 			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				SPPlaylist *targetPlaylist = item;
+				SPPlaylist *targetPlaylist = [item representedObject];
 				[targetPlaylist addItems:tracksToAdd atIndex:targetPlaylist.items.count callback:^(NSError *error) {
 					if (error) [self.view.window presentError:error];
 				}];
@@ -328,7 +384,7 @@
 											 callback:^(SPPlaylist *playlist) {
 												 [userPlaylists moveItem:playlist
 																 toIndex:destinationIndex
-															 ofNewParent:item
+															 ofNewParent:[item representedObject]
 																callback:^(NSError *error) {
 																	if (error)
 																		[self.view.window presentError:error];
@@ -377,6 +433,9 @@
 
 		[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:repForReordering]
 				forType:kSpotifyPlaylistMoveSourceDragIdentifier];
+
+		[pboard setData:[NSKeyedArchiver archivedDataWithRootObject:@{kItemReferenceURL : [item spotifyURL]}]
+				forType:kSpotifyItemReferenceDragIdentifier];
 	}
 
 	return YES;

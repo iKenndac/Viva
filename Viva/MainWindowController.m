@@ -83,10 +83,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	
 	self.sourceListBackgroundColorView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"AwesomeKindaTileableTextureForVivaWhichIsAwesomeAsWell"]];
 	
-	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyTrackURLListDragIdentifier,
-											  kSpotifyPlaylistMoveSourceDragIdentifier, 
-											  kSpotifyFolderMoveSourceDragIdentifier,
-											  nil]];
+	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyItemReferenceDragIdentifier, kSpotifyTrackURLListDragIdentifier, nil]];
     
 	footerViewController = [[FooterViewController alloc] init];
 	footerViewController.view.frame = self.footerViewContainer.bounds;

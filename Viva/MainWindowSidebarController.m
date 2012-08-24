@@ -16,10 +16,11 @@
 @interface MainWindowSidebarController ()
 
 @property (readwrite, copy, nonatomic) NSArray *groups;
+@property (readwrite, copy, nonatomic) NSArray *pinnedItems;
 
 -(NSDictionary *)unifiedDictionaryForItem:(id)item;
--(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder;
--(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex;
+-(NSInteger)indexOfPinnedItemInOutlineView:(id)playlistOrFolder;
+-(NSInteger)realIndexOfPinnedItemAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex;
 
 @end
 
@@ -37,10 +38,10 @@
 		
 		self.groups = [propertyList valueForKey:@"Groups"];
 		
-		[[SPSession sharedSession] addObserver:self
-									forKeyPath:@"userPlaylists.playlists"
-									   options:0
-									   context:nil];
+		[self addObserver:self
+			   forKeyPath:@"pinnedItems"
+				  options:0
+				  context:nil];
 		
 		[self addObserver:self
 			   forKeyPath:@"selectedURL"
@@ -76,7 +77,7 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"userPlaylists.playlists"]) {
+    if ([keyPath isEqualToString:@"pinnedItems"]) {
 		[self.sidebar reloadData];
 	} else if ([keyPath isEqualToString:@"selectedURL"]) {
 		
@@ -119,7 +120,7 @@
 }
 
 -(void)dealloc {
-	[[SPSession sharedSession] removeObserver:self forKeyPath:@"userPlaylists.playlists"];
+	[self removeObserver:self forKeyPath:@"pinnedItems"];
 	[self removeObserver:self forKeyPath:@"selectedURL"];
 	[self removeObserver:self forKeyPath:@"sidebar"];
 	self.sidebar = nil;
@@ -135,6 +136,22 @@
 				playlist.spotifyURL, SPSidebarURLKey,
 				nil];
 		
+	} else if ([item isKindOfClass:[SPAlbum class]]) {
+		SPAlbum *album = item;
+		return [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
+				album, SPSidebarOriginalItemKey,
+				album.spotifyURL, SPSidebarURLKey,
+				nil];
+
+	} else if ([item isKindOfClass:[SPArtist class]]) {
+		SPArtist *artist = item;
+		return [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSImage imageNamed:@"sidebar-folder"], SPSidebarImageKey,
+				artist, SPSidebarOriginalItemKey,
+				artist.spotifyURL, SPSidebarURLKey,
+				nil];
+
 	} else if ([item isKindOfClass:[SPPlaylistFolder class]]) {
 		SPPlaylistFolder *folder = item;
 		return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -158,7 +175,7 @@
 	return nil;
 }
 
--(NSInteger)realIndexOfRootPlaylistAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex {
+-(NSInteger)realIndexOfPinnedItemAtIndexInOutlineView:(NSInteger)playlistOrFolderIndex {
 	
 	NSInteger currentIndex = 0;
 	
@@ -169,7 +186,7 @@
 		
 		for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
 			if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
-				// Here be playlists!
+				// Here be items!
 				return playlistOrFolderIndex - currentIndex;
 			} else {
 				currentIndex++;
@@ -180,7 +197,7 @@
 	return NSNotFound;
 }
 
--(NSInteger)indexOfRootPlaylistInOutlineView:(id)playlistOrFolder {
+-(NSInteger)indexOfPinnedItemInOutlineView:(id)pinnedItem {
 	
 	NSInteger currentIndex = 0;
 	
@@ -192,9 +209,9 @@
 		for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
 			if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 				// Here be playlists!
-				NSUInteger indexOfPlaylist = [[SPSession sharedSession].userPlaylists.playlists indexOfObject:playlistOrFolder];
-				if (indexOfPlaylist != NSNotFound)
-					return currentIndex + indexOfPlaylist;
+				NSUInteger indexOfItem = [self.pinnedItems indexOfObject:pinnedItem];
+				if (indexOfItem != NSNotFound)
+					return currentIndex + indexOfItem;
 				else
 					return NSNotFound;
 			} else {
@@ -264,7 +281,7 @@
 			
 			for (id item in [group valueForKey:kSPSidebarGroupItemsKey]) {
 				if ([[item valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle])
-					itemCount += [SPSession sharedSession].userPlaylists.playlists.count;
+					itemCount += self.pinnedItems.count;
 				else
 					itemCount++;
 			}
@@ -310,14 +327,14 @@
 				
 				if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
 					
-					NSInteger playlistCount = [SPSession sharedSession].userPlaylists.playlists.count;
+					NSInteger pinnedCount = self.pinnedItems.count;
 					NSInteger relativeIndex = index - currentIndex;
 					
-					if (relativeIndex < playlistCount) {
-						id childItem = [[SPSession sharedSession].userPlaylists.playlists objectAtIndex:relativeIndex];
+					if (relativeIndex < pinnedCount) {
+						id childItem = [self.pinnedItems objectAtIndex:relativeIndex];
 						return childItem;
 					} else {
-						currentIndex += playlistCount;
+						currentIndex += pinnedCount;
 					}
 				} else if (currentIndex == index) {
 					return currentItem;
@@ -337,6 +354,118 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item {
 	return YES;
+}
+
+#pragma mark -
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView
+				  validateDrop:(id < NSDraggingInfo >)info
+				  proposedItem:(id)item
+			proposedChildIndex:(NSInteger)index {
+
+	NSData *trackUrlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+
+	if (trackUrlData != nil) {
+		if ((![item isKindOfClass:[SPPlaylist class]]) ||
+			([item isKindOfClass:[SPPlaylistFolder class]])) {
+			return NSDragOperationNone;
+		} else {
+			return NSDragOperationCopy;
+		}
+	}
+
+	NSData *itemUrlData = [[info draggingPasteboard] dataForType:kSpotifyItemReferenceDragIdentifier];
+
+	if (itemUrlData != nil) {
+
+		NSURL *itemURL = [[NSKeyedUnarchiver unarchiveObjectWithData:itemUrlData] valueForKey:kItemReferenceURL];
+		if ([[self.pinnedItems valueForKey:@"spotifyURL"] containsObject:itemURL])
+			return NSDragOperationNone;
+		
+		if (item == nil) {
+			NSInteger indexOfFirstItem = [self indexOfPinnedItemInOutlineView:[self.pinnedItems objectAtIndex:0]];
+			NSInteger indexOfLastItem = [self indexOfPinnedItemInOutlineView:self.pinnedItems.lastObject];
+
+			if (index == -1 && self.pinnedItems.count > 0)
+				index = indexOfLastItem + 1;
+
+			[outlineView setDropItem:nil
+					  dropChildIndex:index < indexOfFirstItem ? indexOfFirstItem : index > indexOfLastItem ? indexOfLastItem + 1 : index];
+
+			return NSDragOperationCopy;
+
+		} else {
+			[outlineView setDropItem:nil
+					  dropChildIndex:[self realIndexOfPinnedItemAtIndexInOutlineView:0]];
+
+			return NSDragOperationMove;
+		}
+
+	}
+
+	return NSDragOperationNone;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id < NSDraggingInfo >)info item:(id)item childIndex:(NSInteger)index {
+
+	NSData *urlData = [[info draggingPasteboard] dataForType:kSpotifyTrackURLListDragIdentifier];
+
+	if (urlData != nil) {
+
+		dispatch_async([SPSession libSpotifyQueue], ^{
+
+			NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
+			NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
+
+			for (NSURL *url in trackURLs) {
+
+				SPTrack *track = nil;
+				sp_link *link = [url createSpotifyLink];
+
+				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {
+					sp_track *tr = sp_link_as_track(link);
+					track = [SPTrack trackForTrackStruct:tr inSession:[SPSession sharedSession]];
+					sp_link_release(link);
+				}
+
+				if (track != nil) {
+					[tracksToAdd addObject:track];
+				}
+			}
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				SPPlaylist *targetPlaylist = [item representedObject];
+				[targetPlaylist addItems:tracksToAdd atIndex:targetPlaylist.items.count callback:^(NSError *error) {
+					if (error) [self.sidebar.window presentError:error];
+				}];
+			});
+		});
+		
+		return YES;
+	}
+
+	NSData *itemUrlData = [[info draggingPasteboard] dataForType:kSpotifyItemReferenceDragIdentifier];
+
+	if (itemUrlData != nil) {
+
+		NSInteger insertIndex = [self realIndexOfPinnedItemAtIndexInOutlineView:index];
+		NSURL *itemURL = [[NSKeyedUnarchiver unarchiveObjectWithData:itemUrlData] valueForKey:kItemReferenceURL];
+
+		NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.pinnedItems];
+
+		[[SPSession sharedSession] objectRepresentationForSpotifyURL:itemURL callback:^(sp_linktype linkType, id objectRepresentation) {
+			if (objectRepresentation) {
+				[newItems insertObject:objectRepresentation atIndex:insertIndex];
+				self.pinnedItems = [NSArray arrayWithArray:newItems];
+			}
+		}];
+
+		return YES;
+	}
+
+	return NO;
+
+
 }
 
 

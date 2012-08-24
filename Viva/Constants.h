@@ -66,6 +66,8 @@ static NSString * const kPlaylistURL = @"kPlaylistURL";
 static NSString * const kPlaylistParentId = @"kPlaylistParentId";
 static NSString * const kSpotifyFolderMoveSourceDragIdentifier = @"com.spotify.Viva.FolderInParent";
 static NSString * const kFolderId = @"kFolderId";
+static NSString * const kSpotifyItemReferenceDragIdentifier = @"com.spotify.Viva.ItemReference";
+static NSString * const kItemReferenceURL = @"kItemReferenceURL";
 
 // ------ Keychain ------
 
