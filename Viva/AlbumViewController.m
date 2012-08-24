@@ -30,6 +30,11 @@
 				  context:nil];
 
 		[self addObserver:self
+			   forKeyPath:@"albumBrowse.album.spotifyURL"
+				  options:0
+				  context:nil];
+
+		[self addObserver:self
 			   forKeyPath:@"albumBrowse.album.artist.name"
 				  options:0
 				  context:nil];
@@ -62,6 +67,9 @@
 		if (![containerTracks isEqualToArray:self.albumBrowse.tracks]) {
 			[self rebuildTrackContainers];
 		}
+
+	} else if ([keyPath isEqualToString:@"albumBrowse.album.spotifyURL"]) {
+		self.albumCoverView.itemURL = self.albumBrowse.album.spotifyURL;
 
 	} else if ([keyPath isEqualToString:@"albumBrowse.album.artist.name"]) {
 		NSURL *url = self.albumBrowse.album.artist.spotifyURL;
@@ -100,6 +108,7 @@
 @synthesize albumBrowse;
 
 - (void)dealloc {
+	[self removeObserver:self forKeyPath:@"albumBrowse.album.spotifyURL"];
 	[self removeObserver:self forKeyPath:@"albumBrowse.tracks"];
 	[self removeObserver:self forKeyPath:@"albumBrowse.album.artist.name"];
 }

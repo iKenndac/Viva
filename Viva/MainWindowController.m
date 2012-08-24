@@ -268,33 +268,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 }
 
 -(void)delete:(id)sender {
-	
-	if (self.window.firstResponder == self.sourceList) {
-		
-		id playlist = [self.sourceList itemAtRow:self.sourceList.selectedRow];
-		
-		if (![playlist isKindOfClass:[SPPlaylist class]] && ![playlist isKindOfClass:[SPPlaylistFolder class]]) {
-			NSBeep();
-			return;
-		}
-		
-		if (![playlist isKindOfClass:[SPPlaylistFolder class]] && [[playlist items] count] > 0) {
-			
-			[[NSAlert alertWithMessageText:@"Are you sure you want to delete this playlist?"
-							 defaultButton:@"Delete"
-						   alternateButton:@"Cancel"
-							   otherButton:@""
-				 informativeTextWithFormat:@"This operation cannot be undone, because I haven't written that code yet."]
-			 beginSheetModalForWindow:[self window]
-			 modalDelegate:self
-			 didEndSelector:@selector(confirmPlaylistDeletionSheetDidEnd:returnCode:contextInfo:)
-			 contextInfo:(__bridge void *)playlist];
-		} else {
-			[self confirmPlaylistDeletionSheetDidEnd:nil returnCode:NSAlertDefaultReturn contextInfo:(__bridge void *)playlist];
-		}
-	} else {
-		NSBeep();
-	}
+	[sidebarController handleDeleteKey];
 }
 
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {

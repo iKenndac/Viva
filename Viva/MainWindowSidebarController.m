@@ -247,6 +247,50 @@
 	return NSNotFound;
 }
 
+-(NSInteger)firstIndexOfPinnedItems {
+	NSInteger currentIndex = 0;
+
+	for (id group in self.groups) {
+		if ([[group valueForKey:kSPSidebarGroupTitleIsShownKey] boolValue]) {
+			currentIndex++;
+		}
+
+		for (id currentItem in [group valueForKey:kSPSidebarGroupItemsKey]) {
+			if ([[currentItem valueForKey:kSPSidebarItemTitleKey] isEqualToString:kSPSidebarItemUserPlaylistsPlaceholderTitle]) {
+				// Here be playlists!
+				return currentIndex;
+			} else {
+				currentIndex++;
+			}
+		}
+	}
+
+	return NSNotFound;
+}
+
+-(void)handleDeleteKey {
+	
+	NSInteger row = self.sidebar.selectedRow;
+
+	NSInteger startIndex = [self firstIndexOfPinnedItems];
+	NSInteger lastIndex = (startIndex + self.pinnedItems.count) - 1;
+
+	if (row >= startIndex && row <= lastIndex) {
+		NSInteger itemIndex = row - startIndex;
+		NSMutableArray *mutableItems = [self.pinnedItems mutableCopy];
+		[mutableItems removeObjectAtIndex:itemIndex];
+		self.pinnedItems = [NSArray arrayWithArray:mutableItems];
+	}
+
+	if (row >= [self.sidebar numberOfRows])
+		row = [self.sidebar numberOfRows] - 1;
+
+	if (![self outlineView:self.sidebar shouldSelectItem:[self.sidebar itemAtRow:row]])
+		row--;
+
+	[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+}
+
 #pragma mark -
 
 -(NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item {
@@ -405,10 +449,10 @@
 		NSURL *itemURL = [[NSKeyedUnarchiver unarchiveObjectWithData:itemUrlData] valueForKey:kItemReferenceURL];
 		if ([[self.pinnedItems valueForKey:@"spotifyURL"] containsObject:itemURL])
 			return NSDragOperationNone;
-		
+
 		if (item == nil) {
-			NSInteger indexOfFirstItem = [self indexOfPinnedItemInOutlineView:[self.pinnedItems objectAtIndex:0]];
-			NSInteger indexOfLastItem = [self indexOfPinnedItemInOutlineView:self.pinnedItems.lastObject];
+			NSInteger indexOfFirstItem = [self firstIndexOfPinnedItems];
+			NSInteger indexOfLastItem = indexOfFirstItem + (self.pinnedItems.count - 1);
 
 			if (index == -1 && self.pinnedItems.count > 0)
 				index = indexOfLastItem + 1;

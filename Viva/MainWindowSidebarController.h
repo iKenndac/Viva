@@ -18,4 +18,6 @@
 
 @property (readonly, copy, nonatomic) NSArray *pinnedItems;
 
+-(void)handleDeleteKey;
+
 @end

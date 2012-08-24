@@ -39,6 +39,7 @@
 		502F9F2A155B0EFA0058BCE3 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 502F9F20155B0EDE0058BCE3 /* Growl.framework */; };
 		502F9F2B155B0EFE0058BCE3 /* Scribbler.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 502F9F22155B0EDE0058BCE3 /* Scribbler.framework */; };
 		502F9F2C155B0F010058BCE3 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 502F9F24155B0EDE0058BCE3 /* Sparkle.framework */; };
+		503A7C2715E7C1B100D9FF18 /* VivaDraggableItemImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 503A7C2615E7C1B100D9FF18 /* VivaDraggableItemImageView.m */; };
 		503D62D913257D92007772CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503D62D813257D92007772CA /* Cocoa.framework */; };
 		503D62E313257D92007772CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 503D62E113257D92007772CA /* InfoPlist.strings */; };
 		503D62E613257D92007772CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503D62E513257D92007772CA /* main.m */; };
@@ -308,6 +309,8 @@
 		502F9F20155B0EDE0058BCE3 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		502F9F22155B0EDE0058BCE3 /* Scribbler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Scribbler.framework; sourceTree = "<group>"; };
 		502F9F24155B0EDE0058BCE3 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		503A7C2515E7C1B100D9FF18 /* VivaDraggableItemImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaDraggableItemImageView.h; sourceTree = "<group>"; };
+		503A7C2615E7C1B100D9FF18 /* VivaDraggableItemImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaDraggableItemImageView.m; sourceTree = "<group>"; };
 		503D62D413257D92007772CA /* Viva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		503D62D813257D92007772CA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		503D62DB13257D92007772CA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -996,6 +999,8 @@
 				5009673E152C91340054EDF5 /* VivaClickableArtistTableCellView.m */,
 				50936FD1152C695C0099A55C /* VivaLinkTextField.h */,
 				50936FD2152C695C0099A55C /* VivaLinkTextField.m */,
+				503A7C2515E7C1B100D9FF18 /* VivaDraggableItemImageView.h */,
+				503A7C2615E7C1B100D9FF18 /* VivaDraggableItemImageView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1657,6 +1662,7 @@
 				50936FD3152C695C0099A55C /* VivaLinkTextField.m in Sources */,
 				5009673F152C91340054EDF5 /* VivaClickableArtistTableCellView.m in Sources */,
 				50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */,
+				503A7C2715E7C1B100D9FF18 /* VivaDraggableItemImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
