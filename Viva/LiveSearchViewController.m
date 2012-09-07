@@ -13,6 +13,7 @@
 #import "MainWindowController.h"
 #import "Constants.h"
 #import "VivaLocalSPImage.h"
+#import "VivaAppDelegate.h"
 
 @implementation LiveSearchViewController
 @synthesize tableView;
@@ -75,8 +76,9 @@
                                        row:self.tableView.selectedRow];
 	
 	if ([result valueForKey:@"url"]) {
-        ((VivaURLNavigationController *)[(MainWindowController *)self.view.window.parentWindow.windowController navigationController]).thePresent = [result valueForKey:@"url"];
-        [self.popover performClose:nil];
+		NSURL *url = [result valueForKey:@"url"];
+		[[NSApp delegate] handleURL:url];
+		[self.popover performClose:nil];
     }
 }
 
