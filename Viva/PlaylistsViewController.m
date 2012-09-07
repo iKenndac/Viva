@@ -72,6 +72,7 @@
 
 		if ([obj isKindOfClass:[SPPlaylist class]]) {
 			NSViewController <VivaViewController> *vc = [[VivaInternalURLManager sharedInstance] viewControllerForURL:[obj spotifyURL]];
+			((VivaURLNavigationController *)[(MainWindowController *)self.view.window.windowController navigationController]).thePresent = [obj spotifyURL];
 			self.contentViewController = vc;
 		}
 
@@ -180,7 +181,6 @@
 }
 
 -(BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
-	NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), item);
 	return YES;
 }
 
