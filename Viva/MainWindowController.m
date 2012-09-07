@@ -28,22 +28,6 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 @implementation MainWindowController
 
-@synthesize urlSheet;
-@synthesize urlField;
-@synthesize invalidURLWarningLabel;
-@synthesize splitView;
-@synthesize sourceListBackgroundColorView;
-@synthesize currentViewController;
-@synthesize footerViewContainer;
-@synthesize contentBox;
-@synthesize sidebarController;
-@synthesize footerViewController;
-@synthesize navigationController;
-@synthesize sourceList;
-@synthesize searchPopover;
-@synthesize searchField;
-@synthesize liveSearch;
-
 -(id)init {
 	return [super initWithWindowNibName:@"MainWindow"];
 }
@@ -67,11 +51,6 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			  context:nil];
 	
 	[self addObserver:self
-		   forKeyPath:@"navigationController.thePresent"
-			  options:0
-			  context:nil];
-	
-	[self addObserver:self
 		   forKeyPath:@"liveSearch.latestSearch.loaded"
 			  options:0
 			  context:(__bridge void *)kVivaWindowControllerLiveSearchObservationContext];
@@ -85,12 +64,23 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 	
 	[self.sourceList registerForDraggedTypes:[NSArray arrayWithObjects:kSpotifyItemReferenceDragIdentifier, kSpotifyTrackURLListDragIdentifier, nil]];
     
-	footerViewController = [[FooterViewController alloc] init];
-	footerViewController.view.frame = self.footerViewContainer.bounds;
-	footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
-	footerViewController.playbackManager.delegate = footerViewController;
-	[self.footerViewContainer addSubview:footerViewController.view];
-	
+	self.footerViewController = [[FooterViewController alloc] init];
+	self.footerViewController.view.frame = self.footerViewContainer.bounds;
+	self.footerViewController.playbackManager = [(VivaAppDelegate *)[NSApp delegate] playbackManager];
+	self.footerViewController.playbackManager.delegate = self.footerViewController;
+	[self.footerViewContainer addSubview:self.footerViewController.view];
+
+	// We complete setup in the next runloop since at this point, the window's size is 0,0, which *really*
+	// screws up autolayout.
+	[self performSelector:@selector(completeWindowLoad) withObject:nil afterDelay:0.0];
+}
+
+-(void)completeWindowLoad {
+	[self addObserver:self
+		   forKeyPath:@"navigationController.thePresent"
+			  options:0
+			  context:nil];
+
 	self.navigationController = [[VivaURLNavigationController alloc] initWithUserDefaultsKey:kVivaMainViewHistoryUserDefaultsKey];
 }
 
@@ -140,7 +130,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 
 	} else if ([keyPath isEqualToString:@"currentViewController"]) {
 		// Display the view controller
-		
+
 		NSViewController *oldViewController = [change valueForKey:NSKeyValueChangeOldKey];
 		NSViewController *newViewController = [change valueForKey:NSKeyValueChangeNewKey];
 
@@ -149,23 +139,24 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 		if (oldViewController != (id)[NSNull null]) {
 			[[self window] setNextResponder:[oldViewController nextResponder]];
 			[oldViewController setNextResponder:nil];
+			[oldViewController.view removeFromSuperview];
 		}
 
 		if (newViewController != nil && newViewController != (id)[NSNull null]) {
-			self.contentBox.contentView = newViewController.view;
 
-			
-			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[view(>=10)]-0-|"
-																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
-																					metrics:nil
-																					  views:@{@"view": newViewController.view}]];
+			[self.contentView addSubview:newViewController.view];
+
+			[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[view]-0-|"
+																					 options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
+																					 metrics:nil
+																					   views:@{@"view": newViewController.view}]];
 
 
 
-			[self.contentBox addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view(>=10)]-0-|"
-																					options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
-																					metrics:nil
-																					  views:@{@"view": newViewController.view}]];
+			[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+																					 options:NSLayoutAttributeBaseline | NSLayoutFormatDirectionLeadingToTrailing
+																					 metrics:nil
+																					   views:@{@"view": newViewController.view}]];
 
 			NSResponder *responder = [[self window] nextResponder];
 
@@ -173,11 +164,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 				[[self window] setNextResponder:newViewController];
 				[newViewController setNextResponder:responder];
 			}
-
-		} else {
-			self.contentBox.contentView = nil;
 		}
-
 
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -278,7 +265,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 }
 
 -(void)delete:(id)sender {
-	[sidebarController handleDeleteKey];
+	[self.sidebarController handleDeleteKey];
 }
 
 -(void)confirmPlaylistDeletionSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
