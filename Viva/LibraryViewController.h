@@ -15,8 +15,8 @@
 
 @property (weak) IBOutlet IKImageBrowserView *imageBrowser;
 
-@property (nonatomic, copy, readonly) NSArray *albums;
-@property (nonatomic, copy, readonly) NSArray *artists;
+@property (nonatomic, copy, readonly) NSArray *albumProxies;
+@property (nonatomic, copy, readonly) NSArray *artistProxies;
 @property (nonatomic, readonly) BOOL showArtists;
 @property (weak) IBOutlet SPBackgroundColorView *headerView;
 

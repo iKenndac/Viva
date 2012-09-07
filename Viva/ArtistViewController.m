@@ -15,9 +15,8 @@
 @interface ArtistViewController ()
 
 @property (nonatomic, readwrite, strong) SPArtistBrowse *artistBrowse;
-@property (nonatomic, readwrite, strong) NSArray *albums;
-@property (nonatomic, readwrite, strong) NSArray *relatedAlbums;
-@property (nonatomic, retain, readwrite) NSMutableDictionary *albumProxyCache;
+@property (nonatomic, readwrite, strong) NSArray *albumProxies;
+@property (nonatomic, readwrite, strong) NSArray *relatedAlbumProxies;
 @property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbums;
@@ -38,8 +37,6 @@
 			   forKeyPath:@"artistBrowse.artist.spotifyURL"
 				  options:0
 				  context:nil];
-		
-		self.albumProxyCache = [[NSMutableDictionary alloc] init];
 		
 		SPSession *appSession = [[NSApp delegate] session];
 		
@@ -93,10 +90,10 @@
 		
 		NSUInteger index = self.imageBrowser.selectionIndexes.firstIndex;
 		
-		if (index < self.albums.count)
-			album = [self.albums objectAtIndex:index];
+		if (index < self.albumProxies.count)
+			album = (id)[[self.albumProxies objectAtIndex:index] album];
 		else
-			album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
+			album = (id)[[self.albumProxies objectAtIndex:index - self.albumProxies.count] album];
 	}
 	
 	if (album == nil) {
@@ -115,32 +112,32 @@
 -(void)rebuildAlbums {
 	
 	NSArray *newAlbums = self.artistBrowse.albums;
-	NSMutableSet *albumSet = [NSMutableSet setWithCapacity:newAlbums.count];
+	NSMutableSet *albumProxySet = [NSMutableSet setWithCapacity:newAlbums.count];
 	NSMutableSet *appearsInSet = [NSMutableSet setWithCapacity:newAlbums.count];
 	
 	for (SPAlbum *anAlbum in newAlbums) {
 		if (![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"]) {
 			if (anAlbum.artist == self.artistBrowse.artist)
-				[albumSet addObject:anAlbum];
+				[albumProxySet addObject:[[VivaAlbumIKImageViewProxy alloc] initWithAlbum:anAlbum imageView:nil]];
 			else
-				[appearsInSet addObject:anAlbum];
+				[appearsInSet addObject:[[VivaAlbumIKImageViewProxy alloc] initWithAlbum:anAlbum imageView:nil]];
 		}
 	}
 	
-	self.albums = [[albumSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPAlbum *obj1, SPAlbum *obj2) {
+	self.albumProxies = [[albumProxySet allObjects] sortedArrayUsingComparator:^NSComparisonResult(VivaAlbumIKImageViewProxy *obj1, VivaAlbumIKImageViewProxy *obj2) {
 		
-		if (obj1.year == obj2.year)
-			return [obj1.name caseInsensitiveCompare:obj2.name];
+		if (obj1.album.year == obj2.album.year)
+			return [obj1.album.name caseInsensitiveCompare:obj2.album.name];
 		
-		return obj2.year - obj1.year;
+		return obj2.album.year - obj1.album.year;
 	}];
 	
-	self.relatedAlbums = [[appearsInSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPAlbum *obj1, SPAlbum *obj2) {
-		
-		if (obj1.year == obj2.year)
-			return [obj1.name caseInsensitiveCompare:obj2.name];
-		
-		return obj2.year - obj1.year;
+	self.relatedAlbumProxies = [[appearsInSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(VivaAlbumIKImageViewProxy *obj1, VivaAlbumIKImageViewProxy *obj2) {
+
+		if (obj1.album.year == obj2.album.year)
+			return [obj1.album.name caseInsensitiveCompare:obj2.album.name];
+
+		return obj2.album.year - obj1.album.year;
 	}];
 	
 	[self.imageBrowser reloadData];
@@ -149,11 +146,10 @@
 
 @synthesize imageBrowser;
 @synthesize artistBrowse;
-@synthesize albums;
-@synthesize relatedAlbums;
+@synthesize albumProxies;
+@synthesize relatedAlbumProxies;
 @synthesize headerView;
 @synthesize artistImageView;
-@synthesize albumProxyCache;
 @synthesize canAnimateImageBrowser;
 
 #pragma mark -
@@ -162,49 +158,40 @@
 	
 	SPAlbum *album = nil;
 	
-	if (index < self.albums.count)
-		album = [self.albums objectAtIndex:index];
+	if (index < self.albumProxies.count)
+		album = (id)[[self.albumProxies objectAtIndex:index] album];
 	else
-		album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
+		album = (id)[[self.relatedAlbumProxies objectAtIndex:index - self.albumProxies.count] album];
 
 	((VivaURLNavigationController *)[(MainWindowController *)self.view.window.windowController navigationController]).thePresent = album.spotifyURL;
 }
 
 -(NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)aBrowser {
-	return self.albums.count + self.relatedAlbums.count;
+	return self.albumProxies.count + self.relatedAlbumProxies.count;
 }
 
 -(NSUInteger)numberOfGroupsInImageBrowser:(IKImageBrowserView *)aBrowser {
-	return self.relatedAlbums.count > 0 ? 1 : 0;
+	return self.relatedAlbumProxies.count > 0 ? 1 : 0;
 }
 
 -(NSDictionary *)imageBrowser:(IKImageBrowserView *)aBrowser groupAtIndex:(NSUInteger)index {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			@"Also Appears On", IKImageBrowserGroupTitleKey,
 			[NSNumber numberWithInt:IKGroupDisclosureStyle], IKImageBrowserGroupStyleKey,
-			[NSValue valueWithRange:NSMakeRange(self.albums.count, self.relatedAlbums.count)], IKImageBrowserGroupRangeKey,
+			[NSValue valueWithRange:NSMakeRange(self.albumProxies.count, self.relatedAlbumProxies.count)], IKImageBrowserGroupRangeKey,
 			nil];
 }
 
 -(id)imageBrowser:(IKImageBrowserView *)aBrowser itemAtIndex:(NSUInteger)index {
 	
 	VivaAlbumIKImageViewProxy *proxy = nil;
-	SPAlbum *album = nil;
 	
-	if (index < self.albums.count)
-		album = [self.albums objectAtIndex:index];
+	if (index < self.albumProxies.count)
+		proxy = [self.albumProxies objectAtIndex:index];
 	else
-		album = [self.relatedAlbums objectAtIndex:index - self.albums.count];
-	
-	[album.cover startLoading];
-	
-	proxy = [self.albumProxyCache valueForKey:album.spotifyURL.absoluteString];
-	if (proxy == nil) {
-		proxy = [[VivaAlbumIKImageViewProxy alloc] initWithAlbum:album imageView:self.imageBrowser];
-		proxy.mode = kSubtitleModeYear;
-		[self.albumProxyCache setValue:proxy forKey:album.spotifyURL.absoluteString];
-	}
-	
+		proxy = [self.relatedAlbumProxies objectAtIndex:index - self.albumProxies.count];
+
+	proxy.mode = kSubtitleModeYear;
 	proxy.imageView = self.imageBrowser;
 	return proxy;
 }

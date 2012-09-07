@@ -17,11 +17,9 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 
 @interface LibraryViewController ()
 
-@property (nonatomic, copy, readwrite) NSArray *albums;
-@property (nonatomic, copy, readwrite) NSArray *artists;
+@property (nonatomic, copy, readwrite) NSArray *albumProxies;
+@property (nonatomic, copy, readwrite) NSArray *artistProxies;
 @property (nonatomic, readwrite) BOOL showArtists;
-@property (nonatomic, retain, readwrite) NSMutableDictionary *albumProxyCache;
-@property (nonatomic, retain, readwrite) NSMutableDictionary *artistProxyCache;
 @property (nonatomic, readwrite) BOOL canAnimateImageBrowser;
 
 -(void)rebuildAlbumsAndArtists;
@@ -37,21 +35,26 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	
 	if (self) {
 		
-		self.albumProxyCache = [[NSMutableDictionary alloc] init];
-		self.artistProxyCache = [[NSMutableDictionary alloc] init];
+		// Wait  for login to settle down.
+		[self performSelector:@selector(initialSetup) withObject:nil afterDelay:2.0];
 		
-		[[SPSession sharedSession] addObserver:self
-									forKeyPath:@"userPlaylists"
-									   options:0
-									   context:(__bridge void *)kLibraryViewControllerRebuildAlbumsKVOContext];
-		
-		[[SPSession sharedSession] addObserver:self
-									forKeyPath:@"starredPlaylist"
-									   options:NSKeyValueObservingOptionInitial
-									   context:(__bridge void *)kLibraryViewControllerRebuildAlbumsKVOContext];
 	}
 	
 	return self;
+}
+
+-(void)initialSetup {
+
+	[[SPSession sharedSession] addObserver:self
+								forKeyPath:@"userPlaylists"
+								   options:0
+								   context:(__bridge void *)kLibraryViewControllerRebuildAlbumsKVOContext];
+
+	[[SPSession sharedSession] addObserver:self
+								forKeyPath:@"starredPlaylist"
+								   options:NSKeyValueObservingOptionInitial
+								   context:(__bridge void *)kLibraryViewControllerRebuildAlbumsKVOContext];
+
 }
 
 -(void)awakeFromNib {
@@ -68,11 +71,9 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	[[SPSession sharedSession] removeObserver:self forKeyPath:@"starredPlaylist"];
 }
 
-@synthesize albumProxyCache;
-@synthesize artistProxyCache;
 @synthesize imageBrowser;
-@synthesize albums;
-@synthesize artists;
+@synthesize albumProxies;
+@synthesize artistProxies;
 @synthesize showArtists;
 @synthesize headerView;
 @synthesize canAnimateImageBrowser;
@@ -112,28 +113,28 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 				
 				[SPAsyncLoading waitUntilLoaded:trackPool timeout:10.0 then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
 					
-					NSArray *newAlbums = [loadedTracks valueForKey:@"album"];
-					NSArray *newArtists = [loadedTracks valueForKeyPath:@"@unionOfArrays.artists"];
+					NSSet *newAlbums = [NSSet setWithArray:[loadedTracks valueForKey:@"album"]];
+					NSSet *newArtists = [NSSet setWithArray:[loadedTracks valueForKeyPath:@"@unionOfArrays.artists"]];
 					
 					NSMutableSet *artistSet = [NSMutableSet setWithCapacity:newArtists.count];
 					NSMutableSet *albumSet = [NSMutableSet setWithCapacity:newAlbums.count];
 					
 					for (SPAlbum *anAlbum in newAlbums) {
 						if (anAlbum != (id)[NSNull null] && ![anAlbum.spotifyURL.absoluteString isEqualToString:@"spotify:album:0000000000000000000000"])
-							[albumSet addObject:anAlbum];
+							[albumSet addObject:[[VivaAlbumIKImageViewProxy alloc] initWithAlbum:anAlbum imageView:nil]];
 					}
 					
 					for (SPArtist *anArtist in newArtists) {
 						if (anArtist != (id)[NSNull null] && ![anArtist.spotifyURL.absoluteString isEqualToString:@"spotify:artist:0000000000000000000000"])
-							[artistSet addObject:anArtist];
+							[artistSet addObject:[[VivaArtistIKImageViewProxy alloc] initWithArtist:anArtist imageView:nil]];
 					}
 					
-					self.albums = [[albumSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPAlbum *obj1, SPAlbum *obj2) {
-						return [obj1.name caseInsensitiveCompare:obj2.name];
+					self.albumProxies = [[albumSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(VivaAlbumIKImageViewProxy *obj1, VivaAlbumIKImageViewProxy *obj2) {
+						return [obj1.album.name caseInsensitiveCompare:obj2.album.name];
 					}];
 					
-					self.artists = [[artistSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(SPArtist *obj1, SPArtist *obj2) {
-						return [obj1.name caseInsensitiveCompare:obj2.name];
+					self.artistProxies = [[artistSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(VivaArtistIKImageViewProxy *obj1, VivaArtistIKImageViewProxy *obj2) {
+						return [obj1.artist.name caseInsensitiveCompare:obj2.artist.name];
 					}];
 					
 					self.canAnimateImageBrowser = YES;
@@ -166,10 +167,10 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 	NSURL *url = nil;
 	
 	if (self.showArtists) {
-		SPArtist *artist = [self.artists objectAtIndex:index];
+		SPArtist *artist = [[self.artistProxies objectAtIndex:index] artist];
 		url = artist.spotifyURL;
 	} else {
-		SPAlbum *album = [self.albums objectAtIndex:index];
+		SPAlbum *album = (id)[[self.albumProxies objectAtIndex:index] album];
 		url = album.spotifyURL;
 	}
 	
@@ -177,35 +178,17 @@ static NSString * const kLibraryViewControllerRebuildAlbumsKVOContext = @"kLibra
 }
 
 -(NSUInteger)numberOfItemsInImageBrowser:(IKImageBrowserView *)aBrowser {
-	return self.showArtists ? self.artists.count : self.albums.count;
+	return self.showArtists ? self.artistProxies.count : self.albumProxies.count;
 }
 
 -(id)imageBrowser:(IKImageBrowserView *)aBrowser itemAtIndex:(NSUInteger)index {
 	
 	id proxy = nil;
 	
-	if (!self.showArtists) {
-		
-		SPAlbum *album = [self.albums objectAtIndex:index];
-		[album.cover startLoading];
-		
-		proxy = [self.albumProxyCache valueForKey:album.spotifyURL.absoluteString];
-		if (proxy == nil) {
-			proxy = [[VivaAlbumIKImageViewProxy alloc] initWithAlbum:album imageView:self.imageBrowser];
-			[self.albumProxyCache setValue:proxy forKey:album.spotifyURL.absoluteString];
-		}
-		
-	} else {
-		
-		SPArtist *artist = [self.artists objectAtIndex:index];
-	
-		proxy = [self.artistProxyCache valueForKey:artist.spotifyURL.absoluteString];
-		if (proxy == nil) {
-			proxy = [[VivaArtistIKImageViewProxy alloc] initWithArtist:artist imageView:self.imageBrowser];
-			[self.artistProxyCache setValue:proxy forKey:artist.spotifyURL.absoluteString];
-		}
-		
-	}
+	if (!self.showArtists)
+		proxy = [self.albumProxies objectAtIndex:index];
+	else
+		proxy = [self.artistProxies objectAtIndex:index];
 	
 	[proxy setImageView:(id)self.imageBrowser];
 	return proxy;

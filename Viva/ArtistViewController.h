@@ -23,8 +23,8 @@
 @property (weak) IBOutlet VivaDraggableItemImageView *artistImageView;
 
 @property (nonatomic, readonly, strong) SPArtistBrowse *artistBrowse;
-@property (nonatomic, readonly, strong) NSArray *albums;
-@property (nonatomic, readonly, strong) NSArray *relatedAlbums;
+@property (nonatomic, readonly, strong) NSArray *albumProxies;
+@property (nonatomic, readonly, strong) NSArray *relatedAlbumProxies;
 
 
 
