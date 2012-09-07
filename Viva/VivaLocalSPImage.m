@@ -17,6 +17,10 @@
 
 @implementation VivaLocalSPImage
 
+-(id)init {
+	return [self initWithImage:nil];
+}
+
 -(id)initWithImage:(SPPlatformNativeImage *)im {
 	
 	self = [super init];
@@ -38,5 +42,9 @@
 -(NSURL *)spotifyURL { return nil; }
 
 @synthesize image;
+
+-(void)dealloc {
+	[self removeObserver:self forKeyPath:@"loaded"];
+}
 
 @end

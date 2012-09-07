@@ -207,12 +207,12 @@
 }
 
 -(void)dealloc {
-	
-	self.popover = nil;
-	
+
 	[self removeObserver:self
 			  forKeyPath:@"representedObject.latestSearch.loaded"];
-	
+
+	self.popover = nil;
+	self.representedObject = nil;
 }
 
 @end

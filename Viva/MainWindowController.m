@@ -106,6 +106,7 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			
 			LiveSearchViewController *ls = [[LiveSearchViewController alloc] init];
 			ls.popover = self.searchPopover;
+			self.searchPopover.delegate = self;
 			
 			self.searchPopover.contentViewController = ls;
 			self.searchPopover.contentViewController.representedObject = self.liveSearch;
@@ -338,6 +339,10 @@ static NSString * const kVivaWindowControllerLiveSearchObservationContext = @"kV
 			   withObject:nil
 			   afterDelay:kLiveSearchChangeInterval];
 	
+}
+
+-(void)popoverDidClose:(NSNotification *)notification {
+	self.searchPopover = nil;
 }
 
 -(void)applyCurrentSearchQueryToLiveSearch {
