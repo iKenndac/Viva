@@ -227,6 +227,22 @@
 
 // What follows is likely the worst code you've ever seen. I'm *really* sorry. --Dan
 
+-(SPPlaylistFolder *)folderWithId:(sp_uint64)folderId inArrayOfPlaylistsAndFolders:(NSArray *)stuff {
+
+	for (id item in stuff) {
+		if ([item isKindOfClass:[SPPlaylistFolder class]]) {
+			SPPlaylistFolder *folder = (SPPlaylistFolder *)item;
+			if (folder.folderId == folderId)
+				return folder;
+			SPPlaylistFolder *subFolder = [self folderWithId:folderId
+								inArrayOfPlaylistsAndFolders:folder.playlists];
+			if (subFolder)
+				return subFolder;
+		}
+	}
+	return nil;
+}
+
 - (NSDragOperation)outlineView:(NSOutlineView *)outlineView
 				  validateDrop:(id < NSDraggingInfo >)info
 				  proposedItem:(id)item
@@ -257,12 +273,8 @@
 		sourceFolderInfo = [NSKeyedUnarchiver unarchiveObjectWithData:folderSourceData];
 		folderId = [[sourceFolderInfo valueForKey:kFolderId] unsignedLongLongValue];
 		userPlaylists = [[SPSession sharedSession] userPlaylists];
-
-		SPDispatchSyncIfNeeded(^{
-			sourceFolder =  [[SPSession sharedSession] playlistFolderForFolderId:folderId
-																	 inContainer:userPlaylists];
-
-		});
+		sourceFolder = [self folderWithId:folderId inArrayOfPlaylistsAndFolders:userPlaylists.playlists];
+		if (sourceFolder == nil) return NSDragOperationNone;
 	}
 
 	if (item == nil) {
@@ -306,7 +318,7 @@
 
 	if (urlData != nil) {
 
-		dispatch_async([SPSession libSpotifyQueue], ^{
+		dispatch_libspotify_async(^{
 
 			NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
 			NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
@@ -356,7 +368,7 @@
 		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 
-	dispatch_async([SPSession libSpotifyQueue], ^{
+	dispatch_libspotify_async(^{
 
 		id parent = parentId == 0 ? userPlaylists :
 		[[SPSession sharedSession] playlistFolderForFolderId:parentId
@@ -375,7 +387,7 @@
 
 		if (isFolder) {
 
-			dispatch_async([SPSession libSpotifyQueue], ^{
+			dispatch_libspotify_async(^{
 
 				SPPlaylistFolder *folder = [[SPSession sharedSession] playlistFolderForFolderId:[(NSNumber *)source unsignedLongLongValue]
 																					inContainer:userPlaylists];
