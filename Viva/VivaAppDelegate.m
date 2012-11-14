@@ -87,24 +87,25 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
     NSString *userAgent = kVivaLibSpotifyUserAgentName;
     if (muValue)
         userAgent = [NSString stringWithFormat:@"%@-%@", userAgent, muValue];
-
-	[SPSession createSharedSessionWithKey:[NSData dataWithBytes:g_appkey length:g_appkey_size]
-								userAgent:userAgent
-							loadingPolicy:SPAsyncLoadingImmediate
-								 callback:^(SPSession *sharedSession, NSError *error) {
-									 if (error != nil) {
-										 NSRunAlertPanel(@"Initializing CocoaLibSpotify failed!",
-														 [NSString stringWithFormat:@"%@", error],
-														 @"Quit",
-														 @"",
-														 @"");
-										 [NSApp terminate:self];
-									 }
-
-									 [SPSession sharedSession].delegate = self;
-									 [[SPSession sharedSession] setPreferredBitrate:SP_BITRATE_320k];
-								 }];
-
+    
+	NSError *error = nil;
+	[SPSession initializeSharedSessionWithApplicationKey:[NSData dataWithBytes:g_appkey length:g_appkey_size]
+											   userAgent:userAgent
+										   loadingPolicy:SPAsyncLoadingImmediate
+												   error:&error];
+	
+	if (error != nil) {
+		NSRunAlertPanel(@"Initializing CocoaLibSpotify failed!",
+						[NSString stringWithFormat:@"%@", error], 
+						@"Quit",
+						@"",
+						@"");
+		[NSApp terminate:self];
+	}
+	
+    [SPSession sharedSession].delegate = self;
+	[[SPSession sharedSession] setPreferredBitrate:SP_BITRATE_320k];
+    
 	mainWindowController = [[MainWindowController alloc] init];
 	loginWindowController = [[LoginWindowController alloc] init];
 	self.playbackManager = [[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]];

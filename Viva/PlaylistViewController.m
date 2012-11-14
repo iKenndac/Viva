@@ -216,31 +216,28 @@
 		
 		NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:dragData];
 		NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
-		__block id sself = self;
 		
-		dispatch_libspotify_async(^{
-
-			for (NSURL *trackURL in trackURLs) {
-				__block SPTrack *track = nil;
-
+		for (NSURL *trackURL in trackURLs) {
+			__block SPTrack *track = nil;
+			
+			SPDispatchSyncIfNeeded(^{
+				
 				sp_link *link = [trackURL createSpotifyLink];
 				if (link != NULL && sp_link_type(link) == SP_LINKTYPE_TRACK) {
 					sp_track *tr = sp_link_as_track(link);
 					track = [SPTrack trackForTrackStruct:tr inSession:[SPSession sharedSession]];
 					sp_link_release(link);
 				}
-
-				if (track != nil) {
-					[tracksToAdd addObject:track];
-				}
-			}
-
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.playlist addItems:tracksToAdd atIndex:row callback:^(NSError *error) {
-					if (error) [sself presentError:error];
-				}];
 			});
-		});
+			if (track != nil) {
+				[tracksToAdd addObject:track];
+			}
+		}
+		
+		__block id sself = self;
+		[self.playlist addItems:tracksToAdd atIndex:row callback:^(NSError *error) {
+			if (error) [sself presentError:error];
+		}];
 		
 		return YES;
 	}

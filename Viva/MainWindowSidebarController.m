@@ -55,7 +55,7 @@
 
 		NSArray *urlStrings = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaPinnedItemsUserDefaultsKey];
 
-		dispatch_libspotify_async(^{
+		dispatch_async([SPSession libSpotifyQueue], ^{
 
 			NSMutableArray *mutableItems = [NSMutableArray arrayWithCapacity:urlStrings.count];
 			for (NSString *itemURLString in urlStrings) {
@@ -480,7 +480,7 @@
 
 	if (urlData != nil) {
 
-		dispatch_libspotify_async(^{
+		dispatch_async([SPSession libSpotifyQueue], ^{
 
 			NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
 			NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
