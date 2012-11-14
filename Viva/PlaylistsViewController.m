@@ -306,7 +306,7 @@
 
 	if (urlData != nil) {
 
-		dispatch_async([SPSession libSpotifyQueue], ^{
+		SPDispatchAsync(^{
 
 			NSArray *trackURLs = [NSKeyedUnarchiver unarchiveObjectWithData:urlData];
 			NSMutableArray *tracksToAdd = [NSMutableArray arrayWithCapacity:[trackURLs count]];
@@ -356,7 +356,7 @@
 		parentId = [[sourcePlaylistData valueForKey:kPlaylistParentId] unsignedLongLongValue];
 	}
 
-	dispatch_async([SPSession libSpotifyQueue], ^{
+	SPDispatchAsync(^{
 
 		id parent = parentId == 0 ? userPlaylists :
 		[[SPSession sharedSession] playlistFolderForFolderId:parentId
@@ -375,7 +375,7 @@
 
 		if (isFolder) {
 
-			dispatch_async([SPSession libSpotifyQueue], ^{
+			SPDispatchAsync(^{
 
 				SPPlaylistFolder *folder = [[SPSession sharedSession] playlistFolderForFolderId:[(NSNumber *)source unsignedLongLongValue]
 																					inContainer:userPlaylists];

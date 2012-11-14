@@ -914,7 +914,7 @@
 			isa = PBXGroup;
 			children = (
 				5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */,
-				50DCFCD2156BC8DB0090723A /* CocoaLibSpotify Test Container.app */,
+				50DCFCD2156BC8DB0090723A /* CocoaLSTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1411,10 +1411,9 @@
 			remoteRef = 5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		50DCFCD2156BC8DB0090723A /* CocoaLibSpotify Test Container.app */ = {
+		50DCFCD2156BC8DB0090723A /* CocoaLSTests.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			name = "CocoaLibSpotify Test Container.app";
 			path = CocoaLSTests.app;
 			remoteRef = 50DCFCD1156BC8DB0090723A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
