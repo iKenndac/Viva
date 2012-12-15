@@ -115,12 +115,27 @@ static FLAC__StreamDecoderWriteStatus FLAC_write_callback(const FLAC__StreamDeco
 		// Don't push audio data if we're paused.
 		[NSThread sleepForTimeInterval:0.1];
 	}
-	
-	while (!self.cancelled && ([self.delegate worker:self
-							shouldDeliverAudioFrames:(const void *)&interleaved_data
-											 ofCount:frame->header.blocksize
-											  format:self->output_format] == 0)) {
-		[NSThread sleepForTimeInterval:0.1];
+
+	NSInteger framesToDeliver = frame->header.blocksize;
+
+	while (framesToDeliver > 0) {
+
+		if (self.cancelled)
+			break;
+
+		// Each frame is 8 bytes (2 * sizeof(uint32_t))
+		NSUInteger sampleOffset = (frame->header.blocksize - framesToDeliver) * 2;
+		uint32_t *dataToDeliver = ((uint32_t *)&interleaved_data) + sampleOffset;
+
+		NSUInteger framesDelivered = [self.delegate worker:self
+								  shouldDeliverAudioFrames:dataToDeliver
+												   ofCount:framesToDeliver
+													format:self->output_format];
+
+		framesToDeliver -= framesDelivered;
+
+		if (framesToDeliver > 0)
+			[NSThread sleepForTimeInterval:0.05];
 	}
 	
 	return self.cancelled ? FLAC__STREAM_DECODER_WRITE_STATUS_ABORT : FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;

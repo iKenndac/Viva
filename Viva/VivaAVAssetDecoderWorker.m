@@ -109,12 +109,25 @@
 					// Don't push audio data if we're paused.
 					[NSThread sleepForTimeInterval:0.1];
 				}
-				
-				while (!self.cancelled && ([self.delegate worker:self
-										shouldDeliverAudioFrames:audioBuffer.mData + currentOffset
-														 ofCount:frameCount
-														  format:outputAudioFormat] == 0)) {
-					[NSThread sleepForTimeInterval:0.3];
+
+				NSInteger totalFramesDelivered = 0;
+
+				while (totalFramesDelivered < frameCount) {
+
+					if (self.cancelled)
+						break;
+
+					void *theseFrames = audioBuffer.mData + currentOffset;
+
+					NSUInteger framesDelivered = [self.delegate worker:self
+											  shouldDeliverAudioFrames:theseFrames + (totalFramesDelivered * outputAudioFormat.mBytesPerPacket)
+															   ofCount:frameCount - totalFramesDelivered
+																format:outputAudioFormat];
+
+					totalFramesDelivered += framesDelivered;
+
+					if (totalFramesDelivered < frameCount)
+						[NSThread sleepForTimeInterval:0.05];
 				}
 				
 				currentOffset += thisChunkLength;
