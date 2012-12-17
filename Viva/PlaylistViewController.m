@@ -131,7 +131,8 @@
 	}
 	
 	[self willChangeValueForKey:@"trackContainers"];
-	[self.trackContainers insertObjects:newContainers atIndexes:theseIndexesArentYetValid];
+    if ([theseIndexesArentYetValid indexGreaterThanIndex:self.trackContainers.count] == NSNotFound)
+        [self.trackContainers insertObjects:newContainers atIndexes:theseIndexesArentYetValid];
 	[self didChangeValueForKey:@"trackContainers"];
 }
 
