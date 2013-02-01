@@ -19,37 +19,45 @@
 @property (copy, readwrite) NSString *uniqueId;
 @property (readwrite, weak) SPTrack *track;
 @property (readwrite, weak) id container;
+@property (readwrite, strong) SPPlaylistItem *playlistItem;
 
 @end
 
 @implementation VivaTrackInContainerReference
 
 -(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer {
+	return [self initWithTrack:aTrack item:nil inContainer:aContainer];
+}
+
+-(id)initWithTrack:(SPTrack *)aTrack item:(SPPlaylistItem *)item inContainer:(id)aContainer {
 	if ((self = [super init])) {
 		self.uniqueId = [[NSProcessInfo processInfo] globallyUniqueString];
 		self.track = aTrack;
 		self.container = aContainer;
+		self.playlistItem = item;
 	}
 	return self;
 }
 
--(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer existingId:(NSString *)anId {
+-(id)initWithTrack:(SPTrack *)aTrack item:(SPPlaylistItem *)item inContainer:(id)aContainer existingId:(NSString *)anId {
 	if ((self = [super init])) {
 		self.uniqueId = anId;
 		self.track = aTrack;
 		self.container = aContainer;
+		self.playlistItem = item;
 	}
 	return self;
 }
 
 
 -(id)copyWithZone:(NSZone *)zone {
-    return [[[self class] alloc] initWithTrack:self.track inContainer:self.container existingId:self.uniqueId];
+    return [[[self class] alloc] initWithTrack:self.track item:self.playlistItem inContainer:self.container existingId:self.uniqueId];
 }
 
 @synthesize track;
 @synthesize container;
 @synthesize uniqueId;
+@synthesize playlistItem;
 
 -(BOOL)isEqual:(id)object {
 	if ([object isKindOfClass:[VivaTrackInContainerReference class]]) {
@@ -64,6 +72,7 @@
 - (void)dealloc {
 	self.track = nil;
 	self.container = nil;
+	self.playlistItem = nil;
 }
 
 @end

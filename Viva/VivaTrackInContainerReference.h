@@ -13,9 +13,11 @@
 @interface VivaTrackInContainerReference : NSObject <VivaTrackContainer, NSCopying>
 
 -(id)initWithTrack:(SPTrack *)aTrack inContainer:(id)aContainer;
+-(id)initWithTrack:(SPTrack *)aTrack item:(SPPlaylistItem *)item inContainer:(id)aContainer;
 
 @property (copy, readonly) NSString *uniqueId;
 @property (readonly, weak) SPTrack *track;
+@property (readonly, strong) SPPlaylistItem *playlistItem;
 @property (readonly, weak) id container;
 
 @end

@@ -80,14 +80,15 @@
 }
 
 -(void)rebuildTrackContainers {
-	
+
 	NSMutableArray *newContainers = [NSMutableArray arrayWithCapacity:[self.playlist.items count]];
-	
+
 	for (SPPlaylistItem *anItem in self.playlist.items) {
-		
+
 		if ([anItem.item isKindOfClass:[SPTrack class]])
 			[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:[anItem item]
-																			   inContainer:self.playlist]];
+																					 item:anItem
+																			  inContainer:self.playlist]];
 	}
 	self.trackContainers = [NSMutableArray arrayWithArray:newContainers];
 }
@@ -127,6 +128,7 @@
 	
 	for (SPPlaylistItem *newItem in items) {
 		[newContainers addObject:[[VivaTrackInContainerReference alloc] initWithTrack:newItem.itemClass == [SPTrack class] ? newItem.item : nil
+																				 item:newItem
 																		  inContainer:self.playlist]];
 	}
 	

@@ -39,6 +39,11 @@
     }
 }
 
+-(void)awakeFromNib {
+	[super awakeFromNib];
+	self.trackContainerArrayController.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"playlistItem.dateAdded" ascending:NO]];
+}
+
 @dynamic playlist;
 
 -(void)dealloc {
