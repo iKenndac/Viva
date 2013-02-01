@@ -338,6 +338,7 @@ static void FSEventCallback(ConstFSEventStreamRef streamRef,
 		
 		[threadSafeSelf threadSafePerformUpdateScanOfDirectory:baseDirectory withContext:threadContext];
 		[threadContext commitEditing];
+		[threadContext processPendingChanges];
 		[threadContext save:nil];
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:self

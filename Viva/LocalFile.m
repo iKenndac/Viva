@@ -81,16 +81,15 @@ static void * const kLocalFileInternalKVOContext = @"kLocalFileInternalKVOContex
 	
 	if ([self.track.spotifyURL isEqual:url]) 
 		return;
-	
-	[SPTrack trackForTrackURL:url
-					inSession:[SPSession sharedSession]
-					 callback:^(SPTrack *aTrack) {
-						 if (self.managedObjectContext == nil || self.isDeleted || self.isFault)
-							 return;
-							 
-						 aTrack.localFile = self;
-						 self.track = aTrack;
-					 }];
+
+	__weak LocalFile *weakSelf = self;
+	SPDispatchSyncIfNeeded(^{
+		SPTrack *track = [[SPSession sharedSession] objectRepresentationForSpotifyURL:url linkType:NULL];
+		if (weakSelf.managedObjectContext == nil || weakSelf.isDeleted || weakSelf.isFault)
+			return;
+		track.localFile = weakSelf;
+		weakSelf.track = track;
+	});
 }
 
 -(NSString *)urlEncodedStringForString:(NSString *)plainOldString {
