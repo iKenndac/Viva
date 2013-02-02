@@ -26,7 +26,7 @@
 		5018CAF31471784800F46F83 /* LastFMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF21471784800F46F83 /* LastFMController.m */; };
 		5018CAF614717E0C00F46F83 /* EMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5018CAF514717E0C00F46F83 /* EMKeychain.m */; };
 		5018CB211471A90100F46F83 /* Viva Update Signing Public Key.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5018CB201471A90100F46F83 /* Viva Update Signing Public Key.pem */; };
-		501BC1DB152B199700F9C523 /* EQCoreAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501BC1DA152B199700F9C523 /* EQCoreAudioController.m */; };
+		501BC1DB152B199700F9C523 /* VivaCoreAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501BC1DA152B199700F9C523 /* VivaCoreAudioController.m */; };
 		501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 501C909D13AF72350060A20B /* MainWindowSidebarController.m */; };
 		501C90A013AF73580060A20B /* BaseSidebarConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */; };
 		5025B81B14E01A2B00A375B7 /* VivaSidebarTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5025B81A14E01A2B00A375B7 /* VivaSidebarTableCellView.m */; };
@@ -172,7 +172,6 @@
 		50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */; };
 		50ACAE88152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACAE87152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m */; };
 		50ADD87A16BD295500B6109F /* libiTunesVisualizerHost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADD87716BD293600B6109F /* libiTunesVisualizerHost.a */; };
-		50ADD87F16BD6C7A00B6109F /* VisualizerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADD87E16BD6C7A00B6109F /* VisualizerController.m */; };
 		50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */; };
 		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
@@ -310,8 +309,8 @@
 		5018CAF414717E0C00F46F83 /* EMKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EMKeychain.h; path = EMKeychain/EMKeychain.h; sourceTree = SOURCE_ROOT; };
 		5018CAF514717E0C00F46F83 /* EMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EMKeychain.m; path = EMKeychain/EMKeychain.m; sourceTree = SOURCE_ROOT; };
 		5018CB201471A90100F46F83 /* Viva Update Signing Public Key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Viva Update Signing Public Key.pem"; sourceTree = "<group>"; };
-		501BC1D9152B199700F9C523 /* EQCoreAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQCoreAudioController.h; sourceTree = "<group>"; };
-		501BC1DA152B199700F9C523 /* EQCoreAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EQCoreAudioController.m; sourceTree = "<group>"; };
+		501BC1D9152B199700F9C523 /* VivaCoreAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaCoreAudioController.h; sourceTree = "<group>"; };
+		501BC1DA152B199700F9C523 /* VivaCoreAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaCoreAudioController.m; sourceTree = "<group>"; };
 		501C909C13AF72350060A20B /* MainWindowSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowSidebarController.h; sourceTree = "<group>"; };
 		501C909D13AF72350060A20B /* MainWindowSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainWindowSidebarController.m; path = Viva/MainWindowSidebarController.m; sourceTree = SOURCE_ROOT; };
 		501C909F13AF73580060A20B /* BaseSidebarConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BaseSidebarConfiguration.plist; sourceTree = "<group>"; };
@@ -500,8 +499,6 @@
 		50ACAE86152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaClickableAlbumTableCellView.h; path = "Custom Controls/VivaClickableAlbumTableCellView.h"; sourceTree = "<group>"; };
 		50ACAE87152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaClickableAlbumTableCellView.m; path = "Custom Controls/VivaClickableAlbumTableCellView.m"; sourceTree = "<group>"; };
 		50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iTunesVisualizerHost.xcodeproj; path = iTunesVisualizerHost/iTunesVisualizerHost.xcodeproj; sourceTree = "<group>"; };
-		50ADD87D16BD6C7A00B6109F /* VisualizerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualizerController.h; sourceTree = "<group>"; };
-		50ADD87E16BD6C7A00B6109F /* VisualizerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualizerController.m; sourceTree = "<group>"; };
 		50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearchViewController.h; sourceTree = "<group>"; };
 		50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearchViewController.m; sourceTree = "<group>"; };
 		50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSearchViewController.xib; sourceTree = "<group>"; };
@@ -629,10 +626,8 @@
 				50746CCF14B4601A0026355B /* BuiltInEQPresets.plist */,
 				506F347613438755002BA308 /* VivaPlaybackManager.h */,
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
-				501BC1D9152B199700F9C523 /* EQCoreAudioController.h */,
-				501BC1DA152B199700F9C523 /* EQCoreAudioController.m */,
-				50ADD87D16BD6C7A00B6109F /* VisualizerController.h */,
-				50ADD87E16BD6C7A00B6109F /* VisualizerController.m */,
+				501BC1D9152B199700F9C523 /* VivaCoreAudioController.h */,
+				501BC1DA152B199700F9C523 /* VivaCoreAudioController.m */,
 				50EC2B8814DC04A7009C5C69 /* Local Files */,
 			);
 			name = Playback;
@@ -1714,13 +1709,12 @@
 				502C538C14E035E500231CA7 /* SPTrack+LocalFileExtensions.m in Sources */,
 				501231C615148CEE00683225 /* VivaSearchTableCellView.m in Sources */,
 				50B658601514976B00DC3CB7 /* VivaLocalSPImage.m in Sources */,
-				501BC1DB152B199700F9C523 /* EQCoreAudioController.m in Sources */,
+				501BC1DB152B199700F9C523 /* VivaCoreAudioController.m in Sources */,
 				50ACAE88152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m in Sources */,
 				50936FD3152C695C0099A55C /* VivaLinkTextField.m in Sources */,
 				5009673F152C91340054EDF5 /* VivaClickableArtistTableCellView.m in Sources */,
 				50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */,
 				503A7C2715E7C1B100D9FF18 /* VivaDraggableItemImageView.m in Sources */,
-				50ADD87F16BD6C7A00B6109F /* VisualizerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

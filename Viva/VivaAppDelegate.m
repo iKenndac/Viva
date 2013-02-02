@@ -263,15 +263,15 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 }
 
 -(IBAction)toggleVisualizer:(id)sender {
-	if (!self.playbackManager.visualizerController.visualizerVisible)
-		[self.playbackManager.visualizerController ensureVisualizerVisible:sender];
+	if (!self.playbackManager.audioController.visualizerVisible)
+		[self.playbackManager.audioController ensureVisualizerVisible:sender];
 	else
-		[self.playbackManager.visualizerController hideVisualizer:sender];
+		[self.playbackManager.audioController hideVisualizer:sender];
 }
 
 #pragma mark -
 
-- (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
+-(void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
     
 	NSString *urlString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
 	NSURL *url = [NSURL URLWithString:urlString];

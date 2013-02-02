@@ -19,14 +19,12 @@
 
 @interface VivaPlaybackManager  ()
 
-@property (readwrite, strong, nonatomic) EQCoreAudioController *audioController;
-@property (readwrite, strong, nonatomic) VisualizerController *visualizerController;
+@property (readwrite, strong, nonatomic) VivaCoreAudioController *audioController;
 @property (strong, readwrite, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong, nonatomic) SPSession *session;
 @property (readwrite, strong, nonatomic) VivaLocalFileDecoder *localFileDecoder;
 @property (readwrite, strong, nonatomic) id <SPSessionPlaybackProvider> currentPlaybackProvider;
-
 
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack callback:(SPErrorableOperationCallback)block;
 
@@ -73,11 +71,8 @@
         shufflePastHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
         shuffleFutureHistory = [[NSMutableArray alloc] initWithCapacity:kShuffleHistoryLength];
 		
-		self.audioController = [[EQCoreAudioController alloc] init];
+		self.audioController = [[VivaCoreAudioController alloc] init];
 		self.audioController.delegate = self;
-
-		self.visualizerController = [VisualizerController new];
-		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.visualizerController.visualizers);
 
 		self.session = aSession;
 		self.session.playbackDelegate = self;
