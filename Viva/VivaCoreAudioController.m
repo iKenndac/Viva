@@ -19,6 +19,9 @@
 @property (strong, nonatomic, readwrite) iTunesVisualPlugin *runningVisualizer;
 @property (strong, nonatomic, readwrite) NSWindow *visualizerWindow;
 
+@property (strong, nonatomic, readwrite) SPCircularBuffer *leftChannelVisualizerBuffer;
+@property (strong, nonatomic, readwrite) SPCircularBuffer *rightChannelVisualizerBuffer;
+
 @end
 
 static OSStatus EQRenderCallback(void *inRefCon,
@@ -28,16 +31,57 @@ static OSStatus EQRenderCallback(void *inRefCon,
 								 UInt32                      inNumberFrames,
 								 AudioBufferList             *ioData) {
 
+	VivaCoreAudioController *controller = (__bridge VivaCoreAudioController *)inRefCon;
 	AudioUnitRenderActionFlags flags = *ioActionFlags;
-	if ((flags & kAudioUnitRenderAction_PostRender) == kAudioUnitRenderAction_PostRender) {
-		AudioBuffer buffer = ioData->mBuffers[0];
-		
-		NSLog(@"%d frames, %d buffers, buffer 0 has %d bytes and %d channels", inNumberFrames, ioData->mNumberBuffers, buffer.mDataByteSize, buffer.mNumberChannels);
+	if ((flags & kAudioUnitRenderAction_PostRender) != kAudioUnitRenderAction_PostRender || controller.runningVisualizer == nil)
+		return noErr;
 
+	SPCircularBuffer *leftCircularBuffer = controller.leftChannelVisualizerBuffer;
+	SPCircularBuffer *rightCircularBuffer = controller.rightChannelVisualizerBuffer;
+
+	Float32 *leftInBuffer = ioData->mBuffers[0].mData;
+	Float32 *rightInBuffer = ioData->mNumberBuffers > 1 ? ioData->mBuffers[1].mData : ioData->mBuffers[0].mData;
+
+	if (leftInBuffer == NULL || rightInBuffer == NULL)
+		return noErr;
+
+	UInt8 *leftBuffer = malloc(inNumberFrames * sizeof(UInt8));
+	UInt8 *rightBuffer = malloc(inNumberFrames * sizeof(UInt8));
+	
+	for (UInt32 i = 0; i < inNumberFrames; i++) {
+		leftBuffer[i] = ((leftInBuffer[i] + 1.0) * 128);
+		rightBuffer[i] = ((rightInBuffer[i] + 1.0) * 128);
+	}
+
+	[controller.leftChannelVisualizerBuffer attemptAppendData:leftBuffer ofLength:inNumberFrames * sizeof(UInt8)];
+	[controller.rightChannelVisualizerBuffer attemptAppendData:rightBuffer ofLength:inNumberFrames * sizeof(UInt8)];
+
+	free(leftBuffer); leftBuffer = NULL;
+	free(rightBuffer); rightBuffer = NULL;
+
+	if (leftCircularBuffer.length == leftCircularBuffer.maximumLength &&
+		rightCircularBuffer.length == rightCircularBuffer.maximumLength) {
+
+		void *left = malloc(leftCircularBuffer.maximumLength);
+		void *right = malloc(rightCircularBuffer.maximumLength);
+
+		[controller.leftChannelVisualizerBuffer readDataOfLength:leftCircularBuffer.maximumLength
+											 intoAllocatedBuffer:&left];
+
+		[controller.leftChannelVisualizerBuffer readDataOfLength:rightCircularBuffer.maximumLength
+											 intoAllocatedBuffer:&right];
+
+		[leftCircularBuffer clear];
+		[rightCircularBuffer clear];
+
+		[controller.runningVisualizer pushLeftAudioBuffer:left rightAudioBuffer:right];
+		// ^Todo: Thread this so a slow plugin doesn't screw up our audio output
+
+		free(left); left = NULL;
+		free(right); right = NULL;
 	}
 
 	return noErr;
-
 }
 
 
@@ -65,6 +109,9 @@ static OSStatus EQRenderCallback(void *inRefCon,
 				break;
 			}
 		}
+
+		self.leftChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512];
+		self.rightChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512];
 
 		self.pluginHost = [iTunesPluginHost new];
 		self.activeVisualizer = [self.visualizers objectAtIndex:0];
@@ -222,6 +269,10 @@ static OSStatus EQRenderCallback(void *inRefCon,
 
 	[self.visualizerWindow makeKeyAndOrderFront:nil];
 	[self.runningVisualizer activateInView:self.visualizerWindow.contentView];
+
+	AudioStreamBasicDescription desc;
+	memset(&desc, 0, sizeof(AudioStreamBasicDescription));
+	[self.runningVisualizer playbackStartedWithMetaData:nil audioFormat:desc];
 }
 
 -(void)createWindow {
