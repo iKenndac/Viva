@@ -69,6 +69,7 @@
 														  backing:NSBackingStoreBuffered
 															defer:NO];
 	[self.visualizerWindow center];
+	[self.visualizerWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
 	[self.visualizerWindow setReleasedWhenClosed:NO];
 	self.visualizerWindow.delegate = self;
 }
