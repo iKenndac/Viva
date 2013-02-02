@@ -20,6 +20,7 @@
 @interface VivaPlaybackManager  ()
 
 @property (readwrite, strong, nonatomic) EQCoreAudioController *audioController;
+@property (readwrite, strong, nonatomic) VisualizerController *visualizerController;
 @property (strong, readwrite, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong, nonatomic) SPSession *session;
@@ -74,7 +75,10 @@
 		
 		self.audioController = [[EQCoreAudioController alloc] init];
 		self.audioController.delegate = self;
-		
+
+		self.visualizerController = [VisualizerController new];
+		NSLog(@"[%@ %@]: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.visualizerController.visualizers);
+
 		self.session = aSession;
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];

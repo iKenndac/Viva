@@ -262,6 +262,13 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	self.playbackManager.audioController.volume = MAX(0.0, self.playbackManager.audioController.volume - kVolumeStepSize);
 }
 
+-(IBAction)toggleVisualizer:(id)sender {
+	if (!self.playbackManager.visualizerController.visualizerVisible)
+		[self.playbackManager.visualizerController ensureVisualizerVisible:sender];
+	else
+		[self.playbackManager.visualizerController hideVisualizer:sender];
+}
+
 #pragma mark -
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent {

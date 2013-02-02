@@ -8,3 +8,6 @@
 [submodule "Viva-Libs"]
 	path = Viva-Libs
 	url = git://github.com/iKenndac/Viva-Libs.git
+[submodule "iTunesVisualizerHost"]
+	path = iTunesVisualizerHost
+	url = git://github.com/iKenndac/iTunesVisualizerHost

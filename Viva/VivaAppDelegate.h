@@ -43,5 +43,6 @@
 -(IBAction)performPlayPauseAction:(id)sender;
 -(IBAction)performVolumeUpAction:(id)sender;
 -(IBAction)performVolumeDownAction:(id)sender;
+-(IBAction)toggleVisualizer:(id)sender;
 
 @end

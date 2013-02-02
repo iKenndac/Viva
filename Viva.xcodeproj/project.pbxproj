@@ -171,6 +171,8 @@
 		50A241EB14C5AC3900949DB7 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A241EA14C5AC3900949DB7 /* SPMediaKeyTap.m */; };
 		50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */; };
 		50ACAE88152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ACAE87152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m */; };
+		50ADD87A16BD295500B6109F /* libiTunesVisualizerHost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADD87716BD293600B6109F /* libiTunesVisualizerHost.a */; };
+		50ADD87F16BD6C7A00B6109F /* VisualizerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADD87E16BD6C7A00B6109F /* VisualizerController.m */; };
 		50AE6A5813A1661D006F2B8C /* LiveSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */; };
 		50AE6A5913A1661D006F2B8C /* LiveSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */; };
 		50AE6A5C13A16AE1006F2B8C /* LiveSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 50AE6A5B13A16AE1006F2B8C /* LiveSearch.m */; };
@@ -226,6 +228,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 503D630E13258041007772CA;
 			remoteInfo = CocoaLibSpotify;
+		};
+		50ADD87416BD293600B6109F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 50C2951916BC053000995585;
+			remoteInfo = iTunesVisualizerDemo;
+		};
+		50ADD87616BD293600B6109F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 50C2954E16BD24AC00995585;
+			remoteInfo = iTunesVisualizerHost;
+		};
+		50ADD87816BD294700B6109F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 50C2954D16BD24AC00995585;
+			remoteInfo = iTunesVisualizerHost;
 		};
 		50DCFCD1156BC8DB0090723A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -476,6 +499,9 @@
 		50A857AA14715EE300D49377 /* VivaPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaPreferencesWindowController.m; sourceTree = "<group>"; };
 		50ACAE86152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaClickableAlbumTableCellView.h; path = "Custom Controls/VivaClickableAlbumTableCellView.h"; sourceTree = "<group>"; };
 		50ACAE87152C60CA00AB10D8 /* VivaClickableAlbumTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaClickableAlbumTableCellView.m; path = "Custom Controls/VivaClickableAlbumTableCellView.m"; sourceTree = "<group>"; };
+		50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iTunesVisualizerHost.xcodeproj; path = iTunesVisualizerHost/iTunesVisualizerHost.xcodeproj; sourceTree = "<group>"; };
+		50ADD87D16BD6C7A00B6109F /* VisualizerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualizerController.h; sourceTree = "<group>"; };
+		50ADD87E16BD6C7A00B6109F /* VisualizerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualizerController.m; sourceTree = "<group>"; };
 		50AE6A5513A1661D006F2B8C /* LiveSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveSearchViewController.h; sourceTree = "<group>"; };
 		50AE6A5613A1661D006F2B8C /* LiveSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSearchViewController.m; sourceTree = "<group>"; };
 		50AE6A5713A1661D006F2B8C /* LiveSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSearchViewController.xib; sourceTree = "<group>"; };
@@ -554,6 +580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50ADD87A16BD295500B6109F /* libiTunesVisualizerHost.a in Frameworks */,
 				50439AE7148B94820059B578 /* Quartz.framework in Frameworks */,
 				50FC8A9D1474030800FA43DD /* AudioToolbox.framework in Frameworks */,
 				50FC8A891473CD6200FA43DD /* CoreMedia.framework in Frameworks */,
@@ -604,6 +631,8 @@
 				506F347713438755002BA308 /* VivaPlaybackManager.m */,
 				501BC1D9152B199700F9C523 /* EQCoreAudioController.h */,
 				501BC1DA152B199700F9C523 /* EQCoreAudioController.m */,
+				50ADD87D16BD6C7A00B6109F /* VisualizerController.h */,
+				50ADD87E16BD6C7A00B6109F /* VisualizerController.m */,
 				50EC2B8814DC04A7009C5C69 /* Local Files */,
 			);
 			name = Playback;
@@ -734,6 +763,7 @@
 		503D62C913257D92007772CA = {
 			isa = PBXGroup;
 			children = (
+				50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */,
 				5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */,
 				503D62DE13257D92007772CA /* Viva */,
 				503D62D713257D92007772CA /* Frameworks */,
@@ -1189,6 +1219,15 @@
 			name = Preferences;
 			sourceTree = "<group>";
 		};
+		50ADD86F16BD293600B6109F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50ADD87516BD293600B6109F /* iTunesVisualizerDemo.app */,
+				50ADD87716BD293600B6109F /* libiTunesVisualizerHost.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		50B489A715E6764700902DE0 /* Playlists View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1363,6 +1402,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				50ADD87916BD294700B6109F /* PBXTargetDependency */,
 				5088AB5D140D2870009C9FF8 /* PBXTargetDependency */,
 			);
 			name = Viva;
@@ -1395,6 +1435,10 @@
 					ProductGroup = 5088AB54140D2863009C9FF8 /* Products */;
 					ProjectRef = 5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */;
 				},
+				{
+					ProductGroup = 50ADD86F16BD293600B6109F /* Products */;
+					ProjectRef = 50ADD86E16BD293600B6109F /* iTunesVisualizerHost.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1409,6 +1453,20 @@
 			fileType = wrapper.framework;
 			path = CocoaLibSpotify.framework;
 			remoteRef = 5088AB5A140D2863009C9FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		50ADD87516BD293600B6109F /* iTunesVisualizerDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = iTunesVisualizerDemo.app;
+			remoteRef = 50ADD87416BD293600B6109F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		50ADD87716BD293600B6109F /* libiTunesVisualizerHost.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiTunesVisualizerHost.a;
+			remoteRef = 50ADD87616BD293600B6109F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		50DCFCD2156BC8DB0090723A /* CocoaLSTests.app */ = {
@@ -1662,6 +1720,7 @@
 				5009673F152C91340054EDF5 /* VivaClickableArtistTableCellView.m in Sources */,
 				50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */,
 				503A7C2715E7C1B100D9FF18 /* VivaDraggableItemImageView.m in Sources */,
+				50ADD87F16BD6C7A00B6109F /* VisualizerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1672,6 +1731,11 @@
 			isa = PBXTargetDependency;
 			name = CocoaLibSpotify;
 			targetProxy = 5088AB5C140D2870009C9FF8 /* PBXContainerItemProxy */;
+		};
+		50ADD87916BD294700B6109F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iTunesVisualizerHost;
+			targetProxy = 50ADD87816BD294700B6109F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
