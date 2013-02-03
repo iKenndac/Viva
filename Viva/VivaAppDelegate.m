@@ -110,6 +110,7 @@ static NSString * const kSPPerformActionOnNotificationKVOContext = @"kSPPerformA
 	loginWindowController = [[LoginWindowController alloc] init];
 	self.playbackManager = [[VivaPlaybackManager alloc] initWithPlaybackSession:[SPSession sharedSession]];
     self.playbackManager.dataSource = mainWindowController;
+	self.playbackManager.audioController.visualizersMenu = self.visualizersMenu;
 	
 	if ([SPMediaKeyTap usesGlobalMediaKeyTap]) {
 		self.mediaKeyHandler = [[SPMediaKeyTap alloc] initWithDelegate:self];

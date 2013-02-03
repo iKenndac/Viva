@@ -86,6 +86,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	if (self) {
 		
 		[self addObserver:self forKeyPath:@"eqPreset" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"visualizersMenu" options:0 context:nil];
 		
 		EQPresetController *eqController = [EQPresetController sharedInstance];
 		
@@ -103,16 +104,23 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		self.rightChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512 * sizeof(Float32)];
 
 		self.pluginHost = [iTunesPluginHost new];
-		self.activeVisualizer = [self.visualizers objectAtIndex:0];
-		// ^ Todo: Remember the chosen visualiser
+		NSString *rememberedName = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastVisualizerNameUserDefaultsKey];
+		for (iTunesVisualPlugin *plugin in self.visualizers) {
+			if ([plugin.pluginName isEqualToString:rememberedName])
+				self.activeVisualizer = plugin;
+		}
+
+		if (self.activeVisualizer == nil && self.visualizers.count > 0)
+			self.activeVisualizer = [self.visualizers objectAtIndex:0];
 
 	}
 	
 	return self;
 }
 
--(void)dealloc {	
+-(void)dealloc {
 	[self removeObserver:self forKeyPath:@"eqPreset"];
+	[self removeObserver:self forKeyPath:@"visualizersMenu"];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -121,7 +129,11 @@ static OSStatus EQRenderCallback(void *inRefCon,
 												 forKey:kCurrentEQPresetNameUserDefaultsKey];
 		
 		[self applyBandsToEQ:self.eqPreset];
-		
+
+	} else if ([keyPath isEqualToString:@"visualizersMenu"]) {
+
+		[self rebuildVisualizersMenu];
+
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -279,6 +291,33 @@ static OSStatus EQRenderCallback(void *inRefCon,
 
 -(IBAction)hideVisualizer:(id)sender {
 	[self.visualizerWindow close];
+}
+
+-(void)rebuildVisualizersMenu {
+
+	[self.visualizersMenu removeAllItems];
+
+	for (iTunesVisualPlugin *plugin in self.visualizers) {
+		NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:plugin.pluginName action:@selector(chooseVisualizer:) keyEquivalent:@""];
+		item.representedObject = plugin;
+		item.target = self;
+		[self.visualizersMenu addItem:item];
+	}
+
+	[self updateVisualizersMenuCheckedState];
+}
+
+-(void)updateVisualizersMenuCheckedState {
+	for (NSMenuItem *item in self.visualizersMenu.itemArray) {
+		item.state = (item.representedObject == self.activeVisualizer) ? NSOnState : NSOffState;
+	}
+}
+
+-(void)chooseVisualizer:(NSMenuItem *)item {
+	self.activeVisualizer = item.representedObject;
+	if (self.visualizerVisible) [self ensureVisualizerVisible:self];
+	[self updateVisualizersMenuCheckedState];
+	[[NSUserDefaults standardUserDefaults] setValue:self.activeVisualizer.pluginName forKey:kVivaLastVisualizerNameUserDefaultsKey];
 }
 
 #pragma mark - Window Delegates

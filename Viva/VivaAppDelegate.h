@@ -31,6 +31,7 @@
 @property (strong, readonly) SPMediaKeyTap *mediaKeyHandler;
 @property (weak, readonly) SPSession *session;
 @property (strong, readonly) NSURL *urlToHandleOnLogin;
+@property (weak) IBOutlet NSMenu *visualizersMenu;
 
 -(void)handleURL:(NSURL *)url;
 -(void)logOut;

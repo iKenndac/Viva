@@ -80,7 +80,7 @@ static NSString * const kVivaLastUserNameUserDefaultsKey = @"LastUser";
 static NSString * const kVivaLastCredentialUserDefaultsKey = @"LastCredential";
 static NSString * const kVivaMainViewHistoryUserDefaultsKey = @"History";
 static NSString * const kVivaPinnedItemsUserDefaultsKey = @"PinnedItems";
-
+static NSString * const kVivaLastVisualizerNameUserDefaultsKey = @"LastVisualizer";
 
 // ------ Notifications ------
 
