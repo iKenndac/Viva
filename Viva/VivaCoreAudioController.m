@@ -51,8 +51,8 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	if (leftCircularBuffer.length == leftCircularBuffer.maximumLength &&
 		rightCircularBuffer.length == rightCircularBuffer.maximumLength) {
 
-		void *left = malloc(leftCircularBuffer.maximumLength);
-		void *right = malloc(rightCircularBuffer.maximumLength);
+		__block void *left = malloc(leftCircularBuffer.maximumLength);
+		__block void *right = malloc(rightCircularBuffer.maximumLength);
 
 		[controller.leftChannelVisualizerBuffer readDataOfLength:leftCircularBuffer.maximumLength
 											 intoAllocatedBuffer:&left];
@@ -63,11 +63,11 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		[leftCircularBuffer clear];
 		[rightCircularBuffer clear];
 
-		[controller.runningVisualizer pushLeftAudioBuffer:left rightAudioBuffer:right];
-		// ^Todo: Thread this so a slow plugin doesn't screw up our audio output
-
-		free(left); left = NULL;
-		free(right); right = NULL;
+		dispatch_async([iTunesPlugin pluginQueue], ^{
+			[controller.runningVisualizer pushLeftAudioBuffer:left rightAudioBuffer:right];
+			free(left); left = NULL;
+			free(right); right = NULL;
+		});
 	}
 
 	return noErr;
@@ -87,6 +87,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		
 		[self addObserver:self forKeyPath:@"eqPreset" options:0 context:nil];
 		[self addObserver:self forKeyPath:@"visualizersMenu" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"pluginHost.visualizers" options:0 context:nil];
 		
 		EQPresetController *eqController = [EQPresetController sharedInstance];
 		
@@ -121,6 +122,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 -(void)dealloc {
 	[self removeObserver:self forKeyPath:@"eqPreset"];
 	[self removeObserver:self forKeyPath:@"visualizersMenu"];
+	[self removeObserver:self forKeyPath:@"pluginHost.visualizers"];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -130,7 +132,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		
 		[self applyBandsToEQ:self.eqPreset];
 
-	} else if ([keyPath isEqualToString:@"visualizersMenu"]) {
+	} else if ([keyPath isEqualToString:@"visualizersMenu"] || [keyPath isEqualToString:@"pluginHost.visualizers"]) {
 
 		[self rebuildVisualizersMenu];
 
@@ -239,8 +241,12 @@ static OSStatus EQRenderCallback(void *inRefCon,
 
 #pragma mark - Properties
 
++(NSSet *)keyPathsForValuesAffectingVisualizers {
+	return [NSSet setWithObject:@"pluginHost.visualizers"];
+}
+
 -(NSArray *)visualizers {
-	return [[self.pluginHost plugins] valueForKeyPath:@"@unionOfArrays.visualizers"];
+	return self.pluginHost.visualizers;
 }
 
 -(BOOL)visualizerVisible {

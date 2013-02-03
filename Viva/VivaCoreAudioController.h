@@ -17,7 +17,7 @@
 -(IBAction)ensureVisualizerVisible:(id)sender;
 -(IBAction)hideVisualizer:(id)sender;
 
-@property (nonatomic, readonly, copy) NSArray *visualizers;
+@property (nonatomic, readonly, strong) NSArray *visualizers;
 @property (nonatomic, readwrite, strong) iTunesVisualPlugin *activeVisualizer;
 @property (nonatomic, readonly) BOOL visualizerVisible;
 @property (nonatomic, readwrite, strong) NSMenu *visualizersMenu;
