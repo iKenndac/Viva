@@ -256,6 +256,11 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		self.runningVisualizer = nil;
 	}
 
+	if (self.activeVisualizer == nil) {
+		NSBeep();
+		return;
+	}
+
 	self.runningVisualizer = self.activeVisualizer;
 
 	[self createWindow];
@@ -302,6 +307,14 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		item.representedObject = plugin;
 		item.target = self;
 		[self.visualizersMenu addItem:item];
+	}
+
+	if (self.visualizersMenu.itemArray.count == 0) {
+		NSMenuItem *disabledItem = [[NSMenuItem alloc] initWithTitle:@"None"
+															  action:NULL
+													   keyEquivalent:@""];
+		[disabledItem setEnabled:NO];
+		[self.visualizersMenu addItem:disabledItem];
 	}
 
 	[self updateVisualizersMenuCheckedState];
