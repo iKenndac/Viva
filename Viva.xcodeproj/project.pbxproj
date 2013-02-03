@@ -68,7 +68,6 @@
 		50788FD314DD97590029E2D9 /* SPSession+AudioStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 50788FD214DD97590029E2D9 /* SPSession+AudioStatistics.m */; };
 		50842E52133A43B100528555 /* SPVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50842E51133A43B100528555 /* SPVolumeSliderCell.m */; };
 		508812361402525E0094E748 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508812351402525E0094E748 /* Accelerate.framework */; };
-		50881239140264E30094E748 /* VisualiserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50881238140264E30094E748 /* VisualiserWindowController.m */; };
 		5088AB5E140D2874009C9FF8 /* CocoaLibSpotify.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
 		5088AB5F140D28EC009C9FF8 /* CocoaLibSpotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5088AB5B140D2863009C9FF8 /* CocoaLibSpotify.framework */; };
 		50936FD3152C695C0099A55C /* VivaLinkTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 50936FD2152C695C0099A55C /* VivaLinkTextField.m */; };
@@ -383,8 +382,6 @@
 		50842E50133A43B100528555 /* SPVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPVolumeSliderCell.h; path = "Custom Controls/SPVolumeSliderCell.h"; sourceTree = "<group>"; };
 		50842E51133A43B100528555 /* SPVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPVolumeSliderCell.m; path = "Custom Controls/SPVolumeSliderCell.m"; sourceTree = "<group>"; };
 		508812351402525E0094E748 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		50881237140264E30094E748 /* VisualiserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualiserWindowController.h; sourceTree = "<group>"; };
-		50881238140264E30094E748 /* VisualiserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisualiserWindowController.m; sourceTree = "<group>"; };
 		5088AB53140D2863009C9FF8 /* CocoaLibSpotify Mac Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CocoaLibSpotify Mac Framework.xcodeproj"; path = "cocoalibspotify/Mac Framework/CocoaLibSpotify Mac Framework.xcodeproj"; sourceTree = "<group>"; };
 		50936FD1152C695C0099A55C /* VivaLinkTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VivaLinkTextField.h; path = "Custom Controls/VivaLinkTextField.h"; sourceTree = "<group>"; };
 		50936FD2152C695C0099A55C /* VivaLinkTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VivaLinkTextField.m; path = "Custom Controls/VivaLinkTextField.m"; sourceTree = "<group>"; };
@@ -1331,8 +1328,6 @@
 		50DD06AF133A25B200CDE1C1 /* Window Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				50881237140264E30094E748 /* VisualiserWindowController.h */,
-				50881238140264E30094E748 /* VisualiserWindowController.m */,
 				50A857AC14715EE500D49377 /* Preferences */,
 				50E3F766133FC38200FF4618 /* Login Window */,
 				50E3F765133FC37900FF4618 /* Main Window */,
@@ -1675,7 +1670,6 @@
 				50DEB1DE13A69D3A00945316 /* SPBackgroundImageView.m in Sources */,
 				501C909E13AF72350060A20B /* MainWindowSidebarController.m in Sources */,
 				50CCCD5113DF1BE700DDB85C /* StarredViewController.m in Sources */,
-				50881239140264E30094E748 /* VisualiserWindowController.m in Sources */,
 				50B72AD6143768E90082E027 /* InboxViewController.m in Sources */,
 				50B477511462CE4200B04A51 /* SPPlaylistDelegateProxy.m in Sources */,
 				50A857AB14715EE300D49377 /* VivaPreferencesWindowController.m in Sources */,
