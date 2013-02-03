@@ -45,19 +45,8 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	if (leftInBuffer == NULL || rightInBuffer == NULL)
 		return noErr;
 
-	UInt8 *leftBuffer = malloc(inNumberFrames * sizeof(UInt8));
-	UInt8 *rightBuffer = malloc(inNumberFrames * sizeof(UInt8));
-	
-	for (UInt32 i = 0; i < inNumberFrames; i++) {
-		leftBuffer[i] = ((leftInBuffer[i] + 1.0) * 128);
-		rightBuffer[i] = ((rightInBuffer[i] + 1.0) * 128);
-	}
-
-	[controller.leftChannelVisualizerBuffer attemptAppendData:leftBuffer ofLength:inNumberFrames * sizeof(UInt8)];
-	[controller.rightChannelVisualizerBuffer attemptAppendData:rightBuffer ofLength:inNumberFrames * sizeof(UInt8)];
-
-	free(leftBuffer); leftBuffer = NULL;
-	free(rightBuffer); rightBuffer = NULL;
+	[controller.leftChannelVisualizerBuffer attemptAppendData:leftInBuffer ofLength:inNumberFrames * sizeof(Float32) chunkSize:sizeof(Float32)];
+	[controller.rightChannelVisualizerBuffer attemptAppendData:rightInBuffer ofLength:inNumberFrames * sizeof(Float32) chunkSize:sizeof(Float32)];
 
 	if (leftCircularBuffer.length == leftCircularBuffer.maximumLength &&
 		rightCircularBuffer.length == rightCircularBuffer.maximumLength) {
@@ -110,8 +99,8 @@ static OSStatus EQRenderCallback(void *inRefCon,
 			}
 		}
 
-		self.leftChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512];
-		self.rightChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512];
+		self.leftChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512 * sizeof(Float32)];
+		self.rightChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512 * sizeof(Float32)];
 
 		self.pluginHost = [iTunesPluginHost new];
 		self.activeVisualizer = [self.visualizers objectAtIndex:0];
