@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AudioUnit/AudioUnit.h>
+#import "VivaPlaybackManager.h"
 
 @interface VivaCoreAudioController ()
 
@@ -88,6 +89,8 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		[self addObserver:self forKeyPath:@"eqPreset" options:0 context:nil];
 		[self addObserver:self forKeyPath:@"visualizersMenu" options:0 context:nil];
 		[self addObserver:self forKeyPath:@"pluginHost.visualizers" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"playbackManager.currentTrackContainer" options:0 context:nil];
+		[self addObserver:self forKeyPath:@"playbackManager.currentTrackPosition" options:0 context:nil];
 		
 		EQPresetController *eqController = [EQPresetController sharedInstance];
 		
@@ -105,15 +108,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		self.rightChannelVisualizerBuffer = [[SPCircularBuffer alloc] initWithMaximumLength:512 * sizeof(Float32)];
 
 		self.pluginHost = [iTunesPluginHost new];
-		NSString *rememberedName = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastVisualizerNameUserDefaultsKey];
-		for (iTunesVisualPlugin *plugin in self.visualizers) {
-			if ([plugin.pluginName isEqualToString:rememberedName])
-				self.activeVisualizer = plugin;
-		}
-
-		if (self.activeVisualizer == nil && self.visualizers.count > 0)
-			self.activeVisualizer = [self.visualizers objectAtIndex:0];
-
+		// Since visualizer loading is async, we set the default when they change
 	}
 	
 	return self;
@@ -123,6 +118,8 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	[self removeObserver:self forKeyPath:@"eqPreset"];
 	[self removeObserver:self forKeyPath:@"visualizersMenu"];
 	[self removeObserver:self forKeyPath:@"pluginHost.visualizers"];
+	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackContainer"];
+	[self removeObserver:self forKeyPath:@"playbackManager.currentTrackPosition"];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -132,9 +129,27 @@ static OSStatus EQRenderCallback(void *inRefCon,
 		
 		[self applyBandsToEQ:self.eqPreset];
 
-	} else if ([keyPath isEqualToString:@"visualizersMenu"] || [keyPath isEqualToString:@"pluginHost.visualizers"]) {
+	} else if ([keyPath isEqualToString:@"visualizersMenu"]) {
+		[self rebuildVisualizersMenu];
+
+	} else if ([keyPath isEqualToString:@"pluginHost.visualizers"]) {
+		
+		NSString *rememberedName = [[NSUserDefaults standardUserDefaults] valueForKey:kVivaLastVisualizerNameUserDefaultsKey];
+		for (iTunesVisualPlugin *plugin in self.visualizers) {
+			if ([plugin.pluginName isEqualToString:rememberedName])
+				self.activeVisualizer = plugin;
+		}
+
+		if (self.activeVisualizer == nil && self.visualizers.count > 0)
+			self.activeVisualizer = [self.visualizers objectAtIndex:0];
 
 		[self rebuildVisualizersMenu];
+
+	} else if ([keyPath isEqualToString:@"playbackManager.currentTrackContainer"]) {
+		[self notifyVisualizerOfNewTrack:self.playbackManager.currentTrackContainer.track];
+
+	} else if ([keyPath isEqualToString:@"playbackManager.currentTrackPosition"]) {
+		[self.runningVisualizer playbackPositionUpdated:self.playbackManager.currentTrackPosition];
 
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -253,6 +268,27 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	return self.visualizerWindow.isVisible;
 }
 
+-(void)notifyVisualizerOfNewTrack:(SPTrack *)track {
+
+	if (track == nil) return;
+
+	[SPAsyncLoading waitUntilLoaded:track timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+		[SPAsyncLoading waitUntilLoaded:track.album.cover timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedImages, NSArray *notLoadedImages) {
+
+			self.activeVisualizer.coverArt = track.album.cover.image;
+
+			NSDictionary *metadata = @{ kVisualiserTrackTitleKey : track.name,
+							   kVisualiserTrackArtistKey : track.consolidatedArtists,
+							   kVisualiserTrackAlbumKey : track.album.name,
+							   kVisualiserTrackDurationKey : @(track.duration) };
+
+			AudioStreamBasicDescription desc;
+			memset(&desc, 0, sizeof(AudioStreamBasicDescription));
+			[self.activeVisualizer playbackStartedWithMetaData:metadata audioFormat:desc];
+		}];
+	}];
+}
+
 #pragma mark - Visualizer UI
 
 -(IBAction)ensureVisualizerVisible:(id)sender {
@@ -281,10 +317,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 
 	[self.visualizerWindow makeKeyAndOrderFront:nil];
 	[self.runningVisualizer activateInView:self.visualizerWindow.contentView];
-
-	AudioStreamBasicDescription desc;
-	memset(&desc, 0, sizeof(AudioStreamBasicDescription));
-	[self.runningVisualizer playbackStartedWithMetaData:nil audioFormat:desc];
+	[self notifyVisualizerOfNewTrack:self.playbackManager.currentTrackContainer.track];
 }
 
 -(void)createWindow {
@@ -298,6 +331,7 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	[self.visualizerWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
 	[self.visualizerWindow setReleasedWhenClosed:NO];
 	self.visualizerWindow.delegate = self;
+	self.visualizerWindow.backgroundColor = [NSColor blackColor];
 }
 
 -(IBAction)hideVisualizer:(id)sender {
@@ -347,10 +381,6 @@ static OSStatus EQRenderCallback(void *inRefCon,
 }
 
 -(void)windowDidResize:(NSNotification *)notification {
-	[self.runningVisualizer containerViewFrameChanged];
-}
-
--(void)windowDidMove:(NSNotification *)notification {
 	[self.runningVisualizer containerViewFrameChanged];
 }
 

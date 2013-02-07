@@ -73,6 +73,7 @@
 		
 		self.audioController = [[VivaCoreAudioController alloc] init];
 		self.audioController.delegate = self;
+		self.audioController.playbackManager = self;
 
 		self.session = aSession;
 		self.session.playbackDelegate = self;

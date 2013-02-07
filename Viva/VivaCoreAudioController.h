@@ -10,6 +10,8 @@
 #import "EQPresetController.h"
 #import "iTunesPluginHost.h"
 
+@class VivaPlaybackManager;
+
 @interface VivaCoreAudioController : SPCoreAudioController <NSWindowDelegate>
 
 @property (readwrite, strong, nonatomic) EQPreset *eqPreset;
@@ -21,5 +23,7 @@
 @property (nonatomic, readwrite, strong) iTunesVisualPlugin *activeVisualizer;
 @property (nonatomic, readonly) BOOL visualizerVisible;
 @property (nonatomic, readwrite, strong) NSMenu *visualizersMenu;
+
+@property (nonatomic, readwrite, weak) VivaPlaybackManager *playbackManager;
 
 @end
