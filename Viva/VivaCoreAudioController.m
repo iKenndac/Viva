@@ -273,20 +273,31 @@ static OSStatus EQRenderCallback(void *inRefCon,
 	if (track == nil) return;
 
 	[SPAsyncLoading waitUntilLoaded:track timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedTracks, NSArray *notLoadedTracks) {
+
+        if (track.album.cover == nil) {
+            [self internalNotifyVisualiserOfTrack:track];
+            return;
+        }
+
 		[SPAsyncLoading waitUntilLoaded:track.album.cover timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedImages, NSArray *notLoadedImages) {
-
-			self.activeVisualizer.coverArt = track.album.cover.image;
-
-			NSDictionary *metadata = @{ kVisualiserTrackTitleKey : track.name,
-							   kVisualiserTrackArtistKey : track.consolidatedArtists,
-							   kVisualiserTrackAlbumKey : track.album.name,
-							   kVisualiserTrackDurationKey : @(track.duration) };
-
-			AudioStreamBasicDescription desc;
-			memset(&desc, 0, sizeof(AudioStreamBasicDescription));
-			[self.activeVisualizer playbackStartedWithMetaData:metadata audioFormat:desc];
-		}];
+            [self internalNotifyVisualiserOfTrack:track];
+        }];
 	}];
+}
+
+-(void)internalNotifyVisualiserOfTrack:(SPTrack *)track {
+    
+    self.activeVisualizer.coverArt = track.album.cover.image;
+
+    NSDictionary *metadata = @{ kVisualiserTrackTitleKey : track.name,
+                                kVisualiserTrackArtistKey : track.consolidatedArtists,
+                                kVisualiserTrackAlbumKey : track.album.name,
+                                kVisualiserTrackDurationKey : @(track.duration) };
+
+    AudioStreamBasicDescription desc;
+    memset(&desc, 0, sizeof(AudioStreamBasicDescription));
+    [self.activeVisualizer playbackStartedWithMetaData:metadata audioFormat:desc];
+
 }
 
 #pragma mark - Visualizer UI
