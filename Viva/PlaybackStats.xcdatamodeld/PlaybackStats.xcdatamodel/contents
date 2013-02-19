@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="PlaybackStats" representedClassName="PlaybackStats" syncable="YES">
+        <attribute name="firstPlayed" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="lastPlayed" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="playCount" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="skipCount" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="trackURI" attributeType="String" syncable="YES"/>
+    </entity>
+    <fetchRequest name="StatsWithURI" entity="PlaybackStats" predicateString="trackURI == $TARGET_URI"/>
+    <elements>
+        <element name="PlaybackStats" positionX="160" positionY="192" width="128" height="120"/>
+    </elements>
+</model>

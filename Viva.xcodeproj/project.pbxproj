@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		373A53FD16D3B69F002FE978 /* PlaybackStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 373A53FB16D3B69F002FE978 /* PlaybackStats.xcdatamodeld */; };
+		373A540016D3B873002FE978 /* PlaybackStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 373A53FF16D3B873002FE978 /* PlaybackStatsController.m */; };
+		373A540316D3B886002FE978 /* PlaybackStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 373A540216D3B886002FE978 /* PlaybackStats.m */; };
 		50046FFD1356231B000EA08A /* VivaSortDescriptorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */; };
 		5004700013562440000EA08A /* VivaTrackExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50046FFF13562440000EA08A /* VivaTrackExtensions.m */; };
 		5004701913563C02000EA08A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5004701813563C01000EA08A /* IOKit.framework */; };
@@ -276,6 +279,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		373A53FC16D3B69F002FE978 /* PlaybackStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PlaybackStats.xcdatamodel; sourceTree = "<group>"; };
+		373A53FE16D3B873002FE978 /* PlaybackStatsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackStatsController.h; sourceTree = "<group>"; };
+		373A53FF16D3B873002FE978 /* PlaybackStatsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackStatsController.m; sourceTree = "<group>"; };
+		373A540116D3B886002FE978 /* PlaybackStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackStats.h; sourceTree = "<group>"; };
+		373A540216D3B886002FE978 /* PlaybackStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackStats.m; sourceTree = "<group>"; };
 		50046FFB1356231B000EA08A /* VivaSortDescriptorExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaSortDescriptorExtensions.h; sourceTree = "<group>"; };
 		50046FFC1356231B000EA08A /* VivaSortDescriptorExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VivaSortDescriptorExtensions.m; sourceTree = "<group>"; };
 		50046FFE13562440000EA08A /* VivaTrackExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VivaTrackExtensions.h; sourceTree = "<group>"; };
@@ -598,6 +606,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		373A53FA16D3B689002FE978 /* Playback Stats */ = {
+			isa = PBXGroup;
+			children = (
+				373A53FB16D3B69F002FE978 /* PlaybackStats.xcdatamodeld */,
+				373A540116D3B886002FE978 /* PlaybackStats.h */,
+				373A540216D3B886002FE978 /* PlaybackStats.m */,
+				373A53FE16D3B873002FE978 /* PlaybackStatsController.h */,
+				373A53FF16D3B873002FE978 /* PlaybackStatsController.m */,
+			);
+			name = "Playback Stats";
+			sourceTree = "<group>";
+		};
 		500841661350AF9200A2967E /* Playback Contexts */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +874,7 @@
 				50C56A3D133944480072A754 /* Categories */,
 				5008417013510C5600A2967E /* Playback */,
 				5053184B147276920032B253 /* Local Files */,
+				373A53FA16D3B689002FE978 /* Playback Stats */,
 				5004B3C2133E06810098C7B4 /* VivaInternalURLManager.h */,
 				5004B3C3133E06810098C7B4 /* VivaInternalURLManager.m */,
 				505A929213574F6600136BBF /* VivaTrackInContainerReference.h */,
@@ -1709,6 +1730,9 @@
 				5009673F152C91340054EDF5 /* VivaClickableArtistTableCellView.m in Sources */,
 				50B489AB15E6767000902DE0 /* PlaylistsViewController.m in Sources */,
 				503A7C2715E7C1B100D9FF18 /* VivaDraggableItemImageView.m in Sources */,
+				373A53FD16D3B69F002FE978 /* PlaybackStats.xcdatamodeld in Sources */,
+				373A540016D3B873002FE978 /* PlaybackStatsController.m in Sources */,
+				373A540316D3B886002FE978 /* PlaybackStats.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1866,6 +1890,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		373A53FB16D3B69F002FE978 /* PlaybackStats.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				373A53FC16D3B69F002FE978 /* PlaybackStats.xcdatamodel */,
+			);
+			currentVersion = 373A53FC16D3B69F002FE978 /* PlaybackStats.xcdatamodel */;
+			path = PlaybackStats.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		5053184F14727CFD0032B253 /* LocalFiles.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

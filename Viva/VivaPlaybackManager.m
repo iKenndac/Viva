@@ -20,6 +20,7 @@
 @interface VivaPlaybackManager  ()
 
 @property (readwrite, strong, nonatomic) VivaCoreAudioController *audioController;
+@property (readwrite, strong, nonatomic) PlaybackStatsController *statsController;
 @property (strong, readwrite, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, strong, nonatomic) id <VivaTrackContainer> currentTrackContainer;
 @property (readwrite, strong, nonatomic) SPSession *session;
@@ -75,6 +76,8 @@
 		self.audioController.delegate = self;
 		self.audioController.playbackManager = self;
 
+        self.statsController = [PlaybackStatsController new];
+
 		self.session = aSession;
 		self.session.playbackDelegate = self;
 		self.localFileDecoder = [[VivaLocalFileDecoder alloc] init];
@@ -87,10 +90,10 @@
                forKeyPath:@"playing"
                   options:0
                   context:nil];
-		
+
 		[self addObserver:self
 			   forKeyPath:@"currentTrackContainer"
-				  options:NSKeyValueObservingOptionOld
+				  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionPrior
 				  context:nil];
 		
 		[self addObserver:self
@@ -237,8 +240,6 @@
 -(void)playTrackContainerInCurrentContext:(id <VivaTrackContainer>)newTrack callback:(SPErrorableOperationCallback)block {
 	
 	// Don't clear out the audio buffer just in case we can manage gapless playback.
-    self.currentTrackPosition = 0.0;
-	
 	self.currentPlaybackProvider.audioDeliveryDelegate = nil;
     self.currentPlaybackProvider.playing = NO;
 	
@@ -257,7 +258,7 @@
 				[self addTrackContainerToShufflePool:currentTrackContainer];
 			
 			self.currentTrackContainer = newTrack;
-			self.playing = YES;
+            self.playing = YES;
 			
 			[self reportTrackToGrowl:self.currentTrack];
 			
@@ -265,6 +266,8 @@
 			self.playing = NO;
 			[self.audioController clearAudioBuffers];
 		}
+
+        self.currentTrackPosition = 0.0;
 		
 		if (block) block(error);
 	}];
@@ -551,6 +554,14 @@
 	}];
 }
 
+-(void)notePlaybackStatsForTrack:(SPTrack *)track aboutToSkipAtPosition:(NSTimeInterval)position {
+	BOOL countsAsPlay = (position >= (track.duration * 0.75));
+	if (countsAsPlay)
+		[self.statsController reportPlayForTrack:track];
+	else
+		[self.statsController reportSkipForTrack:track];
+}
+
 #pragma mark -
 #pragma mark Playback Callbacks
 
@@ -611,6 +622,12 @@
 		}
 		
 	} else if ([keyPath isEqualToString:@"currentTrackContainer"]) {
+
+        if ([[change valueForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
+            [self notePlaybackStatsForTrack:self.currentTrackContainer.track aboutToSkipAtPosition:self.currentTrackPosition];
+            return;
+        }
+
 		@synchronized(self) {
 			hasPreCachedNextTrack = NO;
 		}

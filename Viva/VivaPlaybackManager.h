@@ -15,6 +15,7 @@
 #import "EQPresetController.h"
 #import "VivaAdvancedPlaybackDelegate.h"
 #import "VivaCoreAudioController.h"
+#import "PlaybackStatsController.h"
 
 @class VivaPlaybackManager;
 
@@ -35,6 +36,7 @@
 -(id)initWithPlaybackSession:(SPSession *)aSession;
 
 @property (readonly, strong, nonatomic) VivaCoreAudioController *audioController;
+@property (readonly, strong, nonatomic) PlaybackStatsController *statsController;
 @property (readonly, strong, nonatomic) id <VivaPlaybackContext> playbackContext;
 @property (readwrite, nonatomic) NSTimeInterval currentTrackPosition;
 @property (readonly, strong, nonatomic) SPTrack *currentTrack;
